@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Butchery">
+  <rect width="64" height="64" rx="14" fill="#fce4ec"/>
+  <path d="M22 18h8l6 10 6-10h8v6l-8 12v16h-12V36l-8-12z" fill="#b83b3b"/>
+  <rect x="28" y="44" width="8" height="10" rx="2" fill="#8e2a2a"/>
+</svg>

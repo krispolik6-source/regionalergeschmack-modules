@@ -1,0 +1,32 @@
+# Raport tygodniowy → krispolik6@gmail.com
+# Poniedziałek ~20:00 CEST = 18:00 UTC
+# Secrets: SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_FROM
+name: Weekly Developer Report
+
+on:
+  schedule:
+    - cron: '0 18 * * 1'
+  workflow_dispatch:
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Send weekly report and clean artifacts
+        env:
+          DEVELOPER_REPORT_EMAIL: krispolik6@gmail.com
+          DEVELOPER_MAIL_SEND: '1'
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          NODE_ENV: development
+        run: npm run send-report -- --fresh --clean

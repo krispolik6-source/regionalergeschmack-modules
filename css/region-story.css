@@ -1,0 +1,117 @@
+/* ============================================================
+   ETAP 13D – Opowieści Regionu
+   Jedna elegancka karta historii / dzień
+   ============================================================ */
+
+.home-region-story {
+    position: relative;
+    padding: 14px 16px 14px;
+    border-radius: var(--radius-lg, 20px);
+    border: 1px solid rgba(140, 100, 55, 0.16);
+    background:
+        linear-gradient(155deg, rgba(255, 250, 240, 0.82) 0%, rgba(255, 236, 210, 0.48) 100%);
+    box-shadow: 0 4px 16px rgba(90, 55, 20, 0.06);
+    overflow: hidden;
+}
+
+.home-region-story::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 60% 50% at 0% 0%, rgba(196, 137, 58, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(79, 107, 60, 0.08) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+.home-region-story-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-region-story-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-region-story-sub {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.home-region-story-body {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 2px;
+}
+
+.home-region-story-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+    border-radius: 50%;
+    background: rgba(255, 252, 245, 0.8);
+    border: 1px solid rgba(255, 240, 210, 0.65);
+}
+
+.home-region-story-text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+}
+
+body.dark-mode .home-region-story {
+    background: linear-gradient(155deg, rgba(48, 38, 28, 0.85) 0%, rgba(36, 30, 22, 0.78) 100%);
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+body.dark-mode .home-region-story-label {
+    /* ETAP 41 — czytelny tytuł „Opowieści regionu” / Geschichten der Region */
+    color: #d4e4b0;
+}
+
+body.dark-mode .home-region-story-sub {
+    color: rgba(245, 239, 227, 0.82);
+}
+
+body.dark-mode .home-region-story-icon {
+    background: rgba(42, 34, 24, 0.85);
+    border-color: rgba(255, 220, 170, 0.14);
+}
+
+body.dark-mode .home-region-story-text {
+    color: var(--color-text-light, #fffaf2);
+}
+
+@media screen and (max-width: 430px) {
+    .home-region-story {
+        padding: 12px;
+    }
+
+    .home-region-story-text {
+        font-size: 13px;
+    }
+
+    .home-region-story-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+}

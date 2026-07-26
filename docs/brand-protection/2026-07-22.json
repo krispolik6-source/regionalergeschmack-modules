@@ -1,0 +1,83 @@
+{
+  "id": "brand-protection-29c",
+  "title": "Brand Protection AI — ETAP 29C",
+  "generatedAt": "2026-07-22T20:04:54.398Z",
+  "day": "2026-07-22",
+  "status": "WARNING",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "autoModifyCode": false,
+    "brandBookAuthority": true,
+    "brandBook": "docs/brand/BRAND-BOOK.md",
+    "warning": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.",
+    "role": "brand-protection-ai"
+  },
+  "summary": {
+    "filesScanned": 52,
+    "findings": 1,
+    "fail": 0,
+    "warning": 1,
+    "ok": false
+  },
+  "categories": {
+    "logo": {
+      "fail": 0,
+      "warning": 0
+    },
+    "colors": {
+      "fail": 0,
+      "warning": 0
+    },
+    "fonts": {
+      "fail": 0,
+      "warning": 0
+    },
+    "icons": {
+      "fail": 0,
+      "warning": 0
+    },
+    "shadows": {
+      "fail": 0,
+      "warning": 0
+    },
+    "photos": {
+      "fail": 0,
+      "warning": 0
+    },
+    "spacing": {
+      "fail": 0,
+      "warning": 0
+    },
+    "radius": {
+      "fail": 0,
+      "warning": 1
+    },
+    "gradients": {
+      "fail": 0,
+      "warning": 0
+    },
+    "animations": {
+      "fail": 0,
+      "warning": 0
+    }
+  },
+  "findings": [
+    {
+      "id": "radius-pill-brand",
+      "severity": "warning",
+      "category": "radius",
+      "file": "css/style.css",
+      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
+      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
+    }
+  ],
+  "violations": [
+    {
+      "file": "css/style.css",
+      "rule": "radius-pill-brand",
+      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
+      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
+    }
+  ]
+}

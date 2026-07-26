@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "note": "Extra category backgrounds (fastFood, honey) – Unsplash License",
+  "assets": [
+    {
+      "out": "backgrounds/category_fastFood.webp",
+      "theme": "burger / fries",
+      "source": "unsplash photo-1568901346375-23c9450c58cd"
+    },
+    {
+      "out": "backgrounds/category_honey.webp",
+      "theme": "flower meadow / dandelions",
+      "source": "unsplash photo-1558642452-9d2a7deb7f62"
+    }
+  ]
+}

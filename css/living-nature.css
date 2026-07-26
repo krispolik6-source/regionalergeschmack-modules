@@ -1,0 +1,307 @@
+/* ============================================================
+   Żywa natura – krajobrazy sezonowe + światło dnia + delikatny ruch
+   Tylko CSS prezentacja · Brand: zieleń / złoto / krem
+   ============================================================ */
+
+/* Home – szybki przełącznik ambient obok powitania */
+.home-greeting-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin: 0 0 6px;
+}
+
+.home-greeting-title-row .home-greeting-title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.home-ambient-toggle {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(42, 63, 40, 0.06);
+    color: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.home-ambient-toggle:hover {
+    background: rgba(201, 162, 39, 0.18);
+}
+
+.home-ambient-toggle:focus-visible {
+    outline: 2px solid var(--brand-gold, #c9a227);
+    outline-offset: 2px;
+}
+
+.home-ambient-toggle[aria-pressed='true'] {
+    background: rgba(42, 63, 40, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-ambient-toggle {
+        transition: none;
+    }
+}
+
+#climateAtmosphere {
+    --ln-sky-top: #dfe9d4;
+    --ln-sky-bot: #f5efe3;
+    --ln-field-a: rgba(90, 120, 55, 0.22);
+    --ln-field-b: rgba(201, 162, 39, 0.14);
+    --ln-accent: rgba(186, 210, 140, 0.2);
+    --ln-light: rgba(255, 236, 200, 0.12);
+}
+
+#climateAtmosphere[data-season='spring'] {
+    --ln-sky-top: #d4ebc8;
+    --ln-sky-bot: #f3f6e8;
+    --ln-field-a: rgba(110, 160, 70, 0.28);
+    --ln-field-b: rgba(170, 210, 120, 0.16);
+    --ln-accent: rgba(255, 200, 210, 0.14);
+}
+
+#climateAtmosphere[data-season='summer'] {
+    --ln-sky-top: #cfe4f0;
+    --ln-sky-bot: #f7efd8;
+    --ln-field-a: rgba(201, 162, 39, 0.28);
+    --ln-field-b: rgba(230, 180, 60, 0.18);
+    --ln-accent: rgba(255, 200, 80, 0.16);
+}
+
+#climateAtmosphere[data-season='autumn'] {
+    --ln-sky-top: #e8d4b8;
+    --ln-sky-bot: #f5ebe0;
+    --ln-field-a: rgba(180, 110, 45, 0.26);
+    --ln-field-b: rgba(201, 140, 50, 0.18);
+    --ln-accent: rgba(220, 120, 50, 0.14);
+}
+
+#climateAtmosphere[data-season='winter'] {
+    --ln-sky-top: #e4e8ec;
+    --ln-sky-bot: #f2f0eb;
+    --ln-field-a: rgba(220, 225, 230, 0.35);
+    --ln-field-b: rgba(200, 205, 210, 0.2);
+    --ln-accent: rgba(255, 255, 255, 0.22);
+}
+
+#climateAtmosphere[data-daypart='morning'] {
+    --ln-light: rgba(255, 220, 180, 0.16);
+}
+
+#climateAtmosphere[data-daypart='noon'] {
+    --ln-light: rgba(255, 248, 230, 0.1);
+}
+
+#climateAtmosphere[data-daypart='evening'] {
+    --ln-light: rgba(255, 170, 90, 0.18);
+}
+
+.ln-sky {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--ln-sky-top) 0%, var(--ln-sky-bot) 72%);
+    opacity: 0.55;
+}
+
+.ln-clouds {
+    position: absolute;
+    inset: -8% -20% auto -20%;
+    height: 42%;
+    background:
+        radial-gradient(ellipse 40% 28% at 18% 55%, rgba(255, 255, 255, 0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 36% 24% at 55% 40%, rgba(255, 255, 255, 0.28) 0%, transparent 72%),
+        radial-gradient(ellipse 30% 22% at 82% 60%, rgba(255, 255, 255, 0.22) 0%, transparent 70%);
+    opacity: 0.55;
+    transform: translateZ(0);
+    animation: ln-clouds-drift 90s linear infinite;
+}
+
+.ln-fields {
+    position: absolute;
+    left: -8%;
+    right: -8%;
+    bottom: 0;
+    height: 48%;
+    background:
+        linear-gradient(180deg, transparent 0%, var(--ln-field-a) 38%, var(--ln-field-b) 100%),
+        repeating-linear-gradient(
+            100deg,
+            transparent 0 18px,
+            rgba(42, 63, 40, 0.04) 18px 20px
+        );
+    opacity: 0.7;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 100%);
+}
+
+.ln-orchard {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 18%;
+    height: 22%;
+    background:
+        radial-gradient(ellipse 8% 55% at 12% 80%, var(--ln-accent) 0%, transparent 70%),
+        radial-gradient(ellipse 7% 50% at 28% 85%, var(--ln-accent) 0%, transparent 70%),
+        radial-gradient(ellipse 9% 58% at 72% 78%, var(--ln-accent) 0%, transparent 70%),
+        radial-gradient(ellipse 7% 48% at 88% 86%, var(--ln-accent) 0%, transparent 70%);
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+#climateAtmosphere[data-season='winter'] .ln-orchard {
+    opacity: 0.25;
+    filter: grayscale(0.2);
+}
+
+.ln-wheat {
+    position: absolute;
+    left: -4%;
+    right: -4%;
+    bottom: 0;
+    height: min(90px, 14vh);
+    background:
+        repeating-linear-gradient(
+            92deg,
+            transparent 0 7px,
+            rgba(201, 162, 39, 0.14) 7px 9px,
+            transparent 9px 16px
+        );
+    opacity: 0.5;
+    transform-origin: 50% 100%;
+    animation: ln-wheat-sway 11s ease-in-out infinite alternate;
+}
+
+#climateAtmosphere[data-season='spring'] .ln-wheat {
+    background:
+        repeating-linear-gradient(
+            92deg,
+            transparent 0 7px,
+            rgba(90, 140, 60, 0.16) 7px 9px,
+            transparent 9px 16px
+        );
+}
+
+#climateAtmosphere[data-season='winter'] .ln-wheat {
+    opacity: 0.2;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.2) 0 2px,
+            transparent 2px 14px
+        );
+}
+
+.ln-leaves {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle 3px at 20% 30%, rgba(201, 120, 40, 0.35) 0%, transparent 70%),
+        radial-gradient(circle 2px at 55% 22%, rgba(180, 90, 30, 0.3) 0%, transparent 70%),
+        radial-gradient(circle 3px at 78% 40%, rgba(210, 140, 50, 0.28) 0%, transparent 70%);
+}
+
+#climateAtmosphere[data-season='autumn'] .ln-leaves {
+    opacity: 0.55;
+    animation: ln-leaves-drift 48s linear infinite;
+}
+
+.ln-snow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle 2px at 10% 20%, rgba(255, 255, 255, 0.55) 0%, transparent 70%),
+        radial-gradient(circle 1.5px at 40% 10%, rgba(255, 255, 255, 0.45) 0%, transparent 70%),
+        radial-gradient(circle 2px at 70% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 70%),
+        radial-gradient(circle 1.5px at 85% 15%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    background-size: 100% 100%;
+}
+
+#climateAtmosphere[data-season='winter'] .ln-snow {
+    opacity: 0.45;
+    animation: ln-snow-fall 36s linear infinite;
+}
+
+.ln-light {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, var(--ln-light) 0%, transparent 65%),
+        linear-gradient(180deg, transparent 40%, rgba(42, 63, 40, 0.04) 100%);
+    mix-blend-mode: soft-light;
+    opacity: 0.85;
+    transition: background 2.5s ease, opacity 2.5s ease;
+}
+
+body.dark-mode #climateAtmosphere .ln-sky {
+    opacity: 0.28;
+}
+
+body.dark-mode #climateAtmosphere .ln-fields,
+body.dark-mode #climateAtmosphere .ln-wheat,
+body.dark-mode #climateAtmosphere .ln-orchard {
+    opacity: 0.35;
+}
+
+@keyframes ln-clouds-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-6%, 1.5%, 0); }
+}
+
+@keyframes ln-wheat-sway {
+    from { transform: skewX(-1.4deg) translate3d(-0.8%, 0, 0); }
+    to { transform: skewX(1.6deg) translate3d(1%, 0, 0); }
+}
+
+@keyframes ln-leaves-drift {
+    from { transform: translate3d(0, -4%, 0); opacity: 0.35; }
+    to { transform: translate3d(-4%, 8%, 0); opacity: 0.55; }
+}
+
+@keyframes ln-snow-fall {
+    from { background-position: 0 0, 20px 10px, 40px 0, 60px 20px; }
+    to { background-position: 0 80px, 20px 90px, 40px 70px, 60px 100px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ln-clouds,
+    .ln-wheat,
+    .ln-leaves,
+    .ln-snow {
+        animation: none !important;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .ln-fields { height: 40%; opacity: 0.55; }
+    .ln-wheat { height: 56px; }
+    .ln-clouds { animation-duration: 120s; }
+}
+
+html.legacy-ios9 .ln-sky,
+html.legacy-ios9 .ln-clouds,
+html.legacy-ios9 .ln-fields,
+html.legacy-ios9 .ln-orchard,
+html.legacy-ios9 .ln-wheat,
+html.legacy-ios9 .ln-leaves,
+html.legacy-ios9 .ln-snow,
+html.legacy-ios9 .ln-light {
+    display: none !important;
+}

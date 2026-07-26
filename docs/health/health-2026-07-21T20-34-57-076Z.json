@@ -1,0 +1,193 @@
+{
+  "id": "health-static-2026-07-21T20-34-57-075Z",
+  "generatedAt": "2026-07-21T20:34:57.076Z",
+  "reason": "static-scan",
+  "policy": {
+    "autoFix": false,
+    "autoCommit": false,
+    "readOnly": true
+  },
+  "scores": {
+    "performance": 99,
+    "ux": 85,
+    "accessibility": 100,
+    "memory": 99,
+    "dataQuality": 100,
+    "translation": 84,
+    "mobile": 100,
+    "pwa": 100
+  },
+  "overall": 96,
+  "findings": [
+    {
+      "severity": "medium",
+      "area": "translation",
+      "title": "Brakujące klucze i18n: 33",
+      "detail": "en:0, pl:0, ru:1, tr:1, fr:1, es:1, it:1, nl:1, cs:1, sk:1, hu:1, ro:1, bg:1, el:1, hr:1, sr:1, mk:1, sl:1, lt:1, lv:1, et:1, fi:1, sv:1, no:1, da:1, is:1, zh:1, zh-tw:1, ja:1, ko:1, vi:1, ms:1, id:1, th:1, hi:1"
+    },
+    {
+      "severity": "medium",
+      "area": "css",
+      "title": "Potencjalne konflikty CSS: 40",
+      "detail": "body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]"
+    }
+  ],
+  "static": {
+    "translation": {
+      "totalMissing": 33,
+      "missingByLang": {
+        "en": 0,
+        "pl": 0,
+        "ru": 1,
+        "tr": 1,
+        "fr": 1,
+        "es": 1,
+        "it": 1,
+        "nl": 1,
+        "cs": 1,
+        "sk": 1,
+        "hu": 1,
+        "ro": 1,
+        "bg": 1,
+        "el": 1,
+        "hr": 1,
+        "sr": 1,
+        "mk": 1,
+        "sl": 1,
+        "lt": 1,
+        "lv": 1,
+        "et": 1,
+        "fi": 1,
+        "sv": 1,
+        "no": 1,
+        "da": 1,
+        "is": 1,
+        "zh": 1,
+        "zh-tw": 1,
+        "ja": 1,
+        "ko": 1,
+        "vi": 1,
+        "ms": 1,
+        "id": 1,
+        "th": 1,
+        "hi": 1
+      }
+    },
+    "assets": {
+      "unusedCount": 0,
+      "missingProduct": [],
+      "unusedSample": []
+    },
+    "producers": {
+      "total": 7,
+      "issueCount": 0,
+      "issues": []
+    },
+    "unusedJs": {
+      "unusedCount": 1,
+      "unusedSample": [
+        "js/presentation/searchLexicon.js"
+      ]
+    },
+    "css": {
+      "conflictCount": 40,
+      "sample": [
+        {
+          "selector": "body",
+          "prop": "color",
+          "a": "css/brand-identity-final.css:var(--brand-ink)",
+          "b": "css/landing.css:var(--lp-text)"
+        },
+        {
+          "selector": ".lp-header",
+          "prop": "background",
+          "a": "css/brand-identity-final.css:rgba(245, 239, 227, 0.94)",
+          "b": "css/landing.css:rgba(255, 255, 255, 0.92)"
+        },
+        {
+          "selector": ".lp-brand",
+          "prop": "color",
+          "a": "css/brand-identity-final.css:var(--brand-green) !important",
+          "b": "css/landing.css:var(--lp-text)"
+        },
+        {
+          "selector": "body:not(.view-map-active)::after",
+          "prop": "background",
+          "a": "css/emotions-climate.css:url('/assets/images/motifs/leaf.svg') 9% 16% / 40px no-repeat,\r\n        url('/assets/images/motifs/wheat.svg') 91% 68% / 32px no-repeat,\r\n        url('/assets/images/motifs/leaf.svg') 76% 24% / 26px no-repeat,\r\n        url('/assets/images/motifs/wheat.svg') 14% 78% / 28px no-repeat,\r\n        radial-gradient(ellipse 90% 50% at 50% 0%, var(--climate-sunset-top) 0%, transparent 70%),\r\n        linear-gradient(180deg, transparent 45%, var(--climate-sunset-bottom) 100%),\r\n        var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),\r\n        var(--ls-bg-overlay)",
+          "b": "css/landscapes.css:var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),\r\n        var(--ls-bg-overlay)"
+        },
+        {
+          "selector": ".producer-modal-header",
+          "prop": "overflow",
+          "a": "css/final-ux-premium.css:hidden",
+          "b": "css/living-region-experience.css:visible"
+        },
+        {
+          "selector": ".leaflet-control-zoom a",
+          "prop": "background",
+          "a": "css/final-ux-premium.css:rgba(255, 252, 245, 0.95) !important",
+          "b": "css/living-region-experience.css:rgba(255, 248, 235, 0.94) !important"
+        },
+        {
+          "selector": ".leaflet-control-zoom a",
+          "prop": "color",
+          "a": "css/final-ux-premium.css:var(--color-text) !important",
+          "b": "css/living-region-experience.css:var(--lre-wood-deep) !important"
+        },
+        {
+          "selector": ".home-footer",
+          "prop": "background",
+          "a": "css/emotions-climate.css:linear-gradient(\r\n        165deg,\r\n        rgba(120, 90, 45, 0.72) 0%,\r\n        rgba(70, 95, 48, 0.8) 55%,\r\n        rgba(90, 60, 35, 0.78) 100%\r\n    ) !important",
+          "b": "css/polish.css:linear-gradient(\r\n        180deg,\r\n        rgba(90, 120, 60, 0.72) 0%,\r\n        rgba(70, 95, 48, 0.82) 100%\r\n    )"
+        },
+        {
+          "selector": ".main-header",
+          "prop": "background",
+          "a": "css/brand-identity-final.css:linear-gradient(180deg, #243d28 0%, var(--brand-green) 100%)",
+          "b": "css/premium-header.css:linear-gradient(180deg, #1e3220 0%, var(--ph-green) 42%, #243d28 100%) !important"
+        },
+        {
+          "selector": ".home-greeting-brand",
+          "prop": "color",
+          "a": "css/living-region-experience.css:var(--lre-wood-deep) !important",
+          "b": "css/prepublish.css:var(--brand-green, #2a3f28)"
+        },
+        {
+          "selector": ".producer-modal-header .producer-photo-frame",
+          "prop": "position",
+          "a": "css/living-region-experience.css:relative",
+          "b": "css/prepublish.css:relative !important"
+        },
+        {
+          "selector": ".producer-modal-header .producer-photo-frame",
+          "prop": "z-index",
+          "a": "css/living-region-experience.css:0",
+          "b": "css/prepublish.css:0 !important"
+        }
+      ]
+    },
+    "pwa": {
+      "score": 100,
+      "manifestOk": true,
+      "swOk": true,
+      "hasManifestLink": true,
+      "hasSwRegister": true,
+      "findings": []
+    },
+    "cache": {
+      "score": 100
+    },
+    "mobile": {
+      "score": 100,
+      "hasPhone": true,
+      "hasTouch": true,
+      "findings": []
+    },
+    "a11y": {
+      "score": 100
+    }
+  },
+  "runtime": {
+    "imported": false
+  }
+}

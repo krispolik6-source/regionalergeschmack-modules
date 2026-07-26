@@ -1,0 +1,111 @@
+{
+  "id": "etap-32a-home-premium",
+  "etapa": "32A",
+  "title": "Home Premium — fold wow analysis",
+  "generatedAt": "2026-07-22T20:45:00.000Z",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "noArchitectureChange": true,
+    "noEventBusChange": true,
+    "noStoreChange": true,
+    "noApiChange": true,
+    "noAppLogicChange": true
+  },
+  "scores": {
+    "homeFold": 62,
+    "homeFoldPotentialAfter3": 85,
+    "selfReflectionHomeOverload": 68
+  },
+  "sources": [
+    "js/views/home.js",
+    "css/prepublish.css",
+    "css/production-polish.css",
+    "docs/self-reflection/latest.md",
+    "docs/product-status/PRODUCT-STATUS-REPORT.md"
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "area": "fold",
+      "title": "Kategorie i quick-filters wcinają się w fold",
+      "detail": "production-polish.css: home-quick-filters order:2, home-categories order:4 — sprzeczne z prepublish (fold = greeting·search·CTA)"
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "area": "brand",
+      "title": "Logo Home ukryte na mobile",
+      "detail": "production-polish.css: .home-greeting-brand { display: none } poniżej 767px"
+    },
+    {
+      "id": "F3",
+      "severity": "medium",
+      "area": "cta",
+      "title": "Dwa konkurujące CTA lokalizacji",
+      "detail": "#getLocationBtn i #findNearbyBtn obok siebie jako równorzędne akcje"
+    },
+    {
+      "id": "F4",
+      "severity": "medium",
+      "area": "hierarchy",
+      "title": "Region Soul / Intel w greeting",
+      "detail": "Drugi blok narracyjny w pierwszym kadrze; home-greeting--with-soul ukrywa greetingSub"
+    },
+    {
+      "id": "F5",
+      "severity": "low",
+      "area": "clutter",
+      "title": "Długa lista sekcji narracyjnych",
+      "detail": "Living Region, Tastes, Advisor, Smart Today, Nature, Story, Live, Seasonal — podobna waga wizualna"
+    }
+  ],
+  "proposals": [
+    {
+      "id": "P1",
+      "title": "Jeden bohater foldu: marka + 1 CTA mapy",
+      "problem": "Dwa CTA; logo Home ukryte na mobile; brak wow marki w pierwszym kadrze",
+      "proposal": "Przywrócić .home-greeting-brand na mobile; zdegradować #getLocationBtn; wyróżnić tylko #findNearbyBtn jako primary",
+      "files": ["css/production-polish.css", "css/prepublish.css", "js/views/home.js (opcjonalnie klasa UI)"],
+      "impact": "high",
+      "risk": "low",
+      "timeMinutes": 50,
+      "accepted": null
+    },
+    {
+      "id": "P2",
+      "title": "Kategorie i quick-filters pod fold (naprawa order)",
+      "problem": "Quick filters order:2 i categories order:4 zabijają krótki fold",
+      "proposal": "CSS-only: filtry i kategorie order >= 12; fold = greeting → hub → actions",
+      "files": ["css/production-polish.css"],
+      "impact": "high",
+      "risk": "low",
+      "timeMinutes": 25,
+      "accepted": null
+    },
+    {
+      "id": "P3",
+      "title": "Greeting bez drugiego ekranu narracji",
+      "problem": "Region Soul/Intel + ambient rozpraszają od marki i CTA",
+      "proposal": "Przenieść regional intelligence pod home-actions (DOM/order); wyciszyć ambient CSS",
+      "files": ["js/views/home.js", "css/production-polish.css", "css/region-soul.css"],
+      "impact": "medium-high",
+      "risk": "low-medium",
+      "timeMinutes": 45,
+      "accepted": null
+    }
+  ],
+  "outOfScope": [
+    "Usuwanie sekcji narracyjnych z produktu",
+    "Nowe ekrany / moduły",
+    "Zmiany EventBus / Store / API / GPS / mapy",
+    "Auto-apply"
+  ],
+  "successCriteria": [
+    "Pierwszy viewport mobile: logo/wordmark + powitanie + search + 1 primary CTA",
+    "Brak siatki 8 kategorii w pierwszym kadrze",
+    "Self Reflection Home overload >= 80 w kolejnym cyklu"
+  ],
+  "awaitingAcceptance": true
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alnatura">
+  <rect width="28" height="28" rx="6" fill="#f5f0e6"/>
+  <rect x="1" y="1" width="26" height="26" rx="5" fill="none" stroke="#5a7a3a" stroke-width="1.2"/>
+  <path d="M8 18c2.2-5 4.5-8 6-8s3.8 3 6 8" fill="none" stroke="#5a7a3a" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="14" cy="9" r="1.4" fill="#c45c26"/>
+  <text x="14" y="23" text-anchor="middle" fill="#5a7a3a" font-size="5" font-family="Arial,sans-serif" font-weight="700">Alnatura</text>
+</svg>

@@ -1,0 +1,601 @@
+{
+  "id": "master-icon-audit-28f",
+  "title": "MASTER ICON AUDIT — ETAP 28F",
+  "generatedAt": "2026-07-23T18:32:59.710Z",
+  "master": "assets/icons/logo-master.svg",
+  "iconVersion": "28",
+  "swCache": "rg-pwa-v28",
+  "imageCache": "rg-runtime-images-v28",
+  "masterHash": "668be70eec6ce347",
+  "summary": {
+    "ok": true,
+    "checksPassed": 49,
+    "checksTotal": 49,
+    "usageCount": 68,
+    "staleRefs": 0
+  },
+  "policy": {
+    "singleLogo": true,
+    "architectureUnchanged": true,
+    "androidNote": "Po deploy: odinstaluj PWA z launchera i zainstaluj ponownie — Android cache’uje ikonę agresywnie."
+  },
+  "requiredPng": [
+    "icon-48.png",
+    "icon-72.png",
+    "icon-96.png",
+    "icon-128.png",
+    "icon-144.png",
+    "icon-152.png",
+    "icon-180.png",
+    "icon-192.png",
+    "icon-256.png",
+    "icon-384.png",
+    "icon-512.png",
+    "icon-1024.png",
+    "apple-touch-icon.png",
+    "maskable-512.png",
+    "monochrome-512.png",
+    "favicon.ico"
+  ],
+  "aliases": [
+    "icon-source.svg",
+    "icon-symbol.svg"
+  ],
+  "surfaces": [
+    "manifest-192",
+    "manifest-512",
+    "manifest-maskable",
+    "manifest-monochrome",
+    "manifest-apple",
+    "index-favicon",
+    "index-logo-master",
+    "index-icon-192",
+    "index-apple",
+    "index-manifest",
+    "index-og",
+    "landing-logo",
+    "landing-icon-192",
+    "home-brand",
+    "push-icon",
+    "brand-css",
+    "sw-cache",
+    "sw-image-cache",
+    "sw-network-first-icons",
+    "sw-default-icon",
+    "header-no-tile",
+    "og-asset",
+    "splash-asset",
+    "notify-asset",
+    "play-512",
+    "store-1024"
+  ],
+  "usages": [
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/icon-144.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/brand/og-share.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/brand/og-share.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/favicon.ico?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/icon-192.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/icon-180.png?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "index.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/brand/og-share.png?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/brand/og-share.png?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/favicon.ico?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/icon-192.png?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "landing.html",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-48.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-72.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-96.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-128.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-144.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-152.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-192.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-256.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-384.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-512.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/icon-1024.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/maskable-512.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/monochrome-512.png?v=28"
+    },
+    {
+      "file": "manifest.json",
+      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-192.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/favicon.ico"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/logo-master.svg"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/apple-touch-icon.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-48.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-72.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-96.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-128.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-144.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-152.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-180.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-192.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-256.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-384.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-512.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/icon-1024.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/maskable-512.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/icons/monochrome-512.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/og-share.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/splash-logo.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/notifications-icon.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/og-share.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/splash-logo.png"
+    },
+    {
+      "file": "sw.js",
+      "ref": "/assets/brand/notifications-icon.png"
+    },
+    {
+      "file": "css/brand-identity-final.css",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "js/core/pushNotifications.js",
+      "ref": "/assets/icons/icon-192.png?v=28"
+    },
+    {
+      "file": "js/diagnostics/livingBrandBook.js",
+      "ref": "/assets/icons/logo-master.svg"
+    },
+    {
+      "file": "js/diagnostics/selfHealing.js",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "js/legacy/app.bundle.js",
+      "ref": "/assets/icons/icon-192.png"
+    },
+    {
+      "file": "js/views/home.js",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "js/views/home.js",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "js/views/home.js",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "js/views/premium.js",
+      "ref": "/assets/icons/logo-master.svg?v=28"
+    },
+    {
+      "file": "assets/brand/README.md",
+      "ref": "/assets/icons/logo-master.svg"
+    }
+  ],
+  "staleRefs": [],
+  "checks": [
+    {
+      "id": "master-exists",
+      "ok": true,
+      "detail": "assets/icons/logo-master.svg"
+    },
+    {
+      "id": "master-hash",
+      "ok": true,
+      "detail": "sha256…668be70eec6ce347"
+    },
+    {
+      "id": "alias-icon-source.svg",
+      "ok": true,
+      "detail": "identyczny z master"
+    },
+    {
+      "id": "alias-icon-symbol.svg",
+      "ok": true,
+      "detail": "identyczny z master"
+    },
+    {
+      "id": "png-icon-48.png",
+      "ok": true,
+      "detail": "assets/icons/icon-48.png"
+    },
+    {
+      "id": "png-icon-72.png",
+      "ok": true,
+      "detail": "assets/icons/icon-72.png"
+    },
+    {
+      "id": "png-icon-96.png",
+      "ok": true,
+      "detail": "assets/icons/icon-96.png"
+    },
+    {
+      "id": "png-icon-128.png",
+      "ok": true,
+      "detail": "assets/icons/icon-128.png"
+    },
+    {
+      "id": "png-icon-144.png",
+      "ok": true,
+      "detail": "assets/icons/icon-144.png"
+    },
+    {
+      "id": "png-icon-152.png",
+      "ok": true,
+      "detail": "assets/icons/icon-152.png"
+    },
+    {
+      "id": "png-icon-180.png",
+      "ok": true,
+      "detail": "assets/icons/icon-180.png"
+    },
+    {
+      "id": "png-icon-192.png",
+      "ok": true,
+      "detail": "assets/icons/icon-192.png"
+    },
+    {
+      "id": "png-icon-256.png",
+      "ok": true,
+      "detail": "assets/icons/icon-256.png"
+    },
+    {
+      "id": "png-icon-384.png",
+      "ok": true,
+      "detail": "assets/icons/icon-384.png"
+    },
+    {
+      "id": "png-icon-512.png",
+      "ok": true,
+      "detail": "assets/icons/icon-512.png"
+    },
+    {
+      "id": "png-icon-1024.png",
+      "ok": true,
+      "detail": "assets/icons/icon-1024.png"
+    },
+    {
+      "id": "png-apple-touch-icon.png",
+      "ok": true,
+      "detail": "assets/icons/apple-touch-icon.png"
+    },
+    {
+      "id": "png-maskable-512.png",
+      "ok": true,
+      "detail": "assets/icons/maskable-512.png"
+    },
+    {
+      "id": "png-monochrome-512.png",
+      "ok": true,
+      "detail": "assets/icons/monochrome-512.png"
+    },
+    {
+      "id": "png-favicon.ico",
+      "ok": true,
+      "detail": "assets/icons/favicon.ico"
+    },
+    {
+      "id": "no-stale-v21-icons",
+      "ok": true,
+      "detail": "OK"
+    },
+    {
+      "id": "manifest-192",
+      "ok": true,
+      "detail": "manifest.json · /icon-192\\.png\\?v=28/"
+    },
+    {
+      "id": "manifest-512",
+      "ok": true,
+      "detail": "manifest.json · /icon-512\\.png\\?v=28/"
+    },
+    {
+      "id": "manifest-maskable",
+      "ok": true,
+      "detail": "manifest.json · /maskable-512\\.png\\?v=28/"
+    },
+    {
+      "id": "manifest-monochrome",
+      "ok": true,
+      "detail": "manifest.json · /monochrome-512\\.png\\?v=28/"
+    },
+    {
+      "id": "manifest-apple",
+      "ok": true,
+      "detail": "manifest.json · /apple-touch-icon\\.png\\?v=28/"
+    },
+    {
+      "id": "index-favicon",
+      "ok": true,
+      "detail": "index.html · /favicon\\.ico\\?v=28/"
+    },
+    {
+      "id": "index-logo-master",
+      "ok": true,
+      "detail": "index.html · /logo-master\\.svg\\?v=28/"
+    },
+    {
+      "id": "index-icon-192",
+      "ok": true,
+      "detail": "index.html · /icon-192\\.png\\?v=28/"
+    },
+    {
+      "id": "index-apple",
+      "ok": true,
+      "detail": "index.html · /apple-touch-icon\\.png\\?v=28/"
+    },
+    {
+      "id": "index-manifest",
+      "ok": true,
+      "detail": "index.html · /manifest\\.json\\?v=28/"
+    },
+    {
+      "id": "index-og",
+      "ok": true,
+      "detail": "index.html · /og-share\\.png\\?v=28/"
+    },
+    {
+      "id": "landing-logo",
+      "ok": true,
+      "detail": "landing.html · /logo-master\\.svg\\?v=28/"
+    },
+    {
+      "id": "landing-icon-192",
+      "ok": true,
+      "detail": "landing.html · /icon-192\\.png\\?v=28/"
+    },
+    {
+      "id": "home-brand",
+      "ok": true,
+      "detail": "js/views/home.js · /logo-master\\.svg\\?v=28/"
+    },
+    {
+      "id": "push-icon",
+      "ok": true,
+      "detail": "js/core/pushNotifications.js · /icon-192\\.png\\?v=28/"
+    },
+    {
+      "id": "brand-css",
+      "ok": true,
+      "detail": "css/brand-identity-final.css · /logo-master\\.svg\\?v=28/"
+    },
+    {
+      "id": "sw-cache",
+      "ok": true,
+      "detail": "sw.js · /CACHE_VERSION\\s*=\\s*`rg-pwa-v\\$\\{PWA_VERSION\\}`|rg-pwa-v\\$\\{PWA_VERSION\\}/"
+    },
+    {
+      "id": "sw-image-cache",
+      "ok": true,
+      "detail": "sw.js · /IMAGE_CACHE\\s*=\\s*`rg-runtime-images-v\\$\\{PWA_VERSION\\}`|rg-runtime-images-v\\$\\{PWA_VERSION\\}/"
+    },
+    {
+      "id": "sw-network-first-icons",
+      "ok": true,
+      "detail": "sw.js · /isAppIconPath|network-first/"
+    },
+    {
+      "id": "sw-default-icon",
+      "ok": true,
+      "detail": "sw.js · /icon-192\\.png\\?v=\\$\\{ICON_VERSION\\}|ICON_VERSION\\s*=\\s*PWA_VERSION/"
+    },
+    {
+      "id": "header-no-tile",
+      "ok": true,
+      "detail": "css/premium-header.css · /\\.header-brand-mark[\\s\\S]{0,400}background:\\s*transparent\\s*!important/"
+    },
+    {
+      "id": "og-asset",
+      "ok": true,
+      "detail": "assets/brand/og-share.png"
+    },
+    {
+      "id": "splash-asset",
+      "ok": true,
+      "detail": "assets/brand/splash-logo.png"
+    },
+    {
+      "id": "notify-asset",
+      "ok": true,
+      "detail": "assets/brand/notifications-icon.png"
+    },
+    {
+      "id": "play-512",
+      "ok": true,
+      "detail": "assets/store/google-play/icon-512.png"
+    },
+    {
+      "id": "store-1024",
+      "ok": true,
+      "detail": "assets/store/app-store/icon-1024.png"
+    },
+    {
+      "id": "no-mipmap",
+      "ok": true,
+      "detail": "brak natywnego mipmap (PWA-only) — OK"
+    },
+    {
+      "id": "motif-wheat-not-app-icon",
+      "ok": true,
+      "detail": "assets/images/motifs/wheat.svg = dekoracja klimatu (nie launcher)"
+    }
+  ],
+  "reinstallSteps": [
+    "Wdróż build (Netlify / host)",
+    "Chrome Android: Site settings → Clear & reset (lub odinstaluj skrót PWA)",
+    "Otwórz stronę → Zainstaluj ponownie",
+    "iOS Safari: usuń z ekranu głównego → Share → Add to Home Screen",
+    "Sprawdź: dwa złote kłosy pochylone w prawo (logo-master)"
+  ]
+}

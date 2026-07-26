@@ -1,0 +1,88 @@
+{
+  "id": "advisor-2026-07-21-cli",
+  "title": "Doradca Projektu – briefing dnia",
+  "generatedAt": "2026-07-21T16:50:13.756Z",
+  "day": "2026-07-21",
+  "reason": "cli-daily",
+  "policy": {
+    "autoFix": false,
+    "autoModifyCode": false,
+    "advisoryOnly": true
+  },
+  "headline": "Popraw UX / Mobile",
+  "summary": {
+    "healthOverall": 98,
+    "improveCount": 3,
+    "virtualScore": null
+  },
+  "questions": [
+    {
+      "id": "improveToday",
+      "question": "Co dziś można ulepszyć?",
+      "answer": "Na dziś warto ruszyć:\n• [medium] Popraw UX / Mobile → `css/style.css`\n• [medium] Potencjalne konflikty CSS: 40 → `docs/health/latest.json`\n• [medium] Uporządkuj konflikty CSS (40) → `css/style.css`",
+      "confidence": "high",
+      "sources": [
+        "improvement",
+        "health"
+      ]
+    },
+    {
+      "id": "userFriction",
+      "question": "Co najbardziej irytuje użytkowników?",
+      "answer": "Najbardziej irytujące teraz:\n• brak silnych sygnałów – pilnuj ścieżki Home→Mapa→Modal",
+      "confidence": "medium",
+      "sources": [
+        "virtual-user",
+        "health"
+      ]
+    },
+    {
+      "id": "weakestScreens",
+      "question": "Które ekrany są najsłabsze?",
+      "answer": "Najsłabsze ekrany / powierzchnie:\n• za mało danych runtime – uruchom __RG_VIRTUAL__.run()",
+      "confidence": "medium",
+      "sources": [
+        "virtual-user",
+        "health"
+      ]
+    },
+    {
+      "id": "performance",
+      "question": "Jak poprawić wydajność?",
+      "answer": "Jak poprawić wydajność:\n• Wydajność stabilna – utrzymuj dzienny Health + Virtual User.",
+      "confidence": "medium",
+      "sources": [
+        "health"
+      ]
+    },
+    {
+      "id": "appearance",
+      "question": "Jak poprawić wygląd?",
+      "answer": "Jak poprawić wygląd:\n• Zrealizuj propozycje UX/CSS z Improvement Engine (ręcznie).",
+      "confidence": "medium",
+      "sources": [
+        "health",
+        "improvement"
+      ]
+    },
+    {
+      "id": "retention",
+      "question": "Jak zwiększyć liczbę powrotów użytkowników?",
+      "answer": "Jak zwiększyć powroty:\n• Wzmacniaj powrót: Taste Advisor / Magia powrotu po absencji.\n• Personalizacja „Dla Ciebie” z Learning Engine.\n• Jasna ścieżka „Wróć do trasy zakupowej”.",
+      "confidence": "medium",
+      "sources": [
+        "learning",
+        "presentation"
+      ]
+    },
+    {
+      "id": "nextVersion",
+      "question": "Co warto dodać w następnej wersji?",
+      "answer": "Warto rozważyć w następnej wersji:\n• Mobile polish gated Virtual User score ≥ 85%.\n• Cotygodniowy lokalny „raport regionu” na Home.\n• Szybka lista zakupów z trasą i ETA.\n• Briefing Doradcy w CI → docs/advisor/ (bez auto-fix).",
+      "confidence": "medium",
+      "sources": [
+        "advisor"
+      ]
+    }
+  ]
+}

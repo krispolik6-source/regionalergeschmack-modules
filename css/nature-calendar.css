@@ -1,0 +1,136 @@
+/* ============================================================
+   ETAP 13B – Kalendarz Natury
+   Elegancka, spokojna karta etapu roku
+   ============================================================ */
+
+.home-nature-calendar {
+    position: relative;
+    padding: 14px 16px 12px;
+    border-radius: var(--radius-lg, 20px);
+    border: 1px solid rgba(140, 100, 55, 0.16);
+    background:
+        linear-gradient(145deg, rgba(255, 248, 235, 0.78) 0%, rgba(255, 236, 210, 0.52) 100%);
+    box-shadow: 0 4px 18px rgba(90, 55, 20, 0.06);
+    overflow: hidden;
+}
+
+.home-nature-calendar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 55% at 92% 8%, rgba(255, 210, 140, 0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 8% 90%, rgba(120, 150, 80, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.home-nature-calendar-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.home-nature-calendar-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-nature-calendar-sub {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}
+
+.home-nature-calendar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-nature-moment {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.home-nature-moment + .home-nature-moment {
+    border-top: 1px solid rgba(140, 100, 55, 0.1);
+    padding-top: 10px;
+}
+
+.home-nature-moment-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+    border-radius: 50%;
+    background: rgba(255, 252, 245, 0.75);
+    border: 1px solid rgba(255, 240, 210, 0.65);
+    box-shadow: 0 2px 8px rgba(90, 55, 20, 0.06);
+}
+
+.home-nature-moment-text {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+}
+
+body.dark-mode .home-nature-calendar {
+    background: linear-gradient(145deg, rgba(48, 38, 28, 0.82) 0%, rgba(36, 30, 22, 0.75) 100%);
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+body.dark-mode .home-nature-calendar-label {
+    color: #c8d9a8;
+}
+
+body.dark-mode .home-nature-moment-icon {
+    background: rgba(42, 34, 24, 0.85);
+    border-color: rgba(255, 220, 170, 0.14);
+}
+
+body.dark-mode .home-nature-moment-text {
+    color: var(--color-text-light, #fffaf2);
+}
+
+body.dark-mode .home-nature-moment + .home-nature-moment {
+    border-top-color: rgba(255, 220, 170, 0.1);
+}
+
+@media screen and (max-width: 430px) {
+    .home-nature-calendar {
+        padding: 12px 12px 10px;
+    }
+
+    .home-nature-moment-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+
+    .home-nature-moment-text {
+        font-size: 14px;
+    }
+}

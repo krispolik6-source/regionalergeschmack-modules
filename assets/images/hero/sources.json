@@ -1,0 +1,7 @@
+{
+  "file": "hero-background.webp",
+  "legacy_file": "hero-background.jpg",
+  "generated_by": "scripts/process-images.mjs",
+  "grade": "brightness 1.07, saturation 0.97, hue +3, gamma 1.02",
+  "ios9_max_kb": 150
+}

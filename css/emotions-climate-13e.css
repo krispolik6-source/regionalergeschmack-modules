@@ -1,0 +1,192 @@
+/* ============================================================
+   ETAP 13E – Emocje i klimat (warstwa wizualna)
+   Promienie · trawa · delikatne wejścia kart
+   Lekkie, GPU-friendly (transform/opacity), bez logiki
+   ============================================================ */
+
+/* --- Warstwa atmosfery (wstrzykiwana przez climateAtmosphere.js) --- */
+
+#climateAtmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+body.view-map-active #climateAtmosphere {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.climate-rays {
+    position: absolute;
+    inset: -10% -20% -30% -20%;
+    background:
+        conic-gradient(
+            from 210deg at 78% 108%,
+            transparent 0deg,
+            rgba(255, 196, 120, 0.07) 8deg,
+            transparent 14deg,
+            rgba(255, 170, 90, 0.06) 22deg,
+            transparent 28deg,
+            rgba(255, 210, 150, 0.05) 36deg,
+            transparent 44deg,
+            rgba(255, 180, 100, 0.04) 52deg,
+            transparent 60deg,
+            transparent 360deg
+        );
+    opacity: 0.55;
+    mix-blend-mode: soft-light;
+    transform: translateZ(0);
+    animation: climate-rays-breathe 28s ease-in-out infinite alternate;
+}
+
+body.dark-mode .climate-rays {
+    opacity: 0.35;
+    mix-blend-mode: screen;
+}
+
+@keyframes climate-rays-breathe {
+    from { opacity: 0.4; transform: scale(1) rotate(0deg); }
+    to { opacity: 0.65; transform: scale(1.03) rotate(1.2deg); }
+}
+
+.climate-grass {
+    position: absolute;
+    left: -5%;
+    right: -5%;
+    bottom: 0;
+    height: min(72px, 12vh);
+    background:
+        repeating-linear-gradient(
+            95deg,
+            transparent 0 10px,
+            rgba(79, 107, 60, 0.07) 10px 12px,
+            transparent 12px 22px
+        ),
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(90, 120, 60, 0.08) 55%,
+            rgba(70, 95, 48, 0.12) 100%
+        );
+    opacity: 0.45;
+    transform-origin: 50% 100%;
+    transform: translateZ(0);
+    animation: climate-grass-sway 9s ease-in-out infinite alternate;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 40%, #000 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 40%, #000 100%);
+}
+
+body.dark-mode .climate-grass {
+    opacity: 0.22;
+    background:
+        repeating-linear-gradient(
+            95deg,
+            transparent 0 10px,
+            rgba(160, 180, 100, 0.08) 10px 12px,
+            transparent 12px 22px
+        ),
+        linear-gradient(180deg, transparent 0%, rgba(40, 50, 28, 0.25) 100%);
+}
+
+@keyframes climate-grass-sway {
+    from { transform: skewX(-1.2deg) translate3d(-1%, 0, 0); }
+    to { transform: skewX(1.4deg) translate3d(1.2%, 0, 0); }
+}
+
+/* Na telefonie niższa trawa / mniej pracy */
+@media screen and (max-width: 430px) {
+    .climate-grass {
+        height: 48px;
+        opacity: 0.35;
+        animation-duration: 12s;
+    }
+
+    .climate-rays {
+        animation-duration: 36s;
+    }
+}
+
+/* --- Lekkie pojawianie się kart (raz, tylko gdy motion OK) --- */
+
+@media (prefers-reduced-motion: no-preference) {
+    .home-page .home-product-card,
+    .home-page .home-venue-card,
+    .home-page .home-recipe-card,
+    .home-page .home-seasonal-card,
+    .home-page .home-live-region-item,
+    .home-page .category-card {
+        animation: climate-card-rise 0.42s ease both;
+    }
+
+    .home-page .home-carousel > *:nth-child(1),
+    .home-page .home-live-region-list > li:nth-child(1) { animation-delay: 0.02s; }
+    .home-page .home-carousel > *:nth-child(2),
+    .home-page .home-live-region-list > li:nth-child(2) { animation-delay: 0.05s; }
+    .home-page .home-carousel > *:nth-child(3),
+    .home-page .home-live-region-list > li:nth-child(3) { animation-delay: 0.08s; }
+    .home-page .home-carousel > *:nth-child(4),
+    .home-page .home-live-region-list > li:nth-child(4) { animation-delay: 0.11s; }
+    .home-page .home-carousel > *:nth-child(5),
+    .home-page .home-live-region-list > li:nth-child(5) { animation-delay: 0.14s; }
+    .home-page .home-carousel > *:nth-child(n+6),
+    .home-page .home-live-region-list > li:nth-child(n+6) { animation-delay: 0.16s; }
+
+    .home-page .categories-grid .category-card:nth-child(1) { animation-delay: 0.02s; }
+    .home-page .categories-grid .category-card:nth-child(2) { animation-delay: 0.04s; }
+    .home-page .categories-grid .category-card:nth-child(3) { animation-delay: 0.06s; }
+    .home-page .categories-grid .category-card:nth-child(4) { animation-delay: 0.08s; }
+    .home-page .categories-grid .category-card:nth-child(5) { animation-delay: 0.1s; }
+    .home-page .categories-grid .category-card:nth-child(6) { animation-delay: 0.12s; }
+    .home-page .categories-grid .category-card:nth-child(7) { animation-delay: 0.14s; }
+    .home-page .categories-grid .category-card:nth-child(8) { animation-delay: 0.16s; }
+
+    .home-nature-calendar,
+    .home-region-story,
+    .home-smart-today-reason {
+        animation: climate-card-rise 0.48s ease both;
+    }
+}
+
+@keyframes climate-card-rise {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 6px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .climate-rays,
+    .climate-grass,
+    .home-page .home-product-card,
+    .home-page .home-venue-card,
+    .home-page .home-recipe-card,
+    .home-page .home-seasonal-card,
+    .home-page .home-live-region-item,
+    .home-page .category-card,
+    .home-nature-calendar,
+    .home-region-story,
+    .home-smart-today-reason {
+        animation: none !important;
+    }
+}
+
+html.legacy-ios9 #climateAtmosphere,
+html.legacy-ios9 .climate-rays,
+html.legacy-ios9 .climate-grass {
+    display: none !important;
+}
+
+.profile-ambient-hint {
+    margin: 6px 0 0;
+    padding: 0 2px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}

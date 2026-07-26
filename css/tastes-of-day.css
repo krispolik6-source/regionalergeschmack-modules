@@ -1,0 +1,124 @@
+/* ============================================================
+   ETAP 15B – Smaki dnia (rekomendacje produktowe)
+   ============================================================ */
+
+.home-tastes-of-day {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-tastes-of-day-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 2px;
+}
+
+.home-tastes-of-day-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-tastes-of-day-sub {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}
+
+.home-tastes-of-day-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-tastes-of-day-item {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    margin: 0;
+    padding: 12px 12px;
+    border-radius: var(--radius-md, 16px);
+    border: 1px solid rgba(140, 100, 55, 0.14);
+    background:
+        linear-gradient(145deg, rgba(255, 250, 240, 0.88) 0%, rgba(255, 238, 214, 0.5) 100%);
+    box-shadow: none;
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.16s ease, transform 0.16s ease;
+}
+
+.home-tastes-of-day-item:hover {
+    background:
+        linear-gradient(145deg, rgba(255, 248, 232, 0.95) 0%, rgba(255, 234, 204, 0.62) 100%);
+}
+
+.home-tastes-of-day-item:active {
+    transform: scale(0.985);
+}
+
+.home-tastes-of-day-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.home-tastes-of-day-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 1;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.home-tastes-of-day-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-tastes-of-day-text {
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 500;
+}
+
+.home-tastes-of-day-meta {
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.home-tastes-of-day-open {
+    color: var(--color-primary, #4f6b3c);
+}
+
+body.legacy-ios9 .home-tastes-of-day-item {
+    border-radius: 0;
+    background: #f7f1e4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-tastes-of-day-item {
+        transition: none;
+    }
+}

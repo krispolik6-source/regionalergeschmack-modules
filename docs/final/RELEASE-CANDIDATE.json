@@ -1,0 +1,237 @@
+{
+  "id": "etap-38-release-candidate",
+  "title": "ETAP 38 — Release Candidate",
+  "generatedAt": "2026-07-23T18:32:41.827Z",
+  "verdict": "PASS",
+  "persona": "Pierwszy użytkownik · install → reinstall",
+  "policy": {
+    "notAuditOnly": true,
+    "architectureUnchanged": true,
+    "fixesApplied": [
+      "UTF-8 home/landing/push",
+      "header-height → --ph-header-h",
+      "cache-bust home/app/css"
+    ]
+  },
+  "summary": {
+    "stepsTotal": 22,
+    "stepsPassed": 22,
+    "stepsFailed": 0,
+    "personaSteps": 14,
+    "personaPassed": 14
+  },
+  "personaPath": [
+    "install",
+    "first-launch",
+    "gps",
+    "search",
+    "map",
+    "producer",
+    "favorites",
+    "cart",
+    "premium",
+    "next-day",
+    "offline",
+    "update",
+    "uninstall",
+    "reinstall"
+  ],
+  "steps": [
+    {
+      "id": "install",
+      "label": "Instaluję aplikację pierwszy raz",
+      "status": "pass",
+      "detail": "manifest + beforeinstallprompt + ikony",
+      "ms": 0
+    },
+    {
+      "id": "first-launch",
+      "label": "Pierwsze uruchomienie",
+      "status": "pass",
+      "detail": "shell + UTF-8 clean + settings",
+      "ms": 0
+    },
+    {
+      "id": "gps",
+      "label": "GPS / lokalizacja",
+      "status": "pass",
+      "detail": "watch + clearWatch + events",
+      "ms": 0
+    },
+    {
+      "id": "search",
+      "label": "Wyszukiwanie",
+      "status": "pass",
+      "detail": "home search + map query",
+      "ms": 0
+    },
+    {
+      "id": "map",
+      "label": "Mapa",
+      "status": "pass",
+      "detail": "map view + leaflet + offline banner",
+      "ms": 0
+    },
+    {
+      "id": "producer",
+      "label": "Producent (modal)",
+      "status": "pass",
+      "detail": "producer modal open/close",
+      "ms": 0
+    },
+    {
+      "id": "favorites",
+      "label": "Ulubione",
+      "status": "pass",
+      "detail": "add/remove + view",
+      "ms": 0
+    },
+    {
+      "id": "cart",
+      "label": "Koszyk",
+      "status": "pass",
+      "detail": "cart API + view",
+      "ms": 0
+    },
+    {
+      "id": "premium",
+      "label": "Premium",
+      "status": "pass",
+      "detail": "premium view + entry points",
+      "ms": 0
+    },
+    {
+      "id": "next-day",
+      "label": "Powrót następnego dnia (persist)",
+      "status": "pass",
+      "detail": "settings + GPS + favorites + cart keys",
+      "ms": 0
+    },
+    {
+      "id": "offline",
+      "label": "Offline",
+      "status": "pass",
+      "detail": "SW cache + offline event + banner",
+      "ms": 0
+    },
+    {
+      "id": "update",
+      "label": "Aktualizacja (PWA version)",
+      "status": "pass",
+      "detail": "PWA_VERSION=28 synced + skipWaiting",
+      "ms": 0
+    },
+    {
+      "id": "uninstall",
+      "label": "Uninstall (czyszczenie)",
+      "status": "pass",
+      "detail": "rg_* keys · empty-storage safe boot",
+      "ms": 0
+    },
+    {
+      "id": "reinstall",
+      "label": "Reinstall",
+      "status": "pass",
+      "detail": "SW re-register + install prompt + navigate",
+      "ms": 0
+    },
+    {
+      "id": "chrome-align",
+      "label": "Chrome header (padding = header height)",
+      "status": "pass",
+      "detail": "header-height = ph-header-h",
+      "ms": 0
+    },
+    {
+      "id": "push-utf8",
+      "label": "Push offer regex (DE)",
+      "status": "pass",
+      "detail": "DE product matchers OK",
+      "ms": 0
+    },
+    {
+      "id": "live-journey-wiring",
+      "label": "Live user simulation wiring",
+      "status": "pass",
+      "detail": "?realusers=1 / __RG_REAL_USERS__.run()",
+      "ms": 0
+    },
+    {
+      "id": "child-functional",
+      "label": "Child: functional-audit",
+      "status": "pass",
+      "detail": " | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0",
+      "ms": 0
+    },
+    {
+      "id": "child-i18n",
+      "label": "Child: translations",
+      "status": "pass",
+      "detail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.",
+      "ms": 0
+    },
+    {
+      "id": "child-pwa",
+      "label": "Child: PWA",
+      "status": "pass",
+      "detail": " | --- PWA test --- | OK",
+      "ms": 0
+    },
+    {
+      "id": "child-landing",
+      "label": "Child: landing",
+      "status": "pass",
+      "detail": " | --- Landing test --- | OK",
+      "ms": 0
+    },
+    {
+      "id": "child-device-lab",
+      "label": "Child: device-lab",
+      "status": "pass",
+      "detail": "[Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md",
+      "ms": 0
+    }
+  ],
+  "childRuns": [
+    {
+      "name": "functional-audit",
+      "status": "pass",
+      "exit": 0,
+      "tail": " | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0"
+    },
+    {
+      "name": "check-translations",
+      "status": "pass",
+      "exit": 0,
+      "tail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe."
+    },
+    {
+      "name": "test-pwa",
+      "status": "pass",
+      "exit": 0,
+      "tail": " | --- PWA test --- | OK"
+    },
+    {
+      "name": "test-landing",
+      "status": "pass",
+      "exit": 0,
+      "tail": " | --- Landing test --- | OK"
+    },
+    {
+      "name": "device-lab",
+      "status": "pass",
+      "exit": 0,
+      "tail": "[Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md"
+    }
+  ],
+  "liveBrowser": {
+    "note": "Pełna live symulacja UI: npm start → ?realusers=1 lub __RG_REAL_USERS__.runOne(9)",
+    "command": "__RG_REAL_USERS__.run()"
+  },
+  "residualWarnings": [
+    "Live browser smoke (install prompt / real GPS) nadal zalecany na urządzeniu",
+    "OSM pendingOsmRefresh race (ETAP 36) — nie blokuje happy-path RC",
+    "CART_ADDED learning asymmetry — nie blokuje koszyka użytkownika",
+    "Image SW cache-first — świadoma strategia"
+  ]
+}

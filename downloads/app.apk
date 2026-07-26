@@ -1,0 +1,12 @@
+Placeholder APK for Regionaler Geschmack legacy tablets.
+
+Replace this file with a signed release build:
+  downloads/app.apk
+
+For Android 4.4+ tablets. Build with your Android toolchain or
+wrap the PWA in a WebView shell (Cordova / Capacitor).
+
+Until then, Android users can open the app in Chrome and
+"Add to Home screen" (similar to iOS PWA).
+
+Generated: 2026-07-11

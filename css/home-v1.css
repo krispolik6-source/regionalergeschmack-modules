@@ -1,0 +1,195 @@
+/* ============================================================
+   Home 1.0 — fold: jedna dominująca akcja („Otwórz mapę”)
+   Tip regionu / kategorie / filtry poniżej. Bez nowych funkcji.
+   ============================================================ */
+
+.home-page--v1.home-page--v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* --- Fold: 1 powitanie · 2 szukaj (drugorzędne) · 3 CTA mapy --- */
+.home-page--v1 > .home-greeting { order: 1; }
+.home-page--v1 > .home-hub { order: 2; }
+.home-page--v1 > .home-actions { order: 3; }
+
+/* --- Poniżej foldu --- */
+.home-page--v1 > .home-region-rec,
+.home-page--v1 > [data-home-section='region-rec'] { order: 18; }
+.home-page--v1 > .home-categories { order: 20; }
+.home-page--v1 > .home-living-region,
+.home-page--v1 > [data-home-section='living-region'] { order: 21; }
+.home-page--v1 > .home-return-magic,
+.home-page--v1 > [data-home-section='return-magic'] { order: 22; }
+
+.home-page--v1 > .home-quick-filters,
+.home-page--v1 > [data-home-section='quick-filters'] { order: 30; }
+
+.home-page--v1 > .home-recommended { order: 31; }
+.home-page--v1 > .home-foryou { order: 32; }
+.home-page--v1 > .home-recent { order: 33; }
+.home-page--v1 > .home-tastes-of-day { order: 34; }
+.home-page--v1 > .home-taste-advisor { order: 35; }
+.home-page--v1 > .home-smart-today { order: 36; }
+.home-page--v1 > .home-nature-calendar { order: 37; }
+.home-page--v1 > .home-region-story { order: 38; }
+.home-page--v1 > .home-live-region { order: 39; }
+.home-page--v1 > .home-seasonal { order: 40; }
+.home-page--v1 > .home-restaurants { order: 41; }
+.home-page--v1 > .home-fastfood { order: 42; }
+.home-page--v1 > .home-featured { order: 43; }
+.home-page--v1 > .home-recipes { order: 44; }
+
+.home-page--v1 > .home-premium-section { order: 50; }
+.home-page--v1 > .home-premium-hint { order: 51; }
+.home-page--v1 > .home-footer { order: 60; }
+
+/* Jedno główne CTA — lokalizacja schowana (handler zostaje) */
+.home-page--v1 .home-actions--primary-only {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.home-page--v1 .home-actions--primary-only .btn-location {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.home-page--v1 .home-actions--primary-only .btn-nearby {
+    width: 100%;
+    min-height: 52px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(42, 63, 40, 0.18);
+}
+
+/* Drugorzędne CTA — istniejący .btn-secondary, bez nowej „warstwy AI” */
+.home-page--v1 .home-actions--primary-only .home-surprise-btn {
+    width: 100%;
+    min-height: 44px;
+    font-weight: 600;
+}
+
+/* Szukaj — drugorzędne (nie konkuruje z CTA mapy) */
+.home-page--v1 .home-search-submit {
+    background: transparent !important;
+    color: var(--brand-green, #2a3f28) !important;
+    border: 1px solid rgba(42, 63, 40, 0.28) !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+}
+
+body.dark-mode .home-page--v1 .home-search-submit {
+    color: #d4e4b0 !important;
+    border-color: rgba(245, 239, 227, 0.35) !important;
+}
+
+body.dark-mode .home-page--v1 .home-greeting-brand {
+    color: #d4e4b0;
+}
+
+.home-page--v1 .home-search-input {
+    border-radius: 12px;
+}
+
+/* Logo zawsze na foldzie */
+.home-page--v1 .home-greeting-brand {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 2px;
+    font-family: 'Literata', Georgia, serif;
+    font-weight: 700;
+    color: var(--brand-green, #2a3f28);
+}
+
+.home-page--v1 .home-greeting {
+    margin: 0;
+    padding: 0 0 2px;
+    gap: 2px;
+}
+
+.home-page--v1 .home-greeting-title {
+    margin: 0.1em 0 0.15em;
+    line-height: 1.15;
+}
+
+.home-page--v1 .home-greeting-sub {
+    display: block !important;
+    margin: 0 0 2px;
+    font-size: 0.92rem;
+    line-height: 1.35;
+}
+
+.home-page--v1 > .home-region-rec {
+    margin: 0;
+    padding: 0;
+}
+
+.home-page--v1 > .home-region-rec .home-region-soul,
+.home-page--v1 > .home-region-rec .home-regional-intel {
+    margin: 0;
+    padding: 10px 12px;
+}
+
+.home-page--v1 > .home-hub {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.home-page--v1 > .home-actions {
+    margin: 0;
+    padding-top: 4px;
+    padding-bottom: 0;
+}
+
+.home-page--v1 > .app-section {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.home-page--v1 .rg-ad-banner,
+.home-page--v1 .home-ad-slot {
+    display: none !important;
+}
+
+.home-page--v1 .home-ambient-toggle {
+    opacity: 0.65;
+    transform: scale(0.9);
+    transform-origin: center;
+}
+
+@media screen and (max-width: 430px) {
+    .home-page--v1.home-page--v2 {
+        gap: 6px;
+    }
+
+    .home-page--v1 .home-greeting-title {
+        font-size: clamp(1.28rem, 5.2vw, 1.55rem);
+    }
+
+    .home-page--v1 .home-greeting-brand {
+        font-size: 0.92rem;
+    }
+
+    .home-page--v1 .home-greeting-brand .home-brand-mark {
+        width: 18px;
+        height: 18px;
+    }
+
+    .home-page--v1 .home-actions--primary-only .btn-nearby {
+        min-height: 50px;
+    }
+}

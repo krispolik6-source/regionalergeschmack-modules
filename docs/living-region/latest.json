@@ -1,0 +1,115 @@
+{
+  "id": "living-region-ai-2026-07-26",
+  "title": "Living Region AI — Region Pulse",
+  "etapa": "33E",
+  "generatedAt": "2026-07-26T08:35:12.422Z",
+  "day": "2026-07-26",
+  "reason": "cli-living-region-ai",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "autoModifyCode": false,
+    "advisoryOnly": true,
+    "requiresOwnerAcceptance": true,
+    "chatbot": false,
+    "aiAssistant": false,
+    "conversationUi": false,
+    "popups": false,
+    "aiWindow": false,
+    "userFacingAi": false,
+    "uiChanges": false,
+    "replacesSimpleUi": false,
+    "networkRequired": false,
+    "mutatesProducerData": false,
+    "mutatesAppCode": false,
+    "reportToOwner": true,
+    "priority": [
+      "simplicity",
+      "speed",
+      "regional-climate",
+      "user-value"
+    ],
+    "proposalTest": "increases-value-not-feature-count",
+    "tone": "discreet-regional-host",
+    "roleFamily": "intelligence",
+    "userFacing": false,
+    "maxSentences": 1,
+    "role": "living-region-ai",
+    "etapa": "33E"
+  },
+  "regionPulse": 78,
+  "band": "vivid",
+  "sentence": "Region jest dziś wyraźnie żywy — krótka wizyta u lokalnego producenta ma sens.",
+  "sentenceCount": 1,
+  "signals": {
+    "season": "summer",
+    "weather": "warm",
+    "weatherKind": "warm",
+    "weekday": 2,
+    "weekdayName": "tuesday",
+    "openFarmers": 2,
+    "openTotal": 4,
+    "openCounts": {
+      "bakeries": 1,
+      "farmers": 2,
+      "shops": 1,
+      "meat": 0
+    },
+    "events": [
+      "sezon jagód",
+      "niedzielny rytm rynku"
+    ],
+    "hasLocation": false,
+    "dataFreshnessHours": 62,
+    "dataFreshnessNote": "najświeższy sygnał ~62 h temu",
+    "userActivityNote": "brak lokalnej aktywności (cold start)"
+  },
+  "dimensions": [
+    {
+      "id": "season",
+      "score": 92,
+      "weight": 0.12
+    },
+    {
+      "id": "weather",
+      "score": 92,
+      "weight": 0.14
+    },
+    {
+      "id": "weekday",
+      "score": 72,
+      "weight": 0.1
+    },
+    {
+      "id": "openProducers",
+      "score": 96,
+      "weight": 0.18
+    },
+    {
+      "id": "regionalEvents",
+      "score": 75,
+      "weight": 0.12
+    },
+    {
+      "id": "dataFreshness",
+      "score": 78,
+      "weight": 0.12
+    },
+    {
+      "id": "location",
+      "score": 58,
+      "weight": 0.1
+    },
+    {
+      "id": "userActivity",
+      "score": 48,
+      "weight": 0.12
+    }
+  ],
+  "notes": [
+    "Nie chatbot · nie popup · nie okno AI.",
+    "Nie zmienia wyglądu aplikacji.",
+    "Dokładnie jedno zdanie dziennie.",
+    "autoApply=false"
+  ]
+}

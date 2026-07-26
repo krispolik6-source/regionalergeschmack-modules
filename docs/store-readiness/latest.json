@@ -1,0 +1,66 @@
+{
+  "id": "etap-32b-store-readiness",
+  "etapa": "32B",
+  "title": "Store Readiness — Google Play & App Store",
+  "generatedAt": "2026-07-22T20:48:00.000Z",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "codeChanges": false
+  },
+  "overallScore": 48,
+  "checklist": [
+    { "id": "icons", "label": "ikony", "status": "ready", "score": 100, "note": "Play 512×512, App Store 1024×1024, PWA set z logo-master" },
+    { "id": "screenshots", "label": "screenshoty", "status": "missing", "score": 0, "note": "Brak assets/store/screenshots; Brand Book §9 wymaga 5 kadrów" },
+    { "id": "featureGraphic", "label": "feature graphic", "status": "partial", "score": 40, "note": "feature-graphic-source.png jest 1024×1024; brak final 1024×500" },
+    { "id": "descriptionDe", "label": "opis DE", "status": "partial", "score": 40, "note": "manifest + meta; brak pełnego store listing DE" },
+    { "id": "descriptionEn", "label": "opis EN", "status": "missing", "score": 0, "note": "Brak pełnego opisu EN pod sklep" },
+    { "id": "shortDescription", "label": "short description", "status": "partial", "score": 45, "note": "DE częściowo z manifest; brak EN + limity Play/AS" },
+    { "id": "privacyPolicy", "label": "privacy policy", "status": "partial", "score": 35, "note": "Treść w app DE/EN/PL; brak publicznego HTTPS URL" },
+    { "id": "contact", "label": "contact", "status": "ready", "score": 100, "note": "krispolik6@gmail.com + Polikarski Krzysztof, Germany" },
+    { "id": "metadata", "label": "metadata", "status": "partial", "score": 70, "note": "Manifest OK; mojibake w meta description index/landing" },
+    { "id": "manifest", "label": "manifest", "status": "ready", "score": 98, "note": "name, icons, theme, standalone — check:pwa OK" },
+    { "id": "pwa", "label": "PWA", "status": "ready", "score": 98, "note": "SW, install, apple-touch — npm run check:pwa OK" },
+    { "id": "branding", "label": "branding", "status": "ready", "score": 94, "note": "Brand Book + store icons; Brand Protection WARNING≠FAIL" }
+  ],
+  "assets": {
+    "googlePlayIcon": { "path": "assets/store/google-play/icon-512.png", "w": 512, "h": 512, "ok": true },
+    "appStoreIcon": { "path": "assets/store/app-store/icon-1024.png", "w": 1024, "h": 1024, "ok": true },
+    "featureGraphicSource": { "path": "assets/store/google-play/feature-graphic-source.png", "w": 1024, "h": 1024, "okForStore": false, "required": "1024x500" },
+    "screenshots": { "path": "assets/store/screenshots", "count": 0, "required": 5 }
+  },
+  "missing": [
+    "5 screenshotów (Play + App Store)",
+    "Feature graphic final 1024×500",
+    "Pełny opis EN (store listing)",
+    "Pakiet short/full DE+EN + subtitle App Store",
+    "Publiczny URL Privacy Policy (privacy.html / HTTPS)",
+    "Folder screenshots w repo"
+  ],
+  "ready": [
+    "Ikona Google Play 512",
+    "Ikona App Store 1024",
+    "Ikony PWA / maskable / apple-touch",
+    "Manifest (name, theme, icons, standalone)",
+    "PWA (SW, install) — check:pwa OK",
+    "Kontakt (mail + adres)",
+    "Treść privacy w aplikacji (DE/EN/PL)",
+    "Branding / logo-master / Brand Book §9 spec"
+  ],
+  "priority": [
+    { "rank": 1, "item": "5 screenshotów wg Brand Book §9" },
+    { "rank": 2, "item": "Feature graphic 1024×500" },
+    { "rank": 3, "item": "Publiczny URL privacy DE+EN" },
+    { "rank": 4, "item": "Copy listing short+full DE/EN (+ AS subtitle)" },
+    { "rank": 5, "item": "Naprawa mojibake meta description" }
+  ],
+  "sources": [
+    "assets/store/",
+    "manifest.json",
+    "docs/brand/BRAND-BOOK.md §9",
+    "js/translations-legal-help.js",
+    "npm run check:pwa",
+    "index.html",
+    "landing.html"
+  ]
+}

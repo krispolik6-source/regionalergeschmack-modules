@@ -1,0 +1,158 @@
+{
+  "id": "regional-brain-2026-07-22",
+  "title": "Regional Brain — Region Score",
+  "etapa": "33A",
+  "generatedAt": "2026-07-22T19:25:04.931Z",
+  "day": "2026-07-22",
+  "reason": "dry-run",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "autoModifyCode": false,
+    "advisoryOnly": true,
+    "requiresOwnerAcceptance": true,
+    "chatbot": false,
+    "aiAssistant": false,
+    "conversationUi": false,
+    "popups": false,
+    "aiWindow": false,
+    "userFacingAi": false,
+    "uiChanges": false,
+    "replacesSimpleUi": false,
+    "networkRequired": false,
+    "mutatesProducerData": false,
+    "mutatesAppCode": false,
+    "reportToOwner": true,
+    "priority": [
+      "simplicity",
+      "speed",
+      "regional-climate",
+      "user-value"
+    ],
+    "proposalTest": "increases-value-not-feature-count",
+    "tone": "discreet-regional-host",
+    "roleFamily": "intelligence",
+    "userFacing": false,
+    "newScreens": false,
+    "role": "regional-brain",
+    "focus": "daily-region-score",
+    "etapa": "33A"
+  },
+  "regionScore": 82,
+  "verdict": "strong",
+  "signals": {
+    "dayPart": "evening",
+    "weekday": 3,
+    "weekdayName": "wednesday",
+    "season": "summer",
+    "weather": "warm",
+    "weatherAvailable": true,
+    "weatherSource": "proxy",
+    "hasLocation": false,
+    "gpsAvailable": false,
+    "openCounts": {
+      "bakeries": 1,
+      "farmers": 2,
+      "shops": 1,
+      "meat": 0
+    },
+    "openFarmers": 2,
+    "openTotal": 4,
+    "placeHistoryCount": null,
+    "regionalTipId": "eveningHof",
+    "healthOverall": 96,
+    "brandStatus": "WARNING",
+    "brainScore": 91,
+    "reflectionOverall": 92,
+    "reflectionReturn": 80
+  },
+  "dimensions": [
+    {
+      "id": "dayPart",
+      "score": 84,
+      "weight": 0.06,
+      "note": "pora dnia: evening"
+    },
+    {
+      "id": "weekday",
+      "score": 76,
+      "weight": 0.05,
+      "note": "dzień: wednesday"
+    },
+    {
+      "id": "season",
+      "score": 90,
+      "weight": 0.08,
+      "note": "sezon: summer"
+    },
+    {
+      "id": "weather",
+      "score": 90,
+      "weight": 0.08,
+      "note": "pogoda: warm"
+    },
+    {
+      "id": "location",
+      "score": 62,
+      "weight": 0.08,
+      "note": "brak lokalizacji użytkownika (CLI/proxy)"
+    },
+    {
+      "id": "openFarms",
+      "score": 95,
+      "weight": 0.1,
+      "note": "otwarte gospodarstwa/sklepy: farmers=2, total≈4"
+    },
+    {
+      "id": "placeHistory",
+      "score": 58,
+      "weight": 0.07,
+      "note": "historia lokalna: brak snapshotu"
+    },
+    {
+      "id": "gps",
+      "score": 60,
+      "weight": 0.07,
+      "note": "GPS niedostępny w tym przebiegu"
+    },
+    {
+      "id": "healthMonitor",
+      "score": 96,
+      "weight": 0.12,
+      "note": "Health overall 96"
+    },
+    {
+      "id": "brandProtection",
+      "score": 74,
+      "weight": 0.09,
+      "note": "Brand Protection WARNING (fail=0, warn=7)"
+    },
+    {
+      "id": "productBrain",
+      "score": 91,
+      "weight": 0.1,
+      "note": "Product Brain 91"
+    },
+    {
+      "id": "selfReflection",
+      "score": 92,
+      "weight": 0.1,
+      "note": "Self Reflection 92"
+    }
+  ],
+  "sourcesUsed": [
+    "health",
+    "healthMonitor",
+    "brandProtection",
+    "productBrain",
+    "selfReflection",
+    "regionalIntelligence",
+    "emotion",
+    "livingBrand"
+  ],
+  "notes": [
+    "Brak chatbota, UI, popupów i zmian w aplikacji.",
+    "Region Score = ważona synteza sygnałów dnia + diagnostyk.",
+    "autoApply=false · autoFix=false"
+  ]
+}

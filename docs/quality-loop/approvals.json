@@ -1,0 +1,6 @@
+{
+  "note": "Wpisz zatwierdzone ID z fixes-pending.json. Pętla NIGDY nie aplikuje ich sama.",
+  "approvedIds": [],
+  "rejectedIds": [],
+  "updatedAt": null
+}

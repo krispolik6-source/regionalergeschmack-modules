@@ -1,0 +1,107 @@
+/* ============================================================
+   ETAP 15A – Living Region AI
+   Wiadomość od mieszkańców – bez reklamy / marketingu
+   ============================================================ */
+
+.home-living-region {
+    position: relative;
+    padding: 12px 14px 14px;
+    border-radius: var(--radius-lg, 20px);
+    border: 1px solid rgba(120, 95, 55, 0.14);
+    background:
+        linear-gradient(168deg, rgba(255, 252, 245, 0.9) 0%, rgba(245, 236, 218, 0.55) 100%);
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.home-living-region::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 3px;
+    border-radius: 2px;
+    background: rgba(110, 90, 50, 0.28);
+    pointer-events: none;
+}
+
+.home-living-region-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-left: 6px;
+}
+
+.home-living-region-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-living-region-sub {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}
+
+.home-living-region-list {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.home-living-region-item {
+    width: 100%;
+    display: block;
+    text-align: left;
+    margin: 0;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.45;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.16s ease;
+}
+
+.home-living-region-item:hover {
+    background: rgba(255, 248, 232, 0.65);
+}
+
+.home-living-region-item:active {
+    background: rgba(255, 244, 220, 0.8);
+}
+
+.home-living-region-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.home-living-region-text {
+    display: block;
+}
+
+body.legacy-ios9 .home-living-region {
+    border-radius: 0;
+    background: #f7f1e4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-living-region-item {
+        transition: none;
+    }
+}

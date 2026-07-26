@@ -1,0 +1,10 @@
+{
+  "id": "etap-40-console-guardian",
+  "verdict": "PASS",
+  "generatedAt": "2026-07-23T18:33:00.555Z",
+  "policy": {
+    "productionSilent": true,
+    "localOnly": true,
+    "noNetwork": true
+  }
+}

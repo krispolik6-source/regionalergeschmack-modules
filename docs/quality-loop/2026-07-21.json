@@ -1,0 +1,202 @@
+{
+  "id": "quality-loop-2026-07-21",
+  "title": "AI Quality Loop",
+  "day": "2026-07-21",
+  "generatedAt": "2026-07-21T16:50:13.804Z",
+  "policy": {
+    "autoFix": false,
+    "autoApply": false,
+    "autoCommit": false,
+    "autoModifyCode": false,
+    "requiresHumanAcceptance": true,
+    "loop": "AI Guardian → Health → Virtual User → Learning → Improvement → Advisor → Report → Diff → Fixes"
+  },
+  "steps": [
+    {
+      "name": "AI Guardian",
+      "ok": true,
+      "ms": 0,
+      "status": 0,
+      "optional": true,
+      "skipped": true
+    },
+    {
+      "name": "Health",
+      "ok": true,
+      "ms": 160,
+      "status": 0,
+      "optional": false
+    },
+    {
+      "name": "Virtual User",
+      "ok": true,
+      "ms": 40,
+      "status": 0,
+      "optional": true
+    },
+    {
+      "name": "Learning",
+      "ok": true,
+      "ms": 0,
+      "status": 0,
+      "optional": true,
+      "note": "Learning Engine działa lokalnie w przeglądarce; CLI bierze sygnały pośrednio z Advisor/Daily"
+    },
+    {
+      "name": "Improvement",
+      "ok": true,
+      "ms": 37,
+      "status": 0,
+      "optional": false
+    },
+    {
+      "name": "Project Advisor",
+      "ok": true,
+      "ms": 38,
+      "status": 0,
+      "optional": false
+    },
+    {
+      "name": "Daily Report",
+      "ok": true,
+      "ms": 39,
+      "status": 0,
+      "optional": true
+    }
+  ],
+  "scores": {
+    "healthOverall": 98,
+    "healthPerformance": 99,
+    "healthUx": 85,
+    "healthMobile": 100,
+    "healthMemory": 99,
+    "healthPwa": 100,
+    "healthTranslation": 100,
+    "guardianProductionReady": 8.7,
+    "guardianQuality": 5.4,
+    "improveCount": 3,
+    "virtualScore": null,
+    "virtualFailed": 0,
+    "dailyAppScore": 96,
+    "advisorHeadline": "Popraw UX / Mobile",
+    "failedChecks": [
+      "css"
+    ]
+  },
+  "learning": {
+    "note": "Learning Engine: wyłącznie lokalnie (localStorage/IndexedDB). CLI nie wysyła danych. Preferencje wpływają na Improve/Advisor pośrednio po sesji przeglądarki.",
+    "browserOnly": true
+  },
+  "advisorHeadline": "Popraw UX / Mobile",
+  "modules": {
+    "guardian": true,
+    "health": true,
+    "virtualUser": true,
+    "learning": "browser-local",
+    "improvement": true,
+    "advisor": true,
+    "daily": true
+  },
+  "diff": {
+    "available": false,
+    "deltas": [],
+    "regressions": [],
+    "improvements": [],
+    "baselineDay": null
+  },
+  "fixes": [
+    {
+      "id": "QL-FIX-001",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "high",
+      "source": "guardian",
+      "title": "setInterval bez clearInterval: js/core/premiumService.js",
+      "file": "js/core/premiumService.js",
+      "function": "guardian-finding",
+      "proposedFix": "Czyść interwał przy unmount / hidden tab.",
+      "impact": "high",
+      "risk": "średnie"
+    },
+    {
+      "id": "QL-FIX-002",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "medium",
+      "source": "improvement",
+      "title": "Popraw UX / Mobile",
+      "file": "css/style.css",
+      "function": "@media mobile",
+      "proposedFix": "Tap targets ≥44px, brak overflow nagłówków na wąskich ekranach.",
+      "impact": "high",
+      "risk": "low"
+    },
+    {
+      "id": "QL-FIX-003",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "medium",
+      "source": "improvement",
+      "title": "Potencjalne konflikty CSS: 40",
+      "file": "docs/health/latest.json",
+      "function": "finding:css",
+      "proposedFix": "body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]",
+      "impact": "medium",
+      "risk": "low"
+    },
+    {
+      "id": "QL-FIX-004",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "medium",
+      "source": "improvement",
+      "title": "Uporządkuj konflikty CSS (40)",
+      "file": "css/style.css",
+      "function": "selectors",
+      "proposedFix": "Scal zduplikowane reguły (background/z-index) wskazane w docs/health/latest.json → static.css.sample.",
+      "impact": "medium",
+      "risk": "medium"
+    },
+    {
+      "id": "QL-FIX-005",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "medium",
+      "source": "health",
+      "title": "Potencjalne konflikty CSS: 40",
+      "file": "css/style.css",
+      "function": "css",
+      "proposedFix": "body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]",
+      "impact": "medium",
+      "risk": "low"
+    },
+    {
+      "id": "QL-FIX-006",
+      "status": "pending_approval",
+      "autoApply": false,
+      "requiresHumanAcceptance": true,
+      "priority": "medium",
+      "source": "daily",
+      "title": "Checklist fail: css",
+      "file": "docs/daily/latest.json",
+      "function": "css",
+      "proposedFix": "Domknij punkt checklisty „css” z Daily Developer Report.",
+      "impact": "medium",
+      "risk": "low"
+    }
+  ],
+  "summary": {
+    "stepOk": 7,
+    "stepFail": 0,
+    "regressionCount": 0,
+    "improvementCount": 0,
+    "fixesPending": 6,
+    "dailyAppScore": 96,
+    "healthOverall": 98
+  }
+}

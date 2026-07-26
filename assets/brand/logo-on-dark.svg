@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Regionaler Geschmack – logo on dark">
+  <!--
+    MASTER LOGO — jedyny oficjalny znak marki.
+    Dwa złote kłosy pochylone w prawo. Bez tekstu. Bez drugiego wariantu.
+    Tło ikony PWA (krem) dodaje generator PNG — ten plik = sam znak.
+  -->
+  <rect width="512" height="512" rx="96" fill="#1a1f18"/>
+  <defs>
+    <linearGradient id="grain" x1="8%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#f0d78a"/>
+      <stop offset="42%" stop-color="#d4a84b"/>
+      <stop offset="78%" stop-color="#c9a227"/>
+      <stop offset="100%" stop-color="#a67c1a"/>
+    </linearGradient>
+    <linearGradient id="stem" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a6b3c"/>
+      <stop offset="100%" stop-color="#2a3f28"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(256 268)">
+    <g stroke="url(#stem)" stroke-width="13" stroke-linecap="round" fill="none">
+      <path d="M-48 110 C-36 40 -18 -40 -6 -118"/>
+      <path d="M-8 118 C8 48 28 -30 42 -110"/>
+    </g>
+
+    <g fill="url(#grain)" transform="translate(-22 -108) rotate(16)">
+      <ellipse cx="0" cy="0" rx="20" ry="32"/>
+      <ellipse cx="-18" cy="34" rx="16" ry="26" transform="rotate(-34)"/>
+      <ellipse cx="18" cy="34" rx="16" ry="26" transform="rotate(34)"/>
+      <ellipse cx="-20" cy="66" rx="15" ry="24" transform="rotate(-38)"/>
+      <ellipse cx="20" cy="66" rx="15" ry="24" transform="rotate(38)"/>
+      <ellipse cx="-18" cy="96" rx="14" ry="22" transform="rotate(-30)"/>
+      <ellipse cx="18" cy="96" rx="14" ry="22" transform="rotate(30)"/>
+      <ellipse cx="-12" cy="124" rx="12" ry="18" transform="rotate(-22)"/>
+      <ellipse cx="12" cy="124" rx="12" ry="18" transform="rotate(22)"/>
+      <ellipse cx="0" cy="148" rx="10" ry="15"/>
+    </g>
+
+    <g fill="url(#grain)" transform="translate(28 -98) rotate(22)">
+      <ellipse cx="0" cy="0" rx="20" ry="32"/>
+      <ellipse cx="-18" cy="34" rx="16" ry="26" transform="rotate(-34)"/>
+      <ellipse cx="18" cy="34" rx="16" ry="26" transform="rotate(34)"/>
+      <ellipse cx="-20" cy="66" rx="15" ry="24" transform="rotate(-38)"/>
+      <ellipse cx="20" cy="66" rx="15" ry="24" transform="rotate(38)"/>
+      <ellipse cx="-18" cy="96" rx="14" ry="22" transform="rotate(-30)"/>
+      <ellipse cx="18" cy="96" rx="14" ry="22" transform="rotate(30)"/>
+      <ellipse cx="-12" cy="124" rx="12" ry="18" transform="rotate(-22)"/>
+      <ellipse cx="12" cy="124" rx="12" ry="18" transform="rotate(22)"/>
+      <ellipse cx="0" cy="148" rx="10" ry="15"/>
+    </g>
+  </g>
+</svg>

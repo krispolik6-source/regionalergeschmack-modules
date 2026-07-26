@@ -1,0 +1,11 @@
+{
+  "id": "etap-41-ui-guardian",
+  "verdict": "PASS",
+  "generatedAt": "2026-07-23T18:33:00.622Z",
+  "intervalMs": 4000,
+  "policy": {
+    "localOnly": true,
+    "softHeal": true,
+    "noNetwork": true
+  }
+}

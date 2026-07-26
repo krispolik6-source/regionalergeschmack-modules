@@ -1,0 +1,156 @@
+{
+  "etap": "ios9-compat",
+  "script": "scripts/process-images.mjs",
+  "licenses": [
+    "Unsplash License",
+    "Pexels License"
+  ],
+  "unified_grade": {
+    "brightness": 1.07,
+    "saturation": 0.97,
+    "hue": 3,
+    "gamma": 1.02
+  },
+  "formats": {
+    "webp": "nowoczesne przeglądarki",
+    "jpeg": "iOS 9 / iPad A1416 A1432 – max 150 kB"
+  },
+  "assets": [
+    {
+      "format": "webp",
+      "out": "products/onion.webp",
+      "kb": 44,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh onions"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/onion.jpg",
+      "kb": 26,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh onions"
+    },
+    {
+      "format": "webp",
+      "out": "products/tomato.webp",
+      "kb": 55,
+      "w": 800,
+      "h": 600,
+      "theme": "ripe tomatoes"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/tomato.jpg",
+      "kb": 31,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "ripe tomatoes"
+    },
+    {
+      "format": "webp",
+      "out": "products/asparagus.webp",
+      "kb": 98,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh asparagus"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/asparagus.jpg",
+      "kb": 44,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh asparagus"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_all.webp",
+      "kb": 80,
+      "w": 1200,
+      "h": 750,
+      "theme": "green cultivated fields panorama farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_all.jpg",
+      "kb": 39,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "green cultivated fields panorama farm"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_meat.webp",
+      "kb": 79,
+      "w": 1200,
+      "h": 750,
+      "theme": "cattle green pasture farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_meat.jpg",
+      "kb": 45,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "cattle green pasture farm"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_shops.webp",
+      "kb": 163,
+      "w": 1200,
+      "h": 750,
+      "theme": "outdoor farmers market vegetables"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_shops.jpg",
+      "kb": 74,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "outdoor farmers market vegetables"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_favorites.webp",
+      "kb": 226,
+      "w": 1200,
+      "h": 750,
+      "theme": "farm barn sunset warm light"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_favorites.jpg",
+      "kb": 84,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "farm barn sunset warm light"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_restaurants.webp",
+      "kb": 209,
+      "w": 1200,
+      "h": 750,
+      "theme": "outdoor garden terrace dining warm light"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_restaurants.jpg",
+      "kb": 90,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "outdoor garden terrace dining warm light"
+    }
+  ]
+}

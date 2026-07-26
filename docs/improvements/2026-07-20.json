@@ -1,0 +1,75 @@
+{
+  "id": "improve-2026-07-20-cli",
+  "title": "Co można poprawić",
+  "generatedAt": "2026-07-20T20:04:40.056Z",
+  "day": "2026-07-20",
+  "reason": "cli-daily",
+  "policy": {
+    "autoModifyCode": false,
+    "autoCommit": false,
+    "autoPublish": false,
+    "autoApply": false,
+    "requiresHumanAcceptance": true
+  },
+  "summary": {
+    "total": 3,
+    "byPriority": {
+      "critical": 0,
+      "high": 0,
+      "medium": 3,
+      "low": 0
+    },
+    "sources": {
+      "healthOverall": 98,
+      "healthScores": {
+        "performance": 99,
+        "ux": 85,
+        "accessibility": 100,
+        "memory": 99,
+        "dataQuality": 100,
+        "translation": 100,
+        "mobile": 100,
+        "pwa": 100
+      }
+    }
+  },
+  "proposals": [
+    {
+      "id": "IMP-001",
+      "autoApply": false,
+      "title": "Popraw UX / Mobile",
+      "priority": "medium",
+      "impact": "high",
+      "file": "css/style.css",
+      "function": "@media mobile",
+      "risk": "low",
+      "proposedFix": "Tap targets ≥44px, brak overflow nagłówków na wąskich ekranach.",
+      "source": "ux"
+    },
+    {
+      "id": "IMP-002",
+      "autoApply": false,
+      "title": "Potencjalne konflikty CSS: 40",
+      "priority": "medium",
+      "impact": "medium",
+      "file": "docs/health/latest.json",
+      "function": "finding:css",
+      "risk": "low",
+      "proposedFix": "body:not(.view-map-active)::after [background]; .leaflet-control-zoom a [background]; .leaflet-control-zoom a [color]; .home-footer [background]",
+      "source": "health"
+    },
+    {
+      "id": "IMP-003",
+      "autoApply": false,
+      "title": "Uporządkuj konflikty CSS (40)",
+      "priority": "medium",
+      "impact": "medium",
+      "file": "css/style.css",
+      "function": "selectors",
+      "risk": "medium",
+      "proposedFix": "Scal zduplikowane reguły (background/z-index) wskazane w docs/health/latest.json → static.css.sample.",
+      "source": "ux"
+    }
+  ],
+  "healthRef": "docs/health/latest.json"
+}

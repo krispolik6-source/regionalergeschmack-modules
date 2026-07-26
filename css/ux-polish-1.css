@@ -1,0 +1,426 @@
+/* ============================================================
+   ETAP 35 — UX Polish 1.0 (FINAL)
+   Tylko prezentacja: responsive · dark contrast · header · a11y
+   Bez nowych funkcji · bez zmiany układu Home 1.0 · Brand Lock OK
+   ============================================================ */
+
+/* --- Responsive shell: brak poziomego scrolla --- */
+html,
+body {
+    overflow-x: clip;
+    max-width: 100%;
+}
+
+#app,
+.view-panel,
+.home-page,
+.home-page--v1,
+.home-page--v2 {
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* --- Header: identyczna wysokość / wyrównanie przycisków --- */
+.main-header .header-content {
+    align-items: center !important;
+}
+
+.main-header .header-right {
+    align-items: center !important;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.main-header .header-icon,
+.main-header .header-lang,
+.main-header #menuBtn,
+.main-header #languageSwitcherBtn,
+.main-header #headerPremiumBtn,
+.main-header #darkModeToggleBtn {
+    box-sizing: border-box !important;
+    height: var(--ph-btn, 42px) !important;
+    min-height: var(--ph-btn, 42px) !important;
+    max-height: var(--ph-btn, 42px) !important;
+    align-self: center !important;
+}
+
+.main-header #menuBtn,
+.main-header #headerPremiumBtn,
+.main-header #darkModeToggleBtn {
+    width: var(--ph-btn, 42px) !important;
+    min-width: var(--ph-btn, 42px) !important;
+    max-width: var(--ph-btn, 42px) !important;
+    padding: 0 !important;
+}
+
+.main-header .header-left {
+    align-items: center !important;
+    min-width: 0;
+}
+
+.main-header .header-brand-mark {
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 359px) {
+    .main-header .header-right {
+        gap: 3px !important;
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        max-width: 3.2rem !important;
+    }
+}
+
+/* --- Karty: spójne promienie / cień / min touch --- */
+.home-product-card,
+.home-venue-card,
+.home-recipe-card,
+.favorite-item,
+.cart-item,
+.premium-feature-card,
+.home-tastes-of-day-item,
+.home-living-region,
+.home-taste-advisor,
+.home-smart-today-reason {
+    border-radius: var(--radius-md, 16px);
+}
+
+.home-product-card .btn,
+.home-venue-card .btn,
+.producer-modal-footer .btn,
+.home-taste-advisor-actions .btn-primary,
+.home-taste-advisor-actions .btn-secondary {
+    min-height: 40px;
+}
+
+/* --- Dark mode: kontrast (tylko kolory / czytelność) --- */
+body.dark-mode .home-tastes-of-day-label,
+body.dark-mode .home-living-region-label,
+body.dark-mode .home-region-story-label {
+    color: #d4e4b0;
+}
+
+body.dark-mode .home-tastes-of-day-sub,
+body.dark-mode .home-living-region-sub,
+body.dark-mode .home-region-story-sub,
+body.dark-mode .home-smart-today-sub,
+body.dark-mode .home-tastes-of-day-meta,
+body.dark-mode .text-muted,
+body.dark-mode .placeholder {
+    color: rgba(245, 239, 227, 0.78) !important;
+}
+
+body.dark-mode .home-tastes-of-day-item {
+    background: linear-gradient(145deg, rgba(48, 38, 28, 0.92) 0%, rgba(36, 30, 22, 0.88) 100%);
+    border-color: rgba(255, 220, 170, 0.16);
+    color: #fffaf2;
+}
+
+body.dark-mode .home-tastes-of-day-item:hover {
+    background: linear-gradient(145deg, rgba(58, 46, 34, 0.96) 0%, rgba(42, 34, 24, 0.92) 100%);
+}
+
+body.dark-mode .home-tastes-of-day-icon {
+    background: rgba(255, 248, 235, 0.12);
+}
+
+body.dark-mode .home-tastes-of-day-open {
+    color: #e8c97a;
+}
+
+body.dark-mode .home-living-region {
+    background: linear-gradient(168deg, rgba(48, 38, 28, 0.9) 0%, rgba(36, 30, 22, 0.82) 100%);
+    border-color: rgba(255, 220, 170, 0.14);
+}
+
+body.dark-mode .home-living-region-item {
+    color: #fffaf2;
+}
+
+body.dark-mode .home-living-region-item:hover,
+body.dark-mode .home-living-region-item:focus-visible {
+    background: rgba(255, 248, 235, 0.08);
+}
+
+body.dark-mode .home-smart-today-sub {
+    color: rgba(245, 239, 227, 0.78);
+}
+
+body.dark-mode .category-sample-badge,
+body.dark-mode .product-image-sample-badge,
+body.dark-mode .producer-photo-sample-badge {
+    background: rgba(20, 16, 12, 0.72) !important;
+    color: #fff8ee !important;
+}
+
+body.dark-mode .toast,
+body.dark-mode .rg-toast {
+    background: rgba(42, 34, 24, 0.96) !important;
+    color: #fffaf2 !important;
+    border: 1px solid rgba(232, 201, 122, 0.35);
+}
+
+body.dark-mode .side-menu-section-label {
+    color: rgba(232, 201, 122, 0.85) !important;
+}
+
+body.dark-mode .side-menu-item-label {
+    color: #fffaf2 !important;
+}
+
+body.dark-mode .map-status,
+body.dark-mode .map-bottom-btn {
+    color: #fffaf2 !important;
+}
+
+body.dark-mode .premium-feature-card,
+body.dark-mode .view-hero {
+    color: #fffaf2;
+}
+
+body.dark-mode .premium-feature-card .text-muted,
+body.dark-mode .view-hero .text-muted {
+    color: rgba(245, 239, 227, 0.78) !important;
+}
+
+/* Photo tiles: nazwa zawsze czytelna na ciemnym scrim */
+body.dark-mode .category-card--photo .category-name {
+    color: #fffef8 !important;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.85),
+        0 0 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .category-card--photo .category-count {
+    color: #fffaf2 !important;
+    background: rgba(0, 0, 0, 0.55) !important;
+}
+
+/* --- Dark mode: pełny kontrast tekstu (tylko kolor) --- */
+body.dark-mode {
+    --color-text: #f5efe3;
+    --color-text-muted: #d4c4a8;
+    --color-text-light: #fffaf2;
+    --mp-text-safe: #f5efe3;
+    --mp-muted-safe: #d4c4a8;
+    --brand-ink: #f5efe3;
+    --brand-ink-soft: #d4c4a8;
+}
+
+body.dark-mode .favorite-item,
+body.dark-mode .cart-item,
+body.dark-mode .account-item,
+body.dark-mode .setting-item,
+body.dark-mode .list-item,
+body.dark-mode .view-hero,
+body.dark-mode .premium-feature-card,
+body.dark-mode .search-result-card,
+body.dark-mode .producer-product-card,
+body.dark-mode .profile-meta,
+body.dark-mode .cart-summary {
+    color: #f5efe3;
+}
+
+body.dark-mode .favorite-item .title,
+body.dark-mode .cart-item .title,
+body.dark-mode .account-item .title,
+body.dark-mode .setting-item .title,
+body.dark-mode .search-result-name,
+body.dark-mode .list-item-title,
+body.dark-mode .producer-product-name {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .favorite-item .meta,
+body.dark-mode .cart-item .meta,
+body.dark-mode .section-desc,
+body.dark-mode .search-result-meta,
+body.dark-mode .profile-meta,
+body.dark-mode .setting-item .desc,
+body.dark-mode .account-item .desc,
+body.dark-mode .premium-note,
+body.dark-mode .home-premium-desc,
+body.dark-mode .empty-state p,
+body.dark-mode .text-muted {
+    color: #d4c4a8 !important;
+}
+
+body.dark-mode .home-greeting-brand,
+body.dark-mode .home-greeting-title,
+body.dark-mode .section-title,
+body.dark-mode .view-hero h2,
+body.dark-mode .premium-hero h2 {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-greeting-sub {
+    color: rgba(245, 239, 227, 0.82) !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark-mode .home-search-input::placeholder,
+body.dark-mode .side-menu-field input::placeholder,
+body.dark-mode .side-menu-field textarea::placeholder {
+    color: rgba(212, 196, 168, 0.72) !important;
+    opacity: 1;
+}
+
+body.dark-mode input:disabled,
+body.dark-mode textarea:disabled,
+body.dark-mode select:disabled,
+body.dark-mode button:disabled,
+body.dark-mode .btn:disabled,
+body.dark-mode .btn[disabled] {
+    color: rgba(245, 239, 227, 0.45) !important;
+}
+
+body.dark-mode a:not(.btn):not(.nav-item):not(.side-menu-item):not(.map-bottom-btn):not(.home-product-btn),
+body.dark-mode .link,
+body.dark-mode .text-link {
+    color: #e8c97a;
+}
+
+body.dark-mode .chip,
+body.dark-mode .home-chip,
+body.dark-mode .home-quick-chip,
+body.dark-mode .producer-amenity-chip,
+body.dark-mode .filter-chip {
+    color: #fffaf2 !important;
+}
+
+body.dark-mode .bottom-nav .nav-item {
+    color: #d4c4a8;
+}
+
+body.dark-mode .bottom-nav .nav-item.active .nav-label {
+    color: var(--nav-accent, #8fb86a);
+}
+
+body.dark-mode .modal,
+body.dark-mode .producer-modal,
+body.dark-mode .producer-modal-body,
+body.dark-mode .side-menu,
+body.dark-mode #sideMenu {
+    color: #f5efe3;
+}
+
+body.dark-mode .producer-modal .producer-header-name,
+body.dark-mode .producer-modal .producer-section-title {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .producer-modal .producer-story-text,
+body.dark-mode .producer-modal .map-popup-desc,
+body.dark-mode .map-popup-story {
+    color: #d4c4a8 !important;
+}
+
+body.dark-mode .rg-adsense-placeholder-text {
+    color: rgba(245, 239, 227, 0.78) !important;
+}
+
+body.dark-mode .pwa-install-banner {
+    color: #1c1812 !important;
+}
+
+body.dark-mode .pwa-install-banner .pwa-install-banner-dismiss,
+body.dark-mode .pwa-install-banner-dismiss {
+    color: #1c1812 !important;
+}
+
+body.dark-mode .home-product-card--compact .home-product-name,
+body.dark-mode .home-recipe-card--compact .home-recipe-name {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-recipe-meta,
+body.dark-mode .home-recipe-ingredients,
+body.dark-mode .home-recipes-intro {
+    color: #d4c4a8 !important;
+}
+
+body.dark-mode .form-label,
+body.dark-mode label,
+body.dark-mode .side-menu-field label,
+body.dark-mode .taste-diary-field,
+body.dark-mode .cart-reservation-field label {
+    color: #f5efe3;
+}
+
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .home-product-btn:hover {
+    color: #fffaf2;
+}
+
+body.dark-mode .btn-secondary:active,
+body.dark-mode .home-product-btn:active {
+    color: #fffaf2;
+}
+
+/* --- Accessibility: focus + touch --- */
+:focus-visible {
+    outline: 2px solid var(--brand-gold, #c9a227);
+    outline-offset: 2px;
+}
+
+.bottom-nav .nav-item,
+.home-search-submit,
+.btn-nearby,
+.btn-location,
+.map-bottom-btn,
+.map-tool-btn {
+    min-height: 44px;
+}
+
+@media screen and (max-width: 430px) {
+    .categories-grid,
+    .categories-grid--2x4 {
+        gap: 8px;
+    }
+
+    .home-carousel {
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+    }
+
+    .home-product-card,
+    .home-venue-card {
+        max-width: 100%;
+    }
+
+    .section-title,
+    .home-section-head .section-title {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+
+/* --- Animacje: spokojniejsze, bez szarpania --- */
+@media (prefers-reduced-motion: no-preference) {
+    .category-card,
+    .home-product-card,
+    .home-venue-card,
+    .home-tastes-of-day-item,
+    .side-menu-item {
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            background-color 0.18s ease,
+            border-color 0.18s ease;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-card,
+    .home-product-card,
+    .home-venue-card,
+    .home-tastes-of-day-item,
+    .main-header #darkModeToggleBtn,
+    .side-menu-item {
+        transition: none !important;
+        animation: none !important;
+    }
+}

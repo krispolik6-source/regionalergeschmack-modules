@@ -1,0 +1,9 @@
+{
+  "id": "etap-43-memory-cleaner",
+  "verdict": "PASS",
+  "generatedAt": "2026-07-23T18:33:00.842Z",
+  "policy": {
+    "safeOnly": true,
+    "noNetwork": true
+  }
+}

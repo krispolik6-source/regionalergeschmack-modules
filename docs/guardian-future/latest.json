@@ -1,0 +1,325 @@
+{
+  "id": "guardian-future-2026-07-21",
+  "title": "Guardian of the Future — ETAP 30",
+  "generatedAt": "2026-07-21T18:21:20.378Z",
+  "day": "2026-07-21",
+  "reason": "cli-future",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "autoModifyCode": false,
+    "advisoryOnly": true,
+    "predictive": true,
+    "chatbot": false,
+    "userFacing": false,
+    "role": "guardian-of-the-future",
+    "focus": "early-warning-trends"
+  },
+  "status": "ALERT",
+  "futureScore": 68,
+  "headline": "Rośnie / utrzymuje się liczba ostrzeżeń Brand Protection (5). Bez korekty kierunku za miesiąc marka będzie wyglądać na „prawie spójną”, a nie kanoniczną.",
+  "summary": {
+    "status": "ALERT",
+    "futureScore": 68,
+    "samplesDays": 2,
+    "predictions": 2,
+    "alerts": 1,
+    "watches": 1,
+    "autoApply": false
+  },
+  "seriesDays": [
+    "2026-07-20",
+    "2026-07-21"
+  ],
+  "trends": [
+    {
+      "id": "performance",
+      "label": "Wydajność (Health)",
+      "higherIsBetter": true,
+      "samples": 2,
+      "latest": 99,
+      "slopePerDay": 0,
+      "slopePerWeek": 0,
+      "projected7": 99,
+      "projected30": 99,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 99
+        },
+        {
+          "day": "2026-07-21",
+          "value": 99
+        }
+      ]
+    },
+    {
+      "id": "ux",
+      "label": "UX (Health)",
+      "higherIsBetter": true,
+      "samples": 2,
+      "latest": 85,
+      "slopePerDay": 0,
+      "slopePerWeek": 0,
+      "projected7": 85,
+      "projected30": 85,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 85
+        },
+        {
+          "day": "2026-07-21",
+          "value": 85
+        }
+      ]
+    },
+    {
+      "id": "healthOverall",
+      "label": "Health overall",
+      "higherIsBetter": true,
+      "samples": 2,
+      "latest": 98,
+      "slopePerDay": 0,
+      "slopePerWeek": 0,
+      "projected7": 98,
+      "projected30": 98,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 98
+        },
+        {
+          "day": "2026-07-21",
+          "value": 98
+        }
+      ]
+    },
+    {
+      "id": "cssConflicts",
+      "label": "Konflikty CSS",
+      "higherIsBetter": false,
+      "samples": 2,
+      "latest": 40,
+      "slopePerDay": 0,
+      "slopePerWeek": 0,
+      "projected7": 40,
+      "projected30": 40,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 40
+        },
+        {
+          "day": "2026-07-21",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "id": "wantToReturn",
+      "label": "Chęć powrotu (Emotion)",
+      "higherIsBetter": true,
+      "samples": 1,
+      "latest": 89,
+      "slopePerDay": null,
+      "slopePerWeek": null,
+      "projected7": 89,
+      "projected30": 89,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": null,
+      "history": [
+        {
+          "day": "2026-07-21",
+          "value": 89
+        }
+      ]
+    },
+    {
+      "id": "fatigue",
+      "label": "Lekkość / niski fatigue (Emotion)",
+      "higherIsBetter": true,
+      "samples": 1,
+      "latest": 50,
+      "slopePerDay": null,
+      "slopePerWeek": null,
+      "projected7": 50,
+      "projected30": 50,
+      "direction": "stable",
+      "severity": "watch",
+      "r2": null,
+      "history": [
+        {
+          "day": "2026-07-21",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "id": "livingBrand",
+      "label": "Spójność marki (Living Brand)",
+      "higherIsBetter": true,
+      "samples": 1,
+      "latest": 95,
+      "slopePerDay": null,
+      "slopePerWeek": null,
+      "projected7": 95,
+      "projected30": 95,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": null,
+      "history": [
+        {
+          "day": "2026-07-21",
+          "value": 95
+        }
+      ]
+    },
+    {
+      "id": "brandWarnings",
+      "label": "Ostrzeżenia Brand Protection",
+      "higherIsBetter": false,
+      "samples": 2,
+      "latest": 5,
+      "slopePerDay": 5,
+      "slopePerWeek": 35,
+      "projected7": 40,
+      "projected30": 155,
+      "direction": "rising",
+      "severity": "alert",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 0
+        },
+        {
+          "day": "2026-07-21",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "id": "improveCount",
+      "label": "Złożoność (liczba improvement pending)",
+      "higherIsBetter": false,
+      "samples": 2,
+      "latest": 3,
+      "slopePerDay": 0,
+      "slopePerWeek": 0,
+      "projected7": 3,
+      "projected30": 3,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 3
+        },
+        {
+          "day": "2026-07-21",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "guardianFindings",
+      "label": "Znaleziska Guardian (high+critical)",
+      "higherIsBetter": false,
+      "samples": 2,
+      "latest": 0,
+      "slopePerDay": -1,
+      "slopePerWeek": -7,
+      "projected7": 0,
+      "projected30": 0,
+      "direction": "falling",
+      "severity": "ok",
+      "r2": 1,
+      "history": [
+        {
+          "day": "2026-07-20",
+          "value": 1
+        },
+        {
+          "day": "2026-07-21",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "returnScore",
+      "label": "Return Score (Self Reflection)",
+      "higherIsBetter": true,
+      "samples": 1,
+      "latest": 80,
+      "slopePerDay": null,
+      "slopePerWeek": null,
+      "projected7": 80,
+      "projected30": 80,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": null,
+      "history": [
+        {
+          "day": "2026-07-21",
+          "value": 80
+        }
+      ]
+    },
+    {
+      "id": "reflectionOverall",
+      "label": "Self Reflection overall",
+      "higherIsBetter": true,
+      "samples": 1,
+      "latest": 92,
+      "slopePerDay": null,
+      "slopePerWeek": null,
+      "projected7": 92,
+      "projected30": 92,
+      "direction": "stable",
+      "severity": "ok",
+      "r2": null,
+      "history": [
+        {
+          "day": "2026-07-21",
+          "value": 92
+        }
+      ]
+    }
+  ],
+  "predictions": [
+    {
+      "id": "pred-brand-warnings",
+      "severity": "alert",
+      "horizon": "≈ 2–4 tygodnie",
+      "metric": "brandWarnings",
+      "message": "Rośnie / utrzymuje się liczba ostrzeżeń Brand Protection (5). Bez korekty kierunku za miesiąc marka będzie wyglądać na „prawie spójną”, a nie kanoniczną."
+    },
+    {
+      "id": "pred-fatigue",
+      "severity": "watch",
+      "horizon": "≈ 2–3 tygodnie",
+      "metric": "fatigue",
+      "message": "Zmęczenie bodźcami jest wysokie (fatigue 50%). Przy kolejnych „miłych” sekcjach na Home użytkownik szybciej zrezygnuje z codziennego powrotu."
+    }
+  ],
+  "planningNotes": [
+    "To nie jest lista bugów do hotfixu — to mapa ryzyka na 1–4 tygodnie.",
+    "Używaj z Product Brain (max 3 zmiany jutro) i czekaj na akceptację właściciela.",
+    "Guardian of the Future nigdy nie zmienia kodu (autoApply: false)."
+  ]
+}

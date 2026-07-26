@@ -1,0 +1,592 @@
+/* ============================================================
+   ETAP 17 – ŻYWY REGION (Living Region Experience)
+   Emocje · klimat · mikroanimacje · hierarchia
+   Bez zmiany logiki / HTML struktury
+   ============================================================ */
+
+:root {
+    --lre-gold: #c4a35a;
+    --lre-honey: #d4a84b;
+    --lre-wheat: #e8d5a3;
+    --lre-cream: #fff8ee;
+    --lre-cream-deep: #f3e6d0;
+    --lre-wood: #8b6914;
+    --lre-wood-deep: #5c4520;
+    --lre-green: #5a7a45;
+    --lre-green-deep: #3f5a32;
+    --lre-sun: #f0c56e;
+    --lre-shadow: rgba(90, 60, 25, 0.08);
+
+    /* Usuń zimne fallbacki w warstwie emocji */
+    --nav-icon-search: var(--lre-green) !important;
+    --cat-icon-shops: #6a8a55 !important;
+    --cat-icon-vending: #6b7358 !important;
+    --color-primary-dark: var(--lre-green-deep) !important;
+}
+
+/* ---------- Mikroanimacje (bez migania, szanuj FPS) ---------- */
+@keyframes lre-soft-light {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.85; }
+}
+
+@keyframes lre-breathe {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1.5px); }
+}
+
+@keyframes lre-warm-glow {
+    0%, 100% { box-shadow: 0 4px 16px var(--lre-shadow); }
+    50% { box-shadow: 0 6px 22px rgba(196, 163, 90, 0.14); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-region-soul,
+    .home-product-card,
+    .home-venue-card,
+    .category-card,
+    .home-return-magic,
+    .producer-photo-frame {
+        animation: none !important;
+    }
+}
+
+/* ---------- Home: początek podróży, nie lista widgetów ---------- */
+.home-page--v2 {
+    gap: 14px !important;
+    background:
+        radial-gradient(ellipse 90% 40% at 50% -5%, rgba(240, 197, 110, 0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 30% at 100% 20%, rgba(90, 122, 69, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, var(--lre-cream) 0%, #faf3e6 40%, #f5ebd8 100%);
+}
+
+.home-page--v2 > .app-section,
+.home-page--v2 > section {
+    position: relative;
+}
+
+/* Naturalne przejścia – tylko między sekcjami pierwszego poziomu */
+.home-page--v2 > .app-section + .app-section {
+    padding-top: 2px;
+    border-top: 1px solid transparent;
+    background-image: linear-gradient(90deg, transparent, rgba(140, 110, 60, 0.12), transparent);
+    background-size: 76% 1px;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+.home-greeting {
+    padding-bottom: 4px;
+}
+
+.home-greeting-brand {
+    letter-spacing: 0.04em;
+    color: var(--lre-wood-deep) !important;
+}
+
+.home-greeting-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--lre-wood-deep) !important;
+    line-height: 1.25;
+}
+
+.home-greeting-sub {
+    color: #6a6048 !important;
+}
+
+/* Dusza regionu – oddech, złota godzina */
+.home-region-soul {
+    animation: lre-warm-glow 8s ease-in-out infinite;
+    border-color: rgba(180, 140, 60, 0.22) !important;
+    background:
+        linear-gradient(155deg, rgba(255, 252, 244, 0.98) 0%, rgba(255, 236, 200, 0.7) 45%, rgba(232, 213, 163, 0.35) 100%) !important;
+}
+
+.home-region-soul::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 40% at 15% 20%, rgba(240, 197, 110, 0.22) 0%, transparent 60%);
+    animation: lre-soft-light 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.home-region-soul-line {
+    font-size: 16.5px !important;
+    line-height: 1.4 !important;
+    color: #2e3228 !important;
+}
+
+.home-region-soul-btn:hover .home-region-soul-icon {
+    transform: scale(1.04);
+    transition: transform 0.35s ease;
+}
+
+.home-region-soul-btn:hover .home-region-soul-icon,
+.home-product-card,
+.home-venue-card,
+.category-card {
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.home-product-card:hover,
+.home-venue-card:hover,
+.category-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--lre-shadow);
+}
+
+.home-product-card,
+.home-venue-card {
+    animation: lre-breathe 9s ease-in-out infinite;
+    animation-delay: calc(var(--lre-i, 0) * 0.15s);
+    border-color: rgba(140, 110, 60, 0.12) !important;
+    background: linear-gradient(165deg, rgba(255, 252, 245, 0.95), rgba(255, 244, 228, 0.75)) !important;
+}
+
+.home-product-card:nth-child(2n),
+.home-venue-card:nth-child(2n) {
+    --lre-i: 1;
+}
+
+.home-product-card:nth-child(3n),
+.home-venue-card:nth-child(3n) {
+    --lre-i: 2;
+}
+
+/* Mniej „sklepu” – premium CTA cieplejsze, mniej królewskie */
+.home-premium-cta {
+    background: linear-gradient(135deg, rgba(255, 244, 220, 0.9), rgba(232, 213, 163, 0.55)) !important;
+    border-color: rgba(180, 140, 60, 0.2) !important;
+    box-shadow: none !important;
+}
+
+.home-quick-chip {
+    background: rgba(255, 248, 235, 0.75) !important;
+    border-color: rgba(140, 110, 60, 0.16) !important;
+    color: var(--lre-wood-deep) !important;
+}
+
+.home-quick-chip:hover {
+    background: rgba(255, 240, 210, 0.9) !important;
+}
+
+/* ---------- Badge zdjęcie przykładowe ---------- */
+.product-image-sample-badge,
+.producer-photo-sample-badge,
+.category-sample-badge,
+.product-image-badge--sample {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    padding: 3px 7px !important;
+    border-radius: 6px !important;
+    background: rgba(60, 48, 28, 0.55) !important;
+    color: #fff8ee !important;
+    backdrop-filter: blur(4px);
+    box-shadow: none !important;
+    text-transform: none !important;
+}
+
+/* ---------- Hero producenta: zdjęcie nad tekstem (bez nachodzenia) ---------- */
+.producer-modal-header {
+    position: relative;
+    overflow: visible;
+}
+
+.producer-modal-header .producer-photo-frame {
+    border-radius: 12px !important;
+    aspect-ratio: auto;
+    width: 100%;
+    height: var(--photo-modal-height, 160px);
+    max-height: var(--photo-modal-height, 160px);
+    margin: 0 0 16px;
+    overflow: hidden;
+    box-shadow: none !important;
+    border: none !important;
+    position: relative;
+    z-index: 0;
+}
+
+.producer-modal-header .producer-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(1.05) contrast(1.04);
+}
+
+.producer-modal-header .producer-photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 36%;
+    background: linear-gradient(180deg, transparent, rgba(40, 30, 15, 0.28));
+    pointer-events: none;
+}
+
+.producer-modal .producer-header-card {
+    margin-top: 0 !important;
+    position: relative;
+    z-index: 1;
+    padding-left: 16px;
+    background: linear-gradient(180deg, rgba(255, 248, 238, 0.96), var(--lre-cream)) !important;
+    border: 1px solid rgba(140, 110, 60, 0.12) !important;
+    box-shadow: 0 8px 24px var(--lre-shadow) !important;
+}
+
+/* ---------- Charakter producenta (data-character) ---------- */
+.producer-modal[data-character="honey"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(212, 168, 75, 0.12) 0%, rgba(90, 60, 20, 0.5) 100%);
+}
+
+.producer-modal[data-character="honey"] .producer-header-card {
+    background: linear-gradient(165deg, #fff9e8, #f5e6c0) !important;
+    border-color: rgba(212, 168, 75, 0.28) !important;
+}
+
+.producer-modal[data-character="bakery"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(232, 213, 163, 0.15) 0%, rgba(70, 45, 20, 0.48) 100%);
+}
+
+.producer-modal[data-character="bakery"] .producer-header-card {
+    background: linear-gradient(165deg, #fffaf0, #f0e0c8) !important;
+}
+
+.producer-modal[data-character="farmer"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(120, 150, 80, 0.12) 0%, rgba(50, 60, 30, 0.48) 100%);
+}
+
+.producer-modal[data-character="farmer"] .producer-header-card {
+    background: linear-gradient(165deg, #f7faf0, #e8efd8) !important;
+}
+
+.producer-modal[data-character="meat"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(80, 55, 40, 0.2) 0%, rgba(35, 25, 18, 0.55) 100%);
+}
+
+.producer-modal[data-character="meat"] .producer-header-card {
+    background: linear-gradient(165deg, #f5efe8, #e5d8c8) !important;
+    border-color: rgba(90, 60, 40, 0.2) !important;
+}
+
+.producer-modal[data-character="restaurant"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(180, 100, 90, 0.1) 0%, rgba(50, 35, 30, 0.5) 100%);
+}
+
+.producer-modal[data-character="restaurant"] .producer-header-card {
+    background: linear-gradient(165deg, #fff6f2, #f0e4dc) !important;
+}
+
+.producer-modal[data-character="shop"] .producer-modal-header .producer-photo-frame::after {
+    background: linear-gradient(180deg, rgba(140, 160, 90, 0.12) 0%, rgba(45, 50, 30, 0.48) 100%);
+}
+
+.producer-modal[data-character="shop"] .producer-header-card {
+    background: linear-gradient(165deg, #f8faf2, #e8edd8) !important;
+}
+
+/* Place history / story – ciepły papier */
+.place-history,
+.producer-story {
+    border-color: rgba(140, 110, 60, 0.14) !important;
+}
+
+/* ---------- Mapa: elegancja, optycznie mniejsze chrome ---------- */
+.map-bottom-panel {
+    gap: 6px !important;
+    padding: 6px 8px !important;
+}
+
+.map-bottom-btn {
+    min-height: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    background: rgba(255, 248, 235, 0.92) !important;
+    border: 1px solid rgba(140, 110, 60, 0.18) !important;
+    color: var(--lre-wood-deep) !important;
+    box-shadow: 0 2px 8px rgba(60, 40, 15, 0.08) !important;
+}
+
+.map-bottom-btn:hover {
+    background: rgba(255, 242, 220, 0.98) !important;
+}
+
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 8px !important;
+}
+
+.leaflet-control-zoom a {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 248, 235, 0.94) !important;
+    color: var(--lre-wood-deep) !important;
+    border: 1px solid rgba(140, 110, 60, 0.16) !important;
+    margin-bottom: 4px !important;
+}
+
+.map-producer-list {
+    max-height: 38vh !important;
+    border-radius: 14px 14px 0 0 !important;
+    background: rgba(255, 248, 238, 0.96) !important;
+    border-color: rgba(140, 110, 60, 0.14) !important;
+}
+
+.map-list-item-name,
+.map-producer-list-btn {
+    font-size: 13px !important;
+    color: var(--lre-wood-deep) !important;
+}
+
+.map-category-header {
+    padding: 6px 10px !important;
+    background: rgba(255, 248, 235, 0.9) !important;
+}
+
+.map-category-title {
+    font-size: 13px !important;
+    color: var(--lre-wood-deep) !important;
+}
+
+.map-category-count {
+    color: #7a6a50 !important;
+    font-size: 11px !important;
+}
+
+.leaflet-popup.producer-leaflet-popup .leaflet-popup-content-wrapper,
+.map-popup {
+    border-radius: 14px !important;
+    background: rgba(255, 250, 242, 0.98) !important;
+    box-shadow: 0 8px 28px rgba(60, 40, 15, 0.14) !important;
+    border: 1px solid rgba(140, 110, 60, 0.14);
+}
+
+.map-popup-btn,
+.map-popup-btn-details {
+    font-size: 12px !important;
+    padding: 7px 10px !important;
+    border-radius: 10px !important;
+}
+
+.radius-control {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    background: rgba(255, 248, 235, 0.9) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(140, 110, 60, 0.14) !important;
+}
+
+.map-legend-btn,
+.map-recenter-btn {
+    background: rgba(255, 248, 235, 0.92) !important;
+    border: 1px solid rgba(140, 110, 60, 0.16) !important;
+    color: var(--lre-wood-deep) !important;
+    box-shadow: 0 2px 6px rgba(60, 40, 15, 0.08) !important;
+}
+
+body.dark-mode .map-bottom-btn,
+body.dark-mode .leaflet-control-zoom a {
+    background: rgba(48, 44, 36, 0.94) !important;
+    color: #f0e6d4 !important;
+    border-color: rgba(200, 170, 120, 0.22) !important;
+}
+
+/* Tryb nocny: czytelność — ciemne powierzchnie + jasny tekst (bez layoutu) */
+body.dark-mode .home-greeting-brand,
+body.dark-mode .home-greeting-title {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-greeting-sub {
+    color: rgba(245, 239, 227, 0.82) !important;
+}
+
+body.dark-mode .home-product-card,
+body.dark-mode .home-venue-card {
+    background: linear-gradient(165deg, rgba(50, 40, 28, 0.94), rgba(36, 30, 22, 0.9)) !important;
+    border-color: rgba(255, 220, 170, 0.14) !important;
+}
+
+body.dark-mode .home-product-card .home-product-name,
+body.dark-mode .home-venue-card .home-venue-name {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-product-card .home-product-rating,
+body.dark-mode .home-product-card .home-product-desc,
+body.dark-mode .home-product-card .home-product-producer,
+body.dark-mode .home-product-card .home-product-meta,
+body.dark-mode .home-venue-card .home-venue-meta {
+    color: #d4c4a8 !important;
+}
+
+body.dark-mode .home-quick-chip {
+    background: rgba(48, 40, 30, 0.92) !important;
+    border-color: rgba(255, 220, 170, 0.18) !important;
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-premium-cta {
+    background: linear-gradient(135deg, rgba(50, 40, 28, 0.92), rgba(40, 32, 22, 0.88)) !important;
+    border-color: rgba(255, 220, 170, 0.16) !important;
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .home-region-soul {
+    background: linear-gradient(155deg, rgba(48, 38, 28, 0.94) 0%, rgba(36, 30, 22, 0.9) 100%) !important;
+    border-color: rgba(200, 170, 120, 0.22) !important;
+}
+
+body.dark-mode .home-region-soul-line {
+    color: #e8e4d8 !important;
+}
+
+body.dark-mode .map-legend-btn,
+body.dark-mode .map-recenter-btn {
+    color: #f0e6d4 !important;
+    background: rgba(48, 44, 36, 0.94) !important;
+    border-color: rgba(200, 170, 120, 0.22) !important;
+}
+
+body.dark-mode .map-producer-list {
+    background: rgba(36, 30, 22, 0.96) !important;
+    border-color: rgba(255, 220, 170, 0.14) !important;
+}
+
+body.dark-mode .map-list-item-name,
+body.dark-mode .map-producer-list-btn {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .map-category-header {
+    background: rgba(42, 34, 24, 0.94) !important;
+}
+
+body.dark-mode .map-category-title {
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .map-category-count {
+    color: #d4c4a8 !important;
+}
+
+body.dark-mode .leaflet-popup.producer-leaflet-popup .leaflet-popup-content-wrapper,
+body.dark-mode .map-popup {
+    background: rgba(36, 30, 22, 0.98) !important;
+    border-color: rgba(255, 220, 170, 0.16);
+    color: #f5efe3;
+}
+
+body.dark-mode .radius-control {
+    background: rgba(48, 44, 36, 0.92) !important;
+    border-color: rgba(200, 170, 120, 0.22) !important;
+    color: #f0e6d4 !important;
+}
+
+/* ---------- Responsywność: telefony / tablet / desktop ---------- */
+@media (max-width: 360px) {
+    .home-region-soul-line {
+        font-size: 15px !important;
+    }
+
+    .home-greeting-title {
+        font-size: 1.35rem !important;
+    }
+
+    .map-bottom-btn {
+        min-height: 34px !important;
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+    }
+
+    .producer-modal-header .producer-photo-frame {
+        height: var(--photo-modal-height, 160px);
+        max-height: var(--photo-modal-height, 160px);
+        margin-bottom: 20px;
+    }
+
+    .btn-location,
+    .btn-nearby,
+    .home-search-submit {
+        min-height: 42px !important;
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .home-page--v2 {
+        gap: 10px !important;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .home-region-soul-hint {
+        display: none;
+    }
+
+    .home-quick-chip {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+    }
+}
+
+@media (min-width: 390px) and (max-width: 430px) {
+    .home-region-soul-line {
+        font-size: 17px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .home-page--v2 {
+        max-width: 720px;
+        margin-inline: auto;
+        gap: 18px !important;
+    }
+
+    .producer-modal-header .producer-photo-frame {
+        height: var(--photo-modal-height, 160px);
+        max-height: var(--photo-modal-height, 160px);
+        aspect-ratio: auto;
+        margin-bottom: 20px;
+    }
+
+    .home-product-card:hover,
+    .home-venue-card:hover {
+        transform: translateY(-3px);
+    }
+}
+
+@media (min-width: 1024px) {
+    .home-page--v2 {
+        max-width: 860px;
+    }
+}
+
+/* Zapobieganie białym dziurom / ucięciom */
+.home-product-card .home-product-name,
+.home-venue-card .home-venue-name,
+.home-list-item-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.home-carousel {
+    scroll-padding: 12px;
+}
+
+.category-card .category-name {
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

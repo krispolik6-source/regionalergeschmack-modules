@@ -1,0 +1,388 @@
+/* ============================================================
+   Regionaler Geschmack – Etap 1.8 Premium Polish
+   Ostatnia warstwa: spójność ekranów, typografia, ikony, karty
+   ============================================================ */
+
+/* --- Jednolite szkło na wszystkich powierzchniach --- */
+
+.glass-surface,
+.home-search-field,
+.setting-item.card,
+.premium-feature-card,
+.favorite-item,
+.cart-item,
+.cart-summary,
+.producer-product-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    transition: var(--glass-transition);
+}
+
+.home-search-field {
+    border-radius: var(--radius-pill);
+}
+
+.premium-feature-card,
+.favorite-item,
+.cart-item,
+.producer-product-card {
+    padding: var(--space-lg);
+}
+
+/* --- Spójny układ stron --- */
+
+body.view-profile-active .profile-page,
+body.view-favorites-active .favorites-page,
+body.view-cart-active .cart-page,
+.premium-page,
+.home-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* --- Typografia nagłówków (nadpisuje style z widoków JS) --- */
+
+body.view-favorites-active .favorites-page .view-hero h2,
+body.view-cart-active .cart-page .view-hero h2,
+body.view-profile-active .profile-page > .view-hero h2,
+body.view-premium-active .premium-page .view-hero h2,
+.premium-page .view-hero h2 {
+    font-size: var(--heading-page-size);
+    font-weight: 700;
+    line-height: var(--heading-line);
+    color: var(--color-primary);
+    margin-bottom: var(--space-xs);
+}
+
+body.view-favorites-active .favorites-page .view-hero p,
+body.view-cart-active .cart-page .view-hero p,
+body.view-profile-active .profile-page > .view-hero p,
+.premium-page .view-hero p {
+    font-size: var(--text-sm);
+    line-height: 1.45;
+    color: var(--color-text-muted);
+}
+
+/* --- Nagłówki widoków: ciepłe światło + spójny glass --- */
+
+.view-hero {
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg-light);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+body.view-favorites-active .favorites-page .view-hero::after,
+body.view-cart-active .cart-page .view-hero::after,
+body.view-premium-active .premium-page .view-hero::after,
+body.view-profile-active .profile-page > .view-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    background: var(--warm-glow-soft);
+    pointer-events: none;
+}
+
+body.view-favorites-active .favorites-page .view-hero > *,
+body.view-cart-active .cart-page .view-hero > *,
+body.view-premium-active .premium-page .view-hero > *,
+body.view-profile-active .profile-page > .view-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Ikony: badge + odstęp od tekstu --- */
+
+.category-icon,
+.premium-feature-icon {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.category-icon::after,
+.premium-feature-icon::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 30%, rgba(255, 236, 200, 0.22) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.favorite-item .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--icon-badge-size);
+    height: var(--icon-badge-size);
+    font-size: var(--icon-badge-font);
+    line-height: 1;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--icon-badge-shadow);
+}
+
+body.dark-mode .favorite-item .icon,
+body.dark-mode .premium-feature-icon {
+    background: rgba(42, 34, 24, 0.72);
+    border-color: rgba(255, 220, 170, 0.14);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Kategorie: zachowaj kolorowy badge także w dark mode */
+body.dark-mode .category-icon {
+    background: color-mix(in srgb, var(--cat-accent) 36%, #2a2218);
+    border-color: var(--cat-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+/* --- Karty: hover i focus – reguły w style.css --- */
+
+/* --- Hero Home: czytelność --- */
+
+.home-hero-title {
+    letter-spacing: -0.01em;
+}
+
+.home-hero-tagline {
+    max-width: 28em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Sekcje: spójne odstępy nagłówków --- */
+
+.section-header-row {
+    margin-bottom: var(--space-md);
+}
+
+.app-section {
+    border-top-color: rgba(255, 255, 255, 0.14);
+}
+
+body.dark-mode .app-section {
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+/* --- Stopka: szkło nad krajobrazem (szczegóły w sekcji v1.0) --- */
+
+/* --- Modal producenta: ciągłość szkła --- */
+
+.producer-modal-dialog {
+    background: transparent;
+}
+
+.producer-modal-body {
+    background: var(--glass-bg-light);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.producer-modal-footer {
+    background: var(--glass-bg);
+    border-top: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+/* --- Tło bez „urywania” przy scrollu --- */
+
+body:not(.view-map-active)::before {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+#app {
+    min-height: calc(100dvh - var(--header-height) - var(--nav-height) - var(--safe-top) - var(--safe-bottom) - 1.5rem);
+}
+
+/* --- Animacje: jedna prędkość --- */
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .category-card,
+    .home-premium-cta,
+    .premium-feature-card,
+    .home-actions button {
+        transition: none;
+    }
+}
+
+/* ============================================================
+   Etap v1.0 – głębia interfejsu (jeden krajobraz, warstwy szkła)
+   Bez nowych animacji – subtelne dopracowanie istniejących wartości
+   ============================================================ */
+
+body:not(.view-map-active) {
+    --glass-bg: rgba(255, 246, 230, 0.42);
+    --glass-bg-light: rgba(255, 252, 245, 0.48);
+    --glass-border: rgba(255, 240, 210, 0.48);
+    --glass-shadow: 0 2px 14px rgba(90, 55, 20, 0.07);
+    --glass-shadow-lift: 0 5px 20px rgba(90, 55, 20, 0.09);
+}
+
+body:not(.view-map-active) #app {
+    background: rgba(255, 255, 255, 0.26);
+    border-color: rgba(255, 255, 255, 0.34);
+    box-shadow:
+        0 4px 28px rgba(15, 40, 30, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+body.dark-mode:not(.view-map-active) #app {
+    background: rgba(42, 34, 24, 0.42);
+    border-color: rgba(255, 220, 170, 0.12);
+    box-shadow:
+        0 4px 28px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 240, 210, 0.06);
+}
+
+/* Płynny przepływ sekcji Home – bez „szwów” */
+.home-page {
+    gap: var(--space-md);
+}
+
+.home-page .app-section {
+    border-top: none;
+    padding-top: 0;
+}
+
+.home-page .app-section + .app-section {
+    margin-top: var(--space-xs);
+}
+
+/* Hero → wyszukiwarka → akcje – jedna warstwa wizualna */
+.home-hero,
+.home-hub .home-search-field,
+.home-premium-cta,
+.home-recommended {
+    border-color: rgba(255, 255, 255, 0.38);
+    box-shadow: var(--glass-shadow);
+}
+
+.home-hub .home-search-field {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+body.dark-mode .home-hub .home-search-field {
+    background: rgba(42, 34, 24, 0.48);
+    border-color: rgba(255, 220, 170, 0.14);
+}
+
+/* Główny CTA: odkrywanie na mapie */
+.home-actions .btn-nearby {
+    flex: 1.45;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 5px 18px rgba(79, 107, 60, 0.28);
+}
+
+.home-actions .btn-location {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.24);
+    color: var(--color-text);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.home-actions .btn-location:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+body.dark-mode .home-actions .btn-location {
+    background: rgba(42, 34, 24, 0.5);
+    color: var(--color-text-light);
+    border-color: rgba(255, 220, 170, 0.16);
+}
+
+/* Sekcja polecanych – uczciwy empty state w szkle */
+.home-recommended .placeholder {
+    margin: 0;
+    padding: var(--space-lg);
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    border-radius: var(--glass-radius);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+body.dark-mode .home-recommended .placeholder {
+    color: var(--color-text-light);
+    background: rgba(42, 34, 24, 0.34);
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+/* Nagłówki sekcji – czytelność na tle krajobrazu */
+.home-page .section-heading,
+.home-page .section-title {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.75);
+}
+
+body.dark-mode .home-page .section-heading,
+body.dark-mode .home-page .section-title {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Stopka – szkło nad krajobrazem, nie jednolita plama */
+.home-footer {
+    background: linear-gradient(
+        180deg,
+        rgba(90, 120, 60, 0.72) 0%,
+        rgba(70, 95, 48, 0.82) 100%
+    );
+    border: 1px solid rgba(255, 240, 210, 0.28);
+    opacity: 1;
+    -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 4px)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(calc(var(--glass-blur) + 4px)) saturate(var(--glass-saturate));
+}
+
+body.dark-mode .home-footer {
+    background: rgba(42, 52, 28, 0.78);
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+/* Podstrony v1.0 – ta sama głębia szkła */
+.view-hero,
+.cart-item,
+.favorite-item,
+.premium-feature-card,
+.profile-settings,
+.profile-meta.surface-panel {
+    border-color: rgba(255, 255, 255, 0.36);
+    box-shadow: var(--glass-shadow);
+}
+
+body.dark-mode .view-hero,
+body.dark-mode .cart-item,
+body.dark-mode .favorite-item,
+body.dark-mode .premium-feature-card {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cart-summary,
+.setting-item.card {
+    border-color: rgba(255, 255, 255, 0.34);
+}
+
+/* Kategorie: delikatny cień na jasnym szkle */
+.home-categories .category-card {
+    box-shadow: 0 3px 16px rgba(15, 40, 30, 0.09);
+}

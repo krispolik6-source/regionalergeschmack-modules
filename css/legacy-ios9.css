@@ -1,0 +1,390 @@
+/* ============================================================
+   Regionaler Geschmack – iOS 9 / iPad A1416, A1432 (2012–2014)
+   Aktywne tylko gdy <html class="legacy-ios9"> (js/legacy/detect.js)
+   Flexbox, px/%, bez clamp/grid/backdrop-filter/transformacji
+   ============================================================ */
+
+html.legacy-ios9,
+html.legacy-ios9 body {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+/* --- Wyłącz animacje i transformacje --- */
+
+html.legacy-ios9 *,
+html.legacy-ios9 *::before,
+html.legacy-ios9 *::after {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+}
+
+/* Leaflet wymaga transform na kafelkach i markerach – bez globalnego transform:none */
+
+/* --- Szkło → solidne tła (bez backdrop-filter) --- */
+
+html.legacy-ios9 #app {
+    background: #d9fff8;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+html.legacy-ios9 body.dark-mode #app {
+    background: #1f2b3d;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.legacy-ios9 body.view-map-active #app {
+    background: transparent;
+}
+
+html.legacy-ios9 .home-product-card,
+html.legacy-ios9 .placeholder,
+html.legacy-ios9 .home-search-field,
+html.legacy-ios9 .home-premium-cta,
+html.legacy-ios9 .surface-panel,
+html.legacy-ios9 .list-item,
+html.legacy-ios9 .producer-modal-header,
+html.legacy-ios9 .producer-modal-footer {
+    background: rgba(90, 55, 20, 0.08);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+html.legacy-ios9 .card,
+html.legacy-ios9 .category-card {
+    background: rgba(90, 55, 20, 0.06);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+html.legacy-ios9 body.dark-mode .card,
+html.legacy-ios9 body.dark-mode .category-card,
+html.legacy-ios9 body.dark-mode .home-product-card,
+html.legacy-ios9 body.dark-mode .placeholder {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* --- Typografia (px zamiast clamp) --- */
+
+html.legacy-ios9 .header-left h1 {
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+html.legacy-ios9 .header-lang {
+    font-size: 11px;
+}
+
+html.legacy-ios9 .home-hero-brand {
+    font-size: 22px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+html.legacy-ios9 .home-hero-title {
+    font-size: 18px;
+}
+
+html.legacy-ios9 .home-hero-tagline {
+    font-size: 12px;
+}
+
+html.legacy-ios9 .section-title {
+    font-size: 16px;
+}
+
+html.legacy-ios9 .category-name {
+    font-size: 12px;
+}
+
+html.legacy-ios9 .category-desc {
+    font-size: 10px;
+}
+
+html.legacy-ios9 .placeholder {
+    font-size: 13px;
+}
+
+html.legacy-ios9 .bottom-nav .nav-icon {
+    font-size: 20px;
+}
+
+html.legacy-ios9 .bottom-nav .nav-label {
+    font-size: 10px;
+}
+
+/* --- Siatki: wyłącz grid, wymuś flexbox --- */
+
+html.legacy-ios9 .categories-grid,
+html.legacy-ios9 .home-products-grid {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+html.legacy-ios9 .categories-grid .category-card {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 45%;
+    flex: 1 1 45%;
+    max-width: 48%;
+    min-width: 0;
+}
+
+html.legacy-ios9 .home-products-grid .home-product-card {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 45%;
+    flex: 1 1 45%;
+    max-width: 48%;
+    min-width: 0;
+}
+
+html.legacy-ios9 .home-product-image {
+    width: 100%;
+    height: 100px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+
+html.legacy-ios9 .home-product-card-body {
+    padding: 8px 10px 10px;
+}
+
+html.legacy-ios9 .home-product-btn {
+    font-size: 10px;
+    padding: 6px 4px;
+}
+
+html.legacy-ios9 .producer-modal-products {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+/* --- Tła: JPEG zamiast WebP, bez filter (wydajność) --- */
+
+html.legacy-ios9 body:not(.view-map-active)::before {
+    background-image: url('/assets/images/backgrounds/screen-home.jpg');
+    -webkit-filter: none;
+    filter: none;
+    opacity: 0.28;
+    -webkit-transform: none;
+    transform: none;
+}
+
+html.legacy-ios9 body.view-profile-active:not(.view-map-active)::before {
+    background-image: url('/assets/images/backgrounds/screen-profile.jpg');
+}
+
+html.legacy-ios9 body.view-premium-active:not(.view-map-active)::before {
+    background-image: url('/assets/images/backgrounds/screen-premium.jpg');
+}
+
+html.legacy-ios9 body.view-favorites-active:not(.view-map-active)::before {
+    background-image: url('/assets/images/backgrounds/screen-favorites.jpg');
+}
+
+html.legacy-ios9 body.view-cart-active:not(.view-map-active)::before {
+    background-image: url('/assets/images/backgrounds/screen-cart.jpg');
+}
+
+html.legacy-ios9 body:not(.view-map-active)::after {
+    display: none;
+}
+
+html.legacy-ios9 .home-hero::before {
+    background-image: url('/assets/images/hero/hero-background.jpg?v=20');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+html.legacy-ios9 .home-hero::after {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+html.legacy-ios9 .home-categories .category-card::before {
+    -webkit-filter: none;
+    filter: none;
+    opacity: 0.44;
+    -webkit-transform: none;
+    transform: none;
+}
+
+html.legacy-ios9 .category-card[data-category="all"]::before {
+    background-image: url('/assets/images/backgrounds/category_all.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="farmers"]::before {
+    background-image: url('/assets/images/backgrounds/category_farmers.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="bakeries"]::before {
+    background-image: url('/assets/images/backgrounds/category_bakeries.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="meat"]::before {
+    background-image: url('/assets/images/backgrounds/category_meat.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="restaurants"]::before {
+    background-image: url('/assets/images/backgrounds/category_restaurants.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="shops"]::before {
+    background-image: url('/assets/images/backgrounds/category_shops.jpg?v=20');
+}
+
+html.legacy-ios9 .category-card[data-category="vending"]::before {
+    background-image: url('/assets/images/backgrounds/category_vending.jpg?v=21');
+}
+
+html.legacy-ios9 .category-card[data-category="fastFood"]::before {
+    background-image: url('/assets/images/backgrounds/category_fastFood.jpg?v=21');
+}
+
+html.legacy-ios9 .category-card[data-category="honey"]::before {
+    background-image: url('/assets/images/backgrounds/category_honey.jpg?v=21');
+}
+
+html.legacy-ios9 .category-card[data-category="favorites"]::before {
+    background-image: url('/assets/images/backgrounds/category_favorites.jpg?v=21');
+    opacity: 0.34;
+}
+
+html.legacy-ios9 .category-icon::after,
+html.legacy-ios9 .premium-feature-icon::after {
+    display: none;
+}
+
+/* --- Mapa: pełna wysokość na iPadzie --- */
+
+html.legacy-ios9 [data-view-panel="map"] {
+    height: calc(100vh - 52px - 60px);
+}
+
+html.legacy-ios9 .map-bottom-panel {
+    pointer-events: auto;
+}
+
+/* --- iPad 4:3 portrait (768×1024) --- */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    html.legacy-ios9 .categories-grid .category-card {
+        -webkit-flex: 1 1 30%;
+        flex: 1 1 30%;
+        max-width: 32%;
+    }
+
+    html.legacy-ios9 .home-products-grid .home-product-card {
+        -webkit-flex: 1 1 48%;
+        flex: 1 1 48%;
+        max-width: 48%;
+    }
+
+    html.legacy-ios9 .bottom-nav .nav-label {
+        font-size: 11px;
+    }
+}
+
+/* --- iPad 4:3 landscape (1024×768 – A1416, A1432) --- */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    html.legacy-ios9 .categories-grid .category-card {
+        -webkit-flex: 1 1 22%;
+        flex: 1 1 22%;
+        max-width: 24%;
+    }
+
+    html.legacy-ios9 .home-products-grid .home-product-card {
+        -webkit-flex: 1 1 30%;
+        flex: 1 1 30%;
+        max-width: 32%;
+    }
+
+    html.legacy-ios9 .header-left h1 {
+        font-size: 20px;
+    }
+
+    html.legacy-ios9 .bottom-nav .nav-label {
+        font-size: 11px;
+    }
+
+    html.legacy-ios9 [data-view-panel="map"] {
+        height: calc(100vh - 48px - 56px);
+    }
+}
+
+/* --- iPad landscape 1024×768 (max-height) --- */
+
+@media screen and (min-width: 1024px) and (max-height: 768px) {
+    html.legacy-ios9 .home-products-grid .home-product-card {
+        -webkit-flex: 1 1 30%;
+        flex: 1 1 30%;
+        max-width: 32%;
+    }
+}
+
+/* --- Tablet 600px+ --- */
+
+@media screen and (min-width: 600px) {
+    html.legacy-ios9 .categories-grid .category-card {
+        -webkit-flex: 1 1 30%;
+        flex: 1 1 30%;
+        max-width: 32%;
+    }
+
+    html.legacy-ios9 .home-products-grid .home-product-card {
+        -webkit-flex: 1 1 48%;
+        flex: 1 1 48%;
+        max-width: 48%;
+    }
+
+    html.legacy-ios9 .bottom-nav .nav-icon {
+        font-size: 22px;
+    }
+
+    html.legacy-ios9 .bottom-nav .nav-label {
+        font-size: 11px;
+    }
+}
+
+/* --- Telefon: 2 kolumny produktów od 400px --- */
+
+@media screen and (min-width: 400px) and (max-width: 599px) {
+    html.legacy-ios9 .home-products-grid .home-product-card {
+        -webkit-flex: 1 1 48%;
+        flex: 1 1 48%;
+        max-width: 48%;
+    }
+}
+
+/* --- Małe ekrany --- */
+
+@media screen and (max-width: 479px) {
+    html.legacy-ios9 .home-premium-desc,
+    html.legacy-ios9 .category-desc,
+    html.legacy-ios9 .home-premium-arrow {
+        display: none;
+    }
+}
+
+/* Drawer – wyjątek od globalnego transform: none */
+html.legacy-ios9 .side-menu-panel {
+    -webkit-transform: translateX(-100%) !important;
+    transform: translateX(-100%) !important;
+}
+
+html.legacy-ios9 .side-menu.is-open .side-menu-panel {
+    -webkit-transform: translateX(0) !important;
+    transform: translateX(0) !important;
+}

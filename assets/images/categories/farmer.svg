@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Farmer">
+  <rect width="64" height="64" rx="14" fill="#e8f5e9"/>
+  <circle cx="32" cy="38" r="16" fill="#66bb6a"/>
+  <path d="M20 38c0-10 6-18 12-22 6 4 12 12 12 22" fill="#2e7d32"/>
+  <path d="M32 16v28" stroke="#1b5e20" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="14" r="5" fill="#f9a825"/>
+</svg>

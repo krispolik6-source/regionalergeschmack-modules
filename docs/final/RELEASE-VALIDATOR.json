@@ -1,0 +1,385 @@
+{
+  "id": "etap-44-release-validator",
+  "title": "ETAP 44 — Release Validator",
+  "generatedAt": "2026-07-23T18:33:01.242Z",
+  "fast": true,
+  "verbose": false,
+  "summary": {
+    "score": 97,
+    "criticalFails": 0,
+    "highFails": 1,
+    "passed": 27,
+    "failed": 1,
+    "skipped": 0,
+    "total": 28,
+    "categories": {
+      "audits": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "translations": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "icons": {
+        "pass": 3,
+        "fail": 1,
+        "skip": 0
+      },
+      "pwa": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "responsive": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "accessibility": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "performance": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "guardians": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  },
+  "ready": true,
+  "reason": "",
+  "board": {
+    "releaseScore": 97,
+    "readyForProduction": "YES",
+    "reason": null
+  },
+  "results": [
+    {
+      "id": "full-audit",
+      "category": "audits",
+      "label": "Full audit",
+      "critical": true,
+      "weight": 8,
+      "status": "pass",
+      "exit": 0,
+      "ms": 6671,
+      "detail": "✅ OK: 211 | ⚠️  Ostrzeżenia: 0 | ❌ Błędy: 0 | Audyt statyczny: PASS"
+    },
+    {
+      "id": "functional",
+      "category": "tests",
+      "label": "Functional audit",
+      "critical": true,
+      "weight": 8,
+      "status": "pass",
+      "exit": 0,
+      "ms": 81327,
+      "detail": "✅ Profil: panele klienta i producenta | ℹ️  Serwer nie działa – pominięto testy HTTP | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0"
+    },
+    {
+      "id": "premiere",
+      "category": "tests",
+      "label": "Premiere checklist",
+      "critical": true,
+      "weight": 5,
+      "status": "pass",
+      "exit": 0,
+      "ms": 35,
+      "detail": "OK   share copy has link | OK   share copy has brand | Link: https://admirable-cascaron-c76940.netlify.app | Premiere checklist OK"
+    },
+    {
+      "id": "rc",
+      "category": "tests",
+      "label": "Release Candidate path",
+      "critical": true,
+      "weight": 6,
+      "status": "pass",
+      "exit": 0,
+      "ms": 81128,
+      "detail": "✅ child-pwa —  | --- PWA test --- | OK | ✅ child-landing —  | --- Landing test --- | OK | ✅ child-device-lab — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md | Wrote: docs\\final\\RELEASE-CANDIDATE.md"
+    },
+    {
+      "id": "translations",
+      "category": "translations",
+      "label": "Translations keys",
+      "critical": true,
+      "weight": 7,
+      "status": "pass",
+      "exit": 0,
+      "ms": 75,
+      "detail": "✅ th: komplet (1202 kluczy) | ✅ hi: komplet (1202 kluczy) | --- Wymagane klucze testowe --- | ✅ Wszystkie języki mają wymagane klucze testowe."
+    },
+    {
+      "id": "search-i18n",
+      "category": "translations",
+      "label": "Search i18n",
+      "critical": false,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 17713,
+      "detail": "✅ ru: placeholder=\"Искать продукты, рестораны, магазины или…\", searching=\"Поиск...\" | ✅ tr: placeholder=\"Ürün, restoran, mağaza veya üretici ara.…\", searching=\"Aranıyor...\" | === Podsumowanie === | ✅ Wszystkie testy wyszukiwarki PASS"
+    },
+    {
+      "id": "landing",
+      "category": "translations",
+      "label": "Landing",
+      "critical": true,
+      "weight": 4,
+      "status": "pass",
+      "exit": 0,
+      "ms": 34,
+      "detail": "✅ Link do aplikacji | ✅ Responsywność CSS | --- Landing test --- | OK"
+    },
+    {
+      "id": "master-icon",
+      "category": "icons",
+      "label": "Master icon audit",
+      "critical": true,
+      "weight": 5,
+      "status": "pass",
+      "exit": 0,
+      "ms": 63,
+      "detail": "[Master Icon Audit] PASS · 49/49 | Usages: 68 · stale: 0 | Wrote: docs\\brand\\MASTER-ICON-AUDIT.md"
+    },
+    {
+      "id": "logo-audit",
+      "category": "icons",
+      "label": "Logo audit",
+      "critical": false,
+      "weight": 3,
+      "status": "fail",
+      "exit": 1,
+      "ms": 42,
+      "detail": "[Logo Audit] ATTENTION | found 29 · replaced 7 · missing 0 | Wrote: docs\\brand\\LOGO-AUDIT.md"
+    },
+    {
+      "id": "brand-protection",
+      "category": "icons",
+      "label": "Brand protection",
+      "critical": true,
+      "weight": 4,
+      "status": "pass",
+      "exit": 0,
+      "ms": 90,
+      "detail": "✅ has gradients category | ✅ md mentions Brand Book | ✅ md has status | Brand Protection smoke test OK"
+    },
+    {
+      "id": "assets",
+      "category": "icons",
+      "label": "Asset audit",
+      "critical": false,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 59,
+      "detail": "Referencje: 176 | Pliki assets: 227 | Nieużywane (poza sources.json): 0"
+    },
+    {
+      "id": "pwa",
+      "category": "pwa",
+      "label": "PWA (manifest · SW · install)",
+      "critical": true,
+      "weight": 8,
+      "status": "pass",
+      "exit": 0,
+      "ms": 35,
+      "detail": "✅ pwaInstall.js: wywołanie prompt() | ✅ pwaInstall.js: beforeinstallprompt | --- PWA test --- | OK"
+    },
+    {
+      "id": "push",
+      "category": "pwa",
+      "label": "Push notifications",
+      "critical": false,
+      "weight": 2,
+      "status": "pass",
+      "exit": 0,
+      "ms": 67,
+      "detail": "✅ parseOfferKey działa | ✅ Wykrywanie nowych ofert działa | --- Push notifications test --- | OK"
+    },
+    {
+      "id": "browser",
+      "category": "pwa",
+      "label": "Browser audit",
+      "critical": false,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 55,
+      "detail": "✅ QR: generowanie w sideMenu | ✅ CSS: przejścia widoków | --- Symulacja przeglądarki --- | OK: 17 | Błędy: 0"
+    },
+    {
+      "id": "responsive",
+      "category": "responsive",
+      "label": "Responsive check",
+      "critical": true,
+      "weight": 4,
+      "status": "pass",
+      "exit": 0,
+      "ms": 35,
+      "detail": "✅ Home CATEGORY_IDS kanoniczna ósemka | ✅ quick filters bez duplikatów kategorii | --- Responsive check --- | OK"
+    },
+    {
+      "id": "device-lab",
+      "category": "responsive",
+      "label": "Device Lab",
+      "critical": true,
+      "weight": 5,
+      "status": "pass",
+      "exit": 0,
+      "ms": 52,
+      "detail": "[Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md"
+    },
+    {
+      "id": "accessibility",
+      "category": "accessibility",
+      "label": "Accessibility",
+      "critical": true,
+      "weight": 5,
+      "status": "pass",
+      "exit": 0,
+      "ms": 37,
+      "detail": "✅ touch target = --ph-btn (header) | ✅ 🌞 dzienny / 🌙 nocny w applyDarkMode | --- Accessibility check --- | OK"
+    },
+    {
+      "id": "health",
+      "category": "performance",
+      "label": "Application health",
+      "critical": false,
+      "weight": 4,
+      "status": "pass",
+      "exit": 0,
+      "ms": 194,
+      "detail": "Findings: 1 | Wrote: docs\\health\\latest.json | Wrote: docs\\health\\latest.md | Policy: read-only · autoFix=false"
+    },
+    {
+      "id": "production-polish",
+      "category": "performance",
+      "label": "Production polish",
+      "critical": false,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 38,
+      "detail": "[Production Polish] Overall 91/100 · fail 0 · warn 1 | Wrote: docs\\premium\\PRODUCTION-POLISH.md"
+    },
+    {
+      "id": "logging",
+      "category": "performance",
+      "label": "Production logging / silence",
+      "critical": true,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 37,
+      "detail": "✅ logger isolated | ✅ report md | Production Logging smoke OK | Wrote: docs/logging/PRODUCTION-LOGGING.md"
+    },
+    {
+      "id": "console-guardian",
+      "category": "guardians",
+      "label": "Console Guardian",
+      "critical": true,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 98,
+      "detail": "✅ syntax js/diagnostics/consoleGuardian.js | ✅ syntax js/core/logger.js | ✅ report written | Console Guardian smoke OK"
+    },
+    {
+      "id": "ui-guardian",
+      "category": "guardians",
+      "label": "UI Guardian",
+      "critical": true,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 67,
+      "detail": "✅ ux-polish covers region story | ✅ syntax uiGuardian.js | ✅ report | UI Guardian smoke OK"
+    },
+    {
+      "id": "map-guardian",
+      "category": "guardians",
+      "label": "Map Guardian",
+      "critical": true,
+      "weight": 4,
+      "status": "pass",
+      "exit": 0,
+      "ms": 150,
+      "detail": "✅ syntax js/views/map.js | ✅ syntax js/map/map.js | ✅ report | Map Guardian smoke OK"
+    },
+    {
+      "id": "memory-cleaner",
+      "category": "guardians",
+      "label": "Memory Cleaner",
+      "critical": false,
+      "weight": 2,
+      "status": "pass",
+      "exit": 0,
+      "ms": 71,
+      "detail": "✅ vault card | ✅ syntax | ✅ report | Memory Cleaner smoke OK"
+    },
+    {
+      "id": "self-heal-39",
+      "category": "guardians",
+      "label": "Self Healing 39",
+      "critical": false,
+      "weight": 2,
+      "status": "pass",
+      "exit": 0,
+      "ms": 138,
+      "detail": "✅ syntax js/diagnostics/selfHealing.js | ✅ syntax js/views/map.js | ✅ syntax js/controllers/navigation.js | ETAP 39 self-heal checks passed."
+    },
+    {
+      "id": "auth",
+      "category": "tests",
+      "label": "Auth flow",
+      "critical": false,
+      "weight": 3,
+      "status": "pass",
+      "exit": 0,
+      "ms": 161,
+      "detail": "✅ Logowanie nowym hasłem | ✅ Opinie powiązane z userId | --- Auth test --- | OK: 14 | Błędy: 0"
+    },
+    {
+      "id": "product-images",
+      "category": "tests",
+      "label": "Product images",
+      "critical": false,
+      "weight": 2,
+      "status": "pass",
+      "exit": 0,
+      "ms": 37,
+      "detail": "✅ soft-drink.webp | ✅ lidl-regional.webp | --- Product images test --- | OK"
+    },
+    {
+      "id": "reviews",
+      "category": "tests",
+      "label": "Reviews images",
+      "critical": false,
+      "weight": 2,
+      "status": "pass",
+      "exit": 0,
+      "ms": 59,
+      "detail": "✅ addReview zapisuje imageUrl | ✅ getReviews zwraca imageUrl | --- Reviews image test --- | OK"
+    }
+  ],
+  "policy": {
+    "readyRequires": "criticalFails === 0 && score >= 90",
+    "consoleDefault": "board-only",
+    "architectureUnchanged": true
+  }
+}

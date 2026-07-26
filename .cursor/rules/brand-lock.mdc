@@ -1,0 +1,45 @@
+---
+description: P4 Brand Lock — jedna marka, logo, paleta, typografia (wymaga akceptacji)
+alwaysApply: true
+---
+
+# Brand Lock (P4)
+
+**Źródło prawdy:** `docs/brand/BRAND-BOOK.md`  
+**Master logo:** `assets/icons/logo-master.svg` (dwa złote kłosy →)
+
+## Zasada
+
+Jedna marka. Jedno logo. Jedna paleta. Jedna typografia.
+
+## Zakaz bez wyraźnej akceptacji właściciela
+
+NIE zmieniaj samodzielnie:
+
+- logo / plików w `assets/icons/` / `assets/brand/*logo*`
+- kolorów marki (`--brand-*`, `#2a3f28`, `#c9a227`, `#f5efe3`…)
+- fontów (Literata, Source Sans 3 — bez Inter/Roboto/…)
+- ikon PWA / favicon / maskable / monochrome / store
+
+## Gdy zmiana naruszałaby Brand Book
+
+1. **Zatrzymaj się** — nie wprowadzaj zmiany.
+2. Zgłoś ostrzeżenie:
+
+```
+⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+```
+
+3. Opisz co chcesz zmienić i dlaczego — czekaj na TAK.
+
+## Dozwolone bez pytania (tylko gdy już zaakceptowano zadanie)
+
+- Regeneracja ikon: `npm run generate-icons` z istniejącego mastera
+- Cache-bust `?v=` / SW po regeneracji ikon (gdy właściciel zlecił ikony)
+- Raporty: `brand-consistency`, `brand-protection`, `master-icon-audit`
+
+## Protection (ETAP 29C)
+
+Uruchom / respektuj: `npm run brand-protection`  
+Raport: `docs/brand-protection/latest.md` · `docs/brand/BRAND-PROTECTION.md`  
+Status: **PASS** | **WARNING** | **FAIL** — przy naruszeniu **nie poprawiaj kodu** (`autoApply: false`), tylko ostrzeżenie w raporcie.

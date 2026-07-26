@@ -1,0 +1,55 @@
+{
+  "updatedAt": "2026-07-21T18:21:20.379Z",
+  "policy": {
+    "autoApply": false,
+    "note": "append-only snapshots for trends"
+  },
+  "series": [
+    {
+      "day": "2026-07-20",
+      "metrics": {
+        "performance": 99,
+        "ux": 85,
+        "healthOverall": 98,
+        "cssConflicts": 40,
+        "brandWarnings": 0,
+        "improveCount": 3,
+        "guardianFindings": 1
+      },
+      "sources": [
+        "archives",
+        "health",
+        "improve",
+        "guardian"
+      ]
+    },
+    {
+      "day": "2026-07-21",
+      "metrics": {
+        "performance": 99,
+        "ux": 85,
+        "healthOverall": 98,
+        "cssConflicts": 40,
+        "wantToReturn": 89,
+        "fatigue": 50,
+        "livingBrand": 95,
+        "brandWarnings": 5,
+        "improveCount": 3,
+        "guardianFindings": 0,
+        "returnScore": 80,
+        "reflectionOverall": 92
+      },
+      "sources": [
+        "archives",
+        "health",
+        "emotion",
+        "livingBrand",
+        "dream",
+        "selfReflection",
+        "brandProtection",
+        "qualityLoop",
+        "improve"
+      ]
+    }
+  ]
+}

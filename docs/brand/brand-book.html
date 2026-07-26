@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regionaler Geschmack — Brand Book</title>
+  <link rel="icon" href="../../assets/icons/logo-master.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;700&family=Source+Sans+3:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #2a3f28;
+      --green-mid: #3d5c34;
+      --gold: #c9a227;
+      --wheat: #e8c97a;
+      --honey: #d4a84b;
+      --cream: #f5efe3;
+      --cream-card: #fff8ee;
+      --ink: #1c1812;
+      --ink-soft: #3d3428;
+      --font-display: 'Literata', Georgia, serif;
+      --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(201, 162, 39, 0.18), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(42, 63, 40, 0.12), transparent 50%),
+        linear-gradient(180deg, #faf6ee 0%, var(--cream) 40%, #efe6d4 100%);
+      line-height: 1.5;
+    }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 1.5rem 4rem;
+      background:
+        linear-gradient(180deg, rgba(36, 61, 40, 0.94) 0%, var(--green) 55%, #1f3220 100%);
+      color: #fffef8;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--wheat), var(--gold), transparent);
+    }
+    .hero img.mark {
+      width: min(200px, 42vw);
+      height: auto;
+      border-radius: 28%;
+      box-shadow: 0 2px 0 rgba(201, 162, 39, 0.35), 0 16px 40px rgba(0, 0, 0, 0.35);
+      animation: rise 1s ease-out both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px) scale(0.96); }
+      to { opacity: 1; transform: none; }
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      margin: 1.25rem 0 0.4rem;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+      animation: rise 1s 0.12s ease-out both;
+    }
+    .hero p {
+      max-width: 28rem;
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--wheat);
+      animation: rise 1s 0.22s ease-out both;
+    }
+    .hero .meta {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      opacity: 0.75;
+      animation: rise 1s 0.3s ease-out both;
+    }
+    nav.toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      justify-content: center;
+      padding: 1rem 1.25rem;
+      background: rgba(245, 239, 227, 0.92);
+      border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    nav.toc a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    nav.toc a:hover { color: var(--gold); }
+    main { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    section { margin-bottom: 3.5rem; }
+    section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      color: var(--green);
+      margin: 0 0 0.5rem;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 0.35rem;
+      display: inline-block;
+    }
+    section > .lead {
+      color: var(--ink-soft);
+      max-width: 40rem;
+      margin: 0.75rem 0 1.5rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .swatch-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .swatch {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(28, 24, 18, 0.08);
+      background: var(--cream-card);
+    }
+    .swatch .chip { height: 72px; }
+    .swatch figcaption {
+      padding: 0.55rem 0.7rem 0.75rem;
+      font-size: 0.82rem;
+    }
+    .swatch strong { display: block; font-size: 0.92rem; }
+    .logo-tile {
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid rgba(201, 162, 39, 0.35);
+    }
+    .logo-tile img { width: 140px; height: 140px; object-fit: contain; border-radius: 22%; }
+    .logo-tile.light { background: var(--cream); }
+    .logo-tile.dark { background: var(--green); color: #fffef8; }
+    .logo-tile.mark {
+      background: linear-gradient(145deg, #3d5c34, #1a1f18);
+      color: var(--wheat);
+    }
+    .logo-tile span { font-size: 0.85rem; font-weight: 600; text-align: center; }
+    .icon-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+    .icon-strip figure {
+      margin: 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+    }
+    .icon-strip img {
+      display: block;
+      border-radius: 18%;
+      border: 1px solid rgba(42, 63, 40, 0.15);
+      background: #fff;
+      margin-bottom: 0.35rem;
+    }
+    .type-sample {
+      padding: 1.25rem 1.4rem;
+      background: var(--cream-card);
+      border-radius: 14px;
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      margin-bottom: 0.75rem;
+    }
+    .type-sample.display {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .type-sample.ui { font-size: 1.05rem; font-weight: 600; }
+    .rules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 640px) { .rules { grid-template-columns: 1fr; } }
+    .rules div {
+      padding: 1.1rem 1.2rem;
+      border-radius: 12px;
+    }
+    .rules .do {
+      background: rgba(61, 92, 52, 0.1);
+      border: 1px solid rgba(61, 92, 52, 0.35);
+    }
+    .rules .dont {
+      background: rgba(184, 92, 56, 0.08);
+      border: 1px solid rgba(184, 92, 56, 0.35);
+    }
+    .rules h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+    .rules ul { margin: 0; padding-left: 1.1rem; }
+    .photo-mood {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+    .mood {
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-end;
+      padding: 0.75rem;
+      color: #fffef8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    }
+    .mood.m1 { background: linear-gradient(160deg, #c9a227 0%, #5a7d48 45%, #2a3f28 100%); }
+    .mood.m2 { background: linear-gradient(160deg, #e8c97a 0%, #d4a84b 40%, #3d5c34 100%); }
+    .mood.m3 { background: linear-gradient(160deg, #f5efe3 0%, #a67c1a 50%, #243d28 100%); color: var(--ink); text-shadow: none; }
+    .mood.m4 { background: linear-gradient(160deg, #8a5a2a 0%, #2a3f28 70%); }
+    .store-frames {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.25rem;
+    }
+    .phone {
+      background: linear-gradient(180deg, #243d28, var(--green));
+      border-radius: 20px;
+      padding: 1.1rem 0.85rem 1.4rem;
+      text-align: center;
+      color: var(--wheat);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .phone h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      margin: 0 0 0.75rem;
+      color: #fffef8;
+      min-height: 2.4em;
+    }
+    .phone .screen {
+      background: var(--cream);
+      border-radius: 14px;
+      aspect-ratio: 9/16;
+      margin: 0 auto;
+      max-width: 140px;
+      border: 2px solid rgba(232, 201, 122, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      color: var(--green);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.5rem;
+    }
+    .phone .screen img { width: 36px; height: 36px; border-radius: 8px; }
+    .spec {
+      font-size: 0.85rem;
+      background: var(--cream-card);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(201, 162, 39, 0.28);
+    }
+    .spec code { font-size: 0.8rem; color: var(--green-mid); }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--green); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <img class="mark" src="../../assets/icons/logo-master.svg" alt="Regionaler Geschmack – dwa złote kłosy">
+    <h1>Regionaler Geschmack</h1>
+    <p>Brand Book — ikona aplikacji: dwa złote kłosy · nazwa obok jako napis</p>
+    <p class="meta">v1.0 · 2026-07-21 · app icon = wheat ears only</p>
+  </header>
+
+  <nav class="toc" aria-label="Spis">
+    <a href="#logo">Logo</a>
+    <a href="#variants">Warianty</a>
+    <a href="#icons">Ikony PWA</a>
+    <a href="#colors">Kolory</a>
+    <a href="#type">Typografia</a>
+    <a href="#icons-style">Styl ikon</a>
+    <a href="#photo">Fotografia</a>
+    <a href="#rules">Zasady</a>
+    <a href="#store">Store</a>
+  </nav>
+
+  <main>
+    <section id="logo">
+      <h2>Ikona aplikacji</h2>
+      <p class="lead"><strong>Dwa złote kłosy pochylone w prawo</strong> = ikona aplikacji (PWA, sklep, favicon, telefon). Nazwa „Regionaler Geschmack” to osobny napis obok — nie wchodzi do ikony. Plik: <code>assets/icons/logo-master.svg</code>.</p>
+      <div class="logo-tile light" style="max-width:280px;margin:0 auto">
+        <img src="../../assets/icons/logo-master.svg" alt="Ikona aplikacji – dwa kłosy">
+        <span>Ikona aplikacji · logo-master.svg</span>
+      </div>
+    </section>
+
+    <section id="variants">
+      <h2>Wersje na jasnym i ciemnym tle</h2>
+      <p class="lead">Dobierz wariant do tła — nigdy nie zmieniaj kolorów kłosów ad hoc.</p>
+      <div class="grid-2">
+        <div class="logo-tile light">
+          <img src="../../assets/brand/logo-on-light.svg" alt="Logo na jasnym">
+          <span>logo-on-light.svg · krem #f5efe3</span>
+        </div>
+        <div class="logo-tile dark">
+          <img src="../../assets/brand/logo-on-dark.svg" alt="Logo na ciemnym">
+          <span>logo-on-dark.svg · zieleń #2a3f28</span>
+        </div>
+        <div class="logo-tile mark">
+          <img src="../../assets/brand/logo-mark.svg" alt="Znak bez tła">
+          <span>logo-mark.svg · przezroczysty (na foto)</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="icons">
+      <h2>Favicon i ikony PWA</h2>
+      <p class="lead">Wszystkie generowane z master: <code>npm run generate-icons</code></p>
+      <div class="icon-strip">
+        <figure>
+          <img src="../../assets/icons/favicon.ico" width="32" height="32" alt="favicon">
+          favicon.ico
+        </figure>
+        <figure>
+          <img src="../../assets/icons/apple-touch-icon.png" width="64" height="64" alt="apple">
+          Apple Touch
+        </figure>
+        <figure>
+          <img src="../../assets/icons/icon-192.png" width="72" height="72" alt="192">
+          192
+        </figure>
+        <figure>
+          <img src="../../assets/icons/icon-512.png" width="96" height="96" alt="512">
+          512
+        </figure>
+        <figure>
+          <img src="../../assets/icons/maskable-512.png" width="96" height="96" alt="maskable">
+          maskable 512
+        </figure>
+      </div>
+      <p class="spec" style="margin-top:1.25rem">
+        Manifest: <code>theme_color #2a3f28</code> · <code>background_color #f5efe3</code><br>
+        Store: <code>assets/store/google-play/icon-512.png</code> · <code>assets/store/app-store/icon-1024.png</code>
+      </p>
+    </section>
+
+    <section id="colors">
+      <h2>Kolory marki</h2>
+      <p class="lead">Miód · pszenica · zieleń · krem. Bez zimnego niebieskiego.</p>
+      <div class="swatch-row">
+        <figure class="swatch"><div class="chip" style="background:#2a3f28"></div><figcaption><strong>Zieleń</strong>#2a3f28</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#3d5c34"></div><figcaption><strong>Zieleń mid</strong>#3d5c34</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#c9a227"></div><figcaption><strong>Złoto</strong>#c9a227</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#e8c97a"></div><figcaption><strong>Pszenica</strong>#e8c97a</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#d4a84b"></div><figcaption><strong>Miód</strong>#d4a84b</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#f5efe3;border-bottom:1px solid #ddd"></div><figcaption><strong>Krem</strong>#f5efe3</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#fff8ee;border-bottom:1px solid #ddd"></div><figcaption><strong>Krem karty</strong>#fff8ee</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#1c1812"></div><figcaption><strong>Atrament</strong>#1c1812</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="type">
+      <h2>Typografia</h2>
+      <div class="type-sample display">Regionaler Geschmack</div>
+      <div class="type-sample ui">Source Sans 3 — interfejs, przyciski, opisy producentów. Czytelnie na słońcu i w dark mode.</div>
+      <p class="spec">Display: <strong>Literata</strong> · UI: <strong>Source Sans 3</strong> · Zakaz: Inter, Roboto, Poppins…</p>
+    </section>
+
+    <section id="icons-style">
+      <h2>Styl ikon</h2>
+      <p class="lead">Ciepłe tokeny nawigacji i kategorii (zieleń / miód / terracotta). Znak aplikacji = wyłącznie kłosy. Maskable: safe zone ~72%.</p>
+      <div class="swatch-row">
+        <figure class="swatch"><div class="chip" style="background:#3d5c34"></div><figcaption>nav home</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#d4a84b"></div><figcaption>nav search</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#b85c38"></div><figcaption>favorites</figcaption></figure>
+        <figure class="swatch"><div class="chip" style="background:#a67c1a"></div><figcaption>profile / shops</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="photo">
+      <h2>Styl fotografii</h2>
+      <p class="lead">Złota godzina · wieś · naturalne światło · autentyczność produktu.</p>
+      <div class="photo-mood">
+        <div class="mood m1">Złota godzina</div>
+        <div class="mood m2">Pole / pszenica</div>
+        <div class="mood m3">Stragan / krem</div>
+        <div class="mood m4">Gospodarstwo</div>
+      </div>
+      <p class="spec" style="margin-top:1rem">Unikaj: neon, stock biurowy, zimny niebieski dominant, placeholdery.</p>
+    </section>
+
+    <section id="rules">
+      <h2>Zasady użycia logo</h2>
+      <div class="rules">
+        <div class="do">
+          <h3>Wolno</h3>
+          <ul>
+            <li>logo-on-light / on-dark / mark wg tła</li>
+            <li>proporcje bez rozciągania</li>
+            <li>clear space ≈ ¼ wysokości</li>
+            <li>min. 24×24 px w UI</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3>Nie wolno</h3>
+          <ul>
+            <li>drugiego logo / emoji jako znaku store</li>
+            <li>przekolorować kłosy na niebieski</li>
+            <li>fioletowego glow / Inter jako brand</li>
+            <li>obracać w inną stronę niż kanon</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="store">
+      <h2>Zrzuty Google Play &amp; App Store</h2>
+      <p class="lead">Pięć kadrów · tło marki · Literata headline · telefon wyśrodkowany.</p>
+      <div class="store-frames">
+        <div class="phone">
+          <h4>1 · Klimat Home</h4>
+          <div class="screen">
+            <img src="../../assets/icons/logo-master.svg" alt="">
+            Home
+          </div>
+        </div>
+        <div class="phone">
+          <h4>2 · Mapa regionu</h4>
+          <div class="screen">Mapa</div>
+        </div>
+        <div class="phone">
+          <h4>3 · Producent</h4>
+          <div class="screen">Modal</div>
+        </div>
+        <div class="phone">
+          <h4>4 · Powrót</h4>
+          <div class="screen">Ulubione</div>
+        </div>
+        <div class="phone">
+          <h4>5 · Premium</h4>
+          <div class="screen">Wartość</div>
+        </div>
+      </div>
+      <p class="spec" style="margin-top:1.25rem">
+        <strong>Google Play:</strong> telefon 1080×1920 · feature 1024×500<br>
+        <strong>App Store:</strong> 1290×2796 (lub 1242×2688) · ikona 1024×1024<br>
+        Pliki ikon: <code>assets/store/google-play/</code> · <code>assets/store/app-store/</code>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Brand Book v1.0</strong> — dokument Markdown:
+      <a href="./BRAND-BOOK.md">BRAND-BOOK.md</a>
+      · strażnik: <code>npm run living-brand</code>
+    </p>
+    <p>Regionaler Geschmack — spójność w aplikacji, na telefonie, w sklepie i w promocji.</p>
+  </footer>
+</body>
+</html>

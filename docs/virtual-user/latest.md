@@ -1,0 +1,58 @@
+# Virtual User – raport testów
+
+Wygenerowano: 2026-07-21T16:50:13.680Z
+Powód: cli-placeholder
+Score: **—%**
+
+## Podsumowanie
+
+- Scenariusze OK: 0
+- Scenariusze FAIL: 0
+- Issues: 0
+- Śr. FPS: —
+- Memory leak: nie
+
+## Typy problemów
+
+- **flicker**: 0
+- **error**: 0
+- **fps**: 0
+- **memory-leak**: 0
+- **translation**: 0
+- **responsive**: 0
+- **touch**: 0
+- **ux**: 0
+
+## Scenariusze
+
+- `home-map-producer-back` — pending
+- `search` — pending
+- `gps` — pending
+- `filters` — pending
+- `popup` — pending
+- `modal` — pending
+- `favorites` — pending
+- `cart` — pending
+- `profile` — pending
+- `premium` — pending
+- `language` — pending
+- `dark-mode` — pending
+- `offline` — pending
+- `online` — pending
+- `restart-app` — pending
+
+## Hotspoty / issues
+
+_Brak zgłoszonych issues (lub oczekiwanie na run w przeglądarce)._
+
+## Polityka
+
+- autoFix: false
+- bez zmiany architektury
+
+## Jak uruchomić pełny test
+
+- 1. Otwórz aplikację na localhost
+- 2. Konsola: __RG_VIRTUAL__.run()  LUB  URL ?virtual=1
+- 3. Skopiuj JSON: __RG_VIRTUAL__.export()
+- 4. npm run virtual-user -- --import=dump.json

@@ -1,0 +1,146 @@
+/* ============================================================
+   ETAP 16 – Cyfrowa Dusza Regionu
+   Znak rozpoznawczy: głos gospodarza (nie katalog)
+   ============================================================ */
+
+.home-region-soul {
+    position: relative;
+    margin: 0;
+    padding: 16px 16px 16px 18px;
+    border-radius: var(--radius-lg, 20px);
+    border: 1px solid rgba(120, 95, 55, 0.16);
+    background:
+        linear-gradient(160deg, rgba(255, 252, 244, 0.96) 0%, rgba(255, 236, 208, 0.58) 55%, rgba(240, 228, 200, 0.4) 100%);
+    box-shadow: 0 6px 22px rgba(70, 50, 20, 0.06);
+    overflow: hidden;
+}
+
+.home-region-soul::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 70% 60% at 0% 0%, rgba(196, 150, 70, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 45% at 100% 100%, rgba(79, 107, 60, 0.1) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.home-region-soul-btn {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.home-region-soul-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 12px;
+}
+
+.home-region-soul-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.home-region-soul-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 1px;
+}
+
+.home-region-soul-label {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-region-soul-line {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.42;
+    font-weight: 600;
+    color: var(--color-text, #2a3028);
+    letter-spacing: -0.01em;
+}
+
+.home-region-soul-hint {
+    margin: 2px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+/* ETAP 29B – Regional Intelligence (jedna rekomendacja, spokojny ton) */
+.home-regional-intel-support {
+    margin: 2px 0 0;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+body.dark-mode .home-regional-intel-support {
+    color: rgba(232, 228, 216, 0.78);
+}
+
+/* Wewnątrz greeting – pierwsza kompozycja, nie lista */
+.home-greeting .home-region-soul {
+    margin-top: 10px;
+}
+
+.home-greeting--with-soul .home-greeting-sub {
+    display: none;
+}
+
+body.legacy-ios9 .home-region-soul {
+    border-radius: 0;
+    background: #f4ecd8;
+    box-shadow: none;
+}
+
+body.dark-mode .home-region-soul {
+    border-color: rgba(200, 170, 120, 0.22);
+    background: linear-gradient(160deg, rgba(40, 44, 40, 0.96) 0%, rgba(48, 46, 38, 0.85) 100%);
+}
+
+body.dark-mode .home-region-soul-line {
+    color: #e8e4d8;
+}
+
+body.dark-mode .home-region-soul-icon {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-region-soul {
+        transition: none;
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "production-logging-31a",
+  "generatedAt": "2026-07-23T18:33:00.455Z",
+  "levels": {
+    "DEBUG": 10,
+    "INFO": 20,
+    "WARN": 30,
+    "ERROR": 40,
+    "FATAL": 50
+  },
+  "policy": {
+    "devDefault": "DEBUG",
+    "productionDefault": "SILENT",
+    "etap40": true,
+    "autoApply": false
+  },
+  "patterns": 27,
+  "smokeOk": true
+}

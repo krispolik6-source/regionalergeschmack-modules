@@ -1,0 +1,1565 @@
+{
+  "generatedAt": "2026-07-26T09:11:48.713Z",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "docsOnly": true
+  },
+  "stats": {
+    "docsBytes": 1198462,
+    "docsHuman": "1.14 MB",
+    "fileCount": 208,
+    "reportCount": 172,
+    "moduleCount": 49
+  },
+  "reports": [
+    {
+      "rel": "docs/dev-center/reports-index.json",
+      "module": "dev-center",
+      "name": "reports-index.json",
+      "bytes": 41371,
+      "human": "40.4 KB",
+      "mtime": "2026-07-26T09:06:01.451Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/user-taste/latest.json",
+      "module": "user-taste",
+      "name": "latest.json",
+      "bytes": 4,
+      "human": "4 B",
+      "mtime": "2026-07-26T09:05:59.452Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/audit/FULL-AUDIT-EVIDENCE-2026-07-26.md",
+      "module": "audit",
+      "name": "FULL-AUDIT-EVIDENCE-2026-07-26.md",
+      "bytes": 32237,
+      "human": "31.5 KB",
+      "mtime": "2026-07-26T08:50:49.325Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/audit/FULL-AUDIT-2026-07-26.md",
+      "module": "audit",
+      "name": "FULL-AUDIT-2026-07-26.md",
+      "bytes": 12095,
+      "human": "11.8 KB",
+      "mtime": "2026-07-26T08:43:45.767Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-region/AUDIT.md",
+      "module": "living-region",
+      "name": "AUDIT.md",
+      "bytes": 5962,
+      "human": "5.8 KB",
+      "mtime": "2026-07-26T08:37:13.083Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-26.md",
+      "module": "brand-protection",
+      "name": "2026-07-26.md",
+      "bytes": 2309,
+      "human": "2.3 KB",
+      "mtime": "2026-07-26T08:36:56.661Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-26.json",
+      "module": "brand-protection",
+      "name": "2026-07-26.json",
+      "bytes": 4610,
+      "human": "4.5 KB",
+      "mtime": "2026-07-26T08:36:56.660Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/latest.json",
+      "module": "brand-protection",
+      "name": "latest.json",
+      "bytes": 4610,
+      "human": "4.5 KB",
+      "mtime": "2026-07-26T08:36:56.660Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/brand-protection/latest.md",
+      "module": "brand-protection",
+      "name": "latest.md",
+      "bytes": 2309,
+      "human": "2.3 KB",
+      "mtime": "2026-07-26T08:36:56.660Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/living-region/2026-07-26.md",
+      "module": "living-region",
+      "name": "2026-07-26.md",
+      "bytes": 1293,
+      "human": "1.3 KB",
+      "mtime": "2026-07-26T08:35:12.423Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-region/latest.json",
+      "module": "living-region",
+      "name": "latest.json",
+      "bytes": 2552,
+      "human": "2.5 KB",
+      "mtime": "2026-07-26T08:35:12.423Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/living-region/latest.md",
+      "module": "living-region",
+      "name": "latest.md",
+      "bytes": 1293,
+      "human": "1.3 KB",
+      "mtime": "2026-07-26T08:35:12.422Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/living-region/ENGINE.md",
+      "module": "living-region",
+      "name": "ENGINE.md",
+      "bytes": 2967,
+      "human": "2.9 KB",
+      "mtime": "2026-07-26T08:33:59.175Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/FINAL-REVIEW.md",
+      "module": "final",
+      "name": "FINAL-REVIEW.md",
+      "bytes": 9218,
+      "human": "9.0 KB",
+      "mtime": "2026-07-26T08:22:04.920Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/i18n/AI-TRANSLATION-ENGINE.md",
+      "module": "i18n",
+      "name": "AI-TRANSLATION-ENGINE.md",
+      "bytes": 3148,
+      "human": "3.1 KB",
+      "mtime": "2026-07-26T08:22:04.920Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/master-project-report.md",
+      "module": "master-project-report.md",
+      "name": "master-project-report.md",
+      "bytes": 21852,
+      "human": "21.3 KB",
+      "mtime": "2026-07-26T08:22:04.920Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premiere/share-copy.txt",
+      "module": "premiere",
+      "name": "share-copy.txt",
+      "bytes": 2391,
+      "human": "2.3 KB",
+      "mtime": "2026-07-26T08:22:04.920Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/ui/THEME-TOGGLE-PREMIUM.md",
+      "module": "ui",
+      "name": "THEME-TOGGLE-PREMIUM.md",
+      "bytes": 2503,
+      "human": "2.4 KB",
+      "mtime": "2026-07-26T08:22:04.920Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/home-premium/latest.json",
+      "module": "home-premium",
+      "name": "latest.json",
+      "bytes": 3870,
+      "human": "3.8 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/i18n/DYNAMIC-TRANSLATE.md",
+      "module": "i18n",
+      "name": "DYNAMIC-TRANSLATE.md",
+      "bytes": 1011,
+      "human": "1011 B",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/mobile/THEME-TOGGLE-POLISH.md",
+      "module": "mobile",
+      "name": "THEME-TOGGLE-POLISH.md",
+      "bytes": 3994,
+      "human": "3.9 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/release-checklist/latest.md",
+      "module": "release-checklist",
+      "name": "latest.md",
+      "bytes": 11372,
+      "human": "11.1 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/store/STORE-READY.md",
+      "module": "store",
+      "name": "STORE-READY.md",
+      "bytes": 8415,
+      "human": "8.2 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/expert-product-review.md",
+      "module": "expert-product-review.md",
+      "name": "expert-product-review.md",
+      "bytes": 8321,
+      "human": "8.1 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/home-premium/latest.md",
+      "module": "home-premium",
+      "name": "latest.md",
+      "bytes": 5751,
+      "human": "5.6 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/release/CLEANUP.md",
+      "module": "release",
+      "name": "CLEANUP.md",
+      "bytes": 5504,
+      "human": "5.4 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/store-readiness/latest.json",
+      "module": "store-readiness",
+      "name": "latest.json",
+      "bytes": 3739,
+      "human": "3.7 KB",
+      "mtime": "2026-07-26T08:22:04.919Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/final/UX-POLISH-1.0.md",
+      "module": "final",
+      "name": "UX-POLISH-1.0.md",
+      "bytes": 8726,
+      "human": "8.5 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/home-v1/HOME-V1.md",
+      "module": "home-v1",
+      "name": "HOME-V1.md",
+      "bytes": 5068,
+      "human": "4.9 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/performance/PERFORMANCE.md",
+      "module": "performance",
+      "name": "PERFORMANCE.md",
+      "bytes": 10633,
+      "human": "10.4 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-heal/latest.md",
+      "module": "self-heal",
+      "name": "latest.md",
+      "bytes": 531,
+      "human": "531 B",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/store-readiness/latest.md",
+      "module": "store-readiness",
+      "name": "latest.md",
+      "bytes": 4651,
+      "human": "4.5 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/technical-debt/latest.md",
+      "module": "technical-debt",
+      "name": "latest.md",
+      "bytes": 6514,
+      "human": "6.4 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-status/PRODUCT-STATUS-REPORT.md",
+      "module": "product-status",
+      "name": "PRODUCT-STATUS-REPORT.md",
+      "bytes": 10771,
+      "human": "10.5 KB",
+      "mtime": "2026-07-26T08:22:04.918Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-24.json",
+      "module": "brand-protection",
+      "name": "2026-07-24.json",
+      "bytes": 4610,
+      "human": "4.5 KB",
+      "mtime": "2026-07-24T12:50:36.470Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-24.md",
+      "module": "brand-protection",
+      "name": "2026-07-24.md",
+      "bytes": 2309,
+      "human": "2.3 KB",
+      "mtime": "2026-07-24T12:50:36.470Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director-ai/pending-acceptance.json",
+      "module": "product-director-ai",
+      "name": "pending-acceptance.json",
+      "bytes": 2701,
+      "human": "2.6 KB",
+      "mtime": "2026-07-23T18:35:51.017Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director-ai/2026-07-23.json",
+      "module": "product-director-ai",
+      "name": "2026-07-23.json",
+      "bytes": 4987,
+      "human": "4.9 KB",
+      "mtime": "2026-07-23T18:35:51.016Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director-ai/2026-07-23.md",
+      "module": "product-director-ai",
+      "name": "2026-07-23.md",
+      "bytes": 3013,
+      "human": "2.9 KB",
+      "mtime": "2026-07-23T18:35:51.016Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director-ai/latest.json",
+      "module": "product-director-ai",
+      "name": "latest.json",
+      "bytes": 4987,
+      "human": "4.9 KB",
+      "mtime": "2026-07-23T18:35:51.016Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-director-ai/latest.md",
+      "module": "product-director-ai",
+      "name": "latest.md",
+      "bytes": 3013,
+      "human": "2.9 KB",
+      "mtime": "2026-07-23T18:35:51.016Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/final/RELEASE-VALIDATOR.md",
+      "module": "final",
+      "name": "RELEASE-VALIDATOR.md",
+      "bytes": 4692,
+      "human": "4.6 KB",
+      "mtime": "2026-07-23T18:33:01.244Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/release-validator-latest.json",
+      "module": "final",
+      "name": "release-validator-latest.json",
+      "bytes": 140,
+      "human": "140 B",
+      "mtime": "2026-07-23T18:33:01.243Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-VALIDATOR.json",
+      "module": "final",
+      "name": "RELEASE-VALIDATOR.json",
+      "bytes": 10911,
+      "human": "10.7 KB",
+      "mtime": "2026-07-23T18:33:01.243Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/memory-cleaner/latest.json",
+      "module": "memory-cleaner",
+      "name": "latest.json",
+      "bytes": 165,
+      "human": "165 B",
+      "mtime": "2026-07-23T18:33:00.843Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/memory-cleaner/latest.md",
+      "module": "memory-cleaner",
+      "name": "latest.md",
+      "bytes": 926,
+      "human": "926 B",
+      "mtime": "2026-07-23T18:33:00.842Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/map-guardian/latest.json",
+      "module": "map-guardian",
+      "name": "latest.json",
+      "bytes": 219,
+      "human": "219 B",
+      "mtime": "2026-07-23T18:33:00.772Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/map-guardian/latest.md",
+      "module": "map-guardian",
+      "name": "latest.md",
+      "bytes": 1073,
+      "human": "1.0 KB",
+      "mtime": "2026-07-23T18:33:00.772Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/ui-guardian/latest.json",
+      "module": "ui-guardian",
+      "name": "latest.json",
+      "bytes": 207,
+      "human": "207 B",
+      "mtime": "2026-07-23T18:33:00.622Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/ui-guardian/latest.md",
+      "module": "ui-guardian",
+      "name": "latest.md",
+      "bytes": 1082,
+      "human": "1.1 KB",
+      "mtime": "2026-07-23T18:33:00.622Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/console-guardian/latest.json",
+      "module": "console-guardian",
+      "name": "latest.json",
+      "bytes": 198,
+      "human": "198 B",
+      "mtime": "2026-07-23T18:33:00.554Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/console-guardian/latest.md",
+      "module": "console-guardian",
+      "name": "latest.md",
+      "bytes": 867,
+      "human": "867 B",
+      "mtime": "2026-07-23T18:33:00.554Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/logging/PRODUCTION-LOGGING.json",
+      "module": "logging",
+      "name": "PRODUCTION-LOGGING.json",
+      "bytes": 343,
+      "human": "343 B",
+      "mtime": "2026-07-23T18:33:00.455Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/logging/PRODUCTION-LOGGING.md",
+      "module": "logging",
+      "name": "PRODUCTION-LOGGING.md",
+      "bytes": 1482,
+      "human": "1.4 KB",
+      "mtime": "2026-07-23T18:33:00.455Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium/PRODUCTION-POLISH.md",
+      "module": "premium",
+      "name": "PRODUCTION-POLISH.md",
+      "bytes": 1635,
+      "human": "1.6 KB",
+      "mtime": "2026-07-23T18:33:00.418Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium/PRODUCTION-POLISH.json",
+      "module": "premium",
+      "name": "PRODUCTION-POLISH.json",
+      "bytes": 2079,
+      "human": "2.0 KB",
+      "mtime": "2026-07-23T18:33:00.418Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-23T18-33-00-362Z.json",
+      "module": "health",
+      "name": "health-2026-07-23T18-33-00-362Z.json",
+      "bytes": 6192,
+      "human": "6.0 KB",
+      "mtime": "2026-07-23T18:33:00.363Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/latest.json",
+      "module": "health",
+      "name": "latest.json",
+      "bytes": 6192,
+      "human": "6.0 KB",
+      "mtime": "2026-07-23T18:33:00.363Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/health/latest.md",
+      "module": "health",
+      "name": "latest.md",
+      "bytes": 480,
+      "human": "480 B",
+      "mtime": "2026-07-23T18:33:00.363Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-23.json",
+      "module": "brand-protection",
+      "name": "2026-07-23.json",
+      "bytes": 5171,
+      "human": "5.0 KB",
+      "mtime": "2026-07-23T18:32:59.840Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-23.md",
+      "module": "brand-protection",
+      "name": "2026-07-23.md",
+      "bytes": 2486,
+      "human": "2.4 KB",
+      "mtime": "2026-07-23T18:32:59.840Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-CANDIDATE.md",
+      "module": "final",
+      "name": "RELEASE-CANDIDATE.md",
+      "bytes": 3260,
+      "human": "3.2 KB",
+      "mtime": "2026-07-23T18:32:41.828Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-CANDIDATE.json",
+      "module": "final",
+      "name": "RELEASE-CANDIDATE.json",
+      "bytes": 5830,
+      "human": "5.7 KB",
+      "mtime": "2026-07-23T18:32:41.827Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-23T18-28-37-456Z.json",
+      "module": "health",
+      "name": "health-2026-07-23T18-28-37-456Z.json",
+      "bytes": 6192,
+      "human": "6.0 KB",
+      "mtime": "2026-07-23T18:28:37.457Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-22.md",
+      "module": "brand-protection",
+      "name": "2026-07-22.md",
+      "bytes": 1393,
+      "human": "1.4 KB",
+      "mtime": "2026-07-22T20:04:54.399Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-22.json",
+      "module": "brand-protection",
+      "name": "2026-07-22.json",
+      "bytes": 1785,
+      "human": "1.7 KB",
+      "mtime": "2026-07-22T20:04:54.398Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-region/2026-07-22.md",
+      "module": "living-region",
+      "name": "2026-07-22.md",
+      "bytes": 1284,
+      "human": "1.3 KB",
+      "mtime": "2026-07-22T19:25:05.986Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-intelligence/2026-07-22.md",
+      "module": "product-intelligence",
+      "name": "2026-07-22.md",
+      "bytes": 3505,
+      "human": "3.4 KB",
+      "mtime": "2026-07-22T19:25:05.733Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-intelligence/latest.json",
+      "module": "product-intelligence",
+      "name": "latest.json",
+      "bytes": 5975,
+      "human": "5.8 KB",
+      "mtime": "2026-07-22T19:25:05.733Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-intelligence/latest.md",
+      "module": "product-intelligence",
+      "name": "latest.md",
+      "bytes": 3505,
+      "human": "3.4 KB",
+      "mtime": "2026-07-22T19:25:05.733Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/trust/2026-07-22.md",
+      "module": "trust",
+      "name": "2026-07-22.md",
+      "bytes": 4687,
+      "human": "4.6 KB",
+      "mtime": "2026-07-22T19:25:05.480Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/trust/latest.json",
+      "module": "trust",
+      "name": "latest.json",
+      "bytes": 10022,
+      "human": "9.8 KB",
+      "mtime": "2026-07-22T19:25:05.480Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/trust/latest.md",
+      "module": "trust",
+      "name": "latest.md",
+      "bytes": 4687,
+      "human": "4.6 KB",
+      "mtime": "2026-07-22T19:25:05.479Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/intelligence/user-profile.md",
+      "module": "intelligence",
+      "name": "user-profile.md",
+      "bytes": 1105,
+      "human": "1.1 KB",
+      "mtime": "2026-07-22T19:25:05.224Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/intelligence/2026-07-22.json",
+      "module": "intelligence",
+      "name": "2026-07-22.json",
+      "bytes": 3534,
+      "human": "3.5 KB",
+      "mtime": "2026-07-22T19:25:04.932Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/intelligence/2026-07-22.md",
+      "module": "intelligence",
+      "name": "2026-07-22.md",
+      "bytes": 1801,
+      "human": "1.8 KB",
+      "mtime": "2026-07-22T19:25:04.932Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/intelligence/latest.json",
+      "module": "intelligence",
+      "name": "latest.json",
+      "bytes": 3534,
+      "human": "3.5 KB",
+      "mtime": "2026-07-22T19:25:04.932Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/intelligence/latest.md",
+      "module": "intelligence",
+      "name": "latest.md",
+      "bytes": 1801,
+      "human": "1.8 KB",
+      "mtime": "2026-07-22T19:25:04.932Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/nightly/latest.email.txt",
+      "module": "nightly",
+      "name": "latest.email.txt",
+      "bytes": 1907,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T20:35:01.730Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/nightly/latest.json",
+      "module": "nightly",
+      "name": "latest.json",
+      "bytes": 2515,
+      "human": "2.5 KB",
+      "mtime": "2026-07-21T20:35:01.730Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/nightly/latest.md",
+      "module": "nightly",
+      "name": "latest.md",
+      "bytes": 1714,
+      "human": "1.7 KB",
+      "mtime": "2026-07-21T20:35:01.730Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/nightly/nightly-2026-07-21.json",
+      "module": "nightly",
+      "name": "nightly-2026-07-21.json",
+      "bytes": 2288,
+      "human": "2.2 KB",
+      "mtime": "2026-07-21T20:35:01.729Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/nightly/nightly-2026-07-21.md",
+      "module": "nightly",
+      "name": "nightly-2026-07-21.md",
+      "bytes": 1659,
+      "human": "1.6 KB",
+      "mtime": "2026-07-21T20:35:01.729Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-heal/latest.json",
+      "module": "self-heal",
+      "name": "latest.json",
+      "bytes": 303,
+      "human": "303 B",
+      "mtime": "2026-07-21T20:34:57.133Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/self-heal/self-heal-2026-07-21.json",
+      "module": "self-heal",
+      "name": "self-heal-2026-07-21.json",
+      "bytes": 303,
+      "human": "303 B",
+      "mtime": "2026-07-21T20:34:57.133Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T20-34-57-076Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T20-34-57-076Z.json",
+      "bytes": 6297,
+      "human": "6.1 KB",
+      "mtime": "2026-07-21T20:34:57.076Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T20-34-45-530Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T20-34-45-530Z.json",
+      "bytes": 6297,
+      "human": "6.1 KB",
+      "mtime": "2026-07-21T20:34:45.531Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T20-34-24-343Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T20-34-24-343Z.json",
+      "bytes": 6297,
+      "human": "6.1 KB",
+      "mtime": "2026-07-21T20:34:24.343Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T20-34-13-441Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T20-34-13-441Z.json",
+      "bytes": 6297,
+      "human": "6.1 KB",
+      "mtime": "2026-07-21T20:34:13.441Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/latest.json",
+      "module": "premium-weekly",
+      "name": "latest.json",
+      "bytes": 1938,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T19:23:06.128Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/premium-weekly/2026-W30.json",
+      "module": "premium-weekly",
+      "name": "2026-W30.json",
+      "bytes": 1487,
+      "human": "1.5 KB",
+      "mtime": "2026-07-21T19:23:06.126Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/2026-W30.md",
+      "module": "premium-weekly",
+      "name": "2026-W30.md",
+      "bytes": 1671,
+      "human": "1.6 KB",
+      "mtime": "2026-07-21T19:23:06.126Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/latest.email.txt",
+      "module": "premium-weekly",
+      "name": "latest.email.txt",
+      "bytes": 1869,
+      "human": "1.8 KB",
+      "mtime": "2026-07-21T19:23:06.126Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/latest.md",
+      "module": "premium-weekly",
+      "name": "latest.md",
+      "bytes": 1671,
+      "human": "1.6 KB",
+      "mtime": "2026-07-21T19:23:06.126Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-21.json",
+      "module": "brand-protection",
+      "name": "2026-07-21.json",
+      "bytes": 5105,
+      "human": "5.0 KB",
+      "mtime": "2026-07-21T19:11:11.796Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-07-21.md",
+      "module": "brand-protection",
+      "name": "2026-07-21.md",
+      "bytes": 2466,
+      "human": "2.4 KB",
+      "mtime": "2026-07-21T19:11:11.796Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T19-11-11-333Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T19-11-11-333Z.json",
+      "bytes": 6377,
+      "human": "6.2 KB",
+      "mtime": "2026-07-21T19:11:11.334Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/2026-07-21.json",
+      "module": "daily",
+      "name": "2026-07-21.json",
+      "bytes": 19804,
+      "human": "19.3 KB",
+      "mtime": "2026-07-21T18:58:31.934Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/latest.json",
+      "module": "daily",
+      "name": "latest.json",
+      "bytes": 19804,
+      "human": "19.3 KB",
+      "mtime": "2026-07-21T18:58:31.933Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/daily/2026-07-21.md",
+      "module": "daily",
+      "name": "2026-07-21.md",
+      "bytes": 5335,
+      "human": "5.2 KB",
+      "mtime": "2026-07-21T18:58:31.932Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/latest.email.txt",
+      "module": "daily",
+      "name": "latest.email.txt",
+      "bytes": 1397,
+      "human": "1.4 KB",
+      "mtime": "2026-07-21T18:58:31.932Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/latest.mailto.txt",
+      "module": "daily",
+      "name": "latest.mailto.txt",
+      "bytes": 92,
+      "human": "92 B",
+      "mtime": "2026-07-21T18:58:31.932Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/latest.md",
+      "module": "daily",
+      "name": "latest.md",
+      "bytes": 5335,
+      "human": "5.2 KB",
+      "mtime": "2026-07-21T18:58:31.931Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/guardian-future/history.json",
+      "module": "guardian-future",
+      "name": "history.json",
+      "bytes": 1122,
+      "human": "1.1 KB",
+      "mtime": "2026-07-21T18:21:20.380Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/guardian-future/2026-07-21.json",
+      "module": "guardian-future",
+      "name": "2026-07-21.json",
+      "bytes": 7469,
+      "human": "7.3 KB",
+      "mtime": "2026-07-21T18:21:20.379Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/guardian-future/2026-07-21.md",
+      "module": "guardian-future",
+      "name": "2026-07-21.md",
+      "bytes": 2450,
+      "human": "2.4 KB",
+      "mtime": "2026-07-21T18:21:20.379Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/guardian-future/latest.json",
+      "module": "guardian-future",
+      "name": "latest.json",
+      "bytes": 7469,
+      "human": "7.3 KB",
+      "mtime": "2026-07-21T18:21:20.379Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/guardian-future/latest.md",
+      "module": "guardian-future",
+      "name": "latest.md",
+      "bytes": 2450,
+      "human": "2.4 KB",
+      "mtime": "2026-07-21T18:21:20.379Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/self-reflection/2026-07-21.json",
+      "module": "self-reflection",
+      "name": "2026-07-21.json",
+      "bytes": 3582,
+      "human": "3.5 KB",
+      "mtime": "2026-07-21T18:18:35.738Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-reflection/2026-07-21.md",
+      "module": "self-reflection",
+      "name": "2026-07-21.md",
+      "bytes": 2124,
+      "human": "2.1 KB",
+      "mtime": "2026-07-21T18:18:35.738Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-reflection/latest.json",
+      "module": "self-reflection",
+      "name": "latest.json",
+      "bytes": 3582,
+      "human": "3.5 KB",
+      "mtime": "2026-07-21T18:18:35.737Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/self-reflection/latest.md",
+      "module": "self-reflection",
+      "name": "latest.md",
+      "bytes": 2124,
+      "human": "2.1 KB",
+      "mtime": "2026-07-21T18:18:35.737Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-brain/2026-07-21.md",
+      "module": "product-brain",
+      "name": "2026-07-21.md",
+      "bytes": 1910,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T18:16:27.289Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-brain/pending-acceptance.json",
+      "module": "product-brain",
+      "name": "pending-acceptance.json",
+      "bytes": 1800,
+      "human": "1.8 KB",
+      "mtime": "2026-07-21T18:16:27.289Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-brain/2026-07-21.json",
+      "module": "product-brain",
+      "name": "2026-07-21.json",
+      "bytes": 2871,
+      "human": "2.8 KB",
+      "mtime": "2026-07-21T18:16:27.288Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-brain/latest.json",
+      "module": "product-brain",
+      "name": "latest.json",
+      "bytes": 2871,
+      "human": "2.8 KB",
+      "mtime": "2026-07-21T18:16:27.288Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-brain/latest.md",
+      "module": "product-brain",
+      "name": "latest.md",
+      "bytes": 1910,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T18:16:27.288Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/regional-intelligence/2026-07-21.json",
+      "module": "regional-intelligence",
+      "name": "2026-07-21.json",
+      "bytes": 2262,
+      "human": "2.2 KB",
+      "mtime": "2026-07-21T18:11:50.581Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/regional-intelligence/2026-07-21.md",
+      "module": "regional-intelligence",
+      "name": "2026-07-21.md",
+      "bytes": 606,
+      "human": "606 B",
+      "mtime": "2026-07-21T18:11:50.581Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/regional-intelligence/latest.json",
+      "module": "regional-intelligence",
+      "name": "latest.json",
+      "bytes": 2262,
+      "human": "2.2 KB",
+      "mtime": "2026-07-21T18:11:50.581Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/regional-intelligence/latest.md",
+      "module": "regional-intelligence",
+      "name": "latest.md",
+      "bytes": 606,
+      "human": "606 B",
+      "mtime": "2026-07-21T18:11:50.581Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/dream/2026-07-21.json",
+      "module": "dream",
+      "name": "2026-07-21.json",
+      "bytes": 7607,
+      "human": "7.4 KB",
+      "mtime": "2026-07-21T18:07:55.826Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/dream/2026-07-21.md",
+      "module": "dream",
+      "name": "2026-07-21.md",
+      "bytes": 5476,
+      "human": "5.3 KB",
+      "mtime": "2026-07-21T18:07:55.826Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/dream/latest.json",
+      "module": "dream",
+      "name": "latest.json",
+      "bytes": 7607,
+      "human": "7.4 KB",
+      "mtime": "2026-07-21T18:07:55.826Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/dream/latest.md",
+      "module": "dream",
+      "name": "latest.md",
+      "bytes": 5476,
+      "human": "5.3 KB",
+      "mtime": "2026-07-21T18:07:55.826Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/emotion/2026-07-21.md",
+      "module": "emotion",
+      "name": "2026-07-21.md",
+      "bytes": 1886,
+      "human": "1.8 KB",
+      "mtime": "2026-07-21T17:32:41.764Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/emotion/2026-07-21.json",
+      "module": "emotion",
+      "name": "2026-07-21.json",
+      "bytes": 3697,
+      "human": "3.6 KB",
+      "mtime": "2026-07-21T17:32:41.763Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/emotion/latest.json",
+      "module": "emotion",
+      "name": "latest.json",
+      "bytes": 3697,
+      "human": "3.6 KB",
+      "mtime": "2026-07-21T17:32:41.763Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/emotion/latest.md",
+      "module": "emotion",
+      "name": "latest.md",
+      "bytes": 1886,
+      "human": "1.8 KB",
+      "mtime": "2026-07-21T17:32:41.763Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T17-32-41-695Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T17-32-41-695Z.json",
+      "bytes": 6326,
+      "human": "6.2 KB",
+      "mtime": "2026-07-21T17:32:41.695Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-brand/2026-07-21.md",
+      "module": "living-brand",
+      "name": "2026-07-21.md",
+      "bytes": 2790,
+      "human": "2.7 KB",
+      "mtime": "2026-07-21T17:32:41.545Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-brand/2026-07-21.json",
+      "module": "living-brand",
+      "name": "2026-07-21.json",
+      "bytes": 7873,
+      "human": "7.7 KB",
+      "mtime": "2026-07-21T17:32:41.544Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/living-brand/latest.md",
+      "module": "living-brand",
+      "name": "latest.md",
+      "bytes": 2790,
+      "human": "2.7 KB",
+      "mtime": "2026-07-21T17:32:41.544Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/living-brand/latest.json",
+      "module": "living-brand",
+      "name": "latest.json",
+      "bytes": 7873,
+      "human": "7.7 KB",
+      "mtime": "2026-07-21T17:32:41.544Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T17-32-15-266Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T17-32-15-266Z.json",
+      "bytes": 6326,
+      "human": "6.2 KB",
+      "mtime": "2026-07-21T17:32:15.267Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director/2026-07-21.json",
+      "module": "product-director",
+      "name": "2026-07-21.json",
+      "bytes": 6056,
+      "human": "5.9 KB",
+      "mtime": "2026-07-21T17:01:20.105Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director/2026-07-21.md",
+      "module": "product-director",
+      "name": "2026-07-21.md",
+      "bytes": 3585,
+      "human": "3.5 KB",
+      "mtime": "2026-07-21T17:01:20.105Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/product-director/latest.md",
+      "module": "product-director",
+      "name": "latest.md",
+      "bytes": 3585,
+      "human": "3.5 KB",
+      "mtime": "2026-07-21T17:01:20.105Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/product-director/latest.json",
+      "module": "product-director",
+      "name": "latest.json",
+      "bytes": 6056,
+      "human": "5.9 KB",
+      "mtime": "2026-07-21T17:01:20.105Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/real-users/2026-07-21.json",
+      "module": "real-users",
+      "name": "2026-07-21.json",
+      "bytes": 151813,
+      "human": "148.3 KB",
+      "mtime": "2026-07-21T16:54:28.472Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/real-users/2026-07-21.md",
+      "module": "real-users",
+      "name": "2026-07-21.md",
+      "bytes": 7298,
+      "human": "7.1 KB",
+      "mtime": "2026-07-21T16:54:28.472Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/real-users/latest.md",
+      "module": "real-users",
+      "name": "latest.md",
+      "bytes": 7298,
+      "human": "7.1 KB",
+      "mtime": "2026-07-21T16:54:28.471Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/real-users/latest.json",
+      "module": "real-users",
+      "name": "latest.json",
+      "bytes": 151813,
+      "human": "148.3 KB",
+      "mtime": "2026-07-21T16:54:28.471Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/quality-loop/fixes-pending.json",
+      "module": "quality-loop",
+      "name": "fixes-pending.json",
+      "bytes": 2958,
+      "human": "2.9 KB",
+      "mtime": "2026-07-21T16:50:13.805Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/quality-loop/2026-07-21.json",
+      "module": "quality-loop",
+      "name": "2026-07-21.json",
+      "bytes": 5409,
+      "human": "5.3 KB",
+      "mtime": "2026-07-21T16:50:13.804Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/quality-loop/2026-07-21.md",
+      "module": "quality-loop",
+      "name": "2026-07-21.md",
+      "bytes": 3312,
+      "human": "3.2 KB",
+      "mtime": "2026-07-21T16:50:13.804Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/quality-loop/latest.json",
+      "module": "quality-loop",
+      "name": "latest.json",
+      "bytes": 5409,
+      "human": "5.3 KB",
+      "mtime": "2026-07-21T16:50:13.804Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/quality-loop/latest.md",
+      "module": "quality-loop",
+      "name": "latest.md",
+      "bytes": 3312,
+      "human": "3.2 KB",
+      "mtime": "2026-07-21T16:50:13.804Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/advisor/2026-07-21.json",
+      "module": "advisor",
+      "name": "2026-07-21.json",
+      "bytes": 2908,
+      "human": "2.8 KB",
+      "mtime": "2026-07-21T16:50:13.756Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/advisor/2026-07-21.md",
+      "module": "advisor",
+      "name": "2026-07-21.md",
+      "bytes": 1906,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T16:50:13.756Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/advisor/latest.json",
+      "module": "advisor",
+      "name": "latest.json",
+      "bytes": 2908,
+      "human": "2.8 KB",
+      "mtime": "2026-07-21T16:50:13.756Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/advisor/latest.md",
+      "module": "advisor",
+      "name": "latest.md",
+      "bytes": 1906,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T16:50:13.756Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/improvements/2026-07-21.json",
+      "module": "improvements",
+      "name": "2026-07-21.json",
+      "bytes": 1964,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T16:50:13.719Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/improvements/2026-07-21.md",
+      "module": "improvements",
+      "name": "2026-07-21.md",
+      "bytes": 1378,
+      "human": "1.3 KB",
+      "mtime": "2026-07-21T16:50:13.719Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/improvements/latest.json",
+      "module": "improvements",
+      "name": "latest.json",
+      "bytes": 1964,
+      "human": "1.9 KB",
+      "mtime": "2026-07-21T16:50:13.719Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/improvements/latest.md",
+      "module": "improvements",
+      "name": "latest.md",
+      "bytes": 1378,
+      "human": "1.3 KB",
+      "mtime": "2026-07-21T16:50:13.719Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/virtual-user/2026-07-21.json",
+      "module": "virtual-user",
+      "name": "2026-07-21.json",
+      "bytes": 2169,
+      "human": "2.1 KB",
+      "mtime": "2026-07-21T16:50:13.681Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/2026-07-21.md",
+      "module": "virtual-user",
+      "name": "2026-07-21.md",
+      "bytes": 1129,
+      "human": "1.1 KB",
+      "mtime": "2026-07-21T16:50:13.681Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/latest.json",
+      "module": "virtual-user",
+      "name": "latest.json",
+      "bytes": 2169,
+      "human": "2.1 KB",
+      "mtime": "2026-07-21T16:50:13.680Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/virtual-user/latest.md",
+      "module": "virtual-user",
+      "name": "latest.md",
+      "bytes": 1129,
+      "human": "1.1 KB",
+      "mtime": "2026-07-21T16:50:13.680Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T16-50-13-629Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T16-50-13-629Z.json",
+      "bytes": 6194,
+      "human": "6.0 KB",
+      "mtime": "2026-07-21T16:50:13.630Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/quality-loop/approvals.json",
+      "module": "quality-loop",
+      "name": "approvals.json",
+      "bytes": 158,
+      "human": "158 B",
+      "mtime": "2026-07-21T16:50:01.378Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-21T16-43-43-525Z.json",
+      "module": "health",
+      "name": "health-2026-07-21T16-43-43-525Z.json",
+      "bytes": 6194,
+      "human": "6.0 KB",
+      "mtime": "2026-07-21T16:43:43.525Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/2026-07-20.json",
+      "module": "daily",
+      "name": "2026-07-20.json",
+      "bytes": 9639,
+      "human": "9.4 KB",
+      "mtime": "2026-07-20T20:25:07.378Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/daily/2026-07-20.md",
+      "module": "daily",
+      "name": "2026-07-20.md",
+      "bytes": 4127,
+      "human": "4.0 KB",
+      "mtime": "2026-07-20T20:25:07.378Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/advisor/2026-07-20.json",
+      "module": "advisor",
+      "name": "2026-07-20.json",
+      "bytes": 2908,
+      "human": "2.8 KB",
+      "mtime": "2026-07-20T20:11:02.337Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/advisor/2026-07-20.md",
+      "module": "advisor",
+      "name": "2026-07-20.md",
+      "bytes": 1906,
+      "human": "1.9 KB",
+      "mtime": "2026-07-20T20:11:02.337Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/2026-07-20.json",
+      "module": "virtual-user",
+      "name": "2026-07-20.json",
+      "bytes": 2169,
+      "human": "2.1 KB",
+      "mtime": "2026-07-20T20:07:51.605Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/2026-07-20.md",
+      "module": "virtual-user",
+      "name": "2026-07-20.md",
+      "bytes": 1129,
+      "human": "1.1 KB",
+      "mtime": "2026-07-20T20:07:51.605Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/improvements/2026-07-20.json",
+      "module": "improvements",
+      "name": "2026-07-20.json",
+      "bytes": 2004,
+      "human": "2.0 KB",
+      "mtime": "2026-07-20T20:04:40.056Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/improvements/2026-07-20.md",
+      "module": "improvements",
+      "name": "2026-07-20.md",
+      "bytes": 1418,
+      "human": "1.4 KB",
+      "mtime": "2026-07-20T20:04:40.056Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-07-20T19-57-04-456Z.json",
+      "module": "health",
+      "name": "health-2026-07-20T19-57-04-456Z.json",
+      "bytes": 6226,
+      "human": "6.1 KB",
+      "mtime": "2026-07-20T19:57:04.457Z",
+      "isLatest": false
+    }
+  ]
+}

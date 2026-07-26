@@ -1,0 +1,8 @@
+Regionaler Geschmack – nature ambient
+
+Primary (app): authentic seasonal bird mixes
+  spring-birds.mp3 | summer-birds.mp3 | autumn-birds.mp3 | winter-birds.mp3
+  Attribution / sources: CREDITS-BIRDS.txt
+
+Legacy procedural assets (*-forest.*) may remain unused.
+Master volume in app: ~10–12%.

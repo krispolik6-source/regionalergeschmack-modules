@@ -1,0 +1,79 @@
+/* ============================================================
+   ETAP 13C – Polecamy dzisiaj (Inteligentne Polecenia)
+   ============================================================ */
+
+.home-smart-today {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-smart-today-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 2px;
+}
+
+.home-smart-today-head .section-title {
+    margin: 0;
+    font-size: var(--heading-section-size, 1rem);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.home-smart-today-sub {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-text-muted);
+}
+
+.home-smart-today-reason {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: var(--radius-md, 16px);
+    border: 1px solid rgba(140, 100, 55, 0.16);
+    background: linear-gradient(135deg, rgba(255, 244, 220, 0.7) 0%, rgba(255, 236, 200, 0.45) 100%);
+    box-shadow: none;
+}
+
+.home-smart-today-reason-icon {
+    flex-shrink: 0;
+    font-size: 22px;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+.home-smart-today-reason-text {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.home-smart-today .home-carousel {
+    margin-top: 2px;
+}
+
+body.dark-mode .home-smart-today-reason {
+    background: linear-gradient(135deg, rgba(52, 40, 28, 0.75) 0%, rgba(40, 32, 22, 0.7) 100%);
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+body.dark-mode .home-smart-today-reason-text {
+    color: var(--color-text-light, #fffaf2);
+}
+
+@media screen and (max-width: 430px) {
+    .home-smart-today-reason {
+        padding: 8px 10px;
+    }
+
+    .home-smart-today-reason-text {
+        font-size: 12px;
+    }
+}

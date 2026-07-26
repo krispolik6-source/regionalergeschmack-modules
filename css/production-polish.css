@@ -1,0 +1,545 @@
+/* ============================================================
+   Production Polish – spójność wizualna (bez nowych funkcji)
+   Ostatnia warstwa CSS: spacing, ikony, kolory, karty, cienie, radius
+   ============================================================ */
+
+:root {
+    /* Jedna skala radius / cień / ikona */
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+    --glass-radius: var(--radius-md);
+    --icon-badge-size: 40px;
+    --icon-badge-font: 22px;
+    --icon-nav-size: 28px;
+    --icon-nav-font: 16px;
+    --surface-border: var(--home-surface-border, var(--glass-border));
+    --surface-shadow: var(--glass-shadow);
+    --placeholder-bg: rgba(255, 244, 220, 0.55);
+}
+
+body.dark-mode {
+    --placeholder-bg: rgba(42, 34, 24, 0.72);
+}
+
+/* --- Powierzchnie / karty: jeden wygląd --- */
+
+.card,
+.surface-panel,
+.list-item,
+.favorite-item,
+.cart-item,
+.cart-summary,
+.setting-item.card,
+.premium-feature-card,
+.producer-product-card,
+.home-product-card,
+.home-venue-card,
+.home-recipe-card,
+.home-seasonal-card,
+.home-premium-cta,
+.rg-ad-banner,
+.empty-state.card,
+.placeholder,
+.account-item.card,
+.side-menu-download-block,
+.producer-smart-offer,
+.producer-report-section,
+.cart-reservation {
+    border-radius: var(--radius-md);
+    border-color: var(--surface-border);
+    box-shadow: var(--surface-shadow);
+}
+
+.home-product-card,
+.home-venue-card,
+.home-recipe-card {
+    background: var(--home-surface);
+    border: 1px solid var(--surface-border);
+    overflow: hidden;
+}
+
+.home-seasonal-card {
+    background: var(--home-surface);
+    border: 1px solid var(--surface-border);
+    min-width: 96px;
+    padding: var(--space-md) var(--space-sm);
+}
+
+.home-product-image,
+.home-recipe-media,
+.home-product-image .product-image-fallback {
+    background: var(--placeholder-bg) !important;
+}
+
+.home-product-name,
+.home-venue-name,
+.home-recipe-name {
+    color: var(--color-text) !important;
+}
+
+.home-product-meta,
+.home-product-price,
+.home-recipe-meta,
+.home-recipe-ingredients,
+.home-venue-meta {
+    color: var(--color-text-muted) !important;
+}
+
+/* --- Radius: mapuj „losowe” wartości na tokeny --- */
+
+.header-lang,
+.lang-dropdown,
+.bottom-nav .nav-icon,
+.map-category-chip,
+.side-menu-field input,
+.side-menu-field select,
+.side-menu-field textarea,
+.side-menu-share-text,
+.side-menu-share-url,
+.list-item > .icon,
+.favorite-item > .icon,
+.cart-item > .icon {
+    border-radius: var(--radius-sm);
+}
+
+.home-section-head--photo,
+.home-recipe-card,
+.toast,
+.producer-photo-frame,
+.pwa-install-banner {
+    border-radius: var(--radius-md);
+}
+
+.view-hero,
+#app,
+.home-hero,
+.side-menu,
+.producer-modal-dialog {
+    border-radius: var(--radius-lg);
+}
+
+body.view-map-active #app {
+    border-radius: 0;
+}
+
+/* --- Cienie: bez chłodnego niebieskiego --- */
+
+.home-search-field,
+.home-chip,
+.category-card,
+.home-premium-cta,
+.home-categories .category-card {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.card:hover,
+.category-card:hover,
+.premium-feature-card:hover,
+.favorite-item:hover,
+.cart-item:hover,
+.home-product-card:hover {
+    box-shadow: var(--glass-shadow-lift) !important;
+}
+
+.home-actions button,
+.btn-primary,
+.btn-secondary {
+    box-shadow: var(--shadow-sm);
+}
+
+.home-actions .btn-nearby {
+    box-shadow: 0 4px 14px rgba(79, 107, 60, 0.28) !important;
+}
+
+/* --- Kolory: usuń chłodne fallbacki (#1b7f58, #145c40, blue-gray) --- */
+
+.home-all-categories-btn,
+.map-category-clear,
+.home-see-all,
+.rg-ad-cta,
+.rg-ad-title,
+.producer-reserve-btn,
+a.home-see-all {
+    color: var(--color-primary) !important;
+}
+
+.home-all-categories-btn:focus-visible,
+.categories-grid--2x4.is-highlighted {
+    outline-color: var(--color-primary) !important;
+}
+
+.btn-primary,
+.home-search-submit,
+.side-menu-download-btn {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.home-search-submit {
+    background: linear-gradient(160deg, #6b8f4e 0%, #4f6b3c 100%) !important;
+}
+
+/* --- Ikony: jeden rozmiar badge / nav --- */
+
+.category-icon,
+.premium-feature-icon,
+.favorite-item .icon,
+.list-item > .icon,
+.cart-item > .icon {
+    width: var(--icon-badge-size) !important;
+    height: var(--icon-badge-size) !important;
+    font-size: var(--icon-badge-font) !important;
+    line-height: 1;
+}
+
+.bottom-nav .nav-icon {
+    width: var(--icon-nav-size) !important;
+    height: var(--icon-nav-size) !important;
+    font-size: var(--icon-nav-font) !important;
+    border-radius: 10px;
+}
+
+.rg-ad-icon,
+.home-seasonal-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.home-search--lg .home-search-icon {
+    font-size: 15px;
+}
+
+/* --- Spacing: równe odstępy między sekcjami ekranów --- */
+
+.home-page,
+.home-page--v2,
+.profile-page,
+.favorites-page,
+.cart-page,
+.premium-page {
+    gap: var(--space-md);
+}
+
+.home-section-head,
+.section-header-row {
+    margin-bottom: var(--space-sm);
+    gap: var(--space-sm);
+}
+
+.app-section + .app-section {
+    margin-top: 0;
+}
+
+.view-hero {
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-sm);
+}
+
+.list-item,
+.favorite-item,
+.cart-item,
+.premium-feature-card {
+    padding: var(--space-md) var(--space-lg);
+}
+
+.empty-state {
+    padding: var(--space-xl) var(--space-lg);
+}
+
+.home-carousel {
+    gap: var(--space-sm);
+    padding-bottom: var(--space-xs);
+}
+
+.categories-grid,
+.categories-grid--2x4 {
+    gap: var(--space-sm);
+}
+
+.home-page--v2 .home-actions {
+    gap: var(--space-sm) !important;
+}
+
+/* --- Typografia sekcji --- */
+
+.home-section-head .section-title,
+.section-title,
+.section-heading,
+.view-hero h2 {
+    font-weight: 700;
+    line-height: var(--heading-line);
+    letter-spacing: -0.01em;
+}
+
+.home-section-head .section-title {
+    font-size: var(--heading-section-size);
+}
+
+/* --- Side menu / formularze --- */
+
+.side-menu-detail-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-sm);
+}
+
+.side-menu-detail-sub {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: var(--space-md) 0 var(--space-xs);
+    color: var(--color-text);
+}
+
+.side-menu-detail-lead,
+.side-menu-detail-meta,
+.side-menu-detail-note {
+    color: var(--color-text-muted);
+    line-height: 1.45;
+}
+
+.side-menu-download-btn,
+.side-menu-store-btn {
+    border-radius: var(--radius-sm);
+    min-height: 40px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* --- Mapa: popup / lista / legenda --- */
+
+.map-popup-btn {
+    border-radius: var(--radius-sm);
+    background: var(--color-card, #fff8ee);
+}
+
+.map-popup-btn-details {
+    border-radius: var(--radius-sm);
+}
+
+.map-legend-panel,
+.map-producer-list-items {
+    background: rgba(255, 252, 245, 0.96);
+    border-color: var(--surface-border);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+}
+
+body.dark-mode .map-legend-panel,
+body.dark-mode .map-producer-list-items {
+    background: rgba(28, 24, 18, 0.96) !important;
+    border-color: rgba(255, 220, 170, 0.16);
+    color: var(--color-text, #f5efe3);
+}
+
+.map-legend-item,
+.map-producer-list-btn {
+    color: var(--color-text);
+}
+
+body.dark-mode .map-legend-item,
+body.dark-mode .map-producer-list-btn {
+    color: var(--color-text, #f5efe3);
+}
+
+/* --- Modal producenta --- */
+
+.producer-modal-header,
+.producer-modal-body,
+.producer-modal-footer {
+    border-color: var(--glass-border);
+}
+
+.producer-contact-item,
+.producer-amenity-chip,
+.product-availability-badge,
+.product-seasonal-badge,
+.producer-trust-badge {
+    border-radius: var(--radius-pill);
+}
+
+.producer-product-card {
+    padding: var(--space-md);
+}
+
+/* --- Toast / PWA --- */
+
+.toast,
+.pwa-install-banner {
+    background: var(--color-card);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text);
+}
+
+/* --- Map controls: ciepłe szkło --- */
+
+#radiusControl,
+.radius-control,
+.map-draggable-control:not(.is-dragging) {
+    background: rgba(255, 252, 245, 0.92) !important;
+    border-color: rgba(255, 240, 210, 0.55) !important;
+    box-shadow: var(--shadow-sm) !important;
+    border-radius: var(--radius-sm);
+}
+
+body.dark-mode #radiusControl,
+body.dark-mode .radius-control {
+    background: rgba(42, 34, 24, 0.92) !important;
+    border-color: rgba(255, 220, 170, 0.14) !important;
+}
+
+/* --- Stopka Home: spójna z paletą warm --- */
+
+.home-footer {
+    background: linear-gradient(
+        180deg,
+        rgba(90, 120, 60, 0.72) 0%,
+        rgba(70, 95, 48, 0.82) 100%
+    ) !important;
+    border: 1px solid rgba(255, 240, 210, 0.28) !important;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* --- Drobne UX: brak poziomego overflow, równe touch --- */
+
+.home-page,
+.profile-page,
+.favorites-page,
+.cart-page,
+.premium-page,
+.side-menu-body {
+    overflow-x: clip;
+}
+
+.btn-primary,
+.btn-secondary,
+.home-search-submit,
+.home-quick-chip,
+.home-thematic-chip {
+    min-height: 40px;
+}
+
+/* Mobile: zachowaj gęstość z ETAP 10C, bez rozjeżdżania tokenów */
+@media screen and (max-width: 430px) {
+    :root {
+        --icon-badge-size: 34px;
+        --icon-badge-font: 18px;
+        --icon-nav-size: 28px;
+        --icon-nav-font: 15px;
+        --glass-radius: 14px;
+    }
+
+    .view-hero {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .list-item,
+    .favorite-item,
+    .cart-item,
+    .premium-feature-card {
+        padding: var(--space-sm) var(--space-md);
+    }
+}
+
+/* ============================================================
+   ETAP 31 — Production Polish (install · mobile · header)
+   ETAP 32B cleanup: usunięto konfliktujące reguły order Home
+   (źródło prawdy foldu: css/home-v1.css + prepublish.css).
+   Bez zmiany wyglądu komponentów poza kolejnością już ustaloną w Home 1.0.
+   ============================================================ */
+
+.home-page--v2 {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 767px) {
+    /* Typografia greeting — bez ukrywania logo (Home 1.0 pokazuje brand) */
+    .home-greeting {
+        margin-bottom: 4px;
+        padding-bottom: 4px;
+    }
+
+    .home-greeting-title {
+        font-size: clamp(1.35rem, 5.5vw, 1.65rem);
+        line-height: 1.2;
+        margin-bottom: 4px;
+    }
+
+    .home-greeting-sub {
+        font-size: 0.92rem;
+        line-height: 1.35;
+        max-width: 36em;
+    }
+
+    .home-region-soul,
+    .home-regional-intel {
+        margin-top: 8px;
+        padding: 12px 14px;
+    }
+
+    .home-region-soul-line,
+    .home-regional-intel .home-region-soul-line {
+        font-size: 0.98rem;
+    }
+
+    .home-premium-section {
+        margin-top: 4px;
+        margin-bottom: 8px;
+    }
+
+    .home-premium-cta {
+        min-height: 44px;
+        padding: 10px 12px;
+        opacity: 0.96;
+    }
+}
+
+/* Install banner: kontrast dismiss na kremie Brand Book */
+.pwa-install-banner .pwa-install-banner-dismiss,
+.pwa-install-banner-dismiss {
+    color: var(--brand-ink, #1c1812) !important;
+    text-shadow: none !important;
+    opacity: 0.75;
+}
+
+.pwa-install-banner-dismiss:hover,
+.pwa-install-banner-dismiss:focus-visible {
+    opacity: 1;
+}
+
+/* Side menu Premium mark */
+.side-menu-premium-mark {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+}
+
+/* Touch targets · overflow */
+@media screen and (max-width: 430px) {
+    .main-header .header-icon,
+    .main-header .header-lang,
+    .main-header #headerPremiumBtn,
+    .bottom-nav .nav-item {
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    .home-page--v2,
+    .home-hub,
+    .home-greeting {
+        overflow-x: clip;
+        max-width: 100%;
+    }
+
+    .home-search-submit,
+    .btn-location,
+    .btn-nearby {
+        min-height: 44px;
+    }
+}

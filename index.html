@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="de" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <script src="/js/legacy/detect.js?v=2"></script>
+    <meta name="google" content="notranslate">
+    <meta name="theme-color" content="#2a3f28">
+    <meta name="msapplication-TileColor" content="#2a3f28">
+    <meta name="msapplication-TileImage" content="/assets/icons/icon-144.png?v=28">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Regionaler">
+    <meta name="description" content="Regionaler Geschmack – regionale Lebensmittel und Produzenten in deiner Nähe entdecken. Karte, Favoriten, Bewertungen.">
+    <meta name="keywords" content="regional, Lebensmittel, Produzenten, Bauernhof, Bäckerei, Karte, lokal, Bio, Direktverkauf">
+    <meta property="og:title" content="Regionaler Geschmack">
+    <meta property="og:description" content="Regionale Lebensmittel und Produzenten in deiner Nähe.">
+    <meta property="og:image" content="/assets/brand/og-share.png?v=28">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="/assets/brand/og-share.png?v=28">
+
+    <title>Regionaler Geschmack</title>
+
+    <link rel="icon" href="/assets/icons/favicon.ico?v=28" type="image/x-icon">
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-master.svg?v=28">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png?v=28">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=28">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png?v=28">
+    <link rel="manifest" href="/manifest.json?v=28">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@500;600;700;800&family=Literata:opsz,wght@7..72,600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css?v=568">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
+    <!-- Leaflet MarkerCluster (wydajność na telefonie: grupowanie markerów) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://esm.sh https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss: http://127.0.0.1:3457; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com">
+
+    <!-- Google AdSense — client/slot: js/config.js → ADSENSE_CONFIG -->
+    <script>
+        window.adsbygoogle = window.adsbygoogle || [];
+    </script>
+    <script async
+        id="rg-adsense-loader"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        crossorigin="anonymous"
+        data-rg-adsense="1"></script>
+
+    <!-- Google tag (gtag.js) – aktywne tylko gdy ID jest ustawione -->
+    <script>
+        window.__GA_ID__ = '';
+        if (window.__GA_ID__) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.__GA_ID__;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', window.__GA_ID__);
+        }
+    </script>
+    <!-- Wczesne przechwycenie beforeinstallprompt (przed modulem app.js) -->
+    <script>
+        window.__deferredPwaPrompt = null;
+        window.addEventListener('beforeinstallprompt', function (event) {
+            event.preventDefault();
+            window.__deferredPwaPrompt = event;
+            window.dispatchEvent(new CustomEvent('rg-pwa-prompt-ready'));
+        });
+    </script>
+</head>
+<body>
+    <header id="mainHeader" class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <button type="button" id="menuBtn" class="header-icon" aria-label="Menü" data-i18n-aria="a11y.menu">☰</button>
+                <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="28" height="28" alt="" aria-hidden="true" title="Regionaler Geschmack">
+                <h1>Regionaler Geschmack</h1>
+            </div>
+            <div class="header-right">
+                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=28" width="22" height="22" alt="" aria-hidden="true"></button>
+                <div class="header-lang-wrap">
+                    <button type="button" id="languageSwitcherBtn" class="header-lang" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria="a11y.chooseLanguage">
+                        <span id="languageSwitcherLabel">🇩🇪 Deutsch</span>
+                        <span class="header-lang-caret" aria-hidden="true">▾</span>
+                    </button>
+                    <ul id="languageDropdown" class="language-dropdown" role="listbox" hidden></ul>
+                </div>
+                <button type="button" id="darkModeToggleBtn" class="header-icon theme-toggle-premium" aria-label="Dunkelmodus" aria-pressed="false" data-i18n-aria="a11y.darkMode">🌞</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="app"></main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation" data-i18n-aria="a11y.mainNav">
+        <button type="button" class="nav-item active" data-view="home">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button type="button" class="nav-item" data-view="map">
+            <span class="nav-icon" aria-hidden="true">🗺️</span>
+            <span class="nav-label">Karte</span>
+        </button>
+        <button type="button" class="nav-item" data-view="search">
+            <span class="nav-icon" aria-hidden="true">🔍</span>
+            <span class="nav-label">Suche</span>
+        </button>
+        <button type="button" class="nav-item" data-view="favorites">
+            <span class="nav-icon" aria-hidden="true">❤️</span>
+            <span class="nav-label">Favoriten</span>
+        </button>
+        <button type="button" class="nav-item" data-view="profile">
+            <span class="nav-icon" aria-hidden="true">👤</span>
+            <span class="nav-label">Profil</span>
+        </button>
+    </nav>
+
+    <div id="sideMenu" class="side-menu" hidden aria-hidden="true">
+        <div class="side-menu-backdrop" data-side-menu-close aria-hidden="true"></div>
+        <aside class="side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="sideMenuTitle">
+            <header class="side-menu-header">
+                <button type="button" class="side-menu-back" data-side-menu-action="back" hidden aria-label="Zurück" data-i18n-aria="a11y.back">←</button>
+                <h2 id="sideMenuTitle" class="side-menu-title">
+                    <img class="side-menu-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="28" height="28" alt="" aria-hidden="true">
+                    <span id="sideMenuTitleText" data-i18n-menu="title">Menu</span>
+                </h2>
+                <button type="button" class="side-menu-close" data-side-menu-close aria-label="Schließen" data-i18n-aria="a11y.close">×</button>
+            </header>
+
+            <div class="side-menu-body">
+                <nav class="side-menu-nav" data-side-menu-view="main">
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionMain" data-i18n-menu-icon="🏠">🏠 Hauptmenü</p>
+                    <ul class="side-menu-list">
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="home"><span class="side-menu-item-icon" aria-hidden="true">🏠</span><span class="side-menu-item-label" data-i18n-menu="home">Startseite</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="map"><span class="side-menu-item-icon" aria-hidden="true">🗺️</span><span class="side-menu-item-label" data-i18n-menu="map">Karte</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="favorites"><span class="side-menu-item-icon" aria-hidden="true">❤️</span><span class="side-menu-item-label" data-i18n-menu="favorites">Favoriten</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="taste-diary"><span class="side-menu-item-icon" aria-hidden="true">📔</span><span class="side-menu-item-label" data-i18n-menu="tasteDiary">Geschmackstagebuch</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="cart"><span class="side-menu-item-icon" aria-hidden="true">🛒</span><span class="side-menu-item-label" data-i18n-menu="cart">Warenkorb</span></button></li>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="premium"><span class="side-menu-item-icon" aria-hidden="true"><img class="side-menu-premium-mark" src="/assets/icons/logo-master.svg?v=28" width="22" height="22" alt="" aria-hidden="true"></span><span class="side-menu-item-label" data-i18n-menu="premium">Premium</span></button></li>
+                    </ul>
+
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionLegal" data-i18n-menu-icon="📖">📖 Rechtliches</p>
+                    <ul class="side-menu-list">
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="terms"><span class="side-menu-item-icon" aria-hidden="true">📜</span><span class="side-menu-item-label" data-i18n-menu="terms">Nutzungsbedingungen</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="privacy"><span class="side-menu-item-icon" aria-hidden="true">🔒</span><span class="side-menu-item-label" data-i18n-menu="privacy">Datenschutz</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="about"><span class="side-menu-item-icon" aria-hidden="true">ℹ️</span><span class="side-menu-item-label" data-i18n-menu="about">Über die App</span></button></li>
+                    </ul>
+
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionHelp" data-i18n-menu-icon="📲">📲 Hilfe & Installation</p>
+                    <ul class="side-menu-list">
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" id="pwaInstallMenuBtn" data-side-menu-action="install-pwa" hidden><span class="side-menu-item-icon" aria-hidden="true">📲</span><span class="side-menu-item-label" data-pwa-install-label>Installieren</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="guide"><span class="side-menu-item-icon" aria-hidden="true">📖</span><span class="side-menu-item-label" data-i18n-menu="guide">Bedienungsanleitung</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="download-app"><span class="side-menu-item-icon" aria-hidden="true">⬇️</span><span class="side-menu-item-label" data-i18n-menu="downloadApp">App herunterladen</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="qr"><span class="side-menu-item-icon" aria-hidden="true">📷</span><span class="side-menu-item-label" data-i18n-menu="qr">QR-Code</span></button></li>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="recommendations"><span class="side-menu-item-icon" aria-hidden="true">✨</span><span class="side-menu-item-label" data-i18n-menu="recommendations">Empfehlungen</span></button></li>
+                        <li data-menu-gate="pdf" hidden><button type="button" class="side-menu-item" data-side-menu-action="download-pdf"><span class="side-menu-item-icon" aria-hidden="true">📄</span><span class="side-menu-item-label" data-i18n-menu="downloadPdf">Installationsanleitung (PDF)</span></button></li>
+                    </ul>
+
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionTesting" data-i18n-menu-icon="🧪" data-menu-internal hidden>🧪 Benutzertests</p>
+                    <ul class="side-menu-list" data-menu-internal hidden>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="feedback"><span class="side-menu-item-icon" aria-hidden="true">💬</span><span class="side-menu-item-label" data-i18n-menu="feedback">Feedback</span></button></li>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="test-guide"><span class="side-menu-item-icon" aria-hidden="true">🧪</span><span class="side-menu-item-label" data-i18n-menu="testGuide">Testanleitung</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="share-app"><span class="side-menu-item-icon" aria-hidden="true">🔗</span><span class="side-menu-item-label" data-i18n-menu="shareApp">App teilen</span></button></li>
+                    </ul>
+
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionContact" data-i18n-menu-icon="💬">💬 Kontakt & Autor</p>
+                    <ul class="side-menu-list">
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="contact"><span class="side-menu-item-icon" aria-hidden="true">✉️</span><span class="side-menu-item-label" data-i18n-menu="contact">Kontakt</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="author"><span class="side-menu-item-icon" aria-hidden="true">👤</span><span class="side-menu-item-label" data-i18n-menu="author">Autor</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="cooperation"><span class="side-menu-item-icon" aria-hidden="true">🤝</span><span class="side-menu-item-label" data-i18n-menu="cooperation">Zusammenarbeit</span></button></li>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="report-bug"><span class="side-menu-item-icon" aria-hidden="true">🐞</span><span class="side-menu-item-label" data-i18n-menu="reportBug">Fehler melden</span></button></li>
+                    </ul>
+
+
+                    <p class="side-menu-section-label" data-i18n-menu-section="sectionDev" data-i18n-menu-icon="🔐" data-menu-internal hidden>🔐 Deweloper</p>
+                    <ul class="side-menu-list" data-menu-internal hidden>
+                        <li><button type="button" class="side-menu-item" data-side-menu-action="dev-vault"><span class="side-menu-item-icon" aria-hidden="true">🔐</span><span class="side-menu-item-label" data-i18n-menu="devVault">Panel deweloperski</span></button></li>
+                    </ul>
+
+                </nav>
+
+                <section class="side-menu-detail" data-side-menu-view="terms" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-legal="termsTitle"></h3>
+                    <article class="side-menu-legal">
+                        <h4 data-i18n-legal="termsS1Title"></h4>
+                        <p data-i18n-legal="termsS1Body"></p>
+                        <h4 data-i18n-legal="termsS2Title"></h4>
+                        <p data-i18n-legal="termsS2Body" data-i18n-html="true"></p>
+                        <h4 data-i18n-legal="termsS3Title"></h4>
+                        <p data-i18n-legal="termsS3Body"></p>
+                        <h4 data-i18n-legal="termsS4Title"></h4>
+                        <p data-i18n-legal="termsS4Body"></p>
+                        <h4 data-i18n-legal="termsS5Title"></h4>
+                        <p data-i18n-legal="termsS5Body"></p>
+                        <h4 data-i18n-legal="termsS6Title"></h4>
+                        <p data-i18n-legal="termsS6Body"></p>
+                        <h4 data-i18n-legal="termsS7Title"></h4>
+                        <p data-i18n-legal="termsS7P1"></p>
+                        <p data-i18n-legal="termsS7P2Intro"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="termsS7Li1"></li>
+                            <li data-i18n-legal="termsS7Li2"></li>
+                            <li data-i18n-legal="termsS7Li3"></li>
+                            <li data-i18n-legal="termsS7Li4"></li>
+                        </ul>
+                        <p data-i18n-legal="termsS7P3"></p>
+                        <h4 data-i18n-legal="termsS8Title"></h4>
+                        <p data-i18n-legal="termsS8P1"></p>
+                        <p data-i18n-legal="termsS8P2"></p>
+                        <p data-i18n-legal="termsS8P3"></p>
+                        <h4 data-i18n-legal="termsS9Title"></h4>
+                        <p data-i18n-legal="termsS9P1"></p>
+                        <p data-i18n-legal="termsS9P2"></p>
+                        <h4 data-i18n-legal="termsS10Title"></h4>
+                        <p data-i18n-legal="termsS10P1"></p>
+                        <p data-i18n-legal="termsS10P2"></p>
+                        <p data-i18n-legal="termsS10P3"></p>
+                    </article>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="privacy" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-legal="privacyTitle"></h3>
+                    <p class="side-menu-detail-meta" data-i18n-legal="privacyUpdated"></p>
+                    <article class="side-menu-legal">
+                        <h4 data-i18n-legal="privacyS1Title"></h4>
+                        <p data-i18n-legal="privacyS1Body" data-i18n-html="true"></p>
+                        <h4 data-i18n-legal="privacyS2Title"></h4>
+                        <p data-i18n-legal="privacyS2P1"></p>
+                        <p data-i18n-legal="privacyS2P2"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="privacyS2Li1"></li>
+                            <li data-i18n-legal="privacyS2Li2"></li>
+                            <li data-i18n-legal="privacyS2Li3"></li>
+                            <li data-i18n-legal="privacyS2Li4"></li>
+                            <li data-i18n-legal="privacyS2Li5"></li>
+                        </ul>
+                        <h4 data-i18n-legal="privacyS3Title"></h4>
+                        <p data-i18n-legal="privacyS3Intro"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="privacyS3Li1"></li>
+                            <li data-i18n-legal="privacyS3Li2"></li>
+                        </ul>
+                        <h4 data-i18n-legal="privacyS4Title"></h4>
+                        <p data-i18n-legal="privacyS4Intro"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="privacyS4Li1"></li>
+                            <li data-i18n-legal="privacyS4Li2"></li>
+                        </ul>
+                        <p data-i18n-legal="privacyS4Note" data-i18n-html="true"></p>
+                        <h4 data-i18n-legal="privacyS5Title"></h4>
+                        <p data-i18n-legal="privacyS5Intro"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="privacyS5Li1"></li>
+                            <li data-i18n-legal="privacyS5Li2"></li>
+                            <li data-i18n-legal="privacyS5Li3"></li>
+                            <li data-i18n-legal="privacyS5Li4"></li>
+                            <li data-i18n-legal="privacyS5Li5"></li>
+                            <li data-i18n-legal="privacyS5Li6"></li>
+                            <li data-i18n-legal="privacyS5Li7"></li>
+                        </ul>
+                        <p data-i18n-legal="privacyS5Contact" data-i18n-html="true"></p>
+                        <h4 data-i18n-legal="privacyS6Title"></h4>
+                        <p data-i18n-legal="privacyS6Intro"></p>
+                        <ul class="side-menu-help-list">
+                            <li data-i18n-legal="privacyS6Li1"></li>
+                            <li data-i18n-legal="privacyS6Li2"></li>
+                        </ul>
+                        <h4 data-i18n-legal="privacyS7Title"></h4>
+                        <p data-i18n-legal="privacyS7Body"></p>
+                        <h4 data-i18n-legal="privacyS8Title"></h4>
+                        <p data-i18n-legal="privacyS8Body"></p>
+                    </article>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="about" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-about="title"></h3>
+
+                    <div class="side-menu-about-warning">
+                        <h4 class="side-menu-detail-sub" data-i18n-about="testWarningTitle"></h4>
+                        <p class="side-menu-detail-lead" data-i18n-about="testWarningText"></p>
+                    </div>
+
+                    <h4 class="side-menu-detail-sub" data-i18n-about="purposeTitle"></h4>
+                    <p class="side-menu-detail-lead" data-i18n-about="purposeText"></p>
+
+                    <h4 class="side-menu-detail-sub" data-i18n-about="techTitle"></h4>
+                    <ul class="side-menu-help-list">
+                        <li data-i18n-about="techFrontend"></li>
+                        <li data-i18n-about="techMap"></li>
+                        <li data-i18n-about="techStorage"></li>
+                        <li data-i18n-about="techI18n"></li>
+                    </ul>
+
+                    <p class="side-menu-detail-meta">
+                        <span data-i18n-about="metaCreated"></span><br>
+                        <span data-i18n-about="metaVersion"></span>
+                    </p>
+
+                    <h4 class="side-menu-detail-sub" data-i18n-about="legalTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-about="legal1"></li>
+                        <li data-i18n-about="legal2"></li>
+                        <li data-i18n-about="legal3"></li>
+                        <li data-i18n-about="legal4"></li>
+                    </ol>
+
+                    <p class="side-menu-detail-meta" data-i18n-about="copyright"></p>
+
+                    <h4 class="side-menu-detail-sub" data-i18n-about="moreTitle"></h4>
+                    <p class="side-menu-detail-lead" data-i18n-about="moreLead"></p>
+                    <div class="side-menu-about-links">
+                        <button type="button" class="side-menu-download-btn" data-side-menu-action="author" data-i18n-menu="author">Autor</button>
+                        <button type="button" class="side-menu-download-btn" data-side-menu-action="contact" data-i18n-menu="contact">Kontakt</button>
+                        <button type="button" class="side-menu-download-btn" data-side-menu-action="download-app" data-i18n-menu="downloadApp">App herunterladen</button>
+                        <button type="button" class="side-menu-download-btn" data-side-menu-action="qr" data-i18n-menu="qr">QR-Code</button>
+                        <button type="button" class="side-menu-download-btn" data-side-menu-action="cooperation" data-i18n-menu="cooperation">Zusammenarbeit</button>
+                    </div>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="guide" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="guideTitle"></h3>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="guideMapTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="guideMap1" data-i18n-html="true"></li>
+                        <li data-i18n-help="guideMap2" data-i18n-html="true"></li>
+                        <li data-i18n-help="guideMap3" data-i18n-html="true"></li>
+                    </ol>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="guideFavTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="guideFav1" data-i18n-html="true"></li>
+                        <li data-i18n-help="guideFav2" data-i18n-html="true"></li>
+                    </ol>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="guideContactTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="guideContact1" data-i18n-html="true"></li>
+                        <li data-i18n-help="guideContact2" data-i18n-html="true"></li>
+                    </ol>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="guideReviewsTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="guideReviews1" data-i18n-html="true"></li>
+                        <li data-i18n-help="guideReviews2" data-i18n-html="true"></li>
+                    </ol>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="download" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="downloadTitle"></h3>
+                    <div class="side-menu-download-block" data-menu-gate="apk" hidden>
+                        <h4 data-i18n-help="downloadAndroidTitle"></h4>
+                        <p data-i18n-help="downloadAndroidDesc"></p>
+                        <a class="side-menu-download-btn" href="/downloads/app.apk" download data-i18n-help="downloadApk"></a>
+                    </div>
+                    <div class="side-menu-download-block">
+                        <h4 data-i18n-help="downloadIosTitle"></h4>
+                        <p data-i18n-help="downloadIosDesc"></p>
+                        <ol class="side-menu-steps">
+                            <li data-i18n-help="downloadIos1" data-i18n-html="true"></li>
+                            <li data-i18n-help="downloadIos2" data-i18n-html="true"></li>
+                        </ol>
+                    </div>
+                    <div class="side-menu-download-block" data-menu-gate="stores" hidden>
+                        <h4 data-i18n-help="downloadStoresTitle"></h4>
+                        <p class="side-menu-detail-note" data-i18n-help="downloadStoresNote"></p>
+                        <a class="side-menu-download-btn side-menu-store-btn" href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" data-i18n-help="downloadPlay"></a>
+                        <a class="side-menu-download-btn side-menu-store-btn" href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" data-i18n-help="downloadAppStore"></a>
+                    </div>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="qr" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="qrTitle"></h3>
+                    <div class="side-menu-qr-block">
+                        <img id="sideMenuQrImage" class="side-menu-qr-image" alt="QR-Code zur App" width="200" height="200">
+                        <p class="side-menu-qr-caption" data-i18n-help="qrCaption"></p>
+                    </div>
+                    <p class="side-menu-detail-lead" data-i18n-help="qrLead"></p>
+                </section>
+
+                
+                <section class="side-menu-detail" data-side-menu-view="taste-diary" hidden>
+                    <h3 class="side-menu-detail-title" id="tasteDiaryPanelTitle">Geschmackstagebuch</h3>
+                    <div id="tasteDiaryList" class="taste-diary-list" aria-live="polite"></div>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="recommendations" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="recTitle"></h3>
+                    <p class="side-menu-detail-lead" data-i18n-help="recLead"></p>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="recDevicesTitle"></h4>
+                    <ul class="side-menu-device-list">
+                        <li data-i18n-help="recDevice1" data-i18n-html="true"></li>
+                        <li data-i18n-help="recDevice2" data-i18n-html="true"></li>
+                        <li data-i18n-help="recDevice3" data-i18n-html="true"></li>
+                    </ul>
+                    <h4 class="side-menu-detail-sub" data-i18n-help="recTipsTitle"></h4>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="recTip1"></li>
+                        <li data-i18n-help="recTip2"></li>
+                        <li data-i18n-help="recTip3"></li>
+                        <li data-i18n-help="recTip4"></li>
+                    </ol>
+                    <div class="side-menu-downloads">
+                        <a class="side-menu-download-btn" href="/docs/instrukcja-instalacji.pdf" download data-i18n-help="recPdf" data-menu-gate="pdf" hidden></a>
+                        <a class="side-menu-download-btn" href="/downloads/app.apk" download data-i18n-help="recApk" data-menu-gate="apk" hidden></a>
+                    </div>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="contact" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="contactTitle"></h3>
+                    <ul class="side-menu-contact-list">
+                        <li class="contact-item">
+                            <span class="contact-avatar" aria-hidden="true">KP</span>
+                            <span>Krzysztof Polikarski</span>
+                        </li>
+                        <li><span aria-hidden="true">✉️</span> <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a></li>
+                        <li><span aria-hidden="true">📍</span> <span data-i18n="footer.address">Polikarski Krzysztof, Germany</span></li>
+                    </ul>
+                    <p class="side-menu-detail-lead" data-i18n-help="contactLead" data-i18n-html="true"></p>
+                    <p class="side-menu-detail-lead" data-i18n-help="contactReply"></p>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="author" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="authorTitle"></h3>
+                    <p class="side-menu-detail-lead"><strong>Krzysztof Polikarski</strong></p>
+                    <p data-i18n-help="authorRole"></p>
+                    <p class="side-menu-detail-meta" data-i18n-help="authorMeta"></p>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="cooperation" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="coopTitle"></h3>
+                    <p class="side-menu-detail-lead" data-i18n-help="coopLead"></p>
+                    <ul class="side-menu-help-list">
+                        <li data-i18n-help="coopLi1"></li>
+                        <li data-i18n-help="coopLi2"></li>
+                        <li data-i18n-help="coopLi3"></li>
+                    </ul>
+                    <a class="side-menu-download-btn" href="mailto:krispolik6@gmail.com?subject=Cooperation" data-i18n-help="coopWrite"></a>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="report-bug" hidden>
+                    <h3 class="side-menu-detail-title" data-i18n-help="bugTitle"></h3>
+                    <p class="side-menu-detail-lead" data-i18n-help="bugLead"></p>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-help="bug1"></li>
+                        <li data-i18n-help="bug2"></li>
+                        <li data-i18n-help="bug3"></li>
+                    </ol>
+                    <a class="side-menu-download-btn" href="mailto:krispolik6@gmail.com?subject=Bug%20report" data-i18n-help="bugSend"></a>
+                </section>
+
+                                <section class="side-menu-detail" data-side-menu-view="feedback" hidden>
+                    <h3 class="side-menu-detail-title">💬 <span data-i18n-menu="feedback">Opinie</span></h3>
+                    <p class="side-menu-detail-lead" data-i18n-testing="feedbackLead">Pomóż nam ulepszyć aplikację – dziękujemy za opinię!</p>
+                    <form id="userFeedbackForm" class="side-menu-feedback-form" novalidate>
+                        <label class="side-menu-field">
+                            <span data-i18n-testing="feedbackName">Imię</span>
+                            <input type="text" name="name" id="feedbackName" autocomplete="name" maxlength="80" required>
+                        </label>
+                        <label class="side-menu-field">
+                            <span data-i18n-testing="feedbackOpinion">Twoja opinia</span>
+                            <textarea name="opinion" id="feedbackOpinion" rows="4" maxlength="2000" required></textarea>
+                        </label>
+                        <fieldset class="side-menu-field side-menu-rating" data-feedback-rating>
+                            <legend data-i18n-testing="feedbackRating">Ocena (1–5)</legend>
+                            <div class="side-menu-rating-options" role="radiogroup" aria-label="Ocena" data-i18n-aria="a11y.feedbackRating">
+                                <label class="side-menu-rating-option"><input type="radio" name="rating" value="1" required> 1</label>
+                                <label class="side-menu-rating-option"><input type="radio" name="rating" value="2"> 2</label>
+                                <label class="side-menu-rating-option"><input type="radio" name="rating" value="3"> 3</label>
+                                <label class="side-menu-rating-option"><input type="radio" name="rating" value="4"> 4</label>
+                                <label class="side-menu-rating-option"><input type="radio" name="rating" value="5"> 5</label>
+                            </div>
+                        </fieldset>
+                        <label class="side-menu-field">
+                            <span data-i18n-testing="feedbackDevice">Urządzenie</span>
+                            <select name="device" id="feedbackDevice">
+                                <option value="phone" data-i18n-testing-option="devicePhone">Telefon</option>
+                                <option value="tablet" data-i18n-testing-option="deviceTablet">Tablet</option>
+                                <option value="desktop" data-i18n-testing-option="deviceDesktop">Komputer</option>
+                                <option value="other" data-i18n-testing-option="deviceOther">Inne</option>
+                            </select>
+                        </label>
+                        <label class="side-menu-field" for="feedbackLanguage">
+                            <span data-i18n-testing="feedbackLanguage">Język</span>
+                            <div class="side-menu-lang-picker">
+                                <img id="feedbackLanguageFlag" class="side-menu-lang-flag" src="/assets/flags/de.svg" alt="" width="20" height="15" decoding="async">
+                                <select name="language" id="feedbackLanguage" aria-describedby="feedbackLanguageHint"></select>
+                            </div>
+                        </label>
+                        <button type="submit" class="side-menu-download-btn" data-i18n-testing="feedbackSubmit">Wyślij opinię</button>
+                    </form>
+                    <p class="side-menu-detail-note" data-i18n-testing="feedbackStoredHint">Opinia zapisuje się lokalnie na tym urządzeniu.</p>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="test-guide" hidden>
+                    <h3 class="side-menu-detail-title">🧪 <span data-i18n-menu="testGuide">Instrukcja testów</span></h3>
+                    <p class="side-menu-detail-lead" data-i18n-testing="testGuideLead">Krótka checklista dla testerów (ok. 10 minut).</p>
+                    <ol class="side-menu-steps">
+                        <li data-i18n-testing="testGuideStep1">Otwórz stronę główną – sprawdź ikonę aplikacji (dwa kłosy) i kategorie.</li>
+                        <li data-i18n-testing="testGuideStep2">Kliknij kategorię (np. Piekarnie) → mapa z filtrem.</li>
+                        <li data-i18n-testing="testGuideStep3">Kliknij marker → sprawdź popup, godziny i kontakt.</li>
+                        <li data-i18n-testing="testGuideStep4">Wyszukaj produkt (np. chleb) → wyniki także po produktach.</li>
+                        <li data-i18n-testing="testGuideStep5">Dodaj producenta do ulubionych ★.</li>
+                        <li data-i18n-testing="testGuideStep6">Ulubione → zapisz trasę zakupową (min. 2 miejsca) i otwórz nawigację.</li>
+                        <li data-i18n-testing="testGuideStep7">Otwórz kartę producenta → sprawdź badge weryfikacji i zgłoś błąd.</li>
+                        <li data-i18n-testing="testGuideStep8">Dodaj krótką opinię ze zdjęciem.</li>
+                        <li data-i18n-testing="testGuideStep9">PWA: zainstaluj aplikację / sprawdź tryb offline.</li>
+                        <li data-i18n-testing="testGuideStep10">Wypełnij formularz opinii (menu) i wyślij.</li>
+                    </ol>
+                    <button type="button" class="side-menu-download-btn" data-side-menu-action="feedback" data-i18n-menu="feedback">Opinie</button>
+                </section>
+
+                <section class="side-menu-detail" data-side-menu-view="share-app" hidden>
+                    <h3 class="side-menu-detail-title">🔗 <span data-i18n-menu="shareApp">Udostępnij aplikację</span></h3>
+                    <p class="side-menu-detail-lead" data-i18n-testing="shareLead">Udostępnij ten tekst znajomym i testerom:</p>
+                    <pre class="side-menu-share-text" id="sideMenuShareText" aria-label="" data-i18n-aria="a11y.shareText"></pre>
+                    <p class="side-menu-share-url" id="sideMenuShareUrl">https://admirable-cascaron-c76940.netlify.app</p>
+                    <button type="button" class="side-menu-download-btn" id="sideMenuShareNativeBtn" data-i18n-testing="shareNative" hidden>Udostępnij…</button>
+                    <button type="button" class="side-menu-download-btn" id="sideMenuShareCopyBtn" data-i18n-testing="shareCopy">Kopiuj tekst</button>
+                    <a class="side-menu-download-btn side-menu-share-open" id="sideMenuShareOpenLink" href="https://admirable-cascaron-c76940.netlify.app" target="_blank" rel="noopener noreferrer" data-i18n-testing="shareOpen">Open</a>
+                </section>
+            </div>
+        </aside>
+    </div>
+
+    <script nomodule src="/js/legacy/polyfills.js?v=1"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.20/dist/fetch.umd.js" crossorigin="anonymous"></script>
+    <script nomodule src="/js/legacy/app.bundle.js?v=27"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js?v=28').catch(function (err) {
+                    console.warn('[SW] Rejestracja nie powiodła się:', err);
+                });
+            });
+        }
+    </script>
+    <script type="module" src="/js/app.js?v=611"></script>
+    <!-- AI Guardian behavior probe: TYLKO localhost + jawny opt-in localStorage. Nie wpływa na produkcję. -->
+    <script type="module">
+        try {
+            var h = location.hostname;
+            if ((h === 'localhost' || h === '127.0.0.1') && localStorage.getItem('rg_ai_guardian_probe') === '1') {
+                import('/tools/ai-guardian/runtime/behavior-probe.js');
+            }
+        } catch (e) { /* ignore */ }
+    </script>
+</body>
+</html>

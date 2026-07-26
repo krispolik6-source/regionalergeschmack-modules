@@ -1,0 +1,56 @@
+# Brand Protection AI — ETAP 29C
+
+Wygenerowano: 2026-07-26T16:04:32.399Z
+
+## Status: **⚠️ WARNING**
+
+## Polityka
+
+- **Brand Book = najwyższy autorytet**
+- **autoApply: false** — nie zmienia kodu
+- **autoFix: false** — nie poprawia naruszeń
+- Przy naruszeniu: tylko ostrzeżenie w raporcie
+
+> ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+
+## Zakres skanu
+
+- HTML · CSS · SVG · PNG · Manifest · PWA
+- Kategorie: logo · colors · fonts · icons · shadows · photos · spacing · radius · gradients · animations
+- Pliki: **54**
+- FAIL: **0** · WARNING: **6**
+
+## Kategorie
+
+- ✅ **logo** — fail 0, warning 0
+- ✅ **colors** — fail 0, warning 0
+- ✅ **fonts** — fail 0, warning 0
+- ✅ **icons** — fail 0, warning 0
+- ✅ **shadows** — fail 0, warning 0
+- ✅ **photos** — fail 0, warning 0
+- ✅ **spacing** — fail 0, warning 0
+- ⚠️ **radius** — fail 0, warning 5
+- ✅ **gradients** — fail 0, warning 0
+- ⚠️ **animations** — fail 0, warning 1
+
+## Naruszenia
+
+- **[WARNING]** `radius` · `css/final-ux-premium.css` — Ekstremalny radius (pill) w kontekście brand/hero
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+- **[WARNING]** `radius` · `css/landing.css` — Ekstremalny radius (pill) w kontekście brand/hero
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+- **[WARNING]** `animations` · `css/living-region-experience.css` — Animacja podejrzana o glow/neon: lre-warm-glow
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+- **[WARNING]** `radius` · `css/polish.css` — Ekstremalny radius (pill) w kontekście brand/hero
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+- **[WARNING]** `radius` · `css/style.css` — Ekstremalny radius (pill) w kontekście brand/hero
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+- **[WARNING]** `radius` · `css/theme-toggle-premium.css` — Ekstremalny radius (pill) w kontekście brand/hero
+  - ⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela.
+
+## Zasady Brand Book
+
+- Logo master: `assets/icons/logo-master.svg`
+- Paleta: #2a3f28 / #c9a227 / #f5efe3
+- Fonty: Literata + Source Sans 3
+- Manifest: theme #2a3f28 · background #f5efe3

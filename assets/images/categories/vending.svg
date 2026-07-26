@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Vending">
+  <rect width="64" height="64" rx="14" fill="#eceff1"/>
+  <rect x="18" y="12" width="28" height="42" rx="4" fill="#5a6470"/>
+  <rect x="22" y="16" width="20" height="12" rx="2" fill="#90a4ae"/>
+  <rect x="22" y="32" width="8" height="6" rx="1" fill="#81c784"/>
+  <rect x="34" y="32" width="8" height="6" rx="1" fill="#ffb74d"/>
+  <rect x="22" y="42" width="20" height="4" rx="1" fill="#37474f"/>
+  <circle cx="40" cy="46" r="2" fill="#ffd54f"/>
+</svg>

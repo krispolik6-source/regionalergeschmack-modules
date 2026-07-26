@@ -1,0 +1,552 @@
+/* ============================================================
+   ETAP 10A – Warm Summer Village
+   Ciepła letnia wieś, lokalne produkty, spokój.
+   Tylko prezentacja (CSS). Bez HTML / Store / mapy / filtrów.
+   ============================================================ */
+
+:root {
+    /* Paleta – pszenica, miód, łąka (bez zimnych szarości) */
+    /* ETAP 20A – zsynchronizowane z logo (zieleń / złoto / krem) */
+    --color-primary: #3d5c34;
+    --color-primary-dark: #2a3f28;
+    --color-accent: #d4a84b;
+    --color-accent-dark: #a67c1a;
+    --color-bg: #f5efe3;
+    --color-card: #fff8ee;
+    --color-btn-location: #6b8f4e;
+    --color-btn-location-hover: #5a7a42;
+    --color-btn-nearby: #8a6a3a;
+    --color-btn-nearby-hover: #735830;
+    --home-surface: rgba(255, 248, 235, 0.62);
+    --home-surface-border: rgba(140, 100, 55, 0.18);
+    --color-text: #2a2218;
+    --color-text-muted: #6b5a45;
+    --color-text-light: #fffaf2;
+    --color-border: rgba(120, 85, 45, 0.14);
+    --btn-see-all: #4f6b3c;
+
+    --nav-icon-home: #4f6b3c;
+    --nav-icon-map: #6b8f4e;
+    --nav-icon-search: #8a6a3a;
+    --nav-icon-favorites: #c45a6a;
+    --nav-icon-profile: #7a6a4a;
+
+    --cat-icon-farmers: #5a8f3c;
+    --cat-icon-bakeries: #d4a03a;
+    --cat-icon-meat: #c45a45;
+    --cat-icon-shops: #6a8a55;
+    --cat-icon-restaurants: #d4893a;
+    --cat-icon-fastFood: #b86a3a;
+    --cat-icon-vending: #7a6a4a;
+    --cat-icon-favorites: #c45a6a;
+
+    /* Warm glassmorphism */
+    --glass-blur: 12px;
+    --glass-saturate: 135%;
+    --glass-bg: rgba(255, 246, 230, 0.55);
+    --glass-bg-light: rgba(255, 252, 245, 0.58);
+    --glass-border: rgba(255, 240, 210, 0.55);
+    --glass-shadow: 0 4px 18px rgba(90, 55, 20, 0.08);
+    --glass-shadow-lift: 0 8px 24px rgba(90, 55, 20, 0.12);
+    --glass-radius: 16px;
+
+    --shadow-sm: 0 2px 10px rgba(90, 55, 20, 0.07);
+    --shadow-md: 0 6px 20px rgba(90, 55, 20, 0.11);
+    --shadow-up: 0 -4px 22px rgba(90, 55, 20, 0.1);
+
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+
+    --warm-glow: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(255, 210, 140, 0.28) 0%, transparent 70%);
+    --warm-glow-soft: radial-gradient(ellipse 80% 50% at 50% 12%, rgba(255, 230, 180, 0.2) 0%, transparent 68%);
+    --warm-card-gradient: linear-gradient(
+        155deg,
+        rgba(255, 252, 245, 0.78) 0%,
+        rgba(255, 240, 215, 0.55) 55%,
+        rgba(255, 232, 200, 0.42) 100%
+    );
+
+    --bg-card: var(--color-card);
+}
+
+/* --- Dark mode: ciepła noc, nie zimny granat --- */
+body.dark-mode {
+    --color-bg: #1c1812;
+    --color-card: #2a241c;
+    --color-text: #f5efe3;
+    --color-text-muted: #d4c4a8;
+    --color-primary: #8fb86a;
+    --color-primary-dark: #7aa558;
+    --color-accent: #e0b06a;
+    --color-accent-dark: #c9974a;
+    --glass-bg: rgba(42, 34, 24, 0.62);
+    --glass-bg-light: rgba(50, 40, 28, 0.58);
+    --glass-border: rgba(255, 220, 170, 0.14);
+    --home-surface: rgba(50, 40, 28, 0.55);
+    --home-surface-border: rgba(255, 220, 170, 0.12);
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   Tło aplikacji – zawsze ciepłe (nad landscapes)
+   ============================================================ */
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+body:not(.view-map-active)::after {
+    background:
+        var(--warm-glow-soft),
+        linear-gradient(
+            180deg,
+            rgba(255, 236, 200, 0.22) 0%,
+            rgba(255, 248, 235, 0.12) 40%,
+            rgba(242, 230, 212, 0.18) 100%
+        ) !important;
+}
+
+body.view-map-active {
+    background: #e8d9c4;
+}
+
+body.dark-mode.view-map-active {
+    background: #1c1812;
+}
+
+/* ============================================================
+   Powierzchnie – warm glass + gradient
+   ============================================================ */
+
+#app {
+    background: var(--warm-card-gradient);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+body.dark-mode #app {
+    background: linear-gradient(
+        160deg,
+        rgba(42, 34, 24, 0.72) 0%,
+        rgba(28, 24, 18, 0.65) 100%
+    );
+    border-color: rgba(255, 220, 170, 0.12);
+}
+
+.card,
+.surface-panel,
+.list-item,
+.favorite-item,
+.cart-item,
+.cart-summary,
+.premium-feature-card,
+.setting-item.card,
+.producer-product-card,
+.view-hero,
+.home-venue-card,
+.home-product-card--compact,
+.home-recipe-card--compact,
+.home-premium-cta,
+.home-search-field,
+.home-quick-chip,
+.search-result-card,
+.rg-ad-banner {
+    background: var(--warm-card-gradient) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--glass-radius) !important;
+    box-shadow: var(--glass-shadow) !important;
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+body.dark-mode .card,
+body.dark-mode .surface-panel,
+body.dark-mode .list-item,
+body.dark-mode .favorite-item,
+body.dark-mode .cart-item,
+body.dark-mode .cart-summary,
+body.dark-mode .premium-feature-card,
+body.dark-mode .setting-item.card,
+body.dark-mode .producer-product-card,
+body.dark-mode .view-hero,
+body.dark-mode .home-venue-card,
+body.dark-mode .home-product-card--compact,
+body.dark-mode .home-recipe-card--compact,
+body.dark-mode .home-premium-cta,
+body.dark-mode .home-search-field,
+body.dark-mode .home-quick-chip,
+body.dark-mode .search-result-card,
+body.dark-mode .rg-ad-banner,
+body.dark-mode .placeholder {
+    background: linear-gradient(
+        155deg,
+        rgba(50, 40, 28, 0.88) 0%,
+        rgba(36, 30, 22, 0.82) 100%
+    ) !important;
+    border-color: rgba(255, 220, 170, 0.14) !important;
+    color: #f5efe3;
+}
+
+/* Header / nav – ciepłe */
+.main-header,
+#mainHeader {
+    background: rgba(255, 248, 235, 0.82) !important;
+    border-bottom-color: rgba(140, 100, 55, 0.12) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+}
+
+body.dark-mode .main-header,
+body.dark-mode #mainHeader {
+    background: rgba(28, 24, 18, 0.88) !important;
+}
+
+.bottom-nav {
+    background: rgba(255, 248, 235, 0.92) !important;
+    border-top-color: rgba(140, 100, 55, 0.14) !important;
+    box-shadow: var(--shadow-up) !important;
+}
+
+body.dark-mode .bottom-nav {
+    background: rgba(28, 24, 18, 0.94) !important;
+}
+
+/* Side menu */
+.side-menu,
+#sideMenu {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 250, 240, 0.96) 0%,
+        rgba(245, 232, 210, 0.94) 100%
+    ) !important;
+}
+
+body.dark-mode .side-menu,
+body.dark-mode #sideMenu {
+    background: linear-gradient(180deg, #2a241c 0%, #1c1812 100%) !important;
+}
+
+/* ============================================================
+   Kompaktowe kontrolki Home
+   ============================================================ */
+
+.home-search--lg {
+    gap: 8px;
+    align-items: center;
+}
+
+.home-search--lg .home-search-field {
+    min-height: 42px !important;
+    padding: 6px 12px !important;
+    border-radius: 14px !important;
+}
+
+.home-search--lg .home-search-input {
+    min-height: 26px !important;
+    font-size: 15px !important;
+}
+
+.home-search-submit {
+    min-width: 4.2rem !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(160deg, #6b8f4e 0%, #4f6b3c 100%) !important;
+    color: #fffaf2 !important;
+    box-shadow: 0 2px 10px rgba(79, 107, 60, 0.25);
+}
+
+.home-page--v2 .home-actions {
+    gap: 8px !important;
+}
+
+.home-page--v2 .home-actions button,
+.home-actions .btn-location,
+.home-actions .btn-nearby {
+    min-height: 44px !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    border-radius: 14px !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.home-actions .btn-location {
+    background: linear-gradient(160deg, #7a9f5c 0%, #5a7a42 100%) !important;
+}
+
+.home-actions .btn-nearby {
+    background: linear-gradient(160deg, #c49a55 0%, #8a6a3a 100%) !important;
+}
+
+/* ============================================================
+   Kategorie – jaśniejsze zdjęcia, większe napisy
+   ============================================================ */
+
+.category-card--photo .category-card-scrim {
+    background: linear-gradient(
+        165deg,
+        rgba(40, 28, 12, 0.08) 0%,
+        rgba(40, 28, 12, 0.18) 45%,
+        rgba(40, 28, 12, 0.34) 100%
+    ) !important;
+}
+
+.category-card--tile .category-name,
+.category-card--photo .category-name {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.015em;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.7),
+        0 0 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.category-card--photo .category-count {
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    padding: 3px 9px !important;
+    background: rgba(255, 248, 235, 0.88) !important;
+    color: #2a2218 !important;
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    text-shadow: none !important;
+}
+
+.category-card--photo .category-icon {
+    background: color-mix(in srgb, var(--cat-accent) 28%, rgba(255, 252, 245, 0.98)) !important;
+    border: 2.5px solid var(--cat-accent) !important;
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.45) !important;
+}
+
+body.dark-mode .category-card--photo .category-count {
+    background: rgba(255, 248, 235, 0.9) !important;
+    color: #2a2218 !important;
+}
+
+/* ============================================================
+   Hero producenta – niższy, więcej miejsca na produkty
+   ============================================================ */
+
+.producer-modal-header {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+    max-height: none;
+}
+
+.producer-modal-header .producer-header-top {
+    gap: 6px !important;
+}
+
+.producer-modal-header .producer-header-name,
+.producer-modal-header h2 {
+    font-size: 1.05rem !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+}
+
+.producer-modal-header .producer-header-details,
+.producer-modal-header .producer-header-meta,
+.producer-modal-header .producer-header-address {
+    font-size: 0.78rem !important;
+    line-height: 1.3 !important;
+}
+
+.producer-modal-header .chain-logo,
+.producer-modal-header .producer-header-icon,
+.producer-modal-header .producer-header-logo {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.producer-modal-promo {
+    margin-top: 4px !important;
+    padding: 4px 8px !important;
+    font-size: 0.78rem !important;
+}
+
+.producer-modal-dialog,
+.producer-modal-content {
+    background: var(--color-bg) !important;
+}
+
+.producer-modal-toolbar {
+    background: rgba(255, 248, 235, 0.88) !important;
+}
+
+.producer-modal-backdrop {
+    background: rgba(40, 28, 12, 0.45) !important;
+}
+
+.producer-modal-body {
+    padding-top: 8px !important;
+}
+
+/* ============================================================
+   Spójność ekranów (favorites, cart, premium, profile)
+   ============================================================ */
+
+.view-hero {
+    background: var(--warm-card-gradient) !important;
+}
+
+.placeholder {
+    background: rgba(255, 248, 235, 0.5) !important;
+    border-color: var(--glass-border) !important;
+    color: var(--color-text-muted) !important;
+}
+
+.home-greeting-brand,
+.home-greeting-title {
+    color: var(--color-primary) !important;
+}
+
+.home-greeting-sub {
+    color: var(--color-text-muted) !important;
+}
+
+.section-title,
+.home-section-head:not(.home-section-head--photo) .section-title,
+.section-heading {
+    color: var(--color-primary) !important;
+}
+
+.home-section-head:not(.home-section-head--photo) .home-see-all {
+    color: var(--color-accent) !important;
+}
+
+/* Nagłówki na zdjęciu – biały tekst (czytelność), nie zieleń marki */
+.home-section-head--photo .section-title,
+.home-section-head--photo .home-see-all {
+    color: #ffffff !important;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+.home-section-head--photo::before {
+    background: linear-gradient(
+        90deg,
+        rgba(20, 16, 10, 0.72) 0%,
+        rgba(20, 16, 10, 0.48) 55%,
+        rgba(20, 16, 10, 0.32) 100%
+    ) !important;
+}
+
+.home-footer {
+    background: linear-gradient(
+        180deg,
+        rgba(90, 120, 60, 0.72) 0%,
+        rgba(70, 95, 48, 0.82) 100%
+    ) !important;
+    border-color: rgba(255, 240, 210, 0.28) !important;
+}
+
+.rg-ad-banner {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 248, 230, 0.7) 0%,
+        rgba(255, 230, 190, 0.55) 100%
+    ) !important;
+}
+
+.home-quick-chip.is-active,
+.home-quick-chip:hover {
+    background: rgba(107, 143, 78, 0.2) !important;
+    border-color: rgba(79, 107, 60, 0.35) !important;
+}
+
+/* Modal / toast – ciepłe */
+.toast,
+.login-modal,
+.register-modal {
+    --toast-bg: rgba(255, 248, 235, 0.95);
+}
+
+/* Mobile phone density – spójne z ETAP 10C (style.css) */
+@media screen and (max-width: 430px) {
+    .home-search--lg .home-search-field {
+        min-height: 40px !important;
+        max-height: 40px !important;
+    }
+
+    .home-search-submit {
+        min-height: 40px !important;
+        max-height: 40px !important;
+        min-width: 3.75rem !important;
+        font-size: 12px !important;
+    }
+
+    .home-page--v2 .home-actions button,
+    .home-actions .btn-location,
+    .home-actions .btn-nearby {
+        min-height: 40px !important;
+        max-height: 44px !important;
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+    }
+
+    .category-card--tile .category-name,
+    .category-card--photo .category-name {
+        font-size: 12px !important;
+        line-height: 1.15 !important;
+    }
+
+    .category-card--photo .category-count {
+        font-size: 10px !important;
+        padding: 1px 6px !important;
+    }
+
+    .category-card,
+    .category-card--tile {
+        min-height: 88px !important;
+        padding: 8px 6px !important;
+    }
+
+    .rg-ad-banner {
+        min-height: 0 !important;
+    }
+
+    .rg-ad-slide {
+        padding: 8px 10px !important;
+    }
+
+    .producer-modal-header {
+        padding: 4px 10px 4px !important;
+    }
+
+    .producer-modal-header .producer-photo-frame {
+        height: clamp(110px, 16vh, 140px) !important;
+        max-height: 140px !important;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .category-card--tile .category-name,
+    .category-card--photo .category-name {
+        font-size: 11px !important;
+    }
+
+    .home-page--v2 .home-actions button,
+    .home-actions .btn-location,
+    .home-actions .btn-nearby {
+        font-size: 11px !important;
+        min-height: 38px !important;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .category-card,
+    .category-card--tile {
+        min-height: 78px !important;
+        padding: 6px 4px !important;
+    }
+
+    .home-page--v2 .home-actions {
+        flex-direction: column !important;
+    }
+}

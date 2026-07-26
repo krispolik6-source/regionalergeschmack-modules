@@ -1,0 +1,406 @@
+/* ============================================================
+   ETAP 11 – Emocje i klimat aplikacji
+   Zachód słońca · złota godzina · sezon · delikatny ruch
+   Tylko prezentacja – bez zmian funkcjonalności
+   ============================================================ */
+
+:root {
+    /* Sunset / golden hour – nadpisuje landscapes / warm-summer */
+    --ls-bg-overlay: rgba(255, 196, 120, 0.16);
+    --ls-bg-sepia: 0.16;
+    --ls-bg-brightness: 1.1;
+    --ls-bg-saturate: 1.08;
+    --ls-bg-opacity: 0.4;
+
+    --ls-photo-overlay: rgba(255, 200, 130, 0.16);
+    --ls-photo-sepia: 0.14;
+    --ls-photo-brightness: 1.12;
+    --ls-photo-saturate: 1.1;
+
+    --ls-cat-overlay: rgba(255, 236, 200, 0.12);
+
+    --climate-sunset-top: rgba(255, 196, 120, 0.18);
+    --climate-sunset-bottom: rgba(196, 100, 40, 0.1);
+    --climate-motif-opacity: 0.13;
+    --climate-card-press: 0.985;
+    --climate-view-duration: 0.32s;
+    --climate-gold-filter: brightness(1.07) contrast(1.03) saturate(1.1) sepia(0.12);
+}
+
+body.dark-mode {
+    --climate-sunset-top: rgba(255, 170, 90, 0.1);
+    --climate-sunset-bottom: rgba(80, 40, 20, 0.22);
+    --climate-motif-opacity: 0.09;
+    --climate-gold-filter: brightness(1.02) contrast(1.04) saturate(1.05) sepia(0.08);
+}
+
+/* --- Sezonowe motywy (body.season-* z seasonTheme.js) --- */
+
+body.season-spring {
+    --climate-sunset-top: rgba(186, 230, 160, 0.16);
+    --climate-sunset-bottom: rgba(120, 180, 90, 0.08);
+    --ls-bg-overlay: rgba(210, 240, 180, 0.12);
+    --climate-motif-opacity: 0.14;
+}
+
+body.season-summer {
+    --climate-sunset-top: rgba(255, 196, 120, 0.2);
+    --climate-sunset-bottom: rgba(196, 100, 40, 0.12);
+    --ls-bg-overlay: rgba(255, 196, 120, 0.16);
+}
+
+body.season-autumn {
+    --climate-sunset-top: rgba(255, 170, 90, 0.2);
+    --climate-sunset-bottom: rgba(160, 70, 30, 0.14);
+    --ls-bg-overlay: rgba(230, 140, 70, 0.14);
+    --ls-bg-sepia: 0.2;
+    --climate-motif-opacity: 0.15;
+}
+
+body.season-winter {
+    --climate-sunset-top: rgba(220, 210, 200, 0.12);
+    --climate-sunset-bottom: rgba(120, 100, 80, 0.1);
+    --ls-bg-overlay: rgba(230, 220, 210, 0.1);
+    --ls-bg-sepia: 0.08;
+    --climate-motif-opacity: 0.08;
+}
+
+/* --- Tło: subtelny ruch trawy / krajobrazu (Ken Burns) --- */
+
+body:not(.view-map-active)::before {
+    animation: climate-meadow-drift 72s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+@keyframes climate-meadow-drift {
+    0% {
+        transform: scale(1.03) translate3d(0, 0, 0);
+        background-position: center 40%;
+    }
+    50% {
+        transform: scale(1.055) translate3d(-0.6%, 0.4%, 0);
+        background-position: center 44%;
+    }
+    100% {
+        transform: scale(1.04) translate3d(0.5%, -0.3%, 0);
+        background-position: center 38%;
+    }
+}
+
+/* --- Overlay zachodu + delikatne liście / kłosy --- */
+
+body:not(.view-map-active)::after {
+    background:
+        url('/assets/images/motifs/leaf.svg') 9% 16% / 40px no-repeat,
+        url('/assets/images/motifs/wheat.svg') 91% 68% / 32px no-repeat,
+        url('/assets/images/motifs/leaf.svg') 76% 24% / 26px no-repeat,
+        url('/assets/images/motifs/wheat.svg') 14% 78% / 28px no-repeat,
+        radial-gradient(ellipse 90% 50% at 50% 0%, var(--climate-sunset-top) 0%, transparent 70%),
+        linear-gradient(180deg, transparent 45%, var(--climate-sunset-bottom) 100%),
+        var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),
+        var(--ls-bg-overlay);
+    opacity: 1;
+    animation: climate-motif-drift 58s ease-in-out infinite alternate;
+}
+
+@keyframes climate-motif-drift {
+    0% {
+        background-position:
+            9% 16%,
+            91% 68%,
+            76% 24%,
+            14% 78%,
+            50% 0%,
+            center,
+            center,
+            center;
+        filter: none;
+    }
+    100% {
+        background-position:
+            11% 20%,
+            88% 64%,
+            74% 28%,
+            16% 74%,
+            50% 0%,
+            center,
+            center,
+            center;
+        filter: none;
+    }
+}
+
+/* Mapa: bez ruchu i motywów (już wyłączone w landscapes) */
+
+/* --- Ilustracje: koszyk / sad przy Home --- */
+
+.home-page {
+    position: relative;
+}
+
+.home-page::after {
+    content: '';
+    position: absolute;
+    right: 4px;
+    bottom: 8px;
+    width: min(140px, 38vw);
+    height: 56px;
+    background:
+        url('/assets/images/motifs/basket.svg') right bottom / 52px no-repeat,
+        url('/assets/images/motifs/orchard-path.svg') left bottom / 100% 40px no-repeat;
+    opacity: var(--climate-motif-opacity);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.home-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+.home-seasonal {
+    position: relative;
+}
+
+.home-seasonal::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: 0;
+    width: 36px;
+    height: 48px;
+    background: url('/assets/images/motifs/wheat.svg') center / contain no-repeat;
+    opacity: calc(var(--climate-motif-opacity) + 0.04);
+    pointer-events: none;
+}
+
+body.season-spring .home-seasonal::before {
+    background-image: url('/assets/images/motifs/leaf.svg');
+}
+
+body.season-autumn .home-seasonal::before {
+    filter: sepia(0.45) hue-rotate(-15deg) saturate(1.2);
+}
+
+/* Motyw w rogu hero – maska na ::before warstwy glow (landscapes już używa ::before na photo screens) */
+body.view-favorites-active .favorites-page .view-hero,
+body.view-cart-active .cart-page .view-hero,
+body.view-premium-active .premium-page .view-hero,
+body.view-profile-active .profile-page > .view-hero {
+    /* narożny akcent sezonowy – box-shadow nie koliduje z gradientem */
+    box-shadow:
+        var(--glass-shadow),
+        inset -8px -6px 0 -4px rgba(255, 200, 130, 0.06);
+}
+
+body.season-autumn.view-favorites-active .favorites-page .view-hero,
+body.season-autumn.view-cart-active .cart-page .view-hero,
+body.season-autumn.view-premium-active .premium-page .view-hero,
+body.season-autumn.view-profile-active .profile-page > .view-hero {
+    box-shadow:
+        var(--glass-shadow),
+        inset -8px -6px 0 -4px rgba(230, 120, 50, 0.1);
+}
+
+body.season-spring.view-favorites-active .favorites-page .view-hero,
+body.season-spring.view-cart-active .cart-page .view-hero,
+body.season-spring.view-premium-active .premium-page .view-hero,
+body.season-spring.view-profile-active .profile-page > .view-hero {
+    box-shadow:
+        var(--glass-shadow),
+        inset -8px -6px 0 -4px rgba(160, 200, 120, 0.1);
+}
+
+/* --- Złota godzina na fotografiach produktów / kategorii --- */
+
+.product-image-photo,
+.home-product-image .product-image-photo,
+.producer-product-image .product-image-photo {
+    filter: var(--climate-gold-filter);
+}
+
+.category-card--photo,
+.home-section-head--photo {
+    isolation: isolate;
+}
+
+.category-card--photo::before,
+.home-section-head--photo::before {
+    filter: brightness(1.06) saturate(1.08) sepia(0.1);
+}
+
+.home-product-image,
+.home-recipe-media {
+    box-shadow: inset 0 0 0 1px rgba(255, 200, 130, 0.12);
+}
+
+/* Ciepły film na zdjęciach w kartach (bez ::after – unikamy kolizji) */
+.home-product-image,
+.home-recipe-media,
+.home-venue-card .home-venue-media {
+    position: relative;
+}
+
+.home-product-image::after,
+.home-recipe-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 210, 150, 0.08) 0%,
+        transparent 42%,
+        rgba(180, 90, 40, 0.07) 100%
+    );
+    pointer-events: none;
+}
+
+/* --- Lekkie animacje kart przy dotknięciu --- */
+
+.card,
+.category-card,
+.home-product-card,
+.home-venue-card,
+.home-recipe-card,
+.home-seasonal-card,
+.favorite-item,
+.cart-item,
+.premium-feature-card,
+.list-item,
+.producer-product-card,
+.search-result-card,
+.home-premium-cta {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background-color 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.card:active,
+.category-card:active,
+.home-product-card:active,
+.home-venue-card:active,
+.home-recipe-card:active,
+.home-seasonal-card:active,
+.favorite-item:active,
+.cart-item:active,
+.premium-feature-card:active,
+.list-item:active,
+.producer-product-card:active,
+.search-result-card:active,
+.home-premium-cta:active,
+.home-quick-chip:active,
+.home-thematic-chip:active,
+.bottom-nav button:active {
+    transform: scale(var(--climate-card-press));
+}
+
+.home-actions button:active,
+.btn-primary:active,
+.btn-secondary:active {
+    transform: scale(0.98);
+}
+
+/* --- Płynne przejścia między ekranami --- */
+
+[data-view-panel].active:not([hidden]) {
+    animation: climate-view-enter var(--climate-view-duration) cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes climate-view-enter {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Mapa: tylko fade (bez przesunięcia – mniej „pływania” z Leaflet) */
+body.view-map-active [data-view-panel="map"].active:not([hidden]) {
+    animation-name: climate-view-fade;
+}
+
+@keyframes climate-view-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Side menu: miękkie wejście treści */
+.side-menu.is-open .side-menu-body {
+    animation: climate-view-enter 0.28s ease both;
+}
+
+/* --- Stopka / szkło: ciepły zachód --- */
+
+.home-footer {
+    background: linear-gradient(
+        165deg,
+        rgba(120, 90, 45, 0.72) 0%,
+        rgba(70, 95, 48, 0.8) 55%,
+        rgba(90, 60, 35, 0.78) 100%
+    ) !important;
+}
+
+#app {
+    box-shadow:
+        0 4px 28px rgba(90, 55, 20, 0.1),
+        inset 0 1px 0 rgba(255, 236, 200, 0.45);
+}
+
+/* --- Toast: ciepły amber --- */
+
+.app-toast {
+    background: rgba(52, 38, 24, 0.88) !important;
+    border-color: rgba(255, 200, 130, 0.2) !important;
+    color: #fff8ee !important;
+}
+
+/* --- Reduced motion + legacy: bez ruchu --- */
+
+@media (prefers-reduced-motion: reduce) {
+    body:not(.view-map-active)::before,
+    body:not(.view-map-active)::after,
+    [data-view-panel].active:not([hidden]),
+    .side-menu.is-open .side-menu-body {
+        animation: none !important;
+    }
+
+    .card:active,
+    .category-card:active,
+    .home-product-card:active,
+    .home-venue-card:active,
+    .home-recipe-card:active,
+    .home-seasonal-card:active,
+    .favorite-item:active,
+    .cart-item:active,
+    .premium-feature-card:active,
+    .list-item:active,
+    .producer-product-card:active,
+    .search-result-card:active,
+    .home-premium-cta:active,
+    .bottom-nav button:active,
+    .home-actions button:active,
+    .btn-primary:active,
+    .btn-secondary:active {
+        transform: none;
+    }
+}
+
+html.legacy-ios9 body:not(.view-map-active)::before,
+html.legacy-ios9 body:not(.view-map-active)::after,
+html.legacy-ios9 [data-view-panel].active:not([hidden]),
+html.legacy-ios9 .home-page::after,
+html.legacy-ios9 .home-seasonal::before {
+    animation: none !important;
+}
+
+html.legacy-ios9 .home-page::after,
+html.legacy-ios9 .home-seasonal::before {
+    display: none;
+}

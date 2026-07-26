@@ -1,0 +1,321 @@
+{
+  "id": "daily-dev-2026-07-20-cli",
+  "title": "Daily Developer Report",
+  "generatedAt": "2026-07-20T20:25:07.377Z",
+  "day": "2026-07-20",
+  "reason": "cli-daily",
+  "policy": {
+    "autoFix": false,
+    "autoModifyCode": false,
+    "developerOnly": true,
+    "noProductionEmail": true,
+    "emailFromEnv": "DEVELOPER_REPORT_EMAIL"
+  },
+  "appScore": 96,
+  "checklist": {
+    "jsErrors": {
+      "ok": true,
+      "detail": "VU errors 0; Health runtime JS —"
+    },
+    "ux": {
+      "ok": true,
+      "detail": "Health UX 85; Guardian UX 9.2"
+    },
+    "mobile": {
+      "ok": true,
+      "detail": "Mobile 100; touch 0"
+    },
+    "css": {
+      "ok": false,
+      "detail": "Potencjalne konflikty CSS: 40"
+    },
+    "translations": {
+      "ok": true,
+      "detail": "Translation 100%; missing 0"
+    },
+    "performance": {
+      "ok": true,
+      "detail": "Performance 99"
+    },
+    "fps": {
+      "ok": true,
+      "detail": "avgFps —; fps issues 0"
+    },
+    "memory": {
+      "ok": true,
+      "detail": "Memory 99; leak no"
+    },
+    "pwa": {
+      "ok": true,
+      "detail": "PWA 100; Guardian 10"
+    },
+    "cache": {
+      "ok": true,
+      "detail": "cache score 100"
+    },
+    "images": {
+      "ok": true,
+      "detail": "unused assets ~0"
+    },
+    "producerData": {
+      "ok": true,
+      "detail": "DQ 100; producer issues 0"
+    },
+    "improvements": {
+      "ok": true,
+      "detail": "3 sugestii"
+    }
+  },
+  "failedChecks": [
+    "css"
+  ],
+  "modules": {
+    "healthMonitor": true,
+    "aiGuardian": true,
+    "improvementEngine": true,
+    "virtualUser": true,
+    "learningEngine": "local-only (browser); CLI używa affinity z advisor/health proxy",
+    "projectAdvisor": true
+  },
+  "sections": {
+    "healthMonitor": {
+      "overall": 98,
+      "scores": {
+        "performance": 99,
+        "ux": 85,
+        "accessibility": 100,
+        "memory": 99,
+        "dataQuality": 100,
+        "translation": 100,
+        "mobile": 100,
+        "pwa": 100
+      },
+      "findings": [
+        {
+          "severity": "medium",
+          "area": "css",
+          "title": "Potencjalne konflikty CSS: 40",
+          "detail": "body:not(.view-map-active)::after [background]; .leaflet-control-zoom a [background]; .leaflet-control-zoom a [color]; .home-footer [background]"
+        }
+      ],
+      "jsErrors": 0,
+      "static": {
+        "translationMissing": 0,
+        "unusedAssets": 0,
+        "producerIssues": 0,
+        "cssConflicts": 40
+      }
+    },
+    "aiGuardian": {
+      "reportId": "guardian-20260720-215336",
+      "scores": {
+        "quality": 5.4,
+        "ux": 9.2,
+        "performance": 9.3,
+        "pwa": 10,
+        "accessibility": 9.6,
+        "security": 8.5,
+        "productionReady": 8.7
+      },
+      "findingCount": 18,
+      "topFindings": [
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/controllers/navigation.js",
+          "files": [
+            "js/controllers/navigation.js"
+          ]
+        },
+        {
+          "severity": "high",
+          "title": "setInterval bez clearInterval: js/core/premiumService.js",
+          "files": [
+            "js/core/premiumService.js"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Możliwy race async→DOM: js/core/pwaInstall.js",
+          "files": [
+            "js/core/pwaInstall.js"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Możliwy race async→DOM: js/core/sideMenu.js",
+          "files": [
+            "js/core/sideMenu.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/adminPanel.js",
+          "files": [
+            "js/views/adminPanel.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/clientPanel.js",
+          "files": [
+            "js/views/clientPanel.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/home.js",
+          "files": [
+            "js/views/home.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/producerPanel.js",
+          "files": [
+            "js/views/producerPanel.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/profile.js",
+          "files": [
+            "js/views/profile.js"
+          ]
+        },
+        {
+          "severity": "cosmetic",
+          "title": "Brak wzorca dataset.bound w js/views/trialSection.js",
+          "files": [
+            "js/views/trialSection.js"
+          ]
+        }
+      ]
+    },
+    "improvementEngine": {
+      "total": 3,
+      "byPriority": {
+        "critical": 0,
+        "high": 0,
+        "medium": 3,
+        "low": 0
+      },
+      "proposals": [
+        {
+          "id": "IMP-001",
+          "autoApply": false,
+          "title": "Popraw UX / Mobile",
+          "priority": "medium",
+          "impact": "high",
+          "file": "css/style.css",
+          "function": "@media mobile",
+          "risk": "low",
+          "proposedFix": "Tap targets ≥44px, brak overflow nagłówków na wąskich ekranach.",
+          "source": "ux"
+        },
+        {
+          "id": "IMP-002",
+          "autoApply": false,
+          "title": "Potencjalne konflikty CSS: 40",
+          "priority": "medium",
+          "impact": "medium",
+          "file": "docs/health/latest.json",
+          "function": "finding:css",
+          "risk": "low",
+          "proposedFix": "body:not(.view-map-active)::after [background]; .leaflet-control-zoom a [background]; .leaflet-control-zoom a [color]; .home-footer [background]",
+          "source": "health"
+        },
+        {
+          "id": "IMP-003",
+          "autoApply": false,
+          "title": "Uporządkuj konflikty CSS (40)",
+          "priority": "medium",
+          "impact": "medium",
+          "file": "css/style.css",
+          "function": "selectors",
+          "risk": "medium",
+          "proposedFix": "Scal zduplikowane reguły (background/z-index) wskazane w docs/health/latest.json → static.css.sample.",
+          "source": "ux"
+        }
+      ]
+    },
+    "virtualUser": {
+      "score": null,
+      "passed": 0,
+      "failed": 0,
+      "avgFps": null,
+      "memoryLeak": false,
+      "byType": {
+        "flicker": 0,
+        "error": 0,
+        "fps": 0,
+        "memory-leak": 0,
+        "translation": 0,
+        "responsive": 0,
+        "touch": 0,
+        "ux": 0
+      },
+      "status": "awaiting-browser-run"
+    },
+    "learningEngine": {
+      "note": "Sygnały lokalne w przeglądarce (localStorage/IDB). Nie wysyłane.",
+      "fromAdvisor": null,
+      "topCategory": null
+    },
+    "projectAdvisor": {
+      "headline": "Popraw UX / Mobile",
+      "questions": [
+        {
+          "question": "Co dziś można ulepszyć?",
+          "answer": "Na dziś warto ruszyć:\n• [medium] Popraw UX / Mobile → `css/style.css`\n• [medium] Potencjalne konflikty CSS: 40 → `docs/health/latest.json`\n• [medium] Uporządkuj konflikty CSS (40) → `css/style.css`"
+        },
+        {
+          "question": "Co najbardziej irytuje użytkowników?",
+          "answer": "Najbardziej irytujące teraz:\n• brak silnych sygnałów – pilnuj ścieżki Home→Mapa→Modal"
+        },
+        {
+          "question": "Które ekrany są najsłabsze?",
+          "answer": "Najsłabsze ekrany / powierzchnie:\n• za mało danych runtime – uruchom __RG_VIRTUAL__.run()"
+        },
+        {
+          "question": "Jak poprawić wydajność?",
+          "answer": "Jak poprawić wydajność:\n• Wydajność stabilna – utrzymuj dzienny Health + Virtual User."
+        },
+        {
+          "question": "Jak poprawić wygląd?",
+          "answer": "Jak poprawić wygląd:\n• Zrealizuj propozycje UX/CSS z Improvement Engine (ręcznie)."
+        },
+        {
+          "question": "Jak zwiększyć liczbę powrotów użytkowników?",
+          "answer": "Jak zwiększyć powroty:\n• Wzmacniaj powrót: Taste Advisor / Magia powrotu po absencji.\n• Personalizacja „Dla Ciebie” z Learning Engine.\n• Jasna ścieżka „Wróć do trasy zakupowej”."
+        },
+        {
+          "question": "Co warto dodać w następnej wersji?",
+          "answer": "Warto rozważyć w następnej wersji:\n• Mobile polish gated Virtual User score ≥ 85%.\n• Cotygodniowy lokalny „raport regionu” na Home.\n• Szybka lista zakupów z trasą i ETA.\n• Briefing Doradcy w CI → docs/advisor/ (bez auto-fix)."
+        }
+      ]
+    }
+  },
+  "suggestions": [
+    {
+      "priority": "medium",
+      "title": "Popraw UX / Mobile",
+      "file": "css/style.css",
+      "function": "@media mobile",
+      "proposedFix": "Tap targets ≥44px, brak overflow nagłówków na wąskich ekranach."
+    },
+    {
+      "priority": "medium",
+      "title": "Potencjalne konflikty CSS: 40",
+      "file": "docs/health/latest.json",
+      "function": "finding:css",
+      "proposedFix": "body:not(.view-map-active)::after [background]; .leaflet-control-zoom a [background]; .leaflet-control-zoom a [color]; .home-footer [background]"
+    },
+    {
+      "priority": "medium",
+      "title": "Uporządkuj konflikty CSS (40)",
+      "file": "css/style.css",
+      "function": "selectors",
+      "proposedFix": "Scal zduplikowane reguły (background/z-index) wskazane w docs/health/latest.json → static.css.sample."
+    }
+  ]
+}

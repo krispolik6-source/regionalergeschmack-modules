@@ -1,0 +1,34 @@
+---
+description: Polityka dyskretnej inteligencji — bez chatbota, bez auto-apply, wartość > funkcje
+alwaysApply: true
+---
+
+# Intelligence Discretion (od ETAP 33E)
+
+**Źródło:** `docs/intelligence/POLICY.md` · `js/intelligence/policy.js`
+
+Przy pracy nad inteligencją / AI / rekomendacjami / raportami produktu:
+
+## Obowiązkowe
+
+1. Inteligentna, ale **dyskretna** — bez teatralnego „AI”.
+2. Użytkownik **nie** może mieć wrażenia rozmowy z AI.
+3. AI **nie zastępuje** prostego interfejsu (przycisk, lista, mapa zostają czytelne).
+4. AI **pomaga, przewiduje, doradza** — nie przejmuje sterowania.
+5. **Zero** automatycznych zmian w kodzie ani danych (`autoApply=false`, `autoFix=false`).
+6. Decyzje tylko w **raportach dla właściciela** (`docs/**`, status `pending_acceptance`).
+7. Priorytet: **prostota · szybkość · klimat regionalny**.
+8. Propozycja musi **zwiększać wartość**, nie liczbę funkcji.
+
+## Zakazane bez wyraźnej akceptacji właściciela
+
+- Chatbot, okno AI, popup AI, pasek „Asystent”
+- Nowe ekrany „bo AI”
+- Auto-fix danych producentów / auto-commit / auto-merge propozycji
+- Zmiana UI „przy okazji” wdrożenia inteligencji
+
+## Nowe moduły w `js/intelligence/`
+
+- Użyj `createModulePolicy({ role, etapa, ... })` z `./policy.js`.
+- Nie nadpisuj twardych zamków (`autoApply`, `chatbot`, `uiChanges`, …).
+- Filtruj propozycje przez `passesValueNotFeatureTest` gdy generujesz listy usprawnień.

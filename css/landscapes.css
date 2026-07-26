@@ -1,0 +1,669 @@
+/* ============================================================
+   Regionaler Geschmack – Etap 1.8
+   Spójna seria foto + jedna grubość szkła (Premium Polish)
+   ============================================================ */
+
+:root {
+    /* --- Fotografie kategorii --- */
+    --ls-cat-all: url('/assets/images/backgrounds/category_all.webp?v=22');
+    --ls-cat-farmers: url('/assets/images/backgrounds/category_farmers.webp?v=22');
+    --ls-cat-bakeries: url('/assets/images/backgrounds/category_bakeries.webp?v=22');
+    --ls-cat-meat: url('/assets/images/backgrounds/category_meat.webp?v=22');
+    --ls-cat-restaurants: url('/assets/images/backgrounds/category_restaurants.webp?v=22');
+    --ls-cat-shops: url('/assets/images/backgrounds/category_shops.webp?v=22');
+    --ls-cat-vending: url('/assets/images/backgrounds/category_vending.webp?v=22');
+    --ls-cat-favorites: url('/assets/images/backgrounds/category_favorites.webp?v=22');
+    --ls-cat-fastFood: url('/assets/images/backgrounds/category_fastFood.webp?v=22');
+    --ls-cat-honey: url('/assets/images/backgrounds/category_honey.webp?v=22');
+
+    /* --- Fotografie ekranów i sekcji --- */
+    --ls-screen-home: url('/assets/images/backgrounds/screen-home.webp');
+    --ls-screen-profile: url('/assets/images/backgrounds/screen-profile.webp');
+    --ls-screen-premium: url('/assets/images/backgrounds/screen-premium.webp');
+    --ls-screen-favorites: url('/assets/images/backgrounds/screen-favorites.webp');
+    --ls-screen-cart: url('/assets/images/backgrounds/screen-cart.webp');
+    --ls-screen-articles: url('/assets/images/backgrounds/screen-articles.webp');
+    --ls-screen-settings: url('/assets/images/backgrounds/screen-settings.webp');
+    --ls-screen-about: url('/assets/images/backgrounds/screen-about.webp');
+    --ls-screen-help: url('/assets/images/backgrounds/screen-help.webp');
+    --ls-hero: url('/assets/images/hero/hero-background.webp?v=20');
+
+    --ls-transition: var(--glass-transition, transform 0.15s ease, box-shadow 0.15s ease);
+    --view-transition-duration: 0.3s;
+    --ls-glass-blur: var(--glass-blur, 8px);
+    --ls-glass-saturate: var(--glass-saturate, 128%);
+
+    /* Tło aplikacji – ciepłe lato / złota godzina (ETAP 10A) */
+    --ls-bg-blur: 16px;
+    --ls-bg-opacity: 0.38;
+    --ls-bg-overlay: rgba(255, 236, 200, 0.14);
+    --ls-bg-saturate: 1.05;
+    --ls-bg-brightness: 1.08;
+    --ls-bg-contrast: 0.98;
+    --ls-bg-sepia: 0.12;
+
+    /* Wspólna temperatura barw – zachód słońca / łąka */
+    --ls-photo-blur: 3px;
+    --ls-photo-opacity: 0.55;
+    --ls-photo-overlay: rgba(255, 230, 180, 0.14);
+    --ls-photo-saturate: 1.08;
+    --ls-photo-brightness: 1.1;
+    --ls-photo-contrast: 0.98;
+    --ls-photo-sepia: 0.1;
+
+    /* Kategorie – jaśniejsze zdjęcia (ETAP 10A) */
+    --ls-cat-blur: 1.5px;
+    --ls-cat-opacity: 0.58;
+    --ls-cat-overlay: rgba(255, 248, 230, 0.1);
+    --ls-cat-glass-blur: 3px;
+    --ls-cat-glass-saturate: 125%;
+
+    /* Sekcje w profilu */
+    --ls-section-opacity: 0.4;
+}
+
+/* --- Tła ekranów (body, mapa bez fotografii) --- */
+
+body:not(.view-map-active) {
+    background: transparent;
+}
+
+body:not(.view-map-active)::before {
+    content: '';
+    position: fixed;
+    inset: -2%;
+    z-index: -2;
+    background-image: var(--ls-screen-home);
+    background-size: cover;
+    background-position: center 42%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    filter:
+        blur(var(--ls-bg-blur))
+        brightness(var(--ls-bg-brightness))
+        saturate(var(--ls-bg-saturate))
+        contrast(var(--ls-bg-contrast))
+        sepia(var(--ls-bg-sepia));
+    opacity: var(--ls-bg-opacity);
+    transform: scale(1.03);
+    pointer-events: none;
+    transition: opacity var(--view-transition-duration) ease;
+}
+
+body:not(.view-map-active)::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),
+        var(--ls-bg-overlay);
+    pointer-events: none;
+}
+
+body.view-profile-active:not(.view-map-active)::before {
+    background-image: var(--ls-screen-profile);
+    background-position: center 35%;
+}
+
+body.view-premium-active:not(.view-map-active)::before {
+    background-image: var(--ls-screen-premium);
+    background-position: center 40%;
+}
+
+body.view-favorites-active:not(.view-map-active)::before {
+    background-image: var(--ls-screen-favorites);
+    background-position: center 45%;
+}
+
+body.view-cart-active:not(.view-map-active)::before {
+    background-image: var(--ls-screen-cart);
+    background-position: center 38%;
+}
+
+body.view-map-active::before,
+body.view-map-active::after {
+    display: none !important;
+}
+
+body.view-map-active {
+    background: var(--color-bg);
+}
+
+body.dark-mode:not(.view-map-active) {
+    --ls-bg-opacity: 0.2;
+    --ls-bg-overlay: rgba(255, 248, 240, 0.05);
+    --ls-bg-saturate: 0.78;
+    --ls-photo-opacity: 0.44;
+    --ls-cat-opacity: 0.5;
+}
+
+/* --- Szkło – kolory krajobrazu przenikają przez interfejs --- */
+
+#app {
+    background: var(--glass-bg-light);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+body.dark-mode #app {
+    background: rgba(42, 34, 24, 0.44);
+}
+
+body.view-map-active #app {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+/* --- Karty i placeholdery – backdrop-filter --- */
+
+.home-page .placeholder,
+.placeholder {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--ls-glass-blur)) saturate(var(--ls-glass-saturate));
+    backdrop-filter: blur(var(--ls-glass-blur)) saturate(var(--ls-glass-saturate));
+}
+
+body.dark-mode .placeholder {
+    background: rgba(42, 34, 24, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card,
+.surface-panel,
+.list-item {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--ls-glass-blur)) saturate(var(--ls-glass-saturate));
+    backdrop-filter: blur(var(--ls-glass-blur)) saturate(var(--ls-glass-saturate));
+}
+
+body.dark-mode .card,
+body.dark-mode .surface-panel,
+body.dark-mode .list-item {
+    background: rgba(42, 34, 24, 0.54);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* --- Kategorie – fotografie tematyczne + jasne szkło --- */
+
+.home-categories .category-card {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: var(--glass-radius);
+    box-shadow: 0 3px 14px rgba(15, 40, 30, 0.07);
+    transition: var(--glass-transition);
+    -webkit-backdrop-filter: blur(var(--ls-cat-glass-blur)) saturate(var(--ls-cat-glass-saturate));
+    backdrop-filter: blur(var(--ls-cat-glass-blur)) saturate(var(--ls-cat-glass-saturate));
+}
+
+.home-categories .category-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--ls-cat-photo, var(--ls-cat-all));
+    background-size: cover;
+    background-position: var(--ls-cat-position, center);
+    background-repeat: no-repeat;
+    filter:
+        blur(var(--ls-cat-blur))
+        brightness(1.04)
+        saturate(0.96)
+        contrast(0.98);
+    opacity: var(--ls-cat-opacity);
+    transform: scale(1.03);
+    pointer-events: none;
+    transition: opacity var(--ls-transition), filter var(--ls-transition);
+}
+
+/* Photo tiles: warstwa ::before (--ls-cat-photo) jest źródłem zdjęcia kategorii.
+   Inline --category-image na samym buttonie wyłączamy, żeby nie dublować tła. */
+.home-categories .category-card--photo {
+    background-image: none;
+}
+
+.home-categories .category-card--photo::before {
+    content: '' !important;
+}
+
+/* Tylko kanoniczna ósemka kategorii na Home */
+.home-categories .category-card[data-category="honey"],
+.home-categories .category-card[data-category="dairy"],
+.home-categories .category-card[data-category="fruit"],
+.home-categories .category-card[data-category="vegetables"],
+.home-categories .category-card[data-category="forest"],
+.home-categories .category-card[data-category="all"] {
+    display: none !important;
+}
+
+.home-categories .category-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--ls-cat-overlay);
+    pointer-events: none;
+}
+
+.home-categories .category-card:hover::before,
+.home-categories .category-card:focus-visible::before {
+    opacity: calc(var(--ls-cat-opacity) + 0.04);
+    filter:
+        blur(calc(var(--ls-cat-blur) - 0.25px))
+        brightness(1.06)
+        saturate(0.98)
+        contrast(1);
+}
+
+.home-categories .category-card .category-icon,
+.home-categories .category-card .category-name,
+.home-categories .category-card .category-desc {
+    position: relative;
+    z-index: 2;
+}
+
+.home-categories .category-icon {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+        0 2px 10px rgba(15, 40, 30, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+}
+
+.home-categories .category-icon::after {
+    content: none;
+}
+
+.home-categories .category-card .category-name {
+    font-weight: 700;
+    color: #2a3340;
+    text-shadow:
+        0 1px 3px rgba(255, 255, 255, 0.92),
+        0 1px 2px rgba(15, 40, 30, 0.14);
+}
+
+.home-categories .category-card .category-desc {
+    font-weight: 600;
+    color: #3d4a5c;
+    text-shadow:
+        0 1px 2px rgba(255, 255, 255, 0.88),
+        0 1px 1px rgba(15, 40, 30, 0.1);
+}
+
+body.dark-mode .home-categories .category-card {
+    background: rgba(42, 34, 24, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+body.dark-mode .home-categories .category-card::after {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .home-categories .category-icon {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.32);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+body.dark-mode .home-categories .category-card .category-name {
+    color: #f0f4f8;
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.45),
+        0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .home-categories .category-card .category-desc {
+    color: rgba(240, 244, 248, 0.86);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.category-card[data-category="all"] {
+    --ls-cat-photo: var(--ls-cat-all);
+    --ls-cat-position: center 42%;
+}
+
+.category-card[data-category="farmers"] {
+    --ls-cat-photo: var(--ls-cat-farmers);
+    --ls-cat-position: center 40%;
+}
+
+.category-card[data-category="bakeries"] {
+    --ls-cat-photo: var(--ls-cat-bakeries);
+    --ls-cat-position: center 45%;
+}
+
+.category-card[data-category="meat"] {
+    --ls-cat-photo: var(--ls-cat-meat);
+    --ls-cat-position: center 38%;
+}
+
+.category-card[data-category="restaurants"] {
+    --ls-cat-photo: var(--ls-cat-restaurants);
+    --ls-cat-position: center 42%;
+}
+
+.category-card[data-category="shops"] {
+    --ls-cat-photo: var(--ls-cat-shops);
+    --ls-cat-position: center 48%;
+}
+
+.category-card[data-category="vending"] {
+    --ls-cat-photo: var(--ls-cat-vending);
+    --ls-cat-position: center 44%;
+}
+
+.category-card[data-category="fastFood"] {
+    --ls-cat-photo: var(--ls-cat-fastFood);
+    --ls-cat-position: center 42%;
+}
+
+.category-card[data-category="honey"] {
+    --ls-cat-photo: var(--ls-cat-honey);
+    --ls-cat-position: center 40%;
+}
+
+.category-card[data-category="favorites"] {
+    --ls-cat-photo: var(--ls-cat-favorites);
+    --ls-cat-position: center 50%;
+    --ls-cat-opacity: 0.38;
+    --ls-cat-overlay: rgba(255, 248, 230, 0.18);
+}
+
+/* --- Premium CTA na Home – jasne szkło (bez fotografii) --- */
+
+.home-premium-cta {
+    position: relative;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 6px)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(calc(var(--glass-blur) + 6px)) saturate(var(--glass-saturate));
+}
+
+.home-premium-cta::before,
+.home-premium-cta::after {
+    content: none;
+    display: none;
+}
+
+/* --- Artykuły / polecane na Home --- */
+
+.home-recommended {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+}
+
+.home-recommended::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--ls-screen-articles);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter:
+        blur(1.5px)
+        brightness(1.08)
+        contrast(1.02)
+        saturate(1.05);
+    opacity: 0.3;
+    transform: scale(1.04);
+    pointer-events: none;
+}
+
+.home-recommended::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+}
+
+.home-recommended .section-title,
+.home-recommended .placeholder,
+.home-recommended .home-products-grid {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Profil: ustawienia i o aplikacji (bez zmian HTML) --- */
+
+.profile-settings,
+.profile-meta.surface-panel {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--radius-lg);
+}
+
+.profile-settings::before,
+.profile-meta.surface-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter:
+        blur(var(--ls-photo-blur))
+        brightness(var(--ls-photo-brightness))
+        saturate(var(--ls-photo-saturate))
+        contrast(var(--ls-photo-contrast))
+        sepia(var(--ls-photo-sepia));
+    opacity: var(--ls-section-opacity);
+    transform: scale(1.04);
+    pointer-events: none;
+}
+
+.profile-settings::before {
+    background-image: var(--ls-screen-settings);
+    background-position: center 40%;
+}
+
+.profile-meta.surface-panel::before {
+    background-image: var(--ls-screen-about);
+    background-position: center 35%;
+}
+
+.profile-settings::after,
+.profile-meta.surface-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--ls-photo-overlay);
+    pointer-events: none;
+}
+
+.profile-settings > *,
+.profile-meta.surface-panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Nagłówki widoków – lekki charakter ekranu --- */
+
+.view-hero {
+    position: relative;
+    isolation: isolate;
+}
+
+body.view-favorites-active .favorites-page .view-hero::before,
+body.view-cart-active .cart-page .view-hero::before,
+body.view-premium-active .premium-page .view-hero::before,
+body.view-profile-active .profile-page > .view-hero::before {
+    content: '';
+    position: absolute;
+    inset: -8px -12px;
+    z-index: -1;
+    border-radius: var(--radius-lg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter:
+        blur(var(--ls-cat-blur))
+        brightness(var(--ls-photo-brightness))
+        saturate(var(--ls-photo-saturate))
+        contrast(var(--ls-photo-contrast))
+        sepia(var(--ls-photo-sepia));
+    opacity: var(--ls-section-opacity);
+    pointer-events: none;
+}
+
+body.view-favorites-active .favorites-page .view-hero::before {
+    background-image: var(--ls-screen-favorites);
+}
+
+body.view-cart-active .cart-page .view-hero::before {
+    background-image: var(--ls-screen-cart);
+}
+
+body.view-premium-active .premium-page .view-hero::before {
+    background-image: var(--ls-screen-premium);
+}
+
+body.view-profile-active .profile-page > .view-hero::before {
+    background-image: var(--ls-screen-profile);
+}
+
+/* --- Widoki wewnętrzne – treść nad tłem panelu --- */
+
+.profile-page,
+.favorites-page,
+.cart-page,
+.premium-page,
+.home-page {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Modal producenta --- */
+
+.producer-modal-header {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.producer-modal-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--ls-cat-farmers);
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    filter:
+        blur(var(--ls-photo-blur))
+        saturate(var(--ls-photo-saturate))
+        brightness(var(--ls-photo-brightness))
+        sepia(var(--ls-photo-sepia));
+    opacity: var(--ls-photo-opacity);
+    pointer-events: none;
+}
+
+.producer-modal-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--ls-photo-overlay);
+}
+
+.producer-modal-header .producer-header-card,
+.producer-modal-header h2,
+.producer-modal-promo {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Widoki – bez animacji wejścia (szybkie, lekkie) --- */
+
+#app > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Responsywność --- */
+
+@media screen and (max-width: 479px) {
+    :root {
+        --ls-bg-blur: 10px;
+        --ls-bg-opacity: 0.32;
+        --ls-cat-blur: 1px;
+        --ls-cat-opacity: 0.55;
+    }
+
+    /* Zachowaj ciepły overlay także na telefonie */
+    body:not(.view-map-active)::after {
+        display: block;
+        opacity: 0.9;
+    }
+
+    .category-icon::after,
+    .premium-feature-icon::after {
+        display: none;
+    }
+
+    body:not(.view-map-active)::before {
+        -webkit-transform: scale(1.01);
+        transform: scale(1.01);
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    body:not(.view-map-active)::before {
+        background-position: center 36%;
+    }
+
+    .home-categories .category-card {
+        min-height: 6.5rem;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    :root {
+        --ls-bg-opacity: 0.2;
+    }
+
+    body:not(.view-map-active)::before {
+        background-position: center 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    body:not(.view-map-active)::before,
+    body:not(.view-map-active)::after {
+        position: absolute;
+        background-attachment: scroll;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-card,
+    .home-premium-cta {
+        transition: none;
+    }
+}

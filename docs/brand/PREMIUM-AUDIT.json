@@ -1,0 +1,159 @@
+{
+  "id": "premium-audit-28e",
+  "title": "Regionaler Geschmack Premium Audit",
+  "generatedAt": "2026-07-21T17:32:41.813Z",
+  "day": "2026-07-21",
+  "policy": {
+    "architectureUnchanged": true,
+    "storeEventBusUntouched": true,
+    "autofixScope": "presentation / a11y / brand / leak cleanup"
+  },
+  "overall": 93,
+  "scores": {
+    "UX": 90,
+    "UI": 94,
+    "Brand": 93,
+    "Mobile": 94,
+    "Performance": 97,
+    "PWA": 99,
+    "Accessibility": 98,
+    "Code Quality": 84,
+    "Launch Readiness": 92
+  },
+  "sources": {
+    "health": 98,
+    "guardianQuality": 5.4,
+    "emotionReturn": 89,
+    "livingBrand": 95,
+    "productDirector": 92,
+    "dailyAppScore": 95,
+    "qualityLoopHealth": 98,
+    "logoAudit": true,
+    "headerAudit": true,
+    "mobilePremium": true,
+    "virtualUser": "awaiting-browser-run"
+  },
+  "counts": {
+    "critical": 0,
+    "high": 0,
+    "medium": 4,
+    "cosmeticOrFixed": 10,
+    "totalFindings": 14
+  },
+  "findings": [
+    {
+      "severity": "cosmetic",
+      "area": "Brand",
+      "title": "Landing fonts = Source Sans 3",
+      "detail": "css/landing.css",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "Brand",
+      "title": "App shell ładuje Literata + Source Sans 3",
+      "detail": "index.html",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "Brand",
+      "title": "--font-sans = Source Sans 3",
+      "detail": "css/style.css",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "SEO",
+      "title": "meta description w index.html",
+      "detail": "index.html",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "A11Y",
+      "title": "bottom-nav aria-label Hauptnavigation",
+      "detail": "index.html",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "i18n",
+      "title": "Menu aria DE + data-i18n-aria",
+      "detail": "index.html",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "Brand",
+      "title": "UI: złoto/pszenica zamiast fioletu i zimnego błękitu",
+      "detail": "css/style.css",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "Code Quality",
+      "title": "Trial sync: clearInterval na pagehide",
+      "detail": "js/core/premiumService.js",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "UI",
+      "title": "premium-final.css zaimportowany",
+      "detail": "css/style.css",
+      "fixed": true
+    },
+    {
+      "severity": "cosmetic",
+      "area": "Guardian",
+      "title": "Naprawione: setInterval bez clearInterval: js/core/premiumService.js",
+      "detail": "js/core/premiumService.js",
+      "fixed": true
+    },
+    {
+      "severity": "medium",
+      "area": "Health",
+      "title": "Potencjalne konflikty CSS: 40",
+      "detail": "body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]",
+      "fixed": false
+    },
+    {
+      "severity": "medium",
+      "area": "Virtual User",
+      "title": "Brak świeżego przebiegu w przeglądarce",
+      "detail": "docs/virtual-user/",
+      "fixed": false
+    },
+    {
+      "severity": "medium",
+      "area": "Emotion",
+      "title": "Zmęczenie CTA (fatigue 50)",
+      "detail": "Home — premium-final łagodzi",
+      "fixed": false
+    },
+    {
+      "severity": "medium",
+      "area": "CSS",
+      "title": "Konflikty CSS ~40",
+      "detail": "warstwy importów — niskie ryzyko runtime",
+      "fixed": false
+    }
+  ],
+  "fixedIn28E": [
+    "Fonty: Inter/Roboto → Literata + Source Sans 3 (index, style, landing)",
+    "Living Brand: fałszywe alarmy białych cieni jako „zimny niebieski”",
+    "A11Y: bottom-nav + menu aria DE / i18n keys",
+    "SEO: meta description + twitter summary_large_image",
+    "Brand: reklamy fiolet/zimny błękit → złoto/pszenica",
+    "Code: premiumService trial interval cleanup (pagehide)",
+    "UI: css/premium-final.css (touch, CTA fatigue, focus)",
+    "Landing: viewport-fit=cover"
+  ],
+  "residualRisks": [
+    "Virtual User wymaga przebiegu w przeglądarce",
+    "Health nadal raportuje konflikty CSS warstw (nadpisywanie zamierzone)",
+    "Emotion fatigue — Home ma wiele sekcji narracyjnych (częściowo złagodzone CSS)",
+    "Guardian raport może być starszy niż dzisiejsze poprawki (re-run: npm run guardian)"
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "id": "self-reflection-2026-07-21",
+  "title": "Self Reflection — codzienna samoocena",
+  "generatedAt": "2026-07-21T18:18:35.737Z",
+  "day": "2026-07-21",
+  "reason": "dry-run",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "autoModifyCode": false,
+    "advisoryOnly": true,
+    "chatbot": false,
+    "userFacing": false,
+    "role": "self-reflection",
+    "focus": "daily-self-assessment",
+    "dailyQuestion": "Czy chciałbym korzystać z tej aplikacji codziennie?"
+  },
+  "scores": {
+    "ux": 96,
+    "brand": 90,
+    "performance": 99,
+    "emotion": 95,
+    "climate": 93,
+    "navigation": 96,
+    "photos": 88,
+    "returnScore": 80,
+    "overall": 92
+  },
+  "qa": [
+    {
+      "id": "beautiful",
+      "question": "Czy jest piękna?",
+      "score": 92,
+      "verdict": "yes",
+      "answer": "Tak — ciepło marki, typografia i klimat regionu układają się w spójną urodę."
+    },
+    {
+      "id": "intuitive",
+      "question": "Czy jest intuicyjna?",
+      "score": 96,
+      "verdict": "yes",
+      "answer": "Tak — ścieżki są czytelne, a decyzje nie wymagają instrukcji."
+    },
+    {
+      "id": "warm",
+      "question": "Czy jest ciepła?",
+      "score": 95,
+      "verdict": "yes",
+      "answer": "Tak — zieleń, złoto, krem i ton gospodarza budują ciepło regionu."
+    },
+    {
+      "id": "returnInvite",
+      "question": "Czy zachęca do powrotu?",
+      "score": 80,
+      "verdict": "mostly",
+      "answer": "Raczej tak — emocja powrotu jest, jeśli nie zmęczy pierwszym ekranem."
+    },
+    {
+      "id": "homeOverloaded",
+      "question": "Czy ekran Home nie jest przeładowany?",
+      "score": 68,
+      "verdict": "mixed",
+      "answer": "Nie do końca — Home jest gęsty; fatigue to potwierdza."
+    },
+    {
+      "id": "findProducer30s",
+      "question": "Czy użytkownik odnajdzie producenta w mniej niż 30 sekund?",
+      "score": 98,
+      "verdict": "yes",
+      "answer": "Tak — mapa / okolica / kategorie prowadzą do producenta w kilkadziesiąt sekund."
+    },
+    {
+      "id": "betterThanWeek",
+      "question": "Czy aplikacja wygląda lepiej niż tydzień temu?",
+      "score": 80,
+      "verdict": "mostly",
+      "answer": "Dream score 88% sugeruje zdrowy produkt — trudno mówić o cofnięciu."
+    },
+    {
+      "id": "brandCoherent",
+      "question": "Czy marka jest spójna?",
+      "score": 90,
+      "verdict": "yes",
+      "answer": "Tak — logo, paleta i typografia trzymają się Brand Book."
+    },
+    {
+      "id": "photosAuthentic",
+      "question": "Czy fotografie są autentyczne?",
+      "score": 88,
+      "verdict": "mostly",
+      "answer": "W większości tak — autentyczność jest, warto pilnować placeholderów."
+    },
+    {
+      "id": "recommendFriends",
+      "question": "Czy użytkownik będzie chciał polecić aplikację znajomym?",
+      "score": 91,
+      "verdict": "yes",
+      "answer": "Tak — to aplikacja, którą chce się pokazać jako „nasz region”."
+    }
+  ],
+  "dailyUse": {
+    "question": "Czy chciałbym korzystać z tej aplikacji codziennie?",
+    "verdict": "mostly",
+    "answer": "Raczej tak — korzystałbym często, jeśli Home zostanie lżejszy i nadal ciepły.",
+    "basedOn": {
+      "overall": 92,
+      "returnScore": 80,
+      "homeCalm": 68,
+      "warmth": 95
+    }
+  },
+  "summary": {
+    "overall": 92,
+    "returnScore": 80,
+    "dailyUseAnswer": "Raczej tak — korzystałbym często, jeśli Home zostanie lżejszy i nadal ciepły.",
+    "dailyUseVerdict": "mostly",
+    "autoApply": false
+  }
+}

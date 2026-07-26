@@ -1,0 +1,99 @@
+{
+  "id": "production-polish-31",
+  "title": "PRODUCTION POLISH — ETAP 31",
+  "generatedAt": "2026-07-23T18:33:00.417Z",
+  "policy": {
+    "autoApply": false,
+    "autoFix": false,
+    "noNewFeatures": true,
+    "noArchitectureChange": true
+  },
+  "scores": {
+    "ux": 86,
+    "ui": 88,
+    "brand": 94,
+    "performance": 96,
+    "accessibility": 90,
+    "mobile": 91,
+    "pwa": 93,
+    "emotion": 86,
+    "overall": 91
+  },
+  "summary": {
+    "fail": 0,
+    "warn": 1,
+    "ok": 9,
+    "findings": 10
+  },
+  "findings": [
+    {
+      "severity": "ok",
+      "area": "brand",
+      "detail": "logo-master obecny w Header/Home/Premium/Landing/CSS",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "brand",
+      "detail": "Header Premium = logo-master",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "pwa",
+      "detail": "Install banner ::before = --brand-logo (logo-master)",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "pwa",
+      "detail": "Manifest ikony obecne",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "ui",
+      "detail": "For You bez placeholder „?”",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "ui",
+      "detail": "Brak typowych mojibake N?he/Men? w index",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "dev",
+      "detail": "isDevMode blokuje produkcję",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "mobile",
+      "detail": "Header title 2-line clamp ≤429px",
+      "file": ""
+    },
+    {
+      "severity": "warn",
+      "area": "ux",
+      "detail": "Brak reguł Home fold w production-polish",
+      "file": ""
+    },
+    {
+      "severity": "ok",
+      "area": "a11y",
+      "detail": "Install dismiss kontrast na kremie",
+      "file": ""
+    }
+  ],
+  "checklist": {
+    "headerPremium": true,
+    "masterLogo": true,
+    "placeholdersCleared": true,
+    "installBannerLogo": true,
+    "devHiddenOnProd": true,
+    "homeFoldSimplified": false,
+    "mobileBreakpoints": true
+  }
+}

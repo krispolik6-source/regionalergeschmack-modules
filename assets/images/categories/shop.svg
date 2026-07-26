@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Shop">
+  <rect width="64" height="64" rx="14" fill="#ede7f6"/>
+  <path d="M14 28l4-10h28l4 10v4H14z" fill="#6b4c9a"/>
+  <rect x="16" y="32" width="32" height="18" rx="2" fill="#9575cd"/>
+  <rect x="28" y="38" width="8" height="12" fill="#ede7f6"/>
+  <circle cx="22" cy="26" r="2" fill="#fff"/>
+  <circle cx="32" cy="24" r="2" fill="#fff"/>
+  <circle cx="42" cy="26" r="2" fill="#fff"/>
+</svg>

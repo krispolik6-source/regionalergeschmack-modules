@@ -1,0 +1,154 @@
+/* ============================================================
+   ETAP 13A – Dzisiaj w regionie (Live Region)
+   Styl notatek społecznościowych – nie reklama
+   ============================================================ */
+
+.home-live-region {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-live-region-head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 2px;
+}
+
+.home-live-region-head .section-title {
+    margin: 0;
+    font-size: var(--heading-section-size, 1rem);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.home-live-region-sub {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+.home-live-region-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.home-live-region-item {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: var(--radius-md, 16px);
+    border: 1px solid rgba(140, 100, 55, 0.14);
+    background: rgba(255, 248, 235, 0.55);
+    box-shadow: none;
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.home-live-region-item:hover {
+    background: rgba(255, 244, 220, 0.72);
+    border-color: rgba(140, 100, 55, 0.22);
+}
+
+.home-live-region-item:active {
+    transform: scale(0.985);
+}
+
+.home-live-region-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.home-live-region-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    margin-top: 1px;
+}
+
+.home-live-region-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.home-live-region-text {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.home-live-region-meta {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    text-transform: none;
+}
+
+body.dark-mode .home-live-region-item {
+    background: rgba(42, 34, 24, 0.55);
+    border-color: rgba(255, 220, 170, 0.12);
+    color: var(--color-text-light, #fffaf2);
+}
+
+body.dark-mode .home-live-region-item:hover {
+    background: rgba(52, 42, 30, 0.7);
+}
+
+body.dark-mode .home-live-region-text {
+    color: var(--color-text-light, #fffaf2);
+}
+
+body.dark-mode .home-live-region-sub,
+body.dark-mode .home-live-region-meta {
+    color: rgba(255, 236, 210, 0.65);
+}
+
+@media screen and (max-width: 430px) {
+    .home-live-region-item {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .home-live-region-text {
+        font-size: 12px;
+    }
+
+    .home-live-region-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-live-region-item {
+        transition: none;
+    }
+
+    .home-live-region-item:active {
+        transform: none;
+    }
+}

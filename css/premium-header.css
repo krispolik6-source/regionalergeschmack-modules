@@ -1,0 +1,470 @@
+/* ============================================================
+   ETAP 28B – Premium Header
+   Tylko CSS/UI. Jedna ikona (logo-master). Wysoki kontrast.
+   Breakpointy: 320 · 360 · 390 · 412 · 430 · 768 · 1024
+   ============================================================ */
+
+:root {
+    --ph-header-h: 64px;
+    --ph-logo: 44px;
+    --ph-gap-brand: 14px;
+    --ph-gap-actions: 8px;
+    --ph-title: clamp(1.15rem, 4.6vw, 1.65rem);
+    --ph-btn: 42px;
+    --ph-cream: #fffef8;
+    --ph-ink: #1c1812;
+    --ph-gold: #c9a227;
+    --ph-wheat: #e8c97a;
+    --ph-green: #2a3f28;
+    --ph-green-deep: #1e2e1c;
+}
+
+/* Wysokość chrome – spójna z body padding */
+:root {
+    --header-height: var(--ph-header-h);
+}
+
+/* ——— Shell ——— */
+.main-header {
+    background: linear-gradient(180deg, #1e3220 0%, var(--ph-green) 42%, #243d28 100%) !important;
+    border-bottom: 2px solid var(--ph-gold) !important;
+    box-shadow:
+        0 2px 0 rgba(201, 162, 39, 0.45),
+        0 10px 28px rgba(0, 0, 0, 0.32) !important;
+}
+
+.header-content {
+    height: var(--ph-header-h);
+    padding: 0 max(10px, var(--app-gutter, 12px));
+    gap: 10px;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--ph-gap-brand);
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--ph-gap-actions);
+    flex-shrink: 0;
+}
+
+/* ——— Logo: same kłosy, BEZ kafelka ——— */
+.header-brand-mark,
+.main-header .header-brand-mark,
+.main-header .logo {
+    width: var(--ph-logo) !important;
+    height: var(--ph-logo) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    object-fit: contain !important;
+    flex-shrink: 0;
+    align-self: center;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+/* ——— Tytuł: większy, kontrast w słońcu, wyśrodkowany z logo ——— */
+.header-left h1,
+.main-header .header-left h1 {
+    font-family: 'Literata', Georgia, 'Times New Roman', serif !important;
+    font-size: var(--ph-title) !important;
+    font-weight: 700 !important;
+    color: var(--ph-cream) !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.12 !important;
+    margin: 0 !important;
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.95),
+        0 2px 10px rgba(0, 0, 0, 0.75),
+        0 0 2px rgba(0, 0, 0, 1) !important;
+    -webkit-text-fill-color: var(--ph-cream);
+}
+
+/* ——— Przyciski akcji (menu / język / Premium / dark) ——— */
+.main-header .header-icon,
+.main-header .header-lang,
+.main-header #menuBtn,
+.main-header #darkModeToggleBtn,
+.main-header #languageSwitcherBtn,
+.main-header #headerPremiumBtn {
+    min-width: var(--ph-btn) !important;
+    min-height: var(--ph-btn) !important;
+    padding: 0 10px !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(255, 254, 248, 0.5) !important;
+    background: rgba(0, 0, 0, 0.28) !important;
+    color: var(--ph-cream) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+}
+
+.main-header .header-icon:hover,
+.main-header .header-lang:hover,
+.main-header #menuBtn:hover,
+.main-header #darkModeToggleBtn:hover,
+.main-header #languageSwitcherBtn:hover {
+    background: rgba(201, 162, 39, 0.38) !important;
+    border-color: var(--ph-wheat) !important;
+}
+
+.main-header .header-icon:active,
+.main-header .header-lang:active {
+    transform: scale(0.97);
+}
+
+/* Menu ☰ */
+.main-header #menuBtn {
+    font-size: 1.35rem !important;
+    letter-spacing: -0.04em;
+    padding: 0 !important;
+    width: var(--ph-btn);
+}
+
+/* Dark Mode — rozmiar ikony: theme-toggle-premium.css (14px / ≤480) */
+.main-header #darkModeToggleBtn {
+    font-size: 14px !important;
+    padding: 0 !important;
+    width: var(--ph-btn);
+    background: rgba(0, 0, 0, 0.32) !important;
+}
+
+/* Premium – złoty akcent */
+.main-header #headerPremiumBtn,
+.main-header .header-premium-btn {
+    color: var(--ph-ink) !important;
+    background: linear-gradient(180deg, #f0d78a 0%, var(--ph-wheat) 40%, var(--ph-gold) 100%) !important;
+    border-color: #a67c1a !important;
+    text-shadow: none !important;
+    font-size: 1.15rem !important;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35),
+        0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    padding: 0 !important;
+    width: var(--ph-btn);
+}
+
+.main-header #headerPremiumBtn:hover {
+    background: linear-gradient(180deg, #fff3c4 0%, var(--ph-wheat) 45%, #d4a84b 100%) !important;
+    border-color: var(--ph-gold) !important;
+}
+
+/* ETAP 31 – Premium = logo-master (nie emoji) */
+.main-header .header-premium-mark {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.main-header #headerPremiumBtn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Język */
+.main-header .header-lang,
+.main-header #languageSwitcherBtn {
+    font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif !important;
+    font-size: 0.8rem !important;
+    font-variant-emoji: emoji;
+    gap: 5px !important;
+    padding: 0 11px !important;
+    max-width: min(42vw, 160px);
+    overflow: hidden;
+}
+
+.main-header #languageSwitcherLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--ph-cream) !important;
+    font-weight: 700;
+}
+
+.main-header .header-lang-caret {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    flex-shrink: 0;
+    color: var(--ph-wheat);
+}
+
+.main-header .header-lang-wrap {
+    position: relative;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: visible;
+}
+
+/* Dropdown czytelny — poza obcinaniem headera */
+.main-header .language-dropdown {
+    min-width: 200px;
+    max-height: min(50vh, 320px);
+    background: #fffef8 !important;
+    border: 1px solid rgba(201, 162, 39, 0.45);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    color: var(--ph-ink);
+}
+
+body.dark-mode .main-header .language-dropdown {
+    background: #1f2a1c !important;
+    border-color: rgba(255, 220, 170, 0.28) !important;
+    color: #f5efe3 !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .main-header .language-dropdown .language-option {
+    color: #f5efe3 !important;
+    -webkit-text-fill-color: #f5efe3 !important;
+}
+
+.main-header .language-dropdown .language-option {
+    color: var(--ph-ink, #1c1812) !important;
+    -webkit-text-fill-color: var(--ph-ink, #1c1812) !important;
+    background: transparent !important;
+    border: none !important;
+    text-shadow: none !important;
+    font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif !important;
+    font-weight: 500 !important;
+}
+
+.main-header .language-option-flag-img {
+    width: 20px !important;
+    height: 15px !important;
+    border-radius: 2px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.main-header #languageSwitcherLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.main-header .header-lang-flag-img {
+    width: 18px !important;
+    height: 13px !important;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.main-header,
+.main-header .header-content,
+.main-header .header-right {
+    overflow: visible;
+}
+
+/* ============================================================
+   Responsive – wymagane szerokości
+   ============================================================ */
+
+/* ETAP 31: telefon — tytuł zawsze czytelny (2 linie, bez ucięcia „…”) */
+@media screen and (max-width: 429px) {
+    .header-left h1,
+    .main-header .header-left h1 {
+        white-space: normal !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.15 !important;
+        overflow: hidden !important;
+        text-overflow: unset !important;
+        hyphens: manual;
+        word-break: normal;
+        overflow-wrap: break-word;
+    }
+}
+
+/* 320 */
+@media screen and (max-width: 359px) {
+    :root {
+        --ph-header-h: 58px;
+        --ph-logo: 32px;
+        --ph-gap-brand: 6px;
+        --ph-gap-actions: 4px;
+        --ph-title: 0.92rem;
+        --ph-btn: 40px;
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        max-width: 3.4rem;
+        padding: 0 6px !important;
+        font-size: 0.68rem !important;
+    }
+
+    .main-header .header-lang-caret {
+        display: none;
+    }
+
+    .header-content {
+        padding: 0 6px;
+        gap: 4px;
+    }
+}
+
+/* 360 */
+@media screen and (min-width: 360px) and (max-width: 389px) {
+    :root {
+        --ph-header-h: 60px;
+        --ph-logo: 34px;
+        --ph-gap-brand: 8px;
+        --ph-gap-actions: 5px;
+        --ph-title: 1rem;
+        --ph-btn: 40px;
+    }
+
+    .main-header .header-lang {
+        max-width: 5.5rem;
+        font-size: 0.72rem !important;
+        padding: 0 8px !important;
+    }
+}
+
+/* 390 */
+@media screen and (min-width: 390px) and (max-width: 411px) {
+    :root {
+        --ph-header-h: 60px;
+        --ph-logo: 36px;
+        --ph-gap-brand: 10px;
+        --ph-gap-actions: 6px;
+        --ph-title: 1.08rem;
+        --ph-btn: 42px;
+    }
+
+    .main-header .header-lang {
+        max-width: 7rem;
+        font-size: 0.76rem !important;
+    }
+}
+
+/* 412 */
+@media screen and (min-width: 412px) and (max-width: 429px) {
+    :root {
+        --ph-header-h: 62px;
+        --ph-logo: 38px;
+        --ph-gap-brand: 11px;
+        --ph-title: 1.12rem;
+        --ph-btn: 42px;
+    }
+
+    .main-header .header-lang {
+        max-width: 8rem;
+    }
+}
+
+/* 430+ phone — jedna linia gdy jest miejsce */
+@media screen and (min-width: 430px) and (max-width: 767px) {
+    :root {
+        --ph-header-h: 62px;
+        --ph-logo: 42px;
+        --ph-gap-brand: 13px;
+        --ph-gap-actions: 8px;
+        --ph-title: 1.22rem;
+        --ph-btn: 44px;
+    }
+
+    .header-left h1 {
+        white-space: nowrap !important;
+        display: flex !important;
+        -webkit-line-clamp: unset;
+        line-clamp: unset;
+    }
+}
+
+/* 768 tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --ph-header-h: 66px;
+        --ph-logo: 46px;
+        --ph-gap-brand: 14px;
+        --ph-gap-actions: 10px;
+        --ph-title: 1.5rem;
+        --ph-btn: 44px;
+    }
+
+    .header-content {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    .header-left h1 {
+        white-space: nowrap !important;
+        font-size: 1.5rem !important;
+    }
+
+    .main-header .header-lang {
+        max-width: 12rem;
+        font-size: 0.88rem !important;
+        padding: 0 14px !important;
+    }
+}
+
+/* 1024+ desktop */
+@media screen and (min-width: 1024px) {
+    :root {
+        --ph-header-h: 70px;
+        --ph-logo: 48px;
+        --ph-gap-brand: 16px;
+        --ph-gap-actions: 10px;
+        --ph-title: 1.65rem;
+        --ph-btn: 46px;
+    }
+
+    .header-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 28px;
+    }
+
+    .header-left h1 {
+        white-space: nowrap !important;
+        font-size: 1.65rem !important;
+        letter-spacing: 0.02em !important;
+    }
+
+    .main-header .header-lang {
+        max-width: none;
+        font-size: 0.9rem !important;
+        padding: 0 16px !important;
+    }
+}
+
+/* Dark mode – nagłówek nadal ciemnozielony Premium (nie tracić kontrastu) */
+body.dark-mode .main-header,
+html.dark-mode .main-header,
+body.theme-dark .main-header {
+    background: linear-gradient(180deg, #141a12 0%, #1e2e1c 50%, #243528 100%) !important;
+    border-bottom-color: var(--ph-wheat) !important;
+}
+
+body.dark-mode .header-left h1,
+html.dark-mode .header-left h1 {
+    color: #fffef8 !important;
+    -webkit-text-fill-color: #fffef8;
+}

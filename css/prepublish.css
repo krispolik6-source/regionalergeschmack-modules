@@ -1,0 +1,409 @@
+/* ============================================================
+   Prepublish polish – Home · Mapa · Zdjęcia · Logo
+   Ostatnia warstwa CSS. Bez zmian architektury.
+   ============================================================ */
+
+/* ——— 5. Logo: spójny glyph (bez kafelka) ——— */
+.header-brand-mark,
+.side-menu-brand-mark,
+.home-brand-mark,
+.home-premium-icon,
+.header-premium-mark,
+.side-menu-premium-mark,
+.lp-brand-mark,
+.lp-hero-logo,
+.premium-hero-icon {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    object-fit: contain;
+}
+
+/* ——— 2. Home: krótki pierwszy ekran ———
+   ETAP 32B: kolejność foldu (order) przeniesiona do css/home-v1.css
+   (źródło prawdy). Tu tylko layout bazowy + spacing / CTA. */
+.home-page--v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Reklamy – poza ścieżką premierową (nie treść produktu) */
+.home-page--v2 .rg-ad-banner,
+.home-page--v2 .home-ad-slot {
+    display: none !important;
+}
+
+.home-greeting-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Literata', Georgia, serif;
+    font-weight: 700;
+    color: var(--brand-green, #2a3f28);
+}
+
+.home-greeting-title {
+    margin: 0.15em 0 0.25em;
+    line-height: 1.2;
+}
+
+.home-greeting--with-soul .home-greeting-sub {
+    display: none;
+}
+
+.home-page--v2 .home-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 8px;
+}
+
+.home-page--v2 .btn-nearby {
+    font-weight: 800;
+    min-height: 48px;
+    box-shadow: 0 4px 14px rgba(42, 63, 40, 0.22) !important;
+}
+
+.home-page--v2 .home-categories {
+    margin-top: 2px;
+}
+
+@media screen and (max-width: 767px) {
+    .home-greeting-brand .home-brand-mark {
+        width: 22px;
+        height: 22px;
+    }
+
+    .home-region-soul,
+    .home-regional-intel {
+        margin-top: 6px;
+        padding: 10px 12px;
+    }
+
+    .home-region-soul-line {
+        font-size: 0.95rem;
+    }
+}
+
+/* ——— 3. Mapa: mniej ramek, więcej mapy ——— */
+body.view-map-active #app,
+body.view-map-active [data-view-panel='map'] {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    max-width: none !important;
+}
+
+body.view-map-active [data-view-panel='map'] {
+    height: var(--map-viewport-height-fallback) !important;
+    height: var(--map-viewport-height) !important;
+    min-height: var(--map-viewport-height-fallback) !important;
+    min-height: var(--map-viewport-height) !important;
+}
+
+[data-view-panel='map'] #map,
+[data-view-panel='map'] .leaflet-container {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #e8eef2;
+    height: 100% !important;
+}
+
+.map-bottom-panel {
+    left: 8px !important;
+    right: 8px !important;
+}
+
+.map-bottom-btn,
+#radiusControl,
+.radius-control,
+.map-category-header {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: none !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    border-radius: 24px !important;
+}
+
+.radius-control {
+    border-radius: 14px !important;
+    padding: 6px 10px !important;
+    min-width: 140px !important;
+}
+
+.map-producer-list-items,
+.map-legend-panel {
+    border: none !important;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.16) !important;
+    border-radius: 12px !important;
+}
+
+.map-bottom-btn {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    min-height: 0 !important;
+}
+
+[data-view-panel='map'] .leaflet-control-attribution {
+    background: rgba(255, 255, 255, 0.65) !important;
+    margin: 0 !important;
+    font-size: 10px !important;
+}
+
+[data-view-panel='map'] .leaflet-control-zoom a {
+    border: none !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+    width: 28px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    font-size: 14px !important;
+}
+
+body.dark-mode .map-bottom-btn,
+body.dark-mode #radiusControl,
+body.dark-mode .radius-control,
+body.dark-mode .map-category-header {
+    background: rgba(28, 32, 36, 0.92) !important;
+    color: #f0ebe3 !important;
+}
+
+/* ——— 4. Zdjęcia większe (180 / 300) ——— */
+.home-product-image {
+    height: var(--photo-card-height, 180px) !important;
+}
+
+.home-venue-card .home-product-image,
+.home-carousel .home-product-image {
+    height: var(--photo-card-height, 180px) !important;
+}
+
+.home-venue-media--photo {
+    height: var(--photo-card-height, 180px) !important;
+    min-height: 160px !important;
+}
+
+.home-venue-media--photo .home-venue-photo,
+.home-venue-media--photo img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.producer-modal-header {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+}
+
+.producer-modal-header .producer-photo-frame {
+    width: 100% !important;
+    height: var(--photo-modal-height, 160px) !important;
+    max-height: 160px !important;
+    aspect-ratio: auto;
+    border-radius: 12px !important;
+    margin: 0 0 16px !important;
+    position: relative !important;
+    z-index: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.producer-modal-header .producer-photo-frame .producer-photo-img,
+.producer-modal-header .producer-photo-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.producer-modal-header .producer-header-card {
+    margin-top: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    padding: 0 0 0 16px !important;
+    clear: both !important;
+}
+
+.producer-modal-body {
+    padding: 12px 16px !important;
+    overflow-y: auto !important;
+}
+
+/* Produkty w modalu: opis lewo, zdjęcie 60×60 prawo */
+.producer-product-card {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 8px 12px !important;
+    border-radius: 12px !important;
+    grid-template-columns: none !important;
+}
+
+.producer-product-info {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+
+.producer-product-image {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+}
+
+.producer-product-image-icon {
+    font-size: 22px !important;
+}
+
+@media screen and (min-width: 768px) {
+    .home-product-image {
+        height: var(--photo-card-height, 180px) !important;
+    }
+
+    .producer-modal-header .producer-photo-frame {
+        height: var(--photo-modal-height, 160px) !important;
+        max-height: 160px !important;
+        margin: 0 0 16px !important;
+    }
+
+    .producer-product-image {
+        width: 60px !important;
+        height: 60px !important;
+    }
+}
+
+/* ============================================================
+   Home: nagłówki sekcji na zdjęciu (Restauracje / Najbliżej / Polecane)
+   ============================================================ */
+
+.home-section-head--photo .section-title,
+.home-recommended .home-section-head--photo .section-title,
+.home-foryou .home-section-head--photo .section-title,
+.home-restaurants .home-section-head--photo .section-title {
+    color: #ffffff !important;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4) !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+}
+
+.home-section-head--photo .home-see-all {
+    color: #ffffff !important;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ============================================================
+   Czytelność na niebieskich polach (kontrast + cień)
+   ============================================================ */
+
+.producer-trust-badge--community,
+body.dark-mode .map-bottom-btn,
+body.dark-mode .map-legend-btn,
+body.dark-mode .map-list-toggle,
+body.dark-mode #radiusControl,
+body.dark-mode .radius-control,
+body.dark-mode .radius-value,
+body.dark-mode .radius-hint,
+body.dark-mode .language-option,
+body.dark-mode .producer-modal-back,
+body.dark-mode .producer-header-name,
+body.dark-mode .producer-section-title,
+body.dark-mode .producer-product-name,
+body.dark-mode .producer-product-desc,
+body.dark-mode .home-actions .btn-location {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Badge społeczności – ciemniejszy niebieski + biały tekst */
+.producer-trust-badge--community {
+    background: rgba(32, 74, 128, 0.94) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.42) !important;
+    font-size: 12px !important;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode: kontrolki mapy / promień – ciemniejszy navy + biały tekst */
+body.dark-mode .map-bottom-btn,
+body.dark-mode .map-legend-btn,
+body.dark-mode .map-list-toggle,
+body.dark-mode #radiusControl,
+body.dark-mode .radius-control {
+    background: rgba(28, 52, 82, 0.9) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    font-size: 13px !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .radius-value,
+body.dark-mode .radius-hint {
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .language-dropdown {
+    background: #152536 !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+body.dark-mode .language-option {
+    color: #ffffff !important;
+    font-size: 14px !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .language-option:hover,
+body.dark-mode .language-option.active {
+    background: #1e3a58 !important;
+    color: #fff8ee !important;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Dark mode: modal producenta – jaśniejszy tekst na navy */
+body.dark-mode .producer-modal-dialog,
+body.dark-mode .producer-modal-content,
+body.dark-mode .producer-modal-body {
+    color: #f4f7fb !important;
+}
+
+body.dark-mode .producer-modal-toolbar,
+body.dark-mode .producer-modal-header,
+body.dark-mode .producer-modal-footer,
+body.dark-mode .producer-product-card,
+body.dark-mode .producer-review-card {
+    background: #121f33 !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+body.dark-mode .producer-modal-back {
+    background: rgba(40, 78, 120, 0.55) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    font-size: 14px !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .producer-header-name,
+body.dark-mode .producer-modal-header h2,
+body.dark-mode .producer-section-title,
+body.dark-mode .producer-product-name {
+    color: #ffffff !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .producer-header-meta,
+body.dark-mode .producer-header-address,
+body.dark-mode .producer-product-desc,
+body.dark-mode .producer-modal-empty {
+    color: rgba(244, 247, 251, 0.92) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}

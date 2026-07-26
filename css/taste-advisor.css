@@ -1,0 +1,103 @@
+/* ============================================================
+   ETAP 14 – Osobisty Doradca Smaku
+   ============================================================ */
+
+.home-taste-advisor {
+    position: relative;
+    padding: 14px 16px;
+    border-radius: var(--radius-lg, 20px);
+    border: 1px solid rgba(140, 100, 55, 0.18);
+    background:
+        linear-gradient(150deg, rgba(255, 248, 235, 0.88) 0%, rgba(255, 236, 210, 0.55) 100%);
+    box-shadow: 0 4px 18px rgba(90, 55, 20, 0.07);
+    overflow: hidden;
+}
+
+.home-taste-advisor::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 55% 45% at 100% 0%, rgba(196, 137, 58, 0.12) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+.home-taste-advisor-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-taste-advisor-label {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary, #4f6b3c);
+}
+
+.home-taste-advisor-sub {
+    margin: 0;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.home-taste-advisor-text {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.home-taste-advisor-text p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--color-text);
+}
+
+.home-taste-advisor-text p:first-child {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.home-taste-advisor-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.home-taste-advisor-actions .btn-primary,
+.home-taste-advisor-actions .btn-secondary {
+    min-height: 38px;
+    font-size: 13px;
+    padding: 8px 12px;
+}
+
+body.dark-mode .home-taste-advisor {
+    background: linear-gradient(150deg, rgba(48, 38, 28, 0.88) 0%, rgba(36, 30, 22, 0.8) 100%);
+    border-color: rgba(255, 220, 170, 0.14);
+}
+
+body.dark-mode .home-taste-advisor-label {
+    color: #c8d9a8;
+}
+
+body.dark-mode .home-taste-advisor-text p {
+    color: var(--color-text-light, #fffaf2);
+}
+
+@media screen and (max-width: 430px) {
+    .home-taste-advisor {
+        padding: 12px;
+    }
+
+    .home-taste-advisor-text p {
+        font-size: 13px;
+    }
+}

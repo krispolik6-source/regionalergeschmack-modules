@@ -1,0 +1,158 @@
+{
+  "home": {
+    "greeting": "Good day! 👋",
+    "welcomeBack": "👋 Welcome back",
+    "greetingSub": "Your journey through the region starts here.",
+    "surpriseMe": "Surprise me",
+    "surpriseNone": "Nothing suitable nearby right now.",
+    "surpriseFallbackName": "a place",
+    "surpriseNearby": "You might like: {name}",
+    "surpriseFavorite": "From your favorites: {name}",
+    "surpriseTaste": "Fits you: {name}",
+    "surpriseFresh": "Fresh find: {name}",
+    "nearbyTitle": "Nearest to you",
+    "forYouTitle": "Recommended for you",
+    "recentTitle": "Recently viewed",
+    "seasonalTitle": "Seasonal products",
+    "quickFilters": "Quick filters",
+    "quickOpen": "Open now",
+    "quickVerified": "Verified",
+    "quickNear5": "Within 5 km",
+    "quickBio": "Organic (BIO)",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+    "closesAt": "closes at {time}",
+    "opensAt": "opens at {time}",
+    "opensTomorrow": "opens tomorrow at {time}",
+    "seeAll": "See all →",
+    "searchSubmit": "Search",
+    "categoryCount": "{count} places",
+    "motto": "Buy local, support regional producers and enjoy the best quality.",
+    "hubLabel": "Search and quick access",
+    "chipsLabel": "Quick filters",
+    "premiumTeaser": "Exclusive benefits for local discovery",
+    "categoriesTitle": "Categories",
+    "allCategories": "All categories",
+    "categoryActionsLabel": "Quick category filters",
+    "smartTodaySub": "Matched to weather, time of day and season – near you.",
+    "tasteAdvisorSub": "Personal notes from your region.",
+    "tastesOfDaySub": "What fits from the region today.",
+    "chip": {
+      "products": "Products",
+      "restaurants": "Restaurants",
+      "shops": "Shops",
+      "farmers": "Farmers",
+      "favorites": "Favorites"
+    },
+    "featuredItems": {
+      "feat-apples": {
+        "name": "Organic apples",
+        "desc": "Fresh from Hof Müller – crisp and regional."
+      },
+      "feat-bread": {
+        "name": "Farmhouse bread",
+        "desc": "Sourdough from Bäckerei Schmidt."
+      },
+      "feat-cheese": {
+        "name": "Regional cheese",
+        "desc": "Aged by the Rhine – mild and aromatic."
+      },
+      "feat-sausage": {
+        "name": "Homemade sausage",
+        "desc": "Family recipe from Metzgerei Berg."
+      },
+      "feat-honey": {
+        "name": "Blossom honey",
+        "desc": "From Imkerei Sonne in the Rhine plain."
+      },
+      "feat-yogurt": {
+        "name": "Natural yogurt",
+        "desc": "Mild and creamy – no additives."
+      },
+      "feat-eggs": {
+        "name": "Free-range eggs",
+        "desc": "From hens with outdoor access at Hof Müller."
+      },
+      "feat-daily": {
+        "name": "Dish of the day",
+        "desc": "Seasonal cooking at Gasthof Eifelblick."
+      }
+    }
+  },
+  "smartToday": {
+    "reason": {
+      "rain": "Rain – fresh bread and a warm soup.",
+      "hot": "Hot – something refreshing from the region.",
+      "autumn": "Autumn – apples, vegetables and hearty cooking.",
+      "cold": "Cold – warming food from farm and kitchen.",
+      "morning": "Morning – fresh bakery and farm breakfast.",
+      "evening": "Evening – regional dishes and savoury products.",
+      "spring": "Spring – light and fresh from the region.",
+      "summer": "Summer – berries, juices and cool farm treats.",
+      "fresh": "Fresh and local – what fits today."
+    },
+    "product": {
+      "soup": "Seasonal soup",
+      "strawberries": "Strawberries",
+      "juice": "Fresh juice",
+      "soft-drink": "Soft drink",
+      "vegetables": "Seasonal vegetables",
+      "pastries": "Fresh pastries"
+    }
+  },
+  "tasteAdvisor": {
+    "helloNamed": "Good day, {name}.",
+    "honeyVisit": "Nearby there is fresh honey from {place} – a place you visited {when}.",
+    "bakeryFresh": "{place} has just taken the first loaves out of the oven.",
+    "bikeRoute": "The weather suits a bike ride – we prepared a route through {count} local farms.",
+    "freshLocal": "Nearby, fresh goods await from places you like.",
+    "when": {
+      "lastMonth": "last month",
+      "weeksAgo": "a few weeks ago",
+      "recently": "recently"
+    },
+    "ctaBakery": "Open the bakery",
+    "ctaExplore": "Explore the region"
+  },
+  "tastesOfDay": {
+    "honeyFairWeather": "Today is a good day for fresh honey – the bees were busy in fine weather.",
+    "honeyCoolDay": "In this weather a jar of regional honey tastes especially good.",
+    "strawberriesIdeal": "An ideal day for fresh strawberries.",
+    "cheeseEvening": "In the evening we recommend local cheeses.",
+    "breadMorning": "In the morning fresh bread is baking in the bakeries.",
+    "applesCrisp": "Crisp regional apples – especially good today.",
+    "yogurtHotDay": "In the warmth, fresh farm yogurt fits well.",
+    "soupRain": "In the rain a seasonal soup from the inn warms you up.",
+    "eggsMorning": "Fresh farm eggs – a good start to the day.",
+    "juiceSummer": "Cool regional juice suits the summer weather.",
+    "sausageAfternoon": "Regional sausage from the butcher – freshly cut today.",
+    "vegetablesFresh": "Fresh vegetables from the field – short and crisp.",
+    "pastriesRain": "In wet weather warm pastries from the bakery taste right.",
+    "cheeseMildDay": "Today a piece of farm cheese fits in between."
+  },
+  "livingMap": {
+    "closingSoon": "Closing in about an hour",
+    "justOpened": "Just opened",
+    "freshOpen": "Freshly open",
+    "popular": "Popular today",
+    "freshDelivery": "Fresh delivery"
+  },
+  "seasonal": {
+    "season-strawberry": "Strawberries",
+    "season-asparagus": "Asparagus",
+    "season-radish": "Radish",
+    "season-tomato": "Tomatoes",
+    "season-blueberry": "Blueberries",
+    "season-raspberry": "Raspberries",
+    "season-apple": "Apples",
+    "season-potato": "Potatoes",
+    "season-pumpkin": "Pumpkin",
+    "season-mushroom": "Mushrooms",
+    "season-beet": "Beetroot",
+    "season-cabbage": "Cabbage"
+  },
+  "search": {
+    "emptyCta": "Browse the map",
+    "noResultsFor": "No results for search '{query}'"
+  }
+}

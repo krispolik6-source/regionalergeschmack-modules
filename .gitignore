@@ -1,0 +1,27 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.old
+*.backup
+*.bak
+.env
+.env.*
+!.env.example
+
+# Surowy cache nagrań (npm run fetch:authentic-birds)
+assets/audio/nature/_src/
+
+# Klucze produkcyjne – kopiuj z js/config.example.js
+js/config.js
+
+# AI Guardian – lokalne raporty i uczenie (dev-only)
+tools/ai-guardian/reports/*
+!tools/ai-guardian/reports/.gitkeep
+tools/ai-guardian/data/*
+!tools/ai-guardian/data/.gitkeep
+
+# Daily Developer Report – szkice e-mail (mogą zawierać adres)
+docs/daily/*.email.txt
+docs/daily/*.mailto.txt

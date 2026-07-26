@@ -1,0 +1,612 @@
+/* ============================================================
+   ETAP 28C – Mobile Premium
+   Home · Mapa · Producent · Ulubione · Koszyk · Premium · Profil · Menu
+   Viewporty: 320 · 360 · 390 · 412 · 430 · 768 · 1024 (+ landscape)
+   Tylko CSS — bez zmiany architektury.
+   ============================================================ */
+
+:root {
+    --mp-touch-min: 44px;
+    --mp-touch-max: 52px;
+    --mp-gutter: clamp(10px, 3.2vw, 20px);
+    --mp-stack-gap: clamp(12px, 3vw, 20px);
+    --mp-text-safe: #1c1812;
+    --mp-muted-safe: #4a3f32;
+}
+
+/* ——— Global: anty-przepełnienie / bezpieczne odstępy ——— */
+html,
+body {
+    overflow-x: clip;
+    max-width: 100%;
+}
+
+#app,
+[data-view-panel],
+.home-page,
+.premium-page,
+.favorites-page,
+.cart-page,
+.profile-page,
+.search-page {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: clip;
+}
+
+#app {
+    padding-left: max(var(--app-gutter, 12px), var(--mp-gutter));
+    padding-right: max(var(--app-gutter, 12px), var(--mp-gutter));
+}
+
+body.view-map-active #app {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Kontrast tekstu (czytelność na kremie) */
+.section-title,
+.home-greeting-title,
+.view-hero h2,
+.premium-hero h2,
+.producer-header-name,
+.favorite-item .title,
+.cart-item .title,
+.account-item .title,
+.setting-item .title {
+    color: var(--mp-text-safe);
+}
+
+.home-greeting-sub,
+.premium-note,
+.home-premium-desc,
+.section-desc,
+.cart-item .meta,
+.favorite-item .meta,
+.empty-state p {
+    color: var(--mp-muted-safe);
+}
+
+body.dark-mode {
+    --mp-text-safe: #f5efe3;
+    --mp-muted-safe: #d4c4a8;
+}
+
+body.dark-mode .section-title,
+body.dark-mode .home-greeting-title,
+body.dark-mode .view-hero h2,
+body.dark-mode .premium-hero h2,
+body.dark-mode .producer-header-name,
+body.dark-mode .favorite-item .title,
+body.dark-mode .cart-item .title,
+body.dark-mode .account-item .title,
+body.dark-mode .setting-item .title {
+    color: var(--mp-text-safe);
+}
+
+body.dark-mode .home-greeting-sub,
+body.dark-mode .premium-note,
+body.dark-mode .home-premium-desc,
+body.dark-mode .section-desc,
+body.dark-mode .cart-item .meta,
+body.dark-mode .favorite-item .meta,
+body.dark-mode .empty-state p {
+    color: var(--mp-muted-safe);
+}
+
+/* Anty-ucięcie nagłówków sekcji */
+.section-title,
+.home-section-head .section-title,
+.view-hero h2 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.25;
+}
+
+/* ——— Touch targets: nie za małe, nie gigantyczne na 320 ——— */
+.bottom-nav .nav-item,
+.category-card,
+.home-premium-cta,
+.favorite-item button,
+.cart-item button,
+.cart-summary button,
+.premium-cta-section button,
+.profile-page button,
+.setting-item button,
+.account-item,
+.producer-modal-back,
+.producer-modal-close,
+.map-bottom-btn,
+.side-menu-item {
+    min-height: var(--mp-touch-min);
+}
+
+.bottom-nav .nav-item {
+    min-width: 0;
+    max-width: 100%;
+    padding: 6px 2px;
+}
+
+.bottom-nav .nav-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(0.58rem, 2.6vw, 0.72rem);
+    line-height: 1.1;
+}
+
+.bottom-nav .nav-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+}
+
+/* ——— HOME ——— */
+.home-page {
+    gap: var(--mp-stack-gap);
+}
+
+.home-greeting-title {
+    font-size: clamp(1.15rem, 5vw, 1.65rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.home-premium-cta {
+    gap: 10px;
+    padding: 12px 14px;
+    align-items: center;
+}
+
+.home-premium-title,
+.home-premium-desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.home-premium-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.categories-grid .category-card,
+.category-card {
+    min-height: 5.5rem;
+}
+
+.category-card .category-label,
+.category-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.home-product-card h3,
+.home-venue-card h3,
+.home-product-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ——— MAPA ——— */
+[data-view-panel="map"],
+.map-view,
+#map {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.map-bottom-btn,
+.map-controls button {
+    min-height: var(--mp-touch-min);
+    min-width: var(--mp-touch-min);
+    max-height: var(--mp-touch-max);
+}
+
+.map-bottom-bar,
+.map-fab-stack {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: max(8px, env(safe-area-inset-left, 0px));
+    padding-right: max(8px, env(safe-area-inset-right, 0px));
+}
+
+/* ——— PRODUCENT (modal) ——— */
+.producer-modal-dialog,
+.producer-modal-content {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.producer-modal-header h2,
+.producer-header-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.2;
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+}
+
+.producer-modal-toolbar,
+.producer-modal-footer {
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.producer-modal-back,
+.producer-modal-close {
+    min-width: var(--mp-touch-min);
+    min-height: var(--mp-touch-min);
+}
+
+.producer-modal-body {
+    padding-left: max(12px, var(--mp-gutter));
+    padding-right: max(12px, var(--mp-gutter));
+}
+
+.producer-product-card {
+    min-width: 0;
+}
+
+.producer-product-card .name,
+.producer-product-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* ——— ULUBIONE / KOSZYK ——— */
+.favorite-item,
+.cart-item,
+.list-item {
+    gap: 10px;
+    padding: 12px;
+    min-width: 0;
+    align-items: flex-start;
+}
+
+.favorite-item .title,
+.cart-item .title,
+.list-item .title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-width: 0;
+    flex: 1;
+}
+
+.cart-summary {
+    gap: 10px;
+    padding: 14px;
+}
+
+.cart-summary button,
+.favorite-item .btn,
+.cart-item .btn {
+    min-height: var(--mp-touch-min);
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.empty-state {
+    padding: clamp(1.25rem, 5vw, 2rem);
+    text-align: center;
+}
+
+.empty-state h2,
+.empty-state h3 {
+    overflow-wrap: anywhere;
+}
+
+/* ——— PREMIUM ——— */
+.premium-page {
+    gap: var(--mp-stack-gap);
+}
+
+.premium-feature-card {
+    gap: 12px;
+    padding: 14px;
+    min-width: 0;
+}
+
+.premium-feature-card p,
+.premium-feature-card span {
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+
+.premium-cta-section button,
+.premium-cta-section .btn {
+    width: 100%;
+    max-width: 100%;
+    min-height: 48px;
+    font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+}
+
+.premium-note {
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+/* ——— PROFIL ——— */
+.profile-page,
+[data-view-panel="profile"] {
+    gap: var(--mp-stack-gap);
+}
+
+.setting-item,
+.account-item {
+    min-height: var(--mp-touch-min);
+    padding: 12px 14px;
+    gap: 10px;
+}
+
+.setting-item .label,
+.account-item .label,
+.setting-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* ——— MENU BOCZNE ——— */
+.side-menu-panel {
+    width: min(88vw, 320px);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.side-menu-item {
+    min-height: var(--mp-touch-min);
+    padding: 12px 14px;
+    gap: 10px;
+}
+
+.side-menu-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+}
+
+.side-menu-header {
+    gap: 10px;
+    padding: 12px 14px;
+    align-items: center;
+}
+
+.side-menu-title,
+#sideMenuTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    font-size: clamp(0.95rem, 3.8vw, 1.1rem);
+}
+
+/* ============================================================
+   Viewport matrix
+   ============================================================ */
+
+/* 320 */
+@media screen and (max-width: 359px) {
+    :root {
+        --mp-gutter: 10px;
+        --mp-stack-gap: 12px;
+        --mp-touch-min: 44px;
+        --mp-touch-max: 48px;
+    }
+
+    .bottom-nav .nav-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.55rem;
+    }
+
+    .home-premium-arrow {
+        display: none;
+    }
+
+    .categories-grid .category-card {
+        min-height: 5rem;
+        padding: 10px 8px;
+    }
+
+    .premium-feature-card {
+        padding: 12px;
+    }
+
+    .side-menu-panel {
+        width: min(92vw, 300px);
+    }
+
+    .producer-modal-footer {
+        flex-direction: column;
+    }
+
+    .producer-modal-footer button {
+        width: 100%;
+    }
+}
+
+/* 360 */
+@media screen and (min-width: 360px) and (max-width: 389px) {
+    :root {
+        --mp-gutter: 12px;
+        --mp-stack-gap: 14px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.6rem;
+    }
+}
+
+/* 390 */
+@media screen and (min-width: 390px) and (max-width: 411px) {
+    :root {
+        --mp-gutter: 14px;
+        --mp-stack-gap: 15px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.65rem;
+    }
+}
+
+/* 412 */
+@media screen and (min-width: 412px) and (max-width: 429px) {
+    :root {
+        --mp-gutter: 14px;
+        --mp-stack-gap: 16px;
+    }
+}
+
+/* 430 phones */
+@media screen and (min-width: 430px) and (max-width: 767px) {
+    :root {
+        --mp-gutter: 16px;
+        --mp-stack-gap: 16px;
+        --mp-touch-min: 44px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.7rem;
+    }
+
+    .bottom-nav .nav-icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* 768 tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --mp-gutter: 20px;
+        --mp-stack-gap: 18px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.75rem;
+    }
+
+    .premium-cta-section button {
+        max-width: 28rem;
+        margin-inline: auto;
+    }
+
+    .side-menu-panel {
+        width: min(360px, 40vw);
+    }
+}
+
+/* 1024 desktop-ish */
+@media screen and (min-width: 1024px) {
+    :root {
+        --mp-gutter: 24px;
+        --mp-stack-gap: 20px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.8rem;
+    }
+
+    .premium-cta-section button {
+        max-width: 24rem;
+    }
+}
+
+/* ——— Landscape: telefony / małe tablety ——— */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+    :root {
+        --mp-stack-gap: 10px;
+    }
+
+    .home-greeting {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+
+    .home-greeting-sub {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.55rem;
+    }
+
+    .bottom-nav .nav-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 14px;
+    }
+
+    .map-bottom-bar {
+        bottom: calc(4px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .producer-modal-header {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    .side-menu-panel {
+        width: min(70vw, 320px);
+    }
+
+    .categories-grid .category-card {
+        min-height: 4.25rem;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .home-page {
+        gap: 14px;
+    }
+
+    .map-bottom-btn {
+        min-height: 40px;
+    }
+}
+
+/* Zapobieganie nakładaniu: sticky/fixed warstwy */
+.bottom-nav {
+    z-index: 1000;
+}
+
+.main-header {
+    z-index: 1001;
+}
+
+.side-menu {
+    z-index: 1250;
+}
+
+.producer-modal {
+    z-index: 1400;
+}
+
+/* Nad overlayem menu (1250) – sync z settings.js fixed dropdown */
+.language-dropdown {
+    z-index: 1260;
+}

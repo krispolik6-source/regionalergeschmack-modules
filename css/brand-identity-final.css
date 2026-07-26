@@ -1,0 +1,242 @@
+/* ============================================================
+   ETAP 20A – Brand Identity Final
+   Jedna marka · jedno logo (dwa złote kłosy w prawo) · paleta Premium
+   Bez zimnego niebieskiego. AutoFix N/A – tylko wygląd.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;700&family=Source+Sans+3:wght@500;600;700;800&display=swap');
+
+:root {
+    /* Paleta zgodna z logo */
+    --brand-green: #2a3f28;
+    --brand-green-mid: #3d5c34;
+    --brand-green-soft: #4f6b3c;
+    --brand-gold: #c9a227;
+    --brand-gold-deep: #a67c1a;
+    --brand-wheat: #e8c97a;
+    --brand-honey: #d4a84b;
+    --brand-cream: #f5efe3;
+    --brand-cream-card: #fff8ee;
+    --brand-ink: #1c1812;
+    --brand-ink-soft: #3d3428;
+
+    --color-primary: var(--brand-green-mid);
+    --color-primary-dark: var(--brand-green);
+    --color-accent: var(--brand-honey);
+    --color-accent-dark: var(--brand-gold-deep);
+    --color-bg: var(--brand-cream);
+    --color-card: var(--brand-cream-card);
+    --color-btn-location: #5a7d48;
+    --color-btn-location-hover: var(--brand-green-mid);
+    --color-btn-nearby: var(--brand-gold-deep);
+    --color-btn-nearby-hover: #8a6414;
+    --color-text: var(--brand-ink);
+    --color-text-muted: #5c4e3a;
+    --color-text-light: #fffef8;
+
+    /* Zero zimnego niebieskiego w nawigacji / kategoriach */
+    --nav-icon-home: var(--brand-green-mid);
+    --nav-icon-map: #5a7d48;
+    --nav-icon-search: var(--brand-honey);
+    --nav-icon-favorites: #b85c38;
+    --nav-icon-profile: var(--brand-gold-deep);
+    --cat-icon-farmers: #5a7d48;
+    --cat-icon-bakeries: var(--brand-honey);
+    --cat-icon-meat: #a84a3a;
+    --cat-icon-shops: var(--brand-gold-deep);
+    --cat-icon-restaurants: #c47a3a;
+    --cat-icon-fastFood: #8a5a2a;
+    --cat-icon-vending: #5c4e3a;
+    --cat-icon-favorites: #b85c38;
+    --btn-see-all: var(--brand-green-mid);
+
+    --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    --font-display: 'Literata', Georgia, 'Times New Roman', serif;
+    --brand-logo: url('/assets/icons/logo-master.svg?v=28');
+}
+
+body.dark-mode,
+html.dark-mode,
+body.theme-dark {
+    --color-primary: #6f8f5a;
+    --color-primary-dark: #4f6b3c;
+    --color-accent: var(--brand-wheat);
+    --color-bg: #1a1f18;
+    --color-card: #242a20;
+    --color-text: #f5efe3;
+    --color-text-muted: #d4c4a8;
+    /* Atrament marki → jasny tekst w nocy (bez zmiany Brand Book / dnia) */
+    --brand-ink: #f5efe3;
+    --brand-ink-soft: #d4c4a8;
+}
+
+/* Typografia produktu */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--brand-cream);
+    color: var(--brand-ink);
+}
+
+/* ——— Header: bardzo wysoki kontrast (słońce) ——— */
+.main-header {
+    background: linear-gradient(180deg, #243d28 0%, var(--brand-green) 100%);
+    border-bottom: 2px solid var(--brand-gold);
+    box-shadow: 0 2px 0 rgba(201, 162, 39, 0.35), 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.header-left h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: #fffef8 !important;
+    letter-spacing: 0.02em;
+    text-shadow:
+        0 1px 0 rgba(0, 0, 0, 0.85),
+        0 2px 6px rgba(0, 0, 0, 0.55),
+        0 0 1px rgba(0, 0, 0, 1);
+}
+
+.header-brand-mark,
+.logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    object-fit: contain;
+}
+
+/* Menu · język · Premium · Dark Mode – czytelne w pełnym słońcu
+   UWAGA: nie styluj .language-option (dropdown) — biały kolor + text-shadow
+   ukrywały emoji flag na tle kremowym (#fffef8). */
+.header-icon,
+.header-lang,
+.header-btn,
+#darkModeToggleBtn,
+#languageSwitcherBtn,
+#headerPremiumBtn,
+#menuToggleBtn,
+.main-header > .header-content button:not(.language-option),
+.main-header .header-right > button,
+.main-header .header-left > button {
+    color: #fffef8 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 254, 248, 0.42) !important;
+    background: rgba(0, 0, 0, 0.22) !important;
+    border-radius: 10px;
+    min-height: 36px;
+    font-weight: 700;
+}
+
+.header-icon:hover,
+.header-lang:hover,
+.header-btn:hover,
+#darkModeToggleBtn:hover,
+#languageSwitcherBtn:hover,
+#headerPremiumBtn:hover {
+    background: rgba(201, 162, 39, 0.35) !important;
+    border-color: var(--brand-wheat) !important;
+}
+
+#headerPremiumBtn {
+    color: #1c1812 !important;
+    background: linear-gradient(180deg, var(--brand-wheat), var(--brand-gold)) !important;
+    border-color: var(--brand-gold-deep) !important;
+    text-shadow: none !important;
+}
+
+/* Ikona aplikacji = logo-master (img), nie emoji */
+.side-menu-brand-mark,
+.lp-brand-mark,
+.lp-hero-logo {
+    display: inline-block !important;
+    vertical-align: middle;
+    object-fit: contain;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.side-menu-brand-mark {
+    width: 28px;
+    height: 28px;
+}
+
+.lp-brand-mark {
+    width: 36px;
+    height: 36px;
+}
+
+.lp-hero-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 0.85rem;
+    border-radius: 0;
+    background: transparent;
+}
+
+.home-brand-mark {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    vertical-align: -4px;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Side menu branding */
+.side-menu-header,
+.side-menu .brand,
+#sideMenu .side-menu-title {
+    color: var(--brand-ink);
+}
+
+/* Splash / loading – warstwa wizualna (jeśli body ma stan ładowania) */
+body.is-loading::before,
+html.rg-booting::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 200000;
+    background: var(--brand-cream) var(--brand-logo) center 42% / min(160px, 36vw) no-repeat;
+    box-shadow: inset 0 0 0 100vmax rgba(245, 239, 227, 0.92);
+}
+
+/* PWA install banner – znak marki */
+.pwa-install-banner {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    background: var(--brand-cream) !important;
+    border: 1px solid rgba(201, 162, 39, 0.45) !important;
+    color: var(--brand-ink) !important;
+}
+
+.pwa-install-banner::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    /* IDENTYCZNY znak: logo-master (glyph) na kremie jak ikona PWA */
+    background: var(--brand-cream) var(--brand-logo) center / 78% no-repeat;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* Landing – ta sama marka / paleta (nadpisuje zimny niebieski) */
+.lp-header {
+    background: rgba(245, 239, 227, 0.94);
+    border-bottom: 1px solid rgba(201, 162, 39, 0.35);
+}
+
+.lp-brand {
+    color: var(--brand-green) !important;
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+/* About – jeśli kontener ma nagłówek */
+.about-title,
+[data-view="profile"] .about-heading {
+    font-family: var(--font-display);
+    color: var(--brand-green);
+}
