@@ -18,13 +18,15 @@ import { EVENTS } from '../core/events.js';
 const LANG_STORAGE_KEY = 'rs_lang';
 const CACHE_KEY = 'rg_ai_i18n_v2';
 const LEGACY_CACHE_KEY = 'rg_dyn_i18n_v1';
-const MAX_ENTRIES = 1200;
+const CACHE_MAX_SIZE = 1000;
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_TEXT = 1200;
 const BRAND_TOKEN = '\uE000RG_BRAND\uE001';
 const PROTECT_TOKEN = (i) => `\uE000RG_P${i}\uE001`;
-const QUEUE_CONCURRENCY = 2;
-const REQUEST_GAP_MS = 140;
+const QUEUE_CONCURRENCY = 1;
+const REQUEST_GAP_MS = 400;
 const RETRY_MS = 45_000;
+const RETRY_MS_RATE_LIMIT = 120_000;
 
 /** @typedef {{ id: string, translate: (text: string, from: string, to: string, cfg: object) => Promise<string> }} TranslationProvider */
 
@@ -66,6 +68,8 @@ const failedAt = new Map();
 let activeWorkers = 0;
 let lastRequestAt = 0;
 let initialized = false;
+/** @type {Set<AbortController>} */
+const activeRequestControllers = new Set();
 
 function now() {
     return Date.now();
@@ -78,6 +82,35 @@ function abortSignal(ms) {
     const c = new AbortController();
     setTimeout(() => c.abort(), ms);
     return c.signal;
+}
+
+function mergeAbortSignals(...signals) {
+    const valid = signals.filter(Boolean);
+    if (!valid.length) return undefined;
+    if (typeof AbortController === 'undefined') return valid[0];
+    const merged = new AbortController();
+    for (const sig of valid) {
+        if (sig.aborted) {
+            merged.abort(sig.reason);
+            return merged.signal;
+        }
+        sig.addEventListener('abort', () => merged.abort(sig.reason), { once: true });
+    }
+    return merged.signal;
+}
+
+function cancelAllPendingTranslations() {
+    for (const controller of activeRequestControllers) {
+        try { controller.abort(); } catch { /* ignore */ }
+    }
+    activeRequestControllers.clear();
+
+    while (queue.length) {
+        const job = queue.shift();
+        try { job?.resolve?.(job.text); } catch { /* ignore */ }
+    }
+    inflight.clear();
+    activeWorkers = 0;
 }
 
 function getUiLanguage() {
@@ -106,9 +139,49 @@ export function resolveTargetLanguage(lang) {
     return mapLang(ui);
 }
 
-/** Cache key: oryginał + język docelowy */
-function makeCacheKey(text, to) {
-    return `${to}::${text}`;
+/** Cache key: oryginał + język źródłowy + docelowy */
+function getCacheKey(text, from, to) {
+    return `${text}|${from}|${to}`;
+}
+
+/** @deprecated alias */
+function makeCacheKey(text, to, from = AI_TRANSLATE_CONFIG.defaultSource) {
+    return getCacheKey(text, mapLang(from), to);
+}
+
+/**
+ * @param {string} text
+ * @param {string} from
+ * @param {string} to
+ * @returns {string | null}
+ */
+function getCachedTranslationEntry(text, from, to) {
+    const key = getCacheKey(text, from, to);
+    const entry = memoryCache.get(key);
+    if (!entry) return null;
+    const translation = typeof entry === 'string' ? entry : entry.translation;
+    const timestamp = typeof entry === 'string' ? now() : Number(entry.timestamp || 0);
+    if (!translation) return null;
+    if (timestamp && now() - timestamp > CACHE_TTL_MS) {
+        memoryCache.delete(key);
+        return null;
+    }
+    return translation;
+}
+
+/**
+ * @param {string} text
+ * @param {string} from
+ * @param {string} to
+ * @param {string} translation
+ */
+function setCachedTranslationEntry(text, from, to, translation) {
+    const key = getCacheKey(text, from, to);
+    if (memoryCache.size >= CACHE_MAX_SIZE) {
+        const firstKey = memoryCache.keys().next().value;
+        if (firstKey) memoryCache.delete(firstKey);
+    }
+    memoryCache.set(key, { translation, timestamp: now() });
 }
 
 function loadCache() {
@@ -118,15 +191,31 @@ function loadCache() {
         if (!raw) return;
         const data = JSON.parse(raw);
         const entries = Array.isArray(data?.entries) ? data.entries : [];
+        const ts = now();
         for (const row of entries) {
-            if (Array.isArray(row) && typeof row[0] === 'string' && typeof row[1] === 'string') {
-                // migracja v1: from|to|text → to::text
-                let k = row[0];
-                if (k.includes('|') && !k.includes('::')) {
-                    const parts = k.split('|');
-                    if (parts.length >= 3) k = `${parts[1]}::${parts.slice(2).join('|')}`;
-                }
-                memoryCache.set(k, row[1]);
+            if (!Array.isArray(row) || typeof row[0] !== 'string') continue;
+            let k = row[0];
+            let val = row[1];
+            // migracja v1: from|to|text → text|from|to
+            if (k.includes('|') && !k.includes('::') && k.split('|').length >= 3) {
+                const parts = k.split('|');
+                const fromPart = parts[0];
+                const toPart = parts[1];
+                const textPart = parts.slice(2).join('|');
+                k = getCacheKey(textPart, fromPart, toPart);
+            } else if (k.includes('::')) {
+                const idx = k.indexOf('::');
+                const toPart = k.slice(0, idx);
+                const textPart = k.slice(idx + 2);
+                k = getCacheKey(textPart, AI_TRANSLATE_CONFIG.defaultSource, toPart);
+            }
+            if (typeof val === 'string') {
+                memoryCache.set(k, { translation: val, timestamp: ts });
+            } else if (val && typeof val.translation === 'string') {
+                memoryCache.set(k, {
+                    translation: val.translation,
+                    timestamp: Number(val.timestamp) || ts
+                });
             }
         }
     } catch {
@@ -137,16 +226,16 @@ function loadCache() {
 function persistCache() {
     try {
         let entries = [...memoryCache.entries()];
-        if (entries.length > MAX_ENTRIES) {
-            entries = entries.slice(entries.length - MAX_ENTRIES);
+        if (entries.length > CACHE_MAX_SIZE) {
+            entries = entries.slice(entries.length - CACHE_MAX_SIZE);
             memoryCache = new Map(entries);
         }
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 2, at: new Date().toISOString(), entries }));
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 3, at: new Date().toISOString(), entries }));
     } catch {
         try {
-            const entries = [...memoryCache.entries()].slice(-Math.floor(MAX_ENTRIES / 2));
+            const entries = [...memoryCache.entries()].slice(-Math.floor(CACHE_MAX_SIZE / 2));
             memoryCache = new Map(entries);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 2, entries }));
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 3, entries }));
         } catch { /* ignore */ }
     }
 }
@@ -223,7 +312,7 @@ const PROVIDERS = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify(body),
-                signal: abortSignal(12000)
+                signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
             if (!res.ok) throw new Error(`libre ${res.status}`);
             const data = await res.json();
@@ -240,7 +329,7 @@ const PROVIDERS = {
             const res = await fetch(url, {
                 method: 'GET',
                 headers: { Accept: 'application/json' },
-                signal: abortSignal(12000)
+                signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
             if (!res.ok) throw new Error(`mymemory ${res.status}`);
             const data = await res.json();
@@ -259,7 +348,7 @@ const PROVIDERS = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ q: text, source: from, target: to, format: 'text' }),
-                signal: abortSignal(12000)
+                signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
             if (!res.ok) throw new Error(`google ${res.status}`);
             const data = await res.json();
@@ -284,7 +373,7 @@ const PROVIDERS = {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: params,
-                signal: abortSignal(12000)
+                signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
             if (!res.ok) throw new Error(`deepl ${res.status}`);
             const data = await res.json();
@@ -314,7 +403,7 @@ const PROVIDERS = {
                         { role: 'user', content: text }
                     ]
                 }),
-                signal: abortSignal(20000)
+                signal: mergeAbortSignals(abortSignal(20000), cfg.requestSignal)
             });
             if (!res.ok) throw new Error(`openai ${res.status}`);
             const data = await res.json();
@@ -335,16 +424,18 @@ export function registerProvider(provider) {
     }
 }
 
-async function runProviders(text, from, to) {
+async function runProviders(text, from, to, requestSignal) {
     const order = AI_TRANSLATE_CONFIG.providers || [];
+    const cfg = { ...AI_TRANSLATE_CONFIG, requestSignal };
     let lastErr;
     for (const id of order) {
         const p = PROVIDERS[id];
         if (!p) continue;
         try {
-            const out = await p.translate(text, from, to, AI_TRANSLATE_CONFIG);
+            const out = await p.translate(text, from, to, cfg);
             if (out && typeof out === 'string') return out;
         } catch (e) {
+            if (e?.name === 'AbortError' || requestSignal?.aborted) throw e;
             lastErr = e;
         }
     }
@@ -361,9 +452,9 @@ async function throttle() {
     lastRequestAt = now();
 }
 
-async function fetchTranslation(text, from, to, protect = []) {
+async function fetchTranslation(text, from, to, protect = [], requestSignal) {
     const { text: protectedText, list } = protectSpans(text, protect);
-    const raw = await runProviders(protectedText, from, to);
+    const raw = await runProviders(protectedText, from, to, requestSignal);
     return restoreSpans(raw, list).trim() || text;
 }
 
@@ -400,7 +491,10 @@ async function processQueue() {
     if (!job) return;
     activeWorkers += 1;
     const { text, from, to, protect, resolve } = job;
-    const key = makeCacheKey(text, to);
+    const key = getCacheKey(text, from, to);
+    const requestController = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    if (requestController) activeRequestControllers.add(requestController);
+    const requestSignal = requestController?.signal;
     try {
         await throttle();
         if (typeof navigator !== 'undefined' && navigator.onLine === false) {
@@ -408,31 +502,38 @@ async function processQueue() {
             resolve(text);
             return;
         }
-        const out = await fetchTranslation(text, from, to, protect);
-        memoryCache.set(key, out);
+        const out = await fetchTranslation(text, from, to, protect, requestSignal);
+        setCachedTranslationEntry(text, from, to, out);
         failedAt.delete(key);
         persistCache();
         emitUpdated({ from, to, text, translation: out });
         resolve(out);
-    } catch {
+    } catch (err) {
+        if (err?.name === 'AbortError' || requestSignal?.aborted) {
+            resolve(text);
+            return;
+        }
+        const msg = String(err?.message || err || '');
+        const rateLimited = /\b429\b|quota|rate limit/i.test(msg);
         failedAt.set(key, now());
-        // cicho — oryginał; ponów później
-        scheduleRetry(text, from, to, protect);
+        scheduleRetry(text, from, to, protect, rateLimited);
         resolve(text);
     } finally {
+        if (requestController) activeRequestControllers.delete(requestController);
         inflight.delete(key);
         activeWorkers -= 1;
         if (queue.length) void processQueue();
     }
 }
 
-function scheduleRetry(text, from, to, protect) {
+function scheduleRetry(text, from, to, protect, rateLimited = false) {
     if (typeof window === 'undefined' || typeof window.setTimeout !== 'function') return;
-    const key = makeCacheKey(text, to);
+    const key = getCacheKey(text, from, to);
+    const delay = rateLimited ? RETRY_MS_RATE_LIMIT : RETRY_MS;
     window.setTimeout(() => {
-        if (memoryCache.has(key)) return;
+        if (getCachedTranslationEntry(text, from, to)) return;
         void translate(text, { from, to, protect });
-    }, RETRY_MS);
+    }, delay);
 }
 
 /**
@@ -452,12 +553,12 @@ export function translate(text, opts = {}) {
         return Promise.resolve(input || String(text ?? ''));
     }
 
-    const key = makeCacheKey(input, to);
-    const hit = memoryCache.get(key);
+    const key = getCacheKey(input, from, to);
+    const hit = getCachedTranslationEntry(input, from, to);
     if (hit) return Promise.resolve(hit);
 
     const failTs = failedAt.get(key);
-    if (failTs && now() - failTs < RETRY_MS) {
+    if (failTs && now() - failTs < RETRY_MS_RATE_LIMIT) {
         return Promise.resolve(input);
     }
 
@@ -486,7 +587,7 @@ export function translateSoft(text, opts = {}) {
     if (!input || from === to || shouldNotTranslate(input, { protect })) {
         return input || String(text ?? '');
     }
-    const hit = memoryCache.get(makeCacheKey(input, to));
+    const hit = getCachedTranslationEntry(input, from, to);
     if (hit) return hit;
     void translate(input, { from, to, protect });
     return input;
@@ -559,16 +660,17 @@ export async function translatePage(root, opts = {}) {
     const to = resolveTargetLanguage(opts.to || getUiLanguage());
     const from = mapLang(opts.from || AI_TRANSLATE_CONFIG.defaultSource);
     let updated = 0;
-    const jobs = [];
+    /** @type {Map<string, HTMLElement[]>} */
+    const bySource = new Map();
+
     nodes.forEach((el) => {
         if (!(el instanceof HTMLElement)) return;
-        // Nie tłumacz nazw własnych oznaczonych data-rg-ai-skip
         if (el.hasAttribute('data-rg-ai-skip')) return;
         const src = el.getAttribute('data-rg-ai-src') || (el.textContent || '').trim();
         if (!src) return;
         el.setAttribute('data-rg-ai-src', src);
         el.setAttribute('data-rg-ai-lang', to);
-        const cached = memoryCache.get(makeCacheKey(src, to));
+        const cached = getCachedTranslationEntry(src, from, to);
         if (cached) {
             if (el.textContent !== cached) {
                 el.setAttribute('data-rg-ai-prev', cached);
@@ -577,17 +679,20 @@ export async function translatePage(root, opts = {}) {
             }
             return;
         }
-        jobs.push(
-            translate(src, { to, from }).then((tr) => {
-                if (tr && tr !== src) {
-                    el.setAttribute('data-rg-ai-prev', tr);
-                    el.textContent = tr;
-                    updated += 1;
-                }
-            })
-        );
+        if (!bySource.has(src)) bySource.set(src, []);
+        bySource.get(src).push(el);
     });
-    await Promise.all(jobs);
+
+    for (const [src, elements] of bySource) {
+        const tr = await translate(src, { to, from });
+        if (tr && tr !== src) {
+            elements.forEach((el) => {
+                el.setAttribute('data-rg-ai-prev', tr);
+                el.textContent = tr;
+            });
+            updated += elements.length;
+        }
+    }
     return { updated };
 }
 
@@ -610,7 +715,7 @@ export function getCachedTranslation(text, toLang, fromLang = AI_TRANSLATE_CONFI
     const to = resolveTargetLanguage(toLang);
     const from = mapLang(fromLang);
     if (!input || from === to || shouldNotTranslate(input)) return null;
-    return memoryCache.get(makeCacheKey(input, to)) || null;
+    return getCachedTranslationEntry(input, from, to);
 }
 
 export function invalidateCache(filter) {
@@ -648,9 +753,7 @@ export function initAiTranslationEngine() {
     initialized = true;
 
     eventBus.on?.(EVENTS.LANGUAGE_CHANGED, ({ language } = {}) => {
-        queue.length = 0;
-        inflight.clear();
-        // Cache zostaje (per język). Odśwież oznaczone węzły w tle.
+        cancelAllPendingTranslations();
         const to = resolveTargetLanguage(language || getUiLanguage());
         void translatePage(document, { to }).catch(() => {});
     });

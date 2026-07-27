@@ -8,13 +8,16 @@ import {
     findProducerNear,
     upsertProducer
 } from '../data/dataService.js';
-import { t, tProductField } from '../core/i18n.js';
-import { translateSoft } from '../i18n/aiTranslationEngine.js';
+import { t, tProductField, formatNavLabel, getCurrentLanguage } from '../core/i18n.js';
+import { CATALOG_TRANSLATIONS } from '../translations.js';
 import {
-    buildProducerHeaderHtml,
-    buildProducerStoryHtml,
+    translatePage,
+    getCachedTranslation
+} from '../i18n/aiTranslationEngine.js';
+import {
     buildPlaceHistoryHtml,
     buildPromotionsFlyerHtml,
+    buildOpenStatusHtml,
     handlePromoFlyerToggle
 } from '../presentation/producerDisplay.js';
 import {
@@ -47,7 +50,20 @@ import {
     fileToDataUrl
 } from '../core/tasteDiary.js';
 import { getProducerDisplayName } from '../presentation/chainBrands.js';
+import { formatDistanceLabel, formatEtaLabels } from '../presentation/geoFormat.js';
+import { getProducerTypeKey } from '../presentation/categoryIcons.js';
+import { getDistanceKm } from '../data/producerHelpers.js';
+import { getLastPosition } from '../core/userLocation.js';
+import { getProducerStory } from '../data/producerStories.js';
+import { isProducerPromoted } from '../core/premiumService.js';
 import { refreshTasteDiaryMenuCount } from '../core/sideMenu.js';
+import { addToCart, refreshCartBadge } from './cart.js';
+import {
+    addFavoriteId,
+    removeFavoriteId,
+    isFavorite as isProducerFavorite,
+    getFavoriteIds
+} from '../core/favoritesStore.js';
 
 let initialized = false;
 let lastFocusedElement = null;
@@ -63,6 +79,167 @@ let isModalOpen = false;
 
 const MODAL_MAP_ZOOM = 14;
 const MODAL_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const STORY_PREVIEW_CHARS = 160;
+
+function buildProducerModalMetaLine(producer) {
+    const parts = [];
+    const user = getLastPosition();
+    let km = Number(producer?.distanceKm);
+    if (!Number.isFinite(km) && user && Number.isFinite(Number(producer?.lat)) && Number.isFinite(Number(producer?.lng))) {
+        km = getDistanceKm(user.lat, user.lng, Number(producer.lat), Number(producer.lng));
+    }
+    if (Number.isFinite(km)) {
+        parts.push(formatDistanceLabel(km));
+        const eta = formatEtaLabels(km);
+        parts.push(`🚶 ${eta.walk}`);
+        parts.push(`🚗 ${eta.car}`);
+    } else if (producer?.distance) {
+        parts.push(String(producer.distance));
+    }
+    if (producer?.address) {
+        parts.push(String(producer.address));
+    }
+    return parts.filter(Boolean).join(' · ');
+}
+
+function buildProducerModalHeaderHtml(producer) {
+    const displayName = getProducerDisplayName(producer);
+    const typeKey = getProducerTypeKey(producer?.category);
+    const typeLabel = t(`producer.types.${typeKey}`);
+    const ratingNum = Number(producer?.rating);
+    const stars = Number.isFinite(ratingNum) && ratingNum > 0
+        ? `${'★'.repeat(Math.min(5, Math.round(ratingNum)))}${'☆'.repeat(5 - Math.min(5, Math.round(ratingNum)))}`
+        : '';
+    const ratingHtml = stars
+        ? `<span class="producer-modal-chip producer-modal-chip-rating"><span aria-hidden="true">${stars}</span> ${escapeHtml(String(ratingNum))}</span>`
+        : '';
+    const statusHtml = buildOpenStatusHtml(producer);
+    const promotedHtml = isProducerPromoted(producer)
+        ? `<span class="producer-modal-chip producer-modal-chip-promo">${escapeHtml(t('ads.promoted'))}</span>`
+        : '';
+    const metaLine = buildProducerModalMetaLine(producer);
+    const promoHtml = producer?.promo
+        ? `<p class="producer-modal-promo producer-modal-promo--compact">${escapeHtml(producer.promo)}</p>`
+        : '';
+
+    return `
+        <div class="producer-modal-photo-hero">
+            ${buildProducerPhotoHtml(producer, { className: 'producer-photo' })}
+            <div class="producer-modal-photo-caption">
+                <h2 class="producer-modal-photo-title" id="producerModalTitle">${escapeHtml(displayName)}</h2>
+            </div>
+        </div>
+        ${metaLine ? `<p class="producer-modal-meta-line">${escapeHtml(metaLine)}</p>` : ''}
+        <div class="producer-modal-header-chips">
+            ${ratingHtml}
+            <span class="producer-modal-chip producer-modal-chip-type">${escapeHtml(typeLabel)}</span>
+            ${promotedHtml}
+            ${statusHtml ? `<span class="producer-modal-chip producer-modal-chip-status">${statusHtml}</span>` : ''}
+        </div>
+        ${promoHtml}
+    `;
+}
+
+function buildModalStoryHtml(producer) {
+    const storyRaw = getProducerStory(producer);
+    if (!storyRaw) return '';
+
+    const lang = getCurrentLanguage();
+    const cached = lang !== 'de' ? getCachedTranslation(storyRaw, lang, 'de') : storyRaw;
+    const story = cached || storyRaw;
+    const needsAi = lang !== 'de' && !cached;
+    const needsToggle = story.length > STORY_PREVIEW_CHARS;
+    const preview = needsToggle
+        ? `${story.slice(0, STORY_PREVIEW_CHARS).trim()}…`
+        : story;
+    const aiAttrs = needsAi
+        ? ` data-rg-ai data-rg-ai-src="${escapeHtml(storyRaw)}" data-rg-ai-skip`
+        : '';
+
+    return `
+        <section class="producer-story producer-story--collapsible" data-story-collapsible aria-label="${escapeHtml(t('producer.storyTitle'))}">
+            <h3 class="producer-section-title">${escapeHtml(t('producer.storyTitle'))}</h3>
+            <p class="producer-story-text" data-story-text${aiAttrs}>${escapeHtml(preview)}</p>
+            ${needsToggle ? `<button type="button" class="producer-story-toggle" data-story-toggle aria-expanded="false">${escapeHtml(t('btn.more'))}</button>` : ''}
+            ${needsToggle ? `<span class="visually-hidden" data-story-full${needsAi ? ` data-rg-ai data-rg-ai-src="${escapeHtml(storyRaw)}"` : ''}>${escapeHtml(story)}</span>` : ''}
+        </section>
+    `;
+}
+
+/** Po tłumaczeniu historii — zsynchronizuj podgląd/pełny tekst i etykietę Mehr/Weniger. */
+function syncStoryToggleState(content) {
+    const toggle = content.querySelector('[data-story-toggle]');
+    const textEl = content.querySelector('[data-story-text]');
+    const fullEl = content.querySelector('[data-story-full]');
+    if (!toggle || !textEl || !fullEl) return;
+
+    const fullText = (fullEl.textContent || '').trim();
+    if (!fullText) return;
+
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    if (expanded) {
+        textEl.textContent = fullText;
+        toggle.textContent = t('btn.less');
+        toggle.setAttribute('aria-expanded', 'true');
+        return;
+    }
+
+    textEl.textContent = fullText.length > STORY_PREVIEW_CHARS
+        ? `${fullText.slice(0, STORY_PREVIEW_CHARS).trim()}…`
+        : fullText;
+    toggle.textContent = t('btn.more');
+    toggle.setAttribute('aria-expanded', 'false');
+}
+
+/** Jedna kolejka tłumaczeń zamiast wielu równoległych zapytań API przy otwarciu modala. */
+function scheduleModalTranslations(content, producer) {
+    if (!content || getCurrentLanguage() === 'de') return;
+    void translatePage(content, { from: 'de' }).then(() => {
+        syncStoryToggleState(content);
+    });
+}
+
+function resolveModalCatalogField(producerId, index, field, fallback) {
+    const lang = getCurrentLanguage();
+    const raw = String(fallback ?? '').trim();
+    if (!raw || lang === 'de') return raw;
+    const entry = CATALOG_TRANSLATIONS[lang]?.[producerId]?.products?.[index];
+    if (entry?.[field]) return String(entry[field]);
+    return getCachedTranslation(raw, lang, 'de') || raw;
+}
+
+function buildModalProductFieldHtml(tag, className, producerId, index, field, fallback) {
+    const lang = getCurrentLanguage();
+    const raw = String(fallback ?? '').trim();
+    if (!raw) return '';
+    const resolved = resolveModalCatalogField(producerId, index, field, raw);
+    if (lang === 'de' || resolved !== raw) {
+        return `<${tag} class="${className}">${escapeHtml(resolved)}</${tag}>`;
+    }
+    return `<${tag} class="${className}" data-rg-ai data-rg-ai-src="${escapeHtml(raw)}">${escapeHtml(raw)}</${tag}>`;
+}
+
+function bindStoryExpand(content) {
+    const toggle = content.querySelector('[data-story-toggle]');
+    const textEl = content.querySelector('[data-story-text]');
+    const fullEl = content.querySelector('[data-story-full]');
+    if (!toggle || !textEl || !fullEl || toggle.dataset.bound === 'true') return;
+    toggle.dataset.bound = 'true';
+
+    toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+            const preview = `${fullEl.textContent.slice(0, STORY_PREVIEW_CHARS).trim()}…`;
+            textEl.textContent = preview;
+            toggle.textContent = t('btn.more');
+            toggle.setAttribute('aria-expanded', 'false');
+        } else {
+            textEl.textContent = fullEl.textContent;
+            toggle.textContent = t('btn.less');
+            toggle.setAttribute('aria-expanded', 'true');
+        }
+    });
+}
 
 function escapeHtml(text) {
     return String(text ?? '')
@@ -379,9 +556,117 @@ function readFileAsDataUrl(file) {
     });
 }
 
+function resolveProductId(producerId, product, index) {
+    return product?.id || `${producerId}-item-${index}`;
+}
+
+function buildProductActionMenuItems(producer, product, index) {
+    const items = [];
+    const soldOut = getProductAvailability(product) === 'soldout';
+
+    if (!soldOut) {
+        items.push({ action: 'cart', label: t('btn.addToCart'), icon: '🛒' });
+    }
+
+    const phoneRaw = String(producer?.phone || '').trim();
+    if (phoneRaw) {
+        const tel = phoneRaw.replace(/[^\d+]/g, '');
+        if (tel.replace(/\D/g, '').length >= 3) {
+            items.push({
+                action: 'phone',
+                label: t('producer.phone'),
+                icon: '📞',
+                href: `tel:${tel}`
+            });
+        }
+    }
+
+    const emailRaw = String(producer?.email || '').trim();
+    if (emailRaw && emailRaw.includes('@')) {
+        items.push({
+            action: 'email',
+            label: t('producer.email'),
+            icon: '✉️',
+            href: `mailto:${emailRaw}`
+        });
+    }
+
+    if (producer?.website) {
+        const href = normalizeExternalUrl(producer.website);
+        if (href) {
+            items.push({
+                action: 'website',
+                label: t('producer.website'),
+                icon: '🌐',
+                href,
+                external: true
+            });
+        }
+    }
+
+    const lat = Number(producer?.lat);
+    const lng = Number(producer?.lng);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+        items.push({ action: 'navigate', label: t('btn.navigate'), icon: '📍' });
+    }
+
+    const fav = isProducerFavorite(producer?.id);
+    items.push({
+        action: 'favorite',
+        label: fav ? t('btn.favoriteSaved') : t('btn.favorite'),
+        icon: fav ? '❤️' : '🤍'
+    });
+
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        items.push({ action: 'share', label: t('producer.actionShare'), icon: '↗️' });
+    }
+
+    return items;
+}
+
+function buildProductActionsDropdownHtml(producer, product, index) {
+    if (!producer) return '';
+
+    const productId = resolveProductId(producer.id, product, index);
+    const items = buildProductActionMenuItems(producer, product, index);
+    if (!items.length) return '';
+
+    const menuItems = items.map((item) => {
+        if (item.href) {
+            const linkAttrs = item.external
+                ? ` href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer"`
+                : ` href="${escapeHtml(item.href)}"`;
+            return `<li><a class="product-actions-item" data-product-action="${escapeHtml(item.action)}"${linkAttrs}>${item.icon} ${escapeHtml(item.label)}</a></li>`;
+        }
+        return `<li><button type="button" class="product-actions-item" data-product-action="${escapeHtml(item.action)}">${item.icon} ${escapeHtml(item.label)}</button></li>`;
+    }).join('');
+
+    return `
+        <div class="product-actions-dropdown">
+            <button type="button" class="dropdown-toggle product-actions-toggle"
+                data-product-actions-toggle
+                data-product-id="${escapeHtml(productId)}"
+                data-producer-id="${escapeHtml(producer.id)}"
+                data-product-index="${index}"
+                aria-haspopup="menu"
+                aria-expanded="false">
+                ⚡ ${escapeHtml(t('producer.actionsMenu'))} ▾
+            </button>
+            <ul class="dropdown-menu product-actions-menu"
+                data-product-id="${escapeHtml(productId)}"
+                role="menu"
+                hidden>
+                ${menuItems}
+            </ul>
+        </div>
+    `;
+}
+
 function buildProductCard(producerId, product, index, category, producer = null) {
-    const name = tProductField(producerId, index, 'name', product.name);
-    const description = tProductField(producerId, index, 'description', product.description || '');
+    const nameRaw = product.name;
+    const descRaw = product.description || '';
+    const name = resolveModalCatalogField(producerId, index, 'name', nameRaw);
+    const description = descRaw ? resolveModalCatalogField(producerId, index, 'description', descRaw) : '';
     const priceLabel = `${formatPrice(product.price)}${product.unit ? ` / ${escapeHtml(product.unit)}` : ''}`;
     const hasRealImage = Boolean(product.imageUrl) && product.isSampleImage === false;
     const imageHtml = buildProductImageHtml(product.imageUrl || null, t, {
@@ -404,16 +689,14 @@ function buildProductCard(producerId, product, index, category, producer = null)
                 ${imageHtml}
             </div>
             <div class="producer-product-info">
-                <h3 class="producer-product-name">${escapeHtml(name)}</h3>
-                ${description ? `<p class="producer-product-desc">${escapeHtml(description)}</p>` : ''}
+                ${buildModalProductFieldHtml('h3', 'producer-product-name', producerId, index, 'name', nameRaw)}
+                ${descRaw ? buildModalProductFieldHtml('p', 'producer-product-desc', producerId, index, 'description', descRaw) : ''}
                 <p class="producer-product-price">${priceLabel}</p>
                 <p class="producer-product-badges">${availability}</p>
-                ${product.promo ? `<p class="producer-product-promo" data-rg-ai>${escapeHtml(translateSoft(product.promo, { from: 'de' }))}</p>` : ''}
-                ${getProductAvailability(product) === 'soldout'
-        ? ''
-        : `<button type="button" class="btn-secondary producer-contact-focus-btn" data-contact-focus aria-label="${escapeHtml(t('producer.contactTitle'))}: ${escapeHtml(name)}">
-                    ${escapeHtml(t('producer.contactCta') || t('producer.contactTitle'))}
-                </button>`}
+                ${product.promo
+        ? `<p class="producer-product-promo" data-rg-ai data-rg-ai-src="${escapeHtml(String(product.promo))}">${escapeHtml(String(product.promo))}</p>`
+        : ''}
+                ${buildProductActionsDropdownHtml(producer || getProducerById(producerId), product, index)}
             </div>
         </article>
     `;
@@ -549,8 +832,9 @@ function rebindModalForms(content, producerId) {
     bindReviewForm(content, producerId);
     bindReportForm(content, producerId);
     bindReviewExtras(content, producerId);
-    bindReserveButtons(content, producerId);
+    bindProductActionsDropdown(content, producerId);
     bindTasteDiaryForm(content, producerId);
+    bindStoryExpand(content);
     initLocationMiniMap(content);
 }
 
@@ -727,24 +1011,144 @@ function bindReviewExtras(content, producerId) {
             if (producer) {
                 content.innerHTML = renderModalContent(producer);
                 rebindModalForms(content, producerId);
+                scheduleModalTranslations(content, producer);
             }
         });
     });
 }
 
-/** Kontakt z producentem (telefon / e-mail / WWW) — bez koszyka / płatności. */
-function bindReserveButtons(content, _producerId) {
-    content.querySelectorAll('[data-contact-focus]').forEach((btn) => {
-        if (btn.dataset.bound === 'true') return;
-        btn.dataset.bound = 'true';
-        btn.addEventListener('click', () => {
-            const section = content.querySelector('.producer-contact-section');
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                section.classList.add('is-highlighted');
-                window.setTimeout(() => section.classList.remove('is-highlighted'), 1200);
+function refreshFavoritesNavBadge() {
+    const label = document.querySelector('[data-view="favorites"] .nav-label');
+    if (label) {
+        label.textContent = formatNavLabel('favorites', getFavoriteIds().length);
+    }
+}
+
+function closeAllProductActionMenus(content) {
+    content.querySelectorAll('.product-actions-dropdown.is-open').forEach((wrap) => {
+        wrap.classList.remove('is-open');
+        const toggle = wrap.querySelector('[data-product-actions-toggle]');
+        const menu = wrap.querySelector('.product-actions-menu');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        if (menu) menu.hidden = true;
+    });
+}
+
+function refreshProductFavoriteMenuLabels(content, producerId) {
+    const fav = isProducerFavorite(producerId);
+    const label = fav ? t('btn.favoriteSaved') : t('btn.favorite');
+    const icon = fav ? '❤️' : '🤍';
+    content.querySelectorAll('[data-product-action="favorite"]').forEach((btn) => {
+        btn.textContent = `${icon} ${label}`;
+    });
+}
+
+/** Rozwijane akcje produktu: koszyk, kontakt, nawigacja, ulubione, udostępnij. */
+function bindProductActionsDropdown(content, producerId) {
+    const producer = getProducerById(producerId);
+    if (!producer) return;
+
+    content.querySelectorAll('[data-product-actions-toggle]').forEach((toggle) => {
+        if (toggle.dataset.bound === 'true') return;
+        toggle.dataset.bound = 'true';
+
+        toggle.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const wrap = toggle.closest('.product-actions-dropdown');
+            const menu = wrap?.querySelector('.product-actions-menu');
+            if (!wrap || !menu) return;
+
+            const willOpen = !wrap.classList.contains('is-open');
+            closeAllProductActionMenus(content);
+            if (willOpen) {
+                wrap.classList.add('is-open');
+                menu.hidden = false;
+                toggle.setAttribute('aria-expanded', 'true');
             }
-            showToast(t('producer.contactHint') || t('producer.contactTitle'));
+        });
+    });
+
+    content.querySelectorAll('[data-product-action]').forEach((item) => {
+        if (item.dataset.bound === 'true') return;
+        item.dataset.bound = 'true';
+
+        item.addEventListener('click', (event) => {
+            const action = item.dataset.productAction;
+            const wrap = item.closest('.product-actions-dropdown');
+            const toggle = wrap?.querySelector('[data-product-actions-toggle]');
+            const index = Number(toggle?.dataset.productIndex);
+            const products = Array.isArray(producer.products) && producer.products.length
+                ? producer.products
+                : getProducerProducts(producerId);
+            const product = products[index];
+            if (!product) return;
+
+            if (action === 'cart') {
+                event.preventDefault();
+                event.stopPropagation();
+                const productId = resolveProductId(producerId, product, index);
+                const name = tProductField(producerId, index, 'name', product.name);
+                addToCart({
+                    id: productId,
+                    productId,
+                    producerId,
+                    name,
+                    place: getProducerDisplayName(producer),
+                    price: product.price,
+                    unit: product.unit || ''
+                });
+                refreshCartBadge();
+                showToast(t('msg.addedToCart'));
+                closeAllProductActionMenus(content);
+                return;
+            }
+
+            if (action === 'favorite') {
+                event.preventDefault();
+                event.stopPropagation();
+                if (isProducerFavorite(producerId)) {
+                    removeFavoriteId(producerId);
+                    showToast(t('msg.removedFromFavorites'));
+                } else {
+                    addFavoriteId(producerId);
+                    showToast(t('msg.addedToFavorites'));
+                }
+                eventBus.emit(EVENTS.FAVORITES_CHANGED, { favorites: getFavoriteIds() });
+                refreshFavoritesNavBadge();
+                refreshProductFavoriteMenuLabels(content, producerId);
+                closeAllProductActionMenus(content);
+                return;
+            }
+
+            if (action === 'navigate') {
+                event.preventDefault();
+                event.stopPropagation();
+                const lat = Number(producer.lat);
+                const lng = Number(producer.lng);
+                if (Number.isFinite(lat) && Number.isFinite(lng)) {
+                    window.open(getGoogleMapsDirectionsUrl(lat, lng), '_blank', 'noopener,noreferrer');
+                }
+                closeAllProductActionMenus(content);
+                return;
+            }
+
+            if (action === 'share') {
+                event.preventDefault();
+                event.stopPropagation();
+                const name = tProductField(producerId, index, 'name', product.name);
+                const producerName = getProducerDisplayName(producer);
+                const url = `${window.location.origin}${window.location.pathname}?producer=${encodeURIComponent(producerId)}`;
+                navigator.share({
+                    title: name,
+                    text: `${name} – ${producerName}`,
+                    url
+                }).catch(() => {});
+                closeAllProductActionMenus(content);
+                return;
+            }
+
+            closeAllProductActionMenus(content);
         });
     });
 }
@@ -785,6 +1189,7 @@ function bindReviewForm(content, producerId) {
             if (producer) {
                 content.innerHTML = renderModalContent(producer);
                 rebindModalForms(content, producerId);
+                scheduleModalTranslations(content, producer);
             }
         } finally {
             form.dataset.submitting = 'false';
@@ -828,13 +1233,12 @@ function renderModalContent(producer) {
                 ← ${t('btn.back')}
             </button>
         </div>
-        <header class="producer-modal-header">
-            ${buildProducerPhotoHtml(producer, { className: 'producer-photo' })}
-            ${buildProducerHeaderHtml(producer)}
+        <header class="producer-modal-header producer-modal-header--compact">
+            ${buildProducerModalHeaderHtml(producer)}
         </header>
         <div class="producer-modal-body">
             ${buildTasteDiaryHtml(producer)}
-            ${buildProducerStoryHtml(producer)}
+            ${buildModalStoryHtml(producer)}
             ${buildPlaceHistoryHtml(producer)}
             ${buildSmartOfferHtml(producer)}
             ${buildProductsHtml(producer)}
@@ -991,6 +1395,7 @@ export function openProducerModal(producerId, hint = null) {
     try {
         content.innerHTML = renderModalContent(producer);
         rebindModalForms(content, producer.id);
+        scheduleModalTranslations(content, producer);
     } catch (error) {
         console.error('[ProducerModal] Błąd renderowania:', error);
         showToast(t('msg.producerUnavailable'));
@@ -1091,7 +1496,7 @@ export function initProducerModal() {
     if (initialized) return;
     initialized = true;
 
-    // Ciche odświeżenie opisów po dociągnięciu tłumaczeń (debounce — bez migotania)
+    // Ciche uzupełnienie tłumaczeń w DOM (bez pełnego re-renderu — mniej zapytań API)
     let dynRefreshTimer = 0;
     eventBus.on(EVENTS.DYNAMIC_TRANSLATIONS_UPDATED, () => {
         if (!isModalOpen || !openDetailProducer?.id) return;
@@ -1102,21 +1507,20 @@ export function initProducerModal() {
             if (!modal || modal.hidden || !content) return;
             const producer = getProducerById(openDetailProducer.id);
             if (!producer) return;
-            try {
-                const scrollTop = content.scrollTop;
-                content.innerHTML = renderModalContent(producer);
-                rebindModalForms(content, producer.id);
-                content.scrollTop = scrollTop;
-                applyProducerMoodToModal(modal, producer);
-            } catch {
-                /* ignore soft refresh */
-            }
+            scheduleModalTranslations(content, producer);
         }, 280);
     });
 
     ensureModal();
 
     document.addEventListener('click', (event) => {
+        if (isModalOpen) {
+            const content = document.getElementById('producerModalContent');
+            if (content && !event.target.closest('.product-actions-dropdown')) {
+                closeAllProductActionMenus(content);
+            }
+        }
+
         if (handlePromoFlyerToggle(event.target)) {
             return;
         }
