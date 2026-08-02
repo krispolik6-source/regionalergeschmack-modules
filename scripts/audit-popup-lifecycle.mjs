@@ -106,6 +106,22 @@ if (mapView.includes('FITBOUNDS_SKIPPED') && mapView.includes('safeInvalidateSiz
 if (/autoPan:\s*false/.test(mapCore)) {
     ok('bindPopup: autoPan:false (anty-shift klastra)');
 } else bad('bindPopup nadal z autoPan:true');
+if (/autoClose:\s*false/.test(mapCore)) {
+    ok('bindPopup: autoClose:false (popup przy pan mapy)');
+} else bad('bindPopup bez autoClose:false');
+if (/removeOutsideVisibleBounds:\s*false/.test(mapCore)) {
+    ok('MarkerCluster: removeOutsideVisibleBounds:false');
+} else bad('MarkerCluster usuwa markery poza viewport (zamyka popup)');
+
+// 13. Pan mapy — pin + recovery popupu
+if (mapView.includes('pinnedPopupProducerId')
+    && mapView.includes('schedulePinnedPopupRecovery')
+    && mapView.includes('bindPopupMapGesturePreserve')) {
+    ok('Map view: pin popupu + recovery po pan/zoom');
+} else bad('Brak pin/recovery popupu przy przesuwaniu mapy');
+if (mapView.includes('allowReopen: Boolean(openedPopupId)')) {
+    ok('refreshMapMarkers: allowReopen gdy popup otwarty');
+} else bad('refreshMapMarkers bez allowReopen');
 
 // 11. Logi diagnostyczne wymagane w ETAP 8.1
 const requiredLogs = [

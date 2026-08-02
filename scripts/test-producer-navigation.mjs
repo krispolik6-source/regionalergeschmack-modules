@@ -57,8 +57,12 @@ assert(
     'CSS: header-card tylko w modalu'
 );
 assert(
-    modalJs.includes('description ? `<p class="producer-product-desc"'),
+    modalJs.includes('descRaw ? buildModalProductFieldHtml'),
     'modal: pusty opis bez pustego paragrafu'
+);
+assert(
+    modalJs.includes('product-actions-dropdown') && modalJs.includes('bindProductActionsDropdown'),
+    'modal: menu Akcje produktu'
 );
 
 if (failed) {

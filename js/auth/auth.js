@@ -20,8 +20,14 @@ export const ACCOUNT_TYPES = Object.freeze({
     admin: 'admin'
 });
 
-/** Seed lokalnego konta admina (hasło: Admin123!) – tylko gdy brak admina. */
+/** Seed lokalnego konta admina (hasło: Admin123!) – tylko localhost, tylko gdy brak admina. */
 const ADMIN_SEED_EMAIL = 'admin@regionaler.local';
+
+function isLocalDevHost() {
+    if (typeof location === 'undefined') return false;
+    const h = String(location.hostname || '').toLowerCase();
+    return h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -138,8 +144,9 @@ export function isAdmin() {
     return getCurrentUser()?.accountType === ACCOUNT_TYPES.admin;
 }
 
-/** Jednorazowy seed konta admina (local-only). */
+/** Jednorazowy seed konta admina (local-only, wyłącznie localhost). */
 export async function ensureAdminSeed() {
+    if (!isLocalDevHost()) return false;
     const users = readUsers();
     if (users.some((u) => u.accountType === ACCOUNT_TYPES.admin || u.email === ADMIN_SEED_EMAIL)) {
         return false;

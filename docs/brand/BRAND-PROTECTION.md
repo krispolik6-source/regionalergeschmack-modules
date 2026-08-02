@@ -1,6 +1,6 @@
 # Brand Protection AI — ETAP 29C
 
-Wygenerowano: 2026-07-26T16:04:32.399Z
+Wygenerowano: 2026-08-01T05:05:15.205Z
 
 ## Status: **⚠️ WARNING**
 

@@ -3,7 +3,7 @@
 // ETAP 28F – ikony: network-first + twardy bump cache (Android launcher)
 
 /** ETAP 35B — jedna kanoniczna wersja PWA (SW + manifest + ikony). */
-const PWA_VERSION = '28';
+const PWA_VERSION = '29';
 const CACHE_VERSION = `rg-pwa-v${PWA_VERSION}`;
 const IMAGE_CACHE = `rg-runtime-images-v${PWA_VERSION}`;
 const ICON_VERSION = PWA_VERSION;
@@ -32,7 +32,9 @@ const PRECACHE_URLS = [
     `/assets/icons/monochrome-512.png?v=${ICON_VERSION}`,
     `/assets/brand/og-share.png?v=${ICON_VERSION}`,
     `/assets/brand/splash-logo.png?v=${ICON_VERSION}`,
-    `/assets/brand/notifications-icon.png?v=${ICON_VERSION}`
+    `/assets/brand/notifications-icon.png?v=${ICON_VERSION}`,
+    '/css/style.css?v=568',
+    '/js/app.js?v=611'
 ];
 
 function isAppIconPath(pathname) {

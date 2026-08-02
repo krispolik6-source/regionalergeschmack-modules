@@ -1,6 +1,6 @@
 # ETAP 37 — Device Lab
 
-**Data:** 2026-07-23  
+**Data:** 2026-08-01  
 **Polityka:** autoApply=false · find-only · static/heuristic (bez live Chromium w CI)  
 **Werdykt:** **PASS**
 

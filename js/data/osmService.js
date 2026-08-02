@@ -3,6 +3,7 @@
 import { CONFIG } from '../config.js';
 import { isCacheNearLocation } from '../core/userLocation.js';
 import { t } from '../core/i18n.js';
+import { logMapDriveDiag } from '../core/logger.js';
 
 const DEFAULT_RADIUS_M = 5000;
 
@@ -87,6 +88,10 @@ export function getOsmAbortEpoch() {
     return osmAbortEpoch;
 }
 
+export function getActiveAbortControllerCount() {
+    return activeAbortControllers.size;
+}
+
 function throwIfOsmAborted(epochAtStart) {
     if (epochAtStart !== osmAbortEpoch) {
         throw createOsmAbortError();
@@ -111,6 +116,7 @@ clearLegacyOsmCaches();
  * Anuluje trwające requesty Overpass (stare wyniki nie mają prawa nadpisać nowych).
  */
 export function abortInflightOsmRequests() {
+    const controllersBefore = activeAbortControllers.size;
     osmAbortEpoch += 1;
     for (const controller of activeAbortControllers) {
         try {
@@ -121,6 +127,12 @@ export function abortInflightOsmRequests() {
     }
     activeAbortControllers.clear();
     inflightOsmRequests.clear();
+    if (controllersBefore > 0) {
+        logMapDriveDiag('osm_abort', {
+            controllersAborted: controllersBefore,
+            abortEpoch: osmAbortEpoch
+        });
+    }
 }
 
 const OSM_CATEGORY_RULES = [
@@ -480,6 +492,14 @@ export async function fetchProducers(lat, lng, radiusM = DEFAULT_RADIUS_M) {
 
     const epochAtStart = osmAbortEpoch;
 
+    logMapDriveDiag('osm_fetch_start', {
+        lat: latitude,
+        lng: longitude,
+        radiusM: radius,
+        activeControllers: activeAbortControllers.size
+    });
+    const fetchStartedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
+
     const requestPromise = (async () => {
         // Start: primary + lustra; po 504 kolejność luster jest tasowana
         let endpointPlan = planOverpassEndpoints();
@@ -494,6 +514,7 @@ export async function fetchProducers(lat, lng, radiusM = DEFAULT_RADIUS_M) {
             const timer = controller
                 ? setTimeout(() => controller.abort(), timeoutMs)
                 : null;
+            const overpassStartedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
 
             try {
                 if (attempt > 0) {
@@ -501,11 +522,38 @@ export async function fetchProducers(lat, lng, radiusM = DEFAULT_RADIUS_M) {
                 }
                 const producers = await requestOverpass(endpoint, query, controller?.signal);
                 throwIfOsmAborted(epochAtStart);
+                const overpassMs = Math.round(
+                    (typeof performance !== 'undefined' ? performance.now() : Date.now()) - overpassStartedAt
+                );
+                logMapDriveDiag('overpass_response', {
+                    endpoint,
+                    attempt: attempt + 1,
+                    overpassMs,
+                    producerCount: producers.length,
+                    activeControllers: activeAbortControllers.size
+                });
                 writeOsmCache(latitude, longitude, radius, producers);
+                logMapDriveDiag('osm_fetch_end', {
+                    lat: latitude,
+                    lng: longitude,
+                    totalMs: Math.round(
+                        (typeof performance !== 'undefined' ? performance.now() : Date.now()) - fetchStartedAt
+                    ),
+                    producerCount: producers.length,
+                    aborted: false
+                });
                 return producers;
             } catch (error) {
                 throwIfOsmAborted(epochAtStart);
                 if (isOsmAbortError(error)) {
+                    logMapDriveDiag('osm_fetch_end', {
+                        lat: latitude,
+                        lng: longitude,
+                        totalMs: Math.round(
+                            (typeof performance !== 'undefined' ? performance.now() : Date.now()) - fetchStartedAt
+                        ),
+                        aborted: true
+                    });
                     throw error;
                 }
                 const aborted = error?.name === 'AbortError';

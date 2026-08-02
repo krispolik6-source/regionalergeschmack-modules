@@ -2,6 +2,7 @@ import fs from 'fs';
 import {
     resolveProducerLogo,
     buildProducerLogoHtml,
+    getCategoryDefaultLogo,
     CATEGORY_DEFAULT_LOGOS,
     detectChainBrand
 } from '../js/presentation/chainBrands.js';
@@ -21,21 +22,26 @@ for (const [cat, path] of Object.entries(CATEGORY_DEFAULT_LOGOS)) {
     ok(fs.existsSync(path.replace(/^\//, '')), `asset ${cat}`);
 }
 
+// resolveProducerLogo: brak własnego URL → null (UI pokazuje emoji kategorii)
 ok(
-    resolveProducerLogo({ name: 'Metzgerei Meyer', category: 'meat' }) === CATEGORY_DEFAULT_LOGOS.meat,
-    'Metzgerei Meyer → meat logo'
+    resolveProducerLogo({ name: 'Metzgerei Meyer', category: 'meat' }) == null,
+    'Metzgerei Meyer → emoji fallback (no generic SVG)'
 );
 ok(
-    resolveProducerLogo({ name: 'Hofbäckerei Schulte', category: 'bakery' }) === CATEGORY_DEFAULT_LOGOS.bakery,
-    'Hofbäckerei Schulte → bakery'
+    resolveProducerLogo({ name: 'Hofbäckerei Schulte', category: 'bakery' }) == null,
+    'Hofbäckerei Schulte → emoji fallback'
 );
 ok(
-    resolveProducerLogo({ name: 'Demeterhofladen', category: 'farmer' }) === CATEGORY_DEFAULT_LOGOS.farmer,
-    'Demeterhofladen → farmer'
+    resolveProducerLogo({ name: 'Demeterhofladen', category: 'farmer' }) == null,
+    'Demeterhofladen → emoji fallback'
 );
 ok(
-    resolveProducerLogo({ name: 'Automat Markt', category: 'vending' }) === CATEGORY_DEFAULT_LOGOS.vending,
-    'Automat → vending'
+    resolveProducerLogo({ name: 'Automat Markt', category: 'vending' }) == null,
+    'Automat → emoji fallback'
+);
+ok(
+    getCategoryDefaultLogo('meat') === CATEGORY_DEFAULT_LOGOS.meat,
+    'getCategoryDefaultLogo meat'
 );
 ok(
     resolveProducerLogo({ name: 'EDEKA Bonn', category: 'shop', chain: 'edeka' })?.includes('edeka'),
@@ -54,8 +60,8 @@ ok(
     'emoji fallback farmer'
 );
 ok(
-    buildProducerLogoHtml({ name: 'Bäckerei Schmidt', category: 'bakery' }).url?.includes('bakery'),
-    'bakery card logo'
+    buildProducerLogoHtml({ name: 'Bäckerei Schmidt', category: 'bakery' }).icon === '🥖',
+    'bakery card emoji icon'
 );
 ok(
     resolveProducerLogo({ name: 'X', category: 'meat', logo: 'https://example.com/logo.png' }) === 'https://example.com/logo.png',

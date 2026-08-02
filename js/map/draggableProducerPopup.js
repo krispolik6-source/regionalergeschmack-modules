@@ -2,12 +2,155 @@
 
 const DRAG_THRESHOLD_PX = 8;
 const VIEWPORT_MARGIN_PX = 8;
+const SCROLL_MOVE_THRESHOLD_PX = 4;
+const POPUP_SCROLL_DIAG_PREFIX = '[PopupScrollDiag]';
+
+/** @type {{ dragging?: boolean, touchZoom?: boolean } | null} */
+let mapInteractionLock = null;
+/** @type {'scroll' | 'drag' | null} */
+let mapInteractionLockReason = null;
+
+/** Szerokość popupu producenta — spójna z bindPopup maxWidth/minWidth. */
+export function getProducerPopupTargetWidth(viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 360) {
+    const vw = Number(viewportWidth) || 360;
+    const max = 320;
+    const min = 240;
+    return Math.min(max, Math.max(min, vw - 24));
+}
+
+/**
+ * Wymusza pełną szerokość popupu (naprawa wąskiego pionowego paska).
+ * @param {import('leaflet').Popup} popup
+ */
+export function ensureProducerPopupLayout(popup) {
+    if (!popup?._container) return;
+
+    const width = getProducerPopupTargetWidth();
+    const wrapper = popup._contentNode?.parentElement;
+    const content = popup._contentNode;
+    const mapPopup = content?.querySelector?.('.map-popup');
+
+    if (popup.options) {
+        popup.options.maxWidth = width;
+        popup.options.minWidth = Math.min(width, 280);
+    }
+
+    popup._container.style.width = `${width}px`;
+    popup._container.style.minWidth = `${width}px`;
+    popup._container.style.maxWidth = `${width}px`;
+
+    if (wrapper) {
+        wrapper.style.width = '100%';
+        wrapper.style.minWidth = '100%';
+        wrapper.style.maxWidth = '100%';
+        wrapper.style.boxSizing = 'border-box';
+    }
+
+    if (content) {
+        content.style.width = '100%';
+        content.style.minWidth = '0';
+        content.style.maxWidth = '100%';
+        content.style.boxSizing = 'border-box';
+    }
+
+    if (mapPopup) {
+        mapPopup.style.width = '100%';
+        mapPopup.style.minWidth = '0';
+        mapPopup.style.boxSizing = 'border-box';
+    }
+
+    try {
+        popup.update?.();
+    } catch (_) {
+        /* ignore */
+    }
+}
 
 /** @type {{ popup: import('leaflet').Popup, map: import('leaflet').Map, startPointer: { x: number, y: number }, originOffset: import('leaflet').Point, moved: boolean } | null} */
 let activeSession = null;
 
 function getPointer(event) {
     return { x: event.clientX, y: event.clientY };
+}
+
+function isLocalhostPopupScrollDiag() {
+    if (typeof window === 'undefined') return false;
+    try {
+        const host = String(window.location?.hostname || '').toLowerCase();
+        return host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
+    } catch {
+        return false;
+    }
+}
+
+function getPopupScrollMetrics(scrollRoot) {
+    return {
+        popupHeight: scrollRoot?.clientHeight ?? 0,
+        scrollHeight: scrollRoot?.scrollHeight ?? 0,
+        viewportHeight: typeof window !== 'undefined' ? window.innerHeight : 0
+    };
+}
+
+function popupScrollDiag(message, scrollRoot, extra = {}) {
+    if (!isLocalhostPopupScrollDiag()) return;
+    try {
+        console.info(POPUP_SCROLL_DIAG_PREFIX, message, {
+            ...getPopupScrollMetrics(scrollRoot),
+            ...extra
+        });
+    } catch {
+        /* ignore */
+    }
+}
+
+function isScrollableRoot(el) {
+    if (!el) return false;
+    return el.scrollHeight > el.clientHeight + 1;
+}
+
+function isInteractivePopupTarget(target) {
+    return Boolean(target?.closest?.(
+        'button, a[href], input, textarea, select, label, '
+        + '[data-promo-toggle], [data-details-id], [data-favorite-id], '
+        + '.leaflet-popup-close-button, .map-popup-btn, .map-popup-btn--link, '
+        + '.promo-flyer-toggle, .rg-ad-popup-link'
+    ));
+}
+
+function isDragHandleTarget(target, dragHandle) {
+    return Boolean(dragHandle && target && (target === dragHandle || dragHandle.contains(target)));
+}
+
+function lockMapInteraction(map, reason, scrollRoot) {
+    if (!map || mapInteractionLock) return;
+    mapInteractionLock = {
+        dragging: Boolean(map.dragging?.enabled?.()),
+        touchZoom: Boolean(map.touchZoom?.enabled?.())
+    };
+    mapInteractionLockReason = reason;
+    if (map.dragging) map.dragging.disable();
+    if (map.touchZoom) map.touchZoom.disable();
+    document.body.classList.add('map-popup-scroll-active');
+    if (reason === 'scroll') {
+        popupScrollDiag('popup scroll start', scrollRoot);
+    }
+    popupScrollDiag('map dragging disabled', scrollRoot, { reason });
+}
+
+function unlockMapInteraction(map, reason, scrollRoot, force = false) {
+    if (!mapInteractionLock) return;
+    if (!force && reason && mapInteractionLockReason && reason !== mapInteractionLockReason) return;
+
+    const wasScroll = mapInteractionLockReason === 'scroll';
+    if (mapInteractionLock.dragging && map?.dragging) map.dragging.enable();
+    if (mapInteractionLock.touchZoom && map?.touchZoom) map.touchZoom.enable();
+    mapInteractionLock = null;
+    mapInteractionLockReason = null;
+    document.body.classList.remove('map-popup-scroll-active');
+    if (wasScroll) {
+        popupScrollDiag('popup scroll end', scrollRoot);
+    }
+    popupScrollDiag('map dragging enabled', scrollRoot, { reason: reason || 'unknown' });
 }
 
 /**
@@ -72,6 +215,10 @@ function applyScrollConstraints(popup, map) {
 
     wrapper.style.maxHeight = `${maxHeight}px`;
     wrapper.style.overflowY = 'auto';
+    wrapper.style.overflowX = 'hidden';
+    wrapper.style.overscrollBehavior = 'contain';
+    wrapper.style.webkitOverflowScrolling = 'touch';
+    wrapper.style.touchAction = 'pan-y';
 }
 
 function clearScrollConstraints(popup) {
@@ -79,6 +226,10 @@ function clearScrollConstraints(popup) {
     if (!wrapper) return;
     wrapper.style.maxHeight = '';
     wrapper.style.overflowY = '';
+    wrapper.style.overflowX = '';
+    wrapper.style.overscrollBehavior = '';
+    wrapper.style.webkitOverflowScrolling = '';
+    wrapper.style.touchAction = '';
 }
 
 /**
@@ -140,6 +291,8 @@ export function attachDraggableProducerPopup(popup, map) {
 
     dragHandle.classList.add('map-popup-drag-handle');
 
+    ensureProducerPopupLayout(popup);
+
     const dragOffset = L.point(0, 0);
     const originalUpdatePosition = popup._updatePosition.bind(popup);
 
@@ -170,6 +323,7 @@ export function attachDraggableProducerPopup(popup, map) {
     applyScrollConstraints(popup, map);
 
     const onResize = () => {
+        ensureProducerPopupLayout(popup);
         applyScrollConstraints(popup, map);
         applyClamp();
     };
@@ -188,7 +342,7 @@ export function attachDraggableProducerPopup(popup, map) {
         document.body.classList.remove('map-popup-drag-active');
 
         if (moved) {
-            if (map.dragging) map.dragging.enable();
+            unlockMapInteraction(map, 'drag', wrapper, true);
             container.dataset.dragSuppressed = 'true';
             window.setTimeout(() => {
                 delete container.dataset.dragSuppressed;
@@ -211,7 +365,7 @@ export function attachDraggableProducerPopup(popup, map) {
             container.classList.add('is-dragging-popup');
             dragHandle.classList.add('is-dragging');
             document.body.classList.add('map-popup-drag-active');
-            if (map.dragging) map.dragging.disable();
+            lockMapInteraction(map, 'drag', wrapper);
         }
 
         event.preventDefault();
@@ -262,19 +416,105 @@ export function attachDraggableProducerPopup(popup, map) {
     document.addEventListener('pointerup', onPointerEnd);
     document.addEventListener('pointercancel', onPointerEnd);
 
+    /** @type {{ startPointer: { x: number, y: number }, decided: boolean } | null} */
+    let scrollGesture = null;
+
+    const onScrollPointerDown = (event) => {
+        if (event.button !== undefined && event.button !== 0) return;
+        if (isDragHandleTarget(event.target, dragHandle)) return;
+        if (isInteractivePopupTarget(event.target)) return;
+        if (!isScrollableRoot(wrapper)) return;
+
+        scrollGesture = {
+            startPointer: getPointer(event),
+            decided: false
+        };
+        lockMapInteraction(map, 'scroll', wrapper);
+    };
+
+    const onScrollPointerMove = (event) => {
+        if (!scrollGesture || activeSession?.moved) return;
+        if (isDragHandleTarget(event.target, dragHandle)) return;
+
+        const pointer = getPointer(event);
+        const dy = Math.abs(pointer.y - scrollGesture.startPointer.y);
+        const dx = Math.abs(pointer.x - scrollGesture.startPointer.x);
+
+        if (!scrollGesture.decided && (dy > SCROLL_MOVE_THRESHOLD_PX || dx > SCROLL_MOVE_THRESHOLD_PX)) {
+            scrollGesture.decided = true;
+        }
+
+        if (mapInteractionLockReason === 'scroll') {
+            event.stopPropagation();
+        }
+    };
+
+    const onScrollPointerEnd = () => {
+        if (scrollGesture && mapInteractionLockReason === 'scroll') {
+            unlockMapInteraction(map, 'scroll', wrapper);
+        }
+        scrollGesture = null;
+    };
+
+    const onTouchMoveCapture = (event) => {
+        if (mapInteractionLockReason === 'scroll' || scrollGesture) {
+            event.stopPropagation();
+        }
+    };
+
+    const onWheelCapture = (event) => {
+        if (!isScrollableRoot(wrapper)) return;
+        if (!wrapper.contains(event.target)) return;
+        event.stopPropagation();
+        if (!mapInteractionLock) {
+            lockMapInteraction(map, 'scroll', wrapper);
+            window.setTimeout(() => {
+                if (mapInteractionLockReason === 'scroll') {
+                    unlockMapInteraction(map, 'scroll', wrapper);
+                }
+            }, 120);
+        }
+    };
+
+    wrapper.addEventListener('pointerdown', onScrollPointerDown);
+    wrapper.addEventListener('pointermove', onScrollPointerMove);
+    wrapper.addEventListener('pointerup', onScrollPointerEnd);
+    wrapper.addEventListener('pointercancel', onScrollPointerEnd);
+    wrapper.addEventListener('touchmove', onTouchMoveCapture, { capture: true, passive: true });
+    wrapper.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });
+
+    if (L.DomEvent?.disableScrollPropagation) {
+        L.DomEvent.disableScrollPropagation(wrapper);
+    }
+    if (L.DomEvent?.disableClickPropagation) {
+        L.DomEvent.disableClickPropagation(wrapper);
+    }
+    if (L.DomEvent?.disableClickPropagation) {
+        L.DomEvent.disableClickPropagation(container);
+    }
+
     requestAnimationFrame(() => {
+        ensureProducerPopupLayout(popup);
         applyClamp();
         applyScrollConstraints(popup, map);
     });
 
     const cleanup = () => {
         endSession();
+        scrollGesture = null;
+        unlockMapInteraction(map, 'cleanup', wrapper, true);
         dragHandle.removeEventListener('pointerdown', onPointerDown);
         dragHandle.removeEventListener('lostpointercapture', onPointerEnd);
         container.removeEventListener('click', onClickCapture, true);
         document.removeEventListener('pointermove', onPointerMove);
         document.removeEventListener('pointerup', onPointerEnd);
         document.removeEventListener('pointercancel', onPointerEnd);
+        wrapper.removeEventListener('pointerdown', onScrollPointerDown);
+        wrapper.removeEventListener('pointermove', onScrollPointerMove);
+        wrapper.removeEventListener('pointerup', onScrollPointerEnd);
+        wrapper.removeEventListener('pointercancel', onScrollPointerEnd);
+        wrapper.removeEventListener('touchmove', onTouchMoveCapture, true);
+        wrapper.removeEventListener('wheel', onWheelCapture, true);
         map.off('resize', onResize);
         window.removeEventListener('resize', onResize);
         window.visualViewport?.removeEventListener('resize', onResize);
@@ -282,6 +522,7 @@ export function attachDraggableProducerPopup(popup, map) {
         clearScrollConstraints(popup);
         container.classList.remove('is-dragging-popup');
         dragHandle.classList.remove('is-dragging', 'map-popup-drag-handle');
+        document.body.classList.remove('map-popup-scroll-active');
         delete container.dataset.dragSuppressed;
         const tip = container.querySelector('.leaflet-popup-tip-container');
         if (tip) tip.style.opacity = '';
@@ -301,4 +542,9 @@ export function detachDraggableProducerPopup(popup) {
     }
 }
 
-export default { attachDraggableProducerPopup, detachDraggableProducerPopup };
+export default {
+    attachDraggableProducerPopup,
+    detachDraggableProducerPopup,
+    ensureProducerPopupLayout,
+    getProducerPopupTargetWidth
+};

@@ -2,12 +2,29 @@
 <html lang="de" translate="no">
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                var lang = localStorage.getItem('rs_lang');
+                if (!lang) {
+                    var raw = localStorage.getItem('regionalny_smak_settings');
+                    if (raw) {
+                        var s = JSON.parse(raw);
+                        if (s && s.language) lang = s.language;
+                    }
+                }
+                if (lang && /^[a-z]{2}(-[a-z]{2})?$/i.test(lang)) {
+                    document.documentElement.lang = lang;
+                }
+            } catch (_) { /* ignore */ }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <script src="/js/legacy/detect.js?v=2"></script>
     <meta name="google" content="notranslate">
     <meta name="theme-color" content="#2a3f28">
     <meta name="msapplication-TileColor" content="#2a3f28">
-    <meta name="msapplication-TileImage" content="/assets/icons/icon-144.png?v=28">
+    <meta name="msapplication-TileImage" content="/assets/icons/icon-144.png?v=29">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,18 +33,18 @@
     <meta name="keywords" content="regional, Lebensmittel, Produzenten, Bauernhof, Bäckerei, Karte, lokal, Bio, Direktverkauf">
     <meta property="og:title" content="Regionaler Geschmack">
     <meta property="og:description" content="Regionale Lebensmittel und Produzenten in deiner Nähe.">
-    <meta property="og:image" content="/assets/brand/og-share.png?v=28">
+    <meta property="og:image" content="/assets/brand/og-share.png?v=29">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="/assets/brand/og-share.png?v=28">
+    <meta name="twitter:image" content="/assets/brand/og-share.png?v=29">
 
     <title>Regionaler Geschmack</title>
 
-    <link rel="icon" href="/assets/icons/favicon.ico?v=28" type="image/x-icon">
-    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-master.svg?v=28">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png?v=28">
-    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=28">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png?v=28">
-    <link rel="manifest" href="/manifest.json?v=28">
+    <link rel="icon" href="/assets/icons/favicon.ico?v=29" type="image/x-icon">
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-master.svg?v=29">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png?v=29">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=29">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png?v=29">
+    <link rel="manifest" href="/manifest.json?v=29">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,15 +60,15 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="anonymous">
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="anonymous"></script>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://esm.sh https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss: http://127.0.0.1:3457; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://esm.sh https://www.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://ep2.adtrafficquality.google; media-src 'self' https://cdn.freesound.org; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; img-src 'self' data: blob: https:; connect-src 'self' https: wss: http://127.0.0.1:3457; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com https://ep2.adtrafficquality.google">
 
-    <!-- Google AdSense — client/slot: js/config.js → ADSENSE_CONFIG -->
+    <!-- Google AdSense — weryfikacja + client/slot: js/config.js → ADSENSE_CONFIG -->
     <script>
         window.adsbygoogle = window.adsbygoogle || [];
     </script>
     <script async
         id="rg-adsense-loader"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9002110535592311"
         crossorigin="anonymous"
         data-rg-adsense="1"></script>
 
@@ -85,11 +102,11 @@
         <div class="header-content">
             <div class="header-left">
                 <button type="button" id="menuBtn" class="header-icon" aria-label="Menü" data-i18n-aria="a11y.menu">☰</button>
-                <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="28" height="28" alt="" aria-hidden="true" title="Regionaler Geschmack">
+                <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true" title="Regionaler Geschmack">
                 <h1>Regionaler Geschmack</h1>
             </div>
             <div class="header-right">
-                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=28" width="22" height="22" alt="" aria-hidden="true"></button>
+                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=29" width="22" height="22" alt="" aria-hidden="true"></button>
                 <div class="header-lang-wrap">
                     <button type="button" id="languageSwitcherBtn" class="header-lang" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria="a11y.chooseLanguage">
                         <span id="languageSwitcherLabel">🇩🇪 Deutsch</span>
@@ -127,13 +144,33 @@
         </button>
     </nav>
 
+    <div id="cookieConsentBanner" class="cookie-consent-banner" hidden role="dialog" aria-labelledby="cookieConsentText" aria-modal="true">
+        <p id="cookieConsentText" class="cookie-consent-text">
+            Ta strona używa plików cookie w celu wyświetlania spersonalizowanych reklam. Klikając &quot;Akceptuję&quot;, wyrażasz zgodę.
+        </p>
+        <div class="cookie-consent-actions">
+            <button type="button" id="cookieAccept" class="cookie-consent-btn cookie-consent-btn--accept btn-primary" data-cookie-consent="accepted">Akceptuję</button>
+            <button type="button" id="cookieReject" class="cookie-consent-btn cookie-consent-btn--reject btn-secondary" data-cookie-consent="rejected">Odrzuć</button>
+        </div>
+    </div>
+
+    <footer id="appLegalFooter" class="app-legal-footer" role="contentinfo">
+        <nav class="app-legal-footer-nav" aria-label="Rechtliches">
+            <button type="button" class="app-legal-footer-link" data-legal-view="impressum">Impressum</button>
+            <span class="app-legal-footer-sep" aria-hidden="true">·</span>
+            <button type="button" class="app-legal-footer-link" data-legal-view="datenschutz">Datenschutz</button>
+            <span class="app-legal-footer-sep" aria-hidden="true">·</span>
+            <button type="button" class="app-legal-footer-link" data-legal-view="agb">AGB</button>
+        </nav>
+    </footer>
+
     <div id="sideMenu" class="side-menu" hidden aria-hidden="true">
         <div class="side-menu-backdrop" data-side-menu-close aria-hidden="true"></div>
         <aside class="side-menu-panel" role="dialog" aria-modal="true" aria-labelledby="sideMenuTitle">
             <header class="side-menu-header">
                 <button type="button" class="side-menu-back" data-side-menu-action="back" hidden aria-label="Zurück" data-i18n-aria="a11y.back">←</button>
                 <h2 id="sideMenuTitle" class="side-menu-title">
-                    <img class="side-menu-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="28" height="28" alt="" aria-hidden="true">
+                    <img class="side-menu-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true">
                     <span id="sideMenuTitleText" data-i18n-menu="title">Menu</span>
                 </h2>
                 <button type="button" class="side-menu-close" data-side-menu-close aria-label="Schließen" data-i18n-aria="a11y.close">×</button>
@@ -148,7 +185,7 @@
                         <li><button type="button" class="side-menu-item" data-side-menu-action="favorites"><span class="side-menu-item-icon" aria-hidden="true">❤️</span><span class="side-menu-item-label" data-i18n-menu="favorites">Favoriten</span></button></li>
                         <li><button type="button" class="side-menu-item" data-side-menu-action="taste-diary"><span class="side-menu-item-icon" aria-hidden="true">📔</span><span class="side-menu-item-label" data-i18n-menu="tasteDiary">Geschmackstagebuch</span></button></li>
                         <li><button type="button" class="side-menu-item" data-side-menu-action="cart"><span class="side-menu-item-icon" aria-hidden="true">🛒</span><span class="side-menu-item-label" data-i18n-menu="cart">Warenkorb</span></button></li>
-                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="premium"><span class="side-menu-item-icon" aria-hidden="true"><img class="side-menu-premium-mark" src="/assets/icons/logo-master.svg?v=28" width="22" height="22" alt="" aria-hidden="true"></span><span class="side-menu-item-label" data-i18n-menu="premium">Premium</span></button></li>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="premium"><span class="side-menu-item-icon" aria-hidden="true"><img class="side-menu-premium-mark" src="/assets/icons/logo-master.svg?v=29" width="22" height="22" alt="" aria-hidden="true"></span><span class="side-menu-item-label" data-i18n-menu="premium">Premium</span></button></li>
                     </ul>
 
                     <p class="side-menu-section-label" data-i18n-menu-section="sectionLegal" data-i18n-menu-icon="📖">📖 Rechtliches</p>
@@ -537,7 +574,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/sw.js?v=28').catch(function (err) {
+                navigator.serviceWorker.register('/sw.js?v=29').catch(function (err) {
                     console.warn('[SW] Rejestracja nie powiodła się:', err);
                 });
             });

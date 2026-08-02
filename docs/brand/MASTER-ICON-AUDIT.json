@@ -1,11 +1,11 @@
 {
   "id": "master-icon-audit-28f",
   "title": "MASTER ICON AUDIT — ETAP 28F",
-  "generatedAt": "2026-07-23T18:32:59.710Z",
+  "generatedAt": "2026-08-01T05:05:15.079Z",
   "master": "assets/icons/logo-master.svg",
-  "iconVersion": "28",
-  "swCache": "rg-pwa-v28",
-  "imageCache": "rg-runtime-images-v28",
+  "iconVersion": "29",
+  "swCache": "rg-pwa-v29",
+  "imageCache": "rg-runtime-images-v29",
   "masterHash": "668be70eec6ce347",
   "summary": {
     "ok": true,
@@ -72,139 +72,139 @@
   "usages": [
     {
       "file": "index.html",
-      "ref": "/assets/icons/icon-144.png?v=28"
+      "ref": "/assets/icons/icon-144.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/brand/og-share.png?v=28"
+      "ref": "/assets/brand/og-share.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/brand/og-share.png?v=28"
+      "ref": "/assets/brand/og-share.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/favicon.ico?v=28"
+      "ref": "/assets/icons/favicon.ico?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/icon-192.png?v=28"
+      "ref": "/assets/icons/icon-192.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+      "ref": "/assets/icons/apple-touch-icon.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/icon-180.png?v=28"
+      "ref": "/assets/icons/icon-180.png?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/brand/og-share.png?v=28"
+      "ref": "/assets/brand/og-share.png?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/brand/og-share.png?v=28"
+      "ref": "/assets/brand/og-share.png?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/favicon.ico?v=28"
+      "ref": "/assets/icons/favicon.ico?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/icon-192.png?v=28"
+      "ref": "/assets/icons/icon-192.png?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+      "ref": "/assets/icons/apple-touch-icon.png?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "landing.html",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-48.png?v=28"
+      "ref": "/assets/icons/icon-48.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-72.png?v=28"
+      "ref": "/assets/icons/icon-72.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-96.png?v=28"
+      "ref": "/assets/icons/icon-96.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-128.png?v=28"
+      "ref": "/assets/icons/icon-128.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-144.png?v=28"
+      "ref": "/assets/icons/icon-144.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-152.png?v=28"
+      "ref": "/assets/icons/icon-152.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-192.png?v=28"
+      "ref": "/assets/icons/icon-192.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-256.png?v=28"
+      "ref": "/assets/icons/icon-256.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-384.png?v=28"
+      "ref": "/assets/icons/icon-384.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-512.png?v=28"
+      "ref": "/assets/icons/icon-512.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/icon-1024.png?v=28"
+      "ref": "/assets/icons/icon-1024.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/maskable-512.png?v=28"
+      "ref": "/assets/icons/maskable-512.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/monochrome-512.png?v=28"
+      "ref": "/assets/icons/monochrome-512.png?v=29"
     },
     {
       "file": "manifest.json",
-      "ref": "/assets/icons/apple-touch-icon.png?v=28"
+      "ref": "/assets/icons/apple-touch-icon.png?v=29"
     },
     {
       "file": "sw.js",
@@ -304,11 +304,11 @@
     },
     {
       "file": "css/brand-identity-final.css",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "js/core/pushNotifications.js",
-      "ref": "/assets/icons/icon-192.png?v=28"
+      "ref": "/assets/icons/icon-192.png?v=29"
     },
     {
       "file": "js/diagnostics/livingBrandBook.js",
@@ -316,7 +316,7 @@
     },
     {
       "file": "js/diagnostics/selfHealing.js",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "js/legacy/app.bundle.js",
@@ -324,19 +324,19 @@
     },
     {
       "file": "js/views/home.js",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "js/views/home.js",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "js/views/home.js",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "js/views/premium.js",
-      "ref": "/assets/icons/logo-master.svg?v=28"
+      "ref": "/assets/icons/logo-master.svg?v=29"
     },
     {
       "file": "assets/brand/README.md",
@@ -453,82 +453,82 @@
     {
       "id": "manifest-192",
       "ok": true,
-      "detail": "manifest.json · /icon-192\\.png\\?v=28/"
+      "detail": "manifest.json · /icon-192\\.png\\?v=29/"
     },
     {
       "id": "manifest-512",
       "ok": true,
-      "detail": "manifest.json · /icon-512\\.png\\?v=28/"
+      "detail": "manifest.json · /icon-512\\.png\\?v=29/"
     },
     {
       "id": "manifest-maskable",
       "ok": true,
-      "detail": "manifest.json · /maskable-512\\.png\\?v=28/"
+      "detail": "manifest.json · /maskable-512\\.png\\?v=29/"
     },
     {
       "id": "manifest-monochrome",
       "ok": true,
-      "detail": "manifest.json · /monochrome-512\\.png\\?v=28/"
+      "detail": "manifest.json · /monochrome-512\\.png\\?v=29/"
     },
     {
       "id": "manifest-apple",
       "ok": true,
-      "detail": "manifest.json · /apple-touch-icon\\.png\\?v=28/"
+      "detail": "manifest.json · /apple-touch-icon\\.png\\?v=29/"
     },
     {
       "id": "index-favicon",
       "ok": true,
-      "detail": "index.html · /favicon\\.ico\\?v=28/"
+      "detail": "index.html · /favicon\\.ico\\?v=29/"
     },
     {
       "id": "index-logo-master",
       "ok": true,
-      "detail": "index.html · /logo-master\\.svg\\?v=28/"
+      "detail": "index.html · /logo-master\\.svg\\?v=29/"
     },
     {
       "id": "index-icon-192",
       "ok": true,
-      "detail": "index.html · /icon-192\\.png\\?v=28/"
+      "detail": "index.html · /icon-192\\.png\\?v=29/"
     },
     {
       "id": "index-apple",
       "ok": true,
-      "detail": "index.html · /apple-touch-icon\\.png\\?v=28/"
+      "detail": "index.html · /apple-touch-icon\\.png\\?v=29/"
     },
     {
       "id": "index-manifest",
       "ok": true,
-      "detail": "index.html · /manifest\\.json\\?v=28/"
+      "detail": "index.html · /manifest\\.json\\?v=29/"
     },
     {
       "id": "index-og",
       "ok": true,
-      "detail": "index.html · /og-share\\.png\\?v=28/"
+      "detail": "index.html · /og-share\\.png\\?v=29/"
     },
     {
       "id": "landing-logo",
       "ok": true,
-      "detail": "landing.html · /logo-master\\.svg\\?v=28/"
+      "detail": "landing.html · /logo-master\\.svg\\?v=29/"
     },
     {
       "id": "landing-icon-192",
       "ok": true,
-      "detail": "landing.html · /icon-192\\.png\\?v=28/"
+      "detail": "landing.html · /icon-192\\.png\\?v=29/"
     },
     {
       "id": "home-brand",
       "ok": true,
-      "detail": "js/views/home.js · /logo-master\\.svg\\?v=28/"
+      "detail": "js/views/home.js · /logo-master\\.svg\\?v=29/"
     },
     {
       "id": "push-icon",
       "ok": true,
-      "detail": "js/core/pushNotifications.js · /icon-192\\.png\\?v=28/"
+      "detail": "js/core/pushNotifications.js · /icon-192\\.png\\?v=29/"
     },
     {
       "id": "brand-css",
       "ok": true,
-      "detail": "css/brand-identity-final.css · /logo-master\\.svg\\?v=28/"
+      "detail": "css/brand-identity-final.css · /logo-master\\.svg\\?v=29/"
     },
     {
       "id": "sw-cache",

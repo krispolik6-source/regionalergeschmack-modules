@@ -55,6 +55,8 @@ globalThis.window = {
     adsbygoogle: []
 };
 
+store.set('cookie_consent', 'accepted');
+
 const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
 assert(html.includes('pagead2.googlesyndication.com'), 'AdSense script in index.html');
 assert(html.includes('data-rg-adsense="1"'), 'AdSense loader marker');
@@ -70,6 +72,7 @@ assert(typeof mod.initAdSense === 'function', 'initAdSense export');
 assert(typeof mod.resolveAdSenseLanguage === 'function', 'resolveAdSenseLanguage');
 assert(typeof mod.detectBrowserAdLanguage === 'function', 'detectBrowserAdLanguage');
 assert(typeof mod.remountHomeAdSense === 'function', 'remountHomeAdSense');
+assert(typeof mod.teardownHomeAdSense === 'function', 'teardownHomeAdSense');
 assert(typeof mod.syncAdSenseDocumentLocale === 'function', 'syncAdSenseDocumentLocale');
 assert(typeof mod.logAdSenseDiagnostics === 'function', 'logAdSenseDiagnostics');
 assert(typeof mod.detectAdSenseLocaleSource === 'function', 'detectAdSenseLocaleSource');
@@ -78,8 +81,16 @@ const adsSrcCheck = readFileSync(join(ROOT, 'js/presentation/adsense.js'), 'utf8
 assert(adsSrcCheck.includes('[ADSENSE DIAGNOSTICS]'), 'diagnostics prefix');
 assert(adsSrcCheck.includes('language-changed+remount'), 'P3 combined diagnostic event');
 assert(adsSrcCheck.includes('scheduleLanguageRemount'), 'P1 debounced remount scheduler');
+assert(adsSrcCheck.includes('scheduleAdLoad') || adsSrcCheck.includes('attachLazyAdObserver'), 'P1 lazy ad load');
+assert(adsSrcCheck.includes('IntersectionObserver'), 'P1 IntersectionObserver lazy load');
 assert(adsSrcCheck.includes('LANG_REMOUNT_DEBOUNCE_MS = 200') || adsSrcCheck.includes('200'), 'P1 debounce 200ms');
 assert(adsSrcCheck.includes('lastRemountedLanguage'), 'P1 skip same language');
+assert(adsSrcCheck.includes('isHostAlreadyInitialized') || adsSrcCheck.includes('data-rg-ad-initialized'), 'P3 prevent re-init');
+assert(adsSrcCheck.includes('isElementVisibleForAds'), 'P2 skip hidden container');
+assert(adsSrcCheck.includes('teardownHomeAdSense'), 'teardown on destroy');
+assert(adsSrcCheck.includes('[AdsDiag]'), 'P4 localhost AdsDiag prefix');
+assert(adsSrcCheck.includes('isLocalhostDiag'), 'P4 localhost-only diag gate');
+assert(adsSrcCheck.includes('role="complementary"'), 'P6 aria role complementary');
 assert(adsSrcCheck.includes('hasManualUiLanguage') || adsSrcCheck.includes("rs_lang"), 'P2 manual UI guard');
 assert(adsSrcCheck.includes('navigator-languagechange-diag-only'), 'P2 diag-only when rs_lang set');
 assert(adsSrcCheck.includes('languagechange'), 'listens navigator languagechange');
@@ -110,6 +121,7 @@ assert(
 const home = readFileSync(join(ROOT, 'js/views/home.js'), 'utf8');
 assert(home.includes('buildHomeAdSenseHtml'), 'home uses AdSense HTML');
 assert(home.includes('mountHomeAdSense'), 'home mounts AdSense');
+assert(home.includes('teardownHomeAdSense'), 'home teardown AdSense on destroy');
 
 const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
 assert(app.includes('initAdSense'), 'app inits AdSense');

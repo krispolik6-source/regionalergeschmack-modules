@@ -38,7 +38,8 @@ const events = readFileSync(join(ROOT, 'js/core/events.js'), 'utf8');
 assert(/DYNAMIC_TRANSLATIONS_UPDATED/.test(events), 'event defined');
 
 const modal = readFileSync(join(ROOT, 'js/views/producerModal.js'), 'utf8');
-assert(/DYNAMIC_TRANSLATIONS_UPDATED/.test(modal), 'modal soft-refresh');
+assert(/scheduleModalTranslations/.test(modal), 'modal batched translations');
+assert(/translatePage/.test(modal), 'modal uses translatePage');
 
 const shim = readFileSync(join(ROOT, 'js/core/dynamicTranslateEngine.js'), 'utf8');
 assert(/aiTranslationEngine/.test(shim), 'shim points to AI engine');

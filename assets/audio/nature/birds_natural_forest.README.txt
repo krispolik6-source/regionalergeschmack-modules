@@ -1,0 +1,18 @@
+Regionaler Geschmack – fallback offline (ambient ptaków)
+
+Wklej tutaj plik:
+
+  birds_natural_forest.mp3
+
+Ścieżka w aplikacji (climateAtmosphere.js):
+  /assets/audio/nature/birds_natural_forest.mp3
+
+Kolejność odtwarzania:
+  1. Freesound CDN (online)
+  2. Ten plik lokalny (offline fallback)
+
+Naturalny śpiew ptaków leśnych w słoneczny dzień.
+Głośność w aplikacji: ~11% (MASTER_VOLUME), loop: true.
+
+Bez tego pliku ambient działa tylko online (CDN).
+Przy braku obu źródeł: ciche wyciszenie + toast (raz na sesję).

@@ -5,12 +5,12 @@
    ============================================================ */
 
 :root {
-    --ph-header-h: 64px;
-    --ph-logo: 44px;
-    --ph-gap-brand: 14px;
-    --ph-gap-actions: 8px;
-    --ph-title: clamp(1.15rem, 4.6vw, 1.65rem);
-    --ph-btn: 42px;
+    --ph-header-h: 56px;
+    --ph-logo: 38px;
+    --ph-gap-brand: 10px;
+    --ph-gap-actions: 6px;
+    --ph-title: clamp(1.02rem, 4.1vw, 1.45rem);
+    --ph-btn: 37px;
     --ph-cream: #fffef8;
     --ph-ink: #1c1812;
     --ph-gold: #c9a227;
@@ -35,8 +35,8 @@
 
 .header-content {
     height: var(--ph-header-h);
-    padding: 0 max(10px, var(--app-gutter, 12px));
-    gap: 10px;
+    padding: 0 max(8px, var(--app-gutter, 10px));
+    gap: 6px;
     align-items: center;
 }
 
@@ -132,7 +132,7 @@
 
 /* Menu ☰ */
 .main-header #menuBtn {
-    font-size: 1.35rem !important;
+    font-size: 1.22rem !important;
     letter-spacing: -0.04em;
     padding: 0 !important;
     width: var(--ph-btn);
@@ -168,8 +168,8 @@
 
 /* ETAP 31 – Premium = logo-master (nie emoji) */
 .main-header .header-premium-mark {
-    width: 22px;
-    height: 22px;
+    width: 19px;
+    height: 19px;
     object-fit: contain;
     display: block;
     background: transparent;
@@ -211,8 +211,11 @@
 
 .main-header .header-lang-wrap {
     position: relative;
+    display: flex;
+    align-items: center;
     flex-shrink: 1;
     min-width: 0;
+    margin: 0;
     overflow: visible;
 }
 
@@ -302,12 +305,12 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 320 */
 @media screen and (max-width: 359px) {
     :root {
-        --ph-header-h: 58px;
-        --ph-logo: 32px;
-        --ph-gap-brand: 6px;
-        --ph-gap-actions: 4px;
-        --ph-title: 0.92rem;
-        --ph-btn: 40px;
+        --ph-header-h: 51px;
+        --ph-logo: 28px;
+        --ph-gap-brand: 5px;
+        --ph-gap-actions: 3px;
+        --ph-title: 0.82rem;
+        --ph-btn: 35px;
     }
 
     .main-header .header-lang,
@@ -322,20 +325,20 @@ body.dark-mode .main-header .language-dropdown .language-option {
     }
 
     .header-content {
-        padding: 0 6px;
-        gap: 4px;
+        padding: 0 4px;
+        gap: 3px;
     }
 }
 
 /* 360 */
 @media screen and (min-width: 360px) and (max-width: 389px) {
     :root {
-        --ph-header-h: 60px;
-        --ph-logo: 34px;
-        --ph-gap-brand: 8px;
-        --ph-gap-actions: 5px;
-        --ph-title: 1rem;
-        --ph-btn: 40px;
+        --ph-header-h: 52px;
+        --ph-logo: 30px;
+        --ph-gap-brand: 7px;
+        --ph-gap-actions: 4px;
+        --ph-title: 0.88rem;
+        --ph-btn: 35px;
     }
 
     .main-header .header-lang {
@@ -348,12 +351,12 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 390 */
 @media screen and (min-width: 390px) and (max-width: 411px) {
     :root {
-        --ph-header-h: 60px;
-        --ph-logo: 36px;
-        --ph-gap-brand: 10px;
-        --ph-gap-actions: 6px;
-        --ph-title: 1.08rem;
-        --ph-btn: 42px;
+        --ph-header-h: 52px;
+        --ph-logo: 32px;
+        --ph-gap-brand: 8px;
+        --ph-gap-actions: 5px;
+        --ph-title: 0.96rem;
+        --ph-btn: 37px;
     }
 
     .main-header .header-lang {
@@ -365,11 +368,11 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 412 */
 @media screen and (min-width: 412px) and (max-width: 429px) {
     :root {
-        --ph-header-h: 62px;
-        --ph-logo: 38px;
-        --ph-gap-brand: 11px;
-        --ph-title: 1.12rem;
-        --ph-btn: 42px;
+        --ph-header-h: 54px;
+        --ph-logo: 34px;
+        --ph-gap-brand: 9px;
+        --ph-title: 1rem;
+        --ph-btn: 37px;
     }
 
     .main-header .header-lang {
@@ -380,12 +383,12 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 430+ phone — jedna linia gdy jest miejsce */
 @media screen and (min-width: 430px) and (max-width: 767px) {
     :root {
-        --ph-header-h: 62px;
-        --ph-logo: 42px;
-        --ph-gap-brand: 13px;
-        --ph-gap-actions: 8px;
-        --ph-title: 1.22rem;
-        --ph-btn: 44px;
+        --ph-header-h: 54px;
+        --ph-logo: 37px;
+        --ph-gap-brand: 10px;
+        --ph-gap-actions: 6px;
+        --ph-title: 1.08rem;
+        --ph-btn: 38px;
     }
 
     .header-left h1 {
@@ -399,23 +402,23 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 768 tablet */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
     :root {
-        --ph-header-h: 66px;
-        --ph-logo: 46px;
-        --ph-gap-brand: 14px;
-        --ph-gap-actions: 10px;
-        --ph-title: 1.5rem;
-        --ph-btn: 44px;
+        --ph-header-h: 58px;
+        --ph-logo: 40px;
+        --ph-gap-brand: 12px;
+        --ph-gap-actions: 8px;
+        --ph-title: 1.35rem;
+        --ph-btn: 38px;
     }
 
     .header-content {
         max-width: 960px;
         margin: 0 auto;
-        padding: 0 24px;
+        padding: 0 20px;
     }
 
     .header-left h1 {
         white-space: nowrap !important;
-        font-size: 1.5rem !important;
+        font-size: 1.35rem !important;
     }
 
     .main-header .header-lang {
@@ -428,23 +431,23 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 1024+ desktop */
 @media screen and (min-width: 1024px) {
     :root {
-        --ph-header-h: 70px;
-        --ph-logo: 48px;
-        --ph-gap-brand: 16px;
-        --ph-gap-actions: 10px;
-        --ph-title: 1.65rem;
-        --ph-btn: 46px;
+        --ph-header-h: 61px;
+        --ph-logo: 42px;
+        --ph-gap-brand: 12px;
+        --ph-gap-actions: 8px;
+        --ph-title: 1.45rem;
+        --ph-btn: 40px;
     }
 
     .header-content {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 0 28px;
+        padding: 0 22px;
     }
 
     .header-left h1 {
         white-space: nowrap !important;
-        font-size: 1.65rem !important;
+        font-size: 1.45rem !important;
         letter-spacing: 0.02em !important;
     }
 

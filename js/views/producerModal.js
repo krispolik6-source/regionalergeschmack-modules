@@ -769,14 +769,10 @@ function buildProductsHtml(producer) {
     const products = fromObject.length ? fromObject : getProducerProducts(producer.id);
 
     if (!products.length) {
-        const messageKey = isExternalProducerWithoutCatalog(producer)
-            ? 'msg.noOfferProducts'
-            : 'msg.noProducts';
-
         return `
             <section class="producer-products-section">
                 <h3 class="producer-section-title">${t('producer.productsTitle')}</h3>
-                <p class="producer-modal-empty">${t(messageKey)}</p>
+                <p class="producer-modal-empty">${t('msg.noCurrentData')}</p>
             </section>
         `;
     }

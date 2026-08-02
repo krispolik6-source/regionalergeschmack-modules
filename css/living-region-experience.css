@@ -195,13 +195,15 @@
     overflow: visible;
 }
 
+.producer-modal-header--compact .producer-photo-frame,
 .producer-modal-header .producer-photo-frame {
     border-radius: 12px !important;
     aspect-ratio: auto;
     width: 100%;
-    height: var(--photo-modal-height, 160px);
-    max-height: var(--photo-modal-height, 160px);
-    margin: 0 0 16px;
+    height: var(--photo-modal-height, 200px) !important;
+    max-height: min(250px, 30vh) !important;
+    min-height: 140px !important;
+    margin: 0 !important;
     overflow: hidden;
     box-shadow: none !important;
     border: none !important;
@@ -224,6 +226,11 @@
     height: 36%;
     background: linear-gradient(180deg, transparent, rgba(40, 30, 15, 0.28));
     pointer-events: none;
+}
+
+.producer-modal-header--compact .producer-photo-frame::after {
+    height: 42%;
+    background: linear-gradient(180deg, transparent, rgba(15, 20, 18, 0.55));
 }
 
 .producer-modal .producer-header-card {
@@ -295,8 +302,8 @@
 
 /* ---------- Mapa: elegancja, optycznie mniejsze chrome ---------- */
 .map-bottom-panel {
-    gap: 6px !important;
-    padding: 6px 8px !important;
+    gap: 0 !important;
+    padding: 0 !important;
 }
 
 .map-bottom-btn {
@@ -370,8 +377,10 @@
 
 .map-popup-btn,
 .map-popup-btn-details {
-    font-size: 12px !important;
-    padding: 7px 10px !important;
+    font-size: 13px !important;
+    padding: 0 12px !important;
+    min-height: 44px !important;
+    height: 44px !important;
     border-radius: 10px !important;
 }
 
@@ -506,10 +515,12 @@ body.dark-mode .radius-control {
         padding: 5px 8px !important;
     }
 
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: var(--photo-modal-height, 160px);
-        max-height: var(--photo-modal-height, 160px);
-        margin-bottom: 20px;
+        height: clamp(140px, 28vh, 200px) !important;
+        max-height: min(250px, 30vh) !important;
+        min-height: 140px !important;
+        margin: 0 !important;
     }
 
     .btn-location,
@@ -550,11 +561,13 @@ body.dark-mode .radius-control {
         gap: 18px !important;
     }
 
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: var(--photo-modal-height, 160px);
-        max-height: var(--photo-modal-height, 160px);
+        height: var(--photo-modal-height, 200px) !important;
+        max-height: min(220px, 30vh) !important;
+        min-height: 140px !important;
         aspect-ratio: auto;
-        margin-bottom: 20px;
+        margin: 0 !important;
     }
 
     .home-product-card:hover,

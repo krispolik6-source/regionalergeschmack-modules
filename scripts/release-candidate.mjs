@@ -55,6 +55,7 @@ const home = read('js/views/home.js');
 const map = read('js/views/map.js');
 const nav = read('js/controllers/navigation.js');
 const favorites = read('js/views/favorites.js');
+const favoritesStore = read('js/core/favoritesStore.js');
 const cart = read('js/views/cart.js');
 const premium = read('js/views/premium.js');
 const settings = read('js/core/settings.js');
@@ -153,7 +154,13 @@ step('premium', 'Premium', () => {
 step('next-day', 'Powrót następnego dnia (persist)', () => {
     assert(settings.includes('localStorage') || settings.includes('saveSettings'), 'settings persist');
     assert(userLocation.includes('rg_last_position') || userLocation.includes('localStorage'), 'position persist');
-    assert(favorites.includes('localStorage') || favorites.includes('rg_'), 'favorites persist');
+    assert(
+        favorites.includes('localStorage')
+        || favorites.includes('rg_')
+        || favoritesStore.includes('localStorage')
+        || favoritesStore.includes('regionalny_smak_favorites'),
+        'favorites persist'
+    );
     const cartSrc = read('js/core/cart.js') || cart;
     assert(cartSrc.includes('localStorage') || cart.includes('localStorage') || cartSrc.includes('rg_'), 'cart persist');
     return 'settings + GPS + favorites + cart keys';

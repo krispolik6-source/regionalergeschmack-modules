@@ -14,19 +14,113 @@ import {
 } from '../translations.js';
 import { eventBus } from '../core/eventBus.js';
 import { EVENTS } from '../core/events.js';
+import {
+    safeLocalStorageSetItem,
+    trimAiI18nCacheStorage,
+    byteLen,
+    AI_I18N_CACHE_MAX_BYTES,
+    AI_I18N_CACHE_MAX_ENTRIES
+} from '../core/safeStorage.js';
 
 const LANG_STORAGE_KEY = 'rs_lang';
 const CACHE_KEY = 'rg_ai_i18n_v2';
 const LEGACY_CACHE_KEY = 'rg_dyn_i18n_v1';
-const CACHE_MAX_SIZE = 1000;
+const CACHE_MAX_SIZE = 500;
+const CACHE_MAX_BYTES = AI_I18N_CACHE_MAX_BYTES;
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const MAX_TEXT = 1200;
 const BRAND_TOKEN = '\uE000RG_BRAND\uE001';
 const PROTECT_TOKEN = (i) => `\uE000RG_P${i}\uE001`;
 const QUEUE_CONCURRENCY = 1;
-const REQUEST_GAP_MS = 400;
+const REQUEST_GAP_MS = 750;
 const RETRY_MS = 45_000;
 const RETRY_MS_RATE_LIMIT = 120_000;
+const PROVIDER_RATE_LIMIT_MS = 60_000;
+
+const IS_LOCALHOST = typeof location !== 'undefined'
+    && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+
+/** @type {Map<string, number>} */
+const providerRateLimitedUntil = new Map();
+
+/** Metryki audytu (localhost + getAiTranslateStats). */
+const auditStats = {
+    requests: 0,
+    cacheHits: 0,
+    cacheMisses: 0,
+    libreRequests: 0,
+    mymemoryRequests: 0,
+    status400: 0,
+    status429: 0,
+    retries: 0,
+    totalMs: 0,
+    completed: 0,
+    providerSkips: 0
+};
+
+function diag(event, detail = {}) {
+    if (!IS_LOCALHOST) return;
+    try {
+        console.info('[AI Translation]', event, detail);
+    } catch { /* ignore */ }
+}
+
+function recordCacheHit() {
+    auditStats.cacheHits += 1;
+    diag('cache-hit', { hits: auditStats.cacheHits, misses: auditStats.cacheMisses });
+}
+
+function recordCacheMiss() {
+    auditStats.cacheMisses += 1;
+    diag('cache-miss', { hits: auditStats.cacheHits, misses: auditStats.cacheMisses });
+}
+
+function recordProviderRequest(providerId) {
+    auditStats.requests += 1;
+    if (providerId === 'libretranslate') auditStats.libreRequests += 1;
+    if (providerId === 'mymemory') auditStats.mymemoryRequests += 1;
+}
+
+function recordHttpStatus(status) {
+    if (status === 400) auditStats.status400 += 1;
+    if (status === 429) auditStats.status429 += 1;
+}
+
+function providerHttpError(providerId, status) {
+    if (status === 400 || status === 429) recordHttpStatus(status);
+    const err = new Error(`${providerId} ${status}`);
+    err.status = status;
+    err.provider = providerId;
+    return err;
+}
+
+function isProviderRateLimited(providerId) {
+    const until = providerRateLimitedUntil.get(providerId) || 0;
+    return now() < until;
+}
+
+function markProviderRateLimited(providerId) {
+    providerRateLimitedUntil.set(providerId, now() + PROVIDER_RATE_LIMIT_MS);
+    diag('429', { provider: providerId, blockedMs: PROVIDER_RATE_LIMIT_MS });
+}
+
+function isProviderAvailable(providerId, cfg) {
+    if (!PROVIDERS[providerId]) return false;
+    if (isProviderRateLimited(providerId)) {
+        auditStats.providerSkips += 1;
+        diag('provider-skip', { provider: providerId, reason: 'rate-limited' });
+        return false;
+    }
+    if (providerId === 'libretranslate' && !String(cfg?.libreApiKey || '').trim()) {
+        auditStats.providerSkips += 1;
+        diag('provider-skip', { provider: providerId, reason: 'no-api-key' });
+        return false;
+    }
+    if (providerId === 'google' && !String(cfg?.googleApiKey || '').trim()) return false;
+    if (providerId === 'deepl' && !String(cfg?.deeplApiKey || '').trim()) return false;
+    if (providerId === 'openai' && !String(cfg?.openaiApiKey || '').trim()) return false;
+    return true;
+}
 
 /** @typedef {{ id: string, translate: (text: string, from: string, to: string, cfg: object) => Promise<string> }} TranslationProvider */
 
@@ -59,9 +153,9 @@ const LANG_MAP = Object.freeze({
 
 /** @type {Map<string, string>} */
 let memoryCache = new Map();
-/** @type {Set<string>} */
-const inflight = new Set();
-/** @type {{ text: string, from: string, to: string, protect: string[], resolve: Function }[]} */
+/** @type {Map<string, Promise<string>>} */
+const pendingByKey = new Map();
+/** @type {{ text: string, from: string, to: string, protect: string[], key: string, resolve: Function }[]} */
 const queue = [];
 /** @type {Map<string, number>} failedAt */
 const failedAt = new Map();
@@ -109,7 +203,7 @@ function cancelAllPendingTranslations() {
         const job = queue.shift();
         try { job?.resolve?.(job.text); } catch { /* ignore */ }
     }
-    inflight.clear();
+    pendingByKey.clear();
     activeWorkers = 0;
 }
 
@@ -178,8 +272,16 @@ function getCachedTranslationEntry(text, from, to) {
 function setCachedTranslationEntry(text, from, to, translation) {
     const key = getCacheKey(text, from, to);
     if (memoryCache.size >= CACHE_MAX_SIZE) {
-        const firstKey = memoryCache.keys().next().value;
-        if (firstKey) memoryCache.delete(firstKey);
+        let oldestKey = null;
+        let oldestTs = Infinity;
+        for (const [k, entry] of memoryCache.entries()) {
+            const ts = Number(entry?.timestamp) || 0;
+            if (ts < oldestTs) {
+                oldestTs = ts;
+                oldestKey = k;
+            }
+        }
+        if (oldestKey) memoryCache.delete(oldestKey);
     }
     memoryCache.set(key, { translation, timestamp: now() });
 }
@@ -225,17 +327,39 @@ function loadCache() {
 
 function persistCache() {
     try {
-        let entries = [...memoryCache.entries()];
+        let entries = [...memoryCache.entries()]
+            .sort((a, b) => (Number(a[1]?.timestamp) || 0) - (Number(b[1]?.timestamp) || 0));
+
         if (entries.length > CACHE_MAX_SIZE) {
             entries = entries.slice(entries.length - CACHE_MAX_SIZE);
-            memoryCache = new Map(entries);
         }
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 3, at: new Date().toISOString(), entries }));
+
+        const buildJson = (rows) => JSON.stringify({
+            v: 3,
+            at: new Date().toISOString(),
+            entries: rows.map(([key, val]) => [key, val])
+        });
+
+        while (entries.length > 0 && byteLen(buildJson(entries)) > CACHE_MAX_BYTES) {
+            entries.shift();
+        }
+
+        memoryCache = new Map(entries);
+
+        if (entries.length === 0) {
+            try {
+                localStorage.removeItem(CACHE_KEY);
+            } catch { /* ignore */ }
+            return;
+        }
+
+        const result = safeLocalStorageSetItem(CACHE_KEY, buildJson(entries), { skipOnQuota: true });
+        if (!result.ok && result.skipped) {
+            trimAiI18nCacheStorage({ maxBytes: Math.floor(CACHE_MAX_BYTES / 2), maxEntries: Math.floor(CACHE_MAX_SIZE / 2) });
+        }
     } catch {
         try {
-            const entries = [...memoryCache.entries()].slice(-Math.floor(CACHE_MAX_SIZE / 2));
-            memoryCache = new Map(entries);
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ v: 3, entries }));
+            trimAiI18nCacheStorage({ maxBytes: Math.floor(CACHE_MAX_BYTES / 2), maxEntries: Math.floor(AI_I18N_CACHE_MAX_ENTRIES / 2) });
         } catch { /* ignore */ }
     }
 }
@@ -305,16 +429,18 @@ const PROVIDERS = {
     libretranslate: {
         id: 'libretranslate',
         async translate(text, from, to, cfg) {
+            if (!String(cfg.libreApiKey || '').trim()) {
+                throw providerHttpError('libretranslate', 0);
+            }
             const url = `${String(cfg.libreUrl || '').replace(/\/$/, '')}/translate`;
-            const body = { q: text, source: from, target: to, format: 'text' };
-            if (cfg.libreApiKey) body.api_key = cfg.libreApiKey;
+            const body = { q: text, source: from, target: to, format: 'text', api_key: cfg.libreApiKey };
             const res = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                 body: JSON.stringify(body),
                 signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
-            if (!res.ok) throw new Error(`libre ${res.status}`);
+            if (!res.ok) throw providerHttpError('libretranslate', res.status);
             const data = await res.json();
             const out = data?.translatedText || data?.translation;
             if (!out || typeof out !== 'string') throw new Error('libre empty');
@@ -331,11 +457,13 @@ const PROVIDERS = {
                 headers: { Accept: 'application/json' },
                 signal: mergeAbortSignals(abortSignal(12000), cfg.requestSignal)
             });
-            if (!res.ok) throw new Error(`mymemory ${res.status}`);
+            if (!res.ok) throw providerHttpError('mymemory', res.status);
             const data = await res.json();
             const out = data?.responseData?.translatedText;
             if (!out || typeof out !== 'string') throw new Error('mymemory empty');
-            if (/MYMEMORY WARNING/i.test(out)) throw new Error('mymemory quota');
+            if (/MYMEMORY WARNING/i.test(out)) {
+                throw providerHttpError('mymemory', 429);
+            }
             return out;
         }
     },
@@ -429,17 +557,35 @@ async function runProviders(text, from, to, requestSignal) {
     const cfg = { ...AI_TRANSLATE_CONFIG, requestSignal };
     let lastErr;
     for (const id of order) {
+        if (!isProviderAvailable(id, cfg)) continue;
         const p = PROVIDERS[id];
-        if (!p) continue;
+        const started = now();
         try {
+            recordProviderRequest(id);
+            diag('request-start', { provider: id, queue: queue.length, from, to });
             const out = await p.translate(text, from, to, cfg);
+            const elapsed = now() - started;
+            auditStats.totalMs += elapsed;
+            auditStats.completed += 1;
+            diag('request-ok', { provider: id, status: 200, ms: elapsed });
             if (out && typeof out === 'string') return out;
         } catch (e) {
+            const elapsed = now() - started;
+            auditStats.totalMs += elapsed;
             if (e?.name === 'AbortError' || requestSignal?.aborted) throw e;
+            const status = Number(e?.status) || parseHttpStatus(String(e?.message || ''));
+            if (status === 400 || status === 429) recordHttpStatus(status);
+            if (status === 429) markProviderRateLimited(id);
+            diag('request-fail', { provider: id, status: status || 'error', ms: elapsed, retry: false });
             lastErr = e;
         }
     }
     throw lastErr || new Error('no provider');
+}
+
+function parseHttpStatus(message) {
+    const m = String(message || '').match(/\b(400|429|5\d{2})\b/);
+    return m ? Number(m[1]) : 0;
 }
 
 async function sleep(ms) {
@@ -490,18 +636,28 @@ async function processQueue() {
     const job = queue.shift();
     if (!job) return;
     activeWorkers += 1;
-    const { text, from, to, protect, resolve } = job;
-    const key = getCacheKey(text, from, to);
+    const { text, from, to, protect, resolve, key: jobKey } = job;
+    const key = jobKey || getCacheKey(text, from, to);
     const requestController = typeof AbortController !== 'undefined' ? new AbortController() : null;
     if (requestController) activeRequestControllers.add(requestController);
     const requestSignal = requestController?.signal;
     try {
+        const cachedBeforeRequest = getCachedTranslationEntry(text, from, to);
+        if (cachedBeforeRequest) {
+            recordCacheHit();
+            emitUpdated({ from, to, text, translation: cachedBeforeRequest });
+            resolve(cachedBeforeRequest);
+            return;
+        }
+
         await throttle();
         if (typeof navigator !== 'undefined' && navigator.onLine === false) {
             failedAt.set(key, now());
             resolve(text);
             return;
         }
+
+        recordCacheMiss();
         const out = await fetchTranslation(text, from, to, protect, requestSignal);
         setCachedTranslationEntry(text, from, to, out);
         failedAt.delete(key);
@@ -514,13 +670,15 @@ async function processQueue() {
             return;
         }
         const msg = String(err?.message || err || '');
-        const rateLimited = /\b429\b|quota|rate limit/i.test(msg);
+        const status = Number(err?.status) || parseHttpStatus(msg);
+        const rateLimited = status === 429 || /\b429\b|quota|rate limit/i.test(msg);
         failedAt.set(key, now());
+        auditStats.retries += 1;
+        diag('retry-scheduled', { key: key.slice(0, 48), status, rateLimited, queue: queue.length });
         scheduleRetry(text, from, to, protect, rateLimited);
         resolve(text);
     } finally {
         if (requestController) activeRequestControllers.delete(requestController);
-        inflight.delete(key);
         activeWorkers -= 1;
         if (queue.length) void processQueue();
     }
@@ -529,11 +687,33 @@ async function processQueue() {
 function scheduleRetry(text, from, to, protect, rateLimited = false) {
     if (typeof window === 'undefined' || typeof window.setTimeout !== 'function') return;
     const key = getCacheKey(text, from, to);
+    if (pendingByKey.has(key)) return;
     const delay = rateLimited ? RETRY_MS_RATE_LIMIT : RETRY_MS;
     window.setTimeout(() => {
         if (getCachedTranslationEntry(text, from, to)) return;
         void translate(text, { from, to, protect });
     }, delay);
+}
+
+function enqueueTranslation(input, from, to, protect) {
+    const key = getCacheKey(input, from, to);
+
+    const existing = pendingByKey.get(key);
+    if (existing) return existing;
+
+    let resolveFn = () => {};
+    const promise = new Promise((resolve) => {
+        resolveFn = resolve;
+    });
+    pendingByKey.set(key, promise);
+
+    queue.push({ text: input, from, to, protect, key, resolve: resolveFn });
+    void processQueue();
+
+    promise.finally(() => {
+        pendingByKey.delete(key);
+    });
+    return promise;
 }
 
 /**
@@ -555,25 +735,17 @@ export function translate(text, opts = {}) {
 
     const key = getCacheKey(input, from, to);
     const hit = getCachedTranslationEntry(input, from, to);
-    if (hit) return Promise.resolve(hit);
+    if (hit) {
+        recordCacheHit();
+        return Promise.resolve(hit);
+    }
 
     const failTs = failedAt.get(key);
     if (failTs && now() - failTs < RETRY_MS_RATE_LIMIT) {
         return Promise.resolve(input);
     }
 
-    if (inflight.has(key)) {
-        return new Promise((resolve) => {
-            queue.push({ text: input, from, to, protect, resolve });
-            void processQueue();
-        });
-    }
-
-    inflight.add(key);
-    return new Promise((resolve) => {
-        queue.push({ text: input, from, to, protect, resolve });
-        void processQueue();
-    });
+    return enqueueTranslation(input, from, to, protect);
 }
 
 /** Sync: cache lub oryginał + kolejka w tle (nie blokuje UI). */
@@ -588,7 +760,11 @@ export function translateSoft(text, opts = {}) {
         return input || String(text ?? '');
     }
     const hit = getCachedTranslationEntry(input, from, to);
-    if (hit) return hit;
+    if (hit) {
+        recordCacheHit();
+        return hit;
+    }
+    recordCacheMiss();
     void translate(input, { from, to, protect });
     return input;
 }
@@ -599,7 +775,11 @@ export function translateSoft(text, opts = {}) {
  */
 export function translateBatch(texts, opts = {}) {
     const list = Array.isArray(texts) ? texts : [];
-    return Promise.all(list.map((t) => translate(t, opts)));
+    const unique = [...new Set(list.map((t) => String(t ?? '').trim()).filter(Boolean))];
+    return Promise.all(unique.map((t) => translate(t, opts))).then((results) => {
+        const byText = new Map(unique.map((t, i) => [t, results[i]]));
+        return list.map((t) => byText.get(String(t ?? '').trim()) ?? String(t ?? ''));
+    });
 }
 
 /**
@@ -683,8 +863,16 @@ export async function translatePage(root, opts = {}) {
         bySource.get(src).push(el);
     });
 
+    const pendingSources = [...bySource.keys()];
+    if (!pendingSources.length) return { updated };
+
+    const translations = await Promise.all(
+        pendingSources.map((src) => translate(src, { to, from }))
+    );
+    const translationMap = new Map(pendingSources.map((src, i) => [src, translations[i]]));
+
     for (const [src, elements] of bySource) {
-        const tr = await translate(src, { to, from });
+        const tr = translationMap.get(src);
         if (tr && tr !== src) {
             elements.forEach((el) => {
                 el.setAttribute('data-rg-ai-prev', tr);
@@ -722,6 +910,24 @@ export function invalidateCache(filter) {
     loadCache();
     if (!filter) {
         memoryCache = new Map();
+        pendingByKey.clear();
+        failedAt.clear();
+        providerRateLimitedUntil.clear();
+        queue.length = 0;
+        activeWorkers = 0;
+        Object.assign(auditStats, {
+            requests: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            libreRequests: 0,
+            mymemoryRequests: 0,
+            status400: 0,
+            status429: 0,
+            retries: 0,
+            totalMs: 0,
+            completed: 0,
+            providerSkips: 0
+        });
         try {
             localStorage.removeItem(CACHE_KEY);
             localStorage.removeItem(LEGACY_CACHE_KEY);
@@ -737,13 +943,32 @@ export function invalidateCache(filter) {
 
 export function getAiTranslateStats() {
     loadCache();
+    const hits = auditStats.cacheHits;
+    const misses = auditStats.cacheMisses;
+    const lookups = hits + misses;
     return {
         cached: memoryCache.size,
         queued: queue.length,
-        inflight: inflight.size,
+        inflight: pendingByKey.size,
         failed: failedAt.size,
         providers: [...(AI_TRANSLATE_CONFIG.providers || [])],
-        enabled: AI_TRANSLATE_CONFIG.enabled
+        enabled: AI_TRANSLATE_CONFIG.enabled,
+        audit: {
+            requests: auditStats.requests,
+            cacheHits: hits,
+            cacheMisses: misses,
+            cacheHitRatio: lookups ? Number((hits / lookups).toFixed(4)) : 0,
+            libreRequests: auditStats.libreRequests,
+            mymemoryRequests: auditStats.mymemoryRequests,
+            status400: auditStats.status400,
+            status429: auditStats.status429,
+            retries: auditStats.retries,
+            providerSkips: auditStats.providerSkips,
+            avgMs: auditStats.completed
+                ? Math.round(auditStats.totalMs / auditStats.completed)
+                : 0,
+            requestGapMs: REQUEST_GAP_MS
+        }
     };
 }
 

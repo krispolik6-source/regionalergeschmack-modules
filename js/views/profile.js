@@ -14,6 +14,8 @@ import { renderAdminPanel } from './adminPanel.js';
 import { showToast } from '../core/toast.js';
 import { syncPushWithSettings } from '../core/pushNotifications.js';
 import { promptPwaInstall, refreshPwaInstallUi } from '../core/pwaInstall.js';
+import { eventBus } from '../core/eventBus.js';
+import { EVENTS } from '../core/events.js';
 import {
     isAmbientNatureEnabled,
     setAmbientNatureEnabled
@@ -284,7 +286,12 @@ function bindEvents(container) {
     });
 
     container.querySelector('#profileAmbientNature')?.addEventListener('change', (e) => {
-        setAmbientNatureEnabled(e.target.checked);
+        setAmbientNatureEnabled(e.target.checked, { userInitiated: e.target.checked });
+    });
+
+    eventBus.on(EVENTS.AMBIENT_UNAVAILABLE, () => {
+        const cb = container.querySelector('#profileAmbientNature');
+        if (cb) cb.checked = false;
     });
 
     container.querySelector('#profileLanguage')?.addEventListener('change', (e) => {

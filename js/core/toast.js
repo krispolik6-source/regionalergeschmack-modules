@@ -4,7 +4,7 @@ import { CONFIG, Z_INDEX } from '../config.js';
 let toastEl = null;
 let hideTimer = null;
 
-export function showToast(message, type = 'info') {
+export function showToast(message, type = 'info', durationMs) {
     if (!message) return;
 
     if (!toastEl) {
@@ -25,7 +25,7 @@ export function showToast(message, type = 'info') {
     hideTimer = setTimeout(() => {
         toastEl?.classList.remove('app-toast--visible');
         if (toastEl) toastEl.hidden = true;
-    }, CONFIG.TOAST_DURATION ?? 1800);
+    }, durationMs ?? CONFIG.TOAST_DURATION ?? 1800);
 }
 
 export function initToast() {

@@ -1,7 +1,7 @@
 {
   "id": "header-audit-28b",
   "title": "Header Audit — ETAP 28B Premium Header",
-  "generatedAt": "2026-07-21T17:22:16.201Z",
+  "generatedAt": "2026-08-02T08:02:47.125Z",
   "policy": {
     "cssOnly": true,
     "architectureUnchanged": true,
@@ -17,9 +17,9 @@
   },
   "summary": {
     "total": 26,
-    "passed": 26,
-    "failed": 0,
-    "ok": true
+    "passed": 25,
+    "failed": 1,
+    "ok": false
   },
   "checks": [
     {
@@ -29,7 +29,7 @@
     },
     {
       "id": "imported-in-style",
-      "ok": true,
+      "ok": false,
       "detail": "@import premium-header.css w style.css"
     },
     {
@@ -154,7 +154,6 @@
     }
   ],
   "recommendations": [
-    "Header Premium aktywny we wszystkich wskazanych szerokościach.",
-    "Weryfikacja wizualna: odśwież localhost i sprawdź 320→1024 (DevTools)."
+    "@import premium-header.css w style.css"
   ]
 }

@@ -24,13 +24,6 @@ assert(existsSync(fieldMp3) || existsSync(fieldWav), 'file field-sounds.mp3|wav'
 assert(existsSync(fieldMp3), 'field-sounds.mp3 preferred');
 assert(statSync(fieldMp3).size > 1000, 'field-sounds.mp3 not empty');
 
-for (const base of ['spring-birds', 'summer-birds', 'autumn-birds', 'winter-birds']) {
-    const mp3 = join(dir, `${base}.mp3`);
-    const wav = join(dir, `${base}.wav`);
-    assert(existsSync(mp3) || existsSync(wav), `file ${base}.mp3|wav`);
-    assert(existsSync(mp3), `${base}.mp3 preferred`);
-    assert(statSync(mp3).size > 10000, `${base}.mp3 not empty`);
-}
 assert(existsSync(join(dir, 'CREDITS-BIRDS.txt')), 'CREDITS-BIRDS.txt');
 
 for (const base of ['birds', 'wind', 'frogs', 'insects']) {
@@ -67,21 +60,25 @@ assert(isAmbientNatureEnabled() === false, 'disabled again');
 assert(isEveningHours(new Date(2026, 6, 21, 20, 0, 0)) === true, '20:00 evening');
 assert(isEveningHours(new Date(2026, 6, 21, 12, 0, 0)) === false, '12:00 not evening');
 
+const FREESOUND_URL = 'https://cdn.freesound.org/previews/623/623806_13197878-lq.mp3';
+
 const src = readFileSync(join(ROOT, 'js/presentation/climateAtmosphere.js'), 'utf8');
-assert(src.includes('assets/audio/nature'), 'loads from assets/audio/nature');
-assert(src.includes('spring-birds'), 'spring-birds layer');
-assert(src.includes('summer-birds'), 'summer-birds layer');
-assert(src.includes('autumn-birds'), 'autumn-birds layer');
-assert(src.includes('winter-birds'), 'winter-birds layer');
-assert(src.includes('seasons'), 'season gate');
+assert(src.includes(FREESOUND_URL), 'loads external Freesound URL');
+assert(src.includes('birds_natural_forest.mp3'), 'local fallback path');
+assert(src.includes('AMBIENT_SOURCE_CHAIN'), 'source fallback chain');
+assert(src.includes('notifyAmbientUnavailable'), 'offline toast handler');
+assert(src.includes('offlineToastShown'), 'toast once per session');
+assert(/naturalny śpiew ptaków leśnych/i.test(src), 'forest birds description');
+assert(src.includes('silentStopAudio'), 'silent network error handler');
+assert(src.includes('showToast'), 'toast on total failure');
+assert(src.includes('AMBIENT_UNAVAILABLE'), 'ambient unavailable event');
 assert(src.includes("loop = true") || src.includes('audio.loop'), 'looped playback');
 assert(!/prefersReducedMotion\(\)\s*\|\|/.test(src) && !src.includes('if (prefersReducedMotion()'), 'audio not gated by reduced-motion');
 assert(src.includes('getActiveAmbientSrc'), 'active src helper');
-assert(src.includes("'/assets/audio/nature'") || src.includes('"/assets/audio/nature"'), 'absolute audio path');
 
 const { getActiveAmbientSrc } = await import(pathToFileURL(join(ROOT, 'js/presentation/climateAtmosphere.js')).href);
-const summerSrc = getActiveAmbientSrc(new Date(2026, 6, 21, 12, 0, 0));
-assert(String(summerSrc).includes('summer-birds.mp3'), `July → summer-birds (${summerSrc})`);
+const activeSrc = getActiveAmbientSrc();
+assert(activeSrc === FREESOUND_URL, `active → Freesound (${activeSrc})`);
 
 const profile = readFileSync(join(ROOT, 'js/views/profile.js'), 'utf8');
 assert(profile.includes('profileAmbientNature'), 'settings toggle');
@@ -89,11 +86,17 @@ assert(profile.includes('profileAmbientNature'), 'settings toggle');
 const home = readFileSync(join(ROOT, 'js/views/home.js'), 'utf8');
 assert(home.includes('homeAmbientNatureBtn'), 'home ambient toggle');
 assert(home.includes('setAmbientNatureEnabled'), 'home uses ambient API');
+assert(home.includes('syncHomeAmbientToggle'), 'home ambient UI sync');
+assert(home.includes('AMBIENT_UNAVAILABLE'), 'home listens for ambient failure');
+assert(home.includes('userInitiated'), 'home passes user gesture flag');
 assert(home.includes('🎵') && home.includes('🔇'), 'home icons off/on');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-climate-ambient.js'), 'utf8');
 assert(i18n.includes('Odgłosy natury'), 'PL label');
 assert(i18n.includes('10–12') || i18n.includes('10-12'), 'hint mentions 10–12%');
+assert(i18n.includes('ambientNatureOffline'), 'offline toast i18n key');
+assert(i18n.includes('Brak połączenia z siecią'), 'PL offline toast');
+assert(i18n.includes('Keine Netzwerkverbindung'), 'DE offline toast');
 assert(i18n.includes('ambientNaturePlay'), 'home play aria');
 assert(i18n.includes('ambientNatureMute'), 'home mute aria');
 

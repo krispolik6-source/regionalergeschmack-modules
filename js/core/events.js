@@ -58,6 +58,8 @@ export const EVENTS = Object.freeze({
     // UI
     TOAST_SHOW: 'toast:show',
     TOAST_HIDE: 'toast:hide',
+    /** Ambient natury – brak sieci / oba źródła niedostępne */
+    AMBIENT_UNAVAILABLE: 'ambient:unavailable',
     LOADING_SHOW: 'loading:show',
     LOADING_HIDE: 'loading:hide',
     LOADING_CHANGED: 'loading:changed',

@@ -519,9 +519,11 @@ body.dark-mode .category-card--photo .category-count {
         padding: 4px 10px 4px !important;
     }
 
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: clamp(110px, 16vh, 140px) !important;
-        max-height: 140px !important;
+        height: clamp(140px, 28vh, 200px) !important;
+        max-height: min(220px, 30vh) !important;
+        min-height: 120px !important;
     }
 }
 

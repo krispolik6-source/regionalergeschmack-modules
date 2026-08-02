@@ -1,8 +1,8 @@
 # Header Audit — ETAP 28B Premium Header
 
-Wygenerowano: 2026-07-21T17:22:16.201Z
+Wygenerowano: 2026-08-02T08:02:47.125Z
 
-**Werdykt:** ✅ PASS · 26/26
+**Werdykt:** ⚠ FAIL · 25/26
 
 ## Polityka
 
@@ -13,7 +13,7 @@ Wygenerowano: 2026-07-21T17:22:16.201Z
 ## Checklist
 
 - ✓ **file-premium-header** — css/premium-header.css
-- ✓ **imported-in-style** — @import premium-header.css w style.css
+- ✗ **imported-in-style** — @import premium-header.css w style.css
 - ✓ **html-header** — struktura .main-header + logo
 - ✓ **html-logo-master** — logo = logo-master.svg
 - ✓ **html-title** — napis Regionaler Geschmack
@@ -50,5 +50,4 @@ Wygenerowano: 2026-07-21T17:22:16.201Z
 
 ## Rekomendacje
 
-- Header Premium aktywny we wszystkich wskazanych szerokościach.
-- Weryfikacja wizualna: odśwież localhost i sprawdź 320→1024 (DevTools).
+- @import premium-header.css w style.css

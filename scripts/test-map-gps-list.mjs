@@ -44,8 +44,11 @@ assert(shouldRefreshProducerListOnGps(base, far, { isFirstFix: false }), 'duży 
 
 assert(mapSrc.includes('shouldRefreshProducerListOnGps'), 'map importuje politykę');
 assert(mapSrc.includes('scheduleSoftRefreshProducerList'), 'map ma scheduler listy');
+assert(mapSrc.includes('scheduleOsmRefreshAtLocation'), 'map ma scheduler OSM bez resetu debounce');
 assert(mapSrc.includes('isFirstFix'), 'LOCATION_UPDATED emituje isFirstFix');
+assert(mapSrc.includes('pinMoved'), 'LOCATION_UPDATED emituje pinMoved (P5)');
 assert(mapSrc.includes('immediate: !!isFirstFix'), 'pierwszy fix natychmiast');
+assert(mapSrc.includes('abortPendingDataLoads()'), 'map anuluje stale fetch (P3)');
 assert(!/LOCATION_UPDATED[\s\S]{0,200}softRefreshProducerListDistances\(\)/.test(mapSrc),
     'brak bezwarunkowego softRefresh w listenerze');
 

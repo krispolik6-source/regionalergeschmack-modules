@@ -146,6 +146,8 @@ function getPointer(event) {
  */
 export function initMapControlsDrag(panel, options = {}) {
     if (!panel) return () => {};
+    /* Spójny pasek narzędzi — statyczny układ flex, bez rozrzucanych kontrolek */
+    if (panel.querySelector('.map-toolbar-unified')) return () => {};
 
     const leafletMap = options.map || null;
     const positions = { ...DEFAULT_POSITIONS, ...readJson(STORAGE_POSITIONS, {}) };

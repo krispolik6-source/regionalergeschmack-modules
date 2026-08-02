@@ -73,7 +73,7 @@ export const PAYPAL_CONFIG = {
 /** Google AdSense – jedyne źródło dochodu (baner Home 90px) */
 export const ADSENSE_CONFIG = {
     enabled: true,
-    clientId: '', // ca-pub-xxxxxxxxxxxxxxxx
+    clientId: 'ca-pub-9002110535592311', // weryfikacja AdSense
     slotBanner: '', // slot banera Home 90px
     slotInline: '',
     showPlaceholder: true

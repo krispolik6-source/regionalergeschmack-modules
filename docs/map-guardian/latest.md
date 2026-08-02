@@ -1,7 +1,7 @@
 # ETAP 42 — Map Guardian
 
 **Werdykt:** PASS  
-**Data:** 2026-07-26
+**Data:** 2026-08-01
 
 ## Cel
 

@@ -5,8 +5,16 @@ installProductionConsole();
 initConsoleGuardian();
 
 import { APP_NAME } from './config.js';
-import { initAdSense } from './presentation/adsense.js';
+import { initAdSense, mountHomeAdSense } from './presentation/adsense.js';
 import { initNavigation, bindNavButtons, navigateTo, navigateToCategory, getCurrentView, updateNavLabels } from './controllers/navigation.js';
+import { initLegalFooter } from './views/legal.js';
+import {
+    COOKIE_CONSENT,
+    hasCookieConsentAccepted,
+    setCookieConsent,
+    hideCookieBanner,
+    syncCookieBannerVisibility
+} from './core/cookieConsent.js';
 import { setSearchQuery } from './views/map.js?v=48';
 import { refreshCartBadge, adoptGuestCartForCurrentUser } from './views/cart.js';
 import { syncFavoritesOnStartup } from './core/favoritesStore.js';
@@ -167,6 +175,44 @@ function bindShellEvents() {
     });
 }
 
+function loadAdSenseAfterConsent() {
+    initAdSense();
+    if (getCurrentView() === 'home') {
+        navigateTo('home', { force: true });
+    } else {
+        mountHomeAdSense();
+    }
+}
+
+function initCookieBanner() {
+    const banner = document.getElementById('cookieConsentBanner');
+    const acceptBtn = document.getElementById('cookieAccept');
+    const rejectBtn = document.getElementById('cookieReject');
+    if (!banner || !acceptBtn || !rejectBtn || banner.dataset.bound === 'true') return;
+    banner.dataset.bound = 'true';
+
+    if (!syncCookieBannerVisibility(banner)) return;
+
+    const handleChoice = (choice) => {
+        setCookieConsent(choice);
+        hideCookieBanner(banner, () => {
+            if (choice === COOKIE_CONSENT.ACCEPTED) {
+                loadAdSenseAfterConsent();
+            }
+        });
+    };
+
+    acceptBtn.onclick = (event) => {
+        event.preventDefault();
+        handleChoice(COOKIE_CONSENT.ACCEPTED);
+    };
+
+    rejectBtn.onclick = (event) => {
+        event.preventDefault();
+        handleChoice(COOKIE_CONSENT.REJECTED);
+    };
+}
+
 async function bootstrap() {
     if (bootstrapped) return;
     bootstrapped = true;
@@ -188,6 +234,8 @@ async function bootstrap() {
     initLoginModal();
     initRegisterModal();
     initNavigation(app);
+    initLegalFooter();
+    initCookieBanner();
     bindNavButtons();
     bindCategoryFilter();
     bindSearch();
@@ -206,8 +254,10 @@ async function bootstrap() {
     initOfflineSync();
     initPwaInstall();
     initAnalytics();
-    // Google AdSense – jedyne źródło dochodu (baner Home nad stopką)
-    initAdSense();
+    // Google AdSense – tylko po zgodzie cookie (RODO / AdSense)
+    if (hasCookieConsentAccepted()) {
+        initAdSense();
+    }
 
     // ETAP 18A – Application Health Monitor (read-only, tło; UI tylko po haśle)
     initHealthMonitor();

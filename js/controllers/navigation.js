@@ -2,14 +2,15 @@
 import { t } from '../core/i18n.js';
 import { eventBus } from '../core/eventBus.js';
 import { EVENTS } from '../core/events.js';
-import { renderHome } from '../views/home.js?v=43';
+import { renderHome, destroyHome } from '../views/home.js?v=44';
 import { renderMap } from '../views/map.js?v=48';
 import { renderPremium } from '../views/premium.js';
 import { renderFavorites, refreshFavoritesBadge } from '../views/favorites.js';
 import { renderCart, refreshCartBadge } from '../views/cart.js';
 import { renderProfile } from '../views/profile.js';
+import { renderImpressum, renderDatenschutz, renderAgb } from '../views/legal.js';
 
-const VIEW_IDS = ['home', 'map', 'premium', 'favorites', 'cart', 'profile'];
+const VIEW_IDS = ['home', 'map', 'premium', 'favorites', 'cart', 'profile', 'impressum', 'datenschutz', 'agb'];
 
 const viewRenderers = {
     home: renderHome,
@@ -17,7 +18,10 @@ const viewRenderers = {
     premium: renderPremium,
     favorites: renderFavorites,
     cart: renderCart,
-    profile: renderProfile
+    profile: renderProfile,
+    impressum: renderImpressum,
+    datenschutz: renderDatenschutz,
+    agb: renderAgb
 };
 
 let currentView = null;
@@ -59,6 +63,7 @@ function updateMapLayoutState(view) {
     VIEW_IDS.forEach((id) => {
         document.body.classList.toggle(`view-${id}-active`, view === id);
     });
+    document.body.classList.toggle('view-legal-active', view === 'impressum' || view === 'datenschutz' || view === 'agb');
 }
 
 export function updateNavLabels() {
@@ -148,6 +153,10 @@ export function navigateTo(view, options = {}) {
     const force = Boolean(options.force);
     const hasMapFilter = view === 'map'
         && (options.filter != null || options.category != null);
+
+    if (previousView === 'home' && view !== 'home') {
+        destroyHome();
+    }
 
     // Ten sam widok mapy + nowy filtr: zastosuj filtr bez pełnego remountu
     if (view === currentView && !force) {

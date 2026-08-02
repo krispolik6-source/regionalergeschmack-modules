@@ -16,13 +16,14 @@ import { getCategoryImage, getCategoryImageJpeg } from '../presentation/category
 import { ensureNavigationHealed } from '../controllers/navigation.js';
 import { showToast } from '../core/toast.js';
 import { getSettings } from '../core/settings.js';
+import { t } from '../core/i18n.js';
 
 const LOG_KEY = 'rg_self_heal_log';
 const DAY_KEY = 'rg_self_heal_day';
 const SW_PROMPT_KEY = 'rg_self_heal_sw_prompt';
 const MAX_LOG = 80;
 const WATCHDOG_MS = 28000;
-const PLACEHOLDER_SRC = '/assets/icons/logo-master.svg?v=28';
+const PLACEHOLDER_SRC = '/assets/icons/logo-master.svg?v=29';
 
 /** @type {{ at: string, area: string, action: string, detail?: string }[]} */
 let sessionFixes = [];
@@ -415,11 +416,12 @@ function showSwRefreshPrompt() {
                 border:0;border-radius:999px;padding:8px 14px;cursor:pointer;
                 background:#c9a227;color:#1c1812;font:700 13px/1 Source Sans 3,system-ui,sans-serif;
             ">OK</button>
-            <button type="button" data-rg-sw-dismiss aria-label="Close" style="
+            <button type="button" data-rg-sw-dismiss style="
                 border:0;background:transparent;color:#f5efe3;cursor:pointer;font-size:18px;line-height:1;
             ">×</button>
         `;
         document.body.appendChild(banner);
+        banner.querySelector('[data-rg-sw-dismiss]')?.setAttribute('aria-label', t('btn.close'));
         banner.querySelector('[data-rg-sw-reload]')?.addEventListener('click', () => {
             pushFix('sw', 'user_refresh', 'reload');
             location.reload();

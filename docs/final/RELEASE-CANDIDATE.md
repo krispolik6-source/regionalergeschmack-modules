@@ -1,6 +1,6 @@
 # ETAP 38 — Release Candidate
 
-**Data:** 2026-07-23  
+**Data:** 2026-08-01  
 **Werdykt:** **PASS**  
 **Persona:** Pierwszy użytkownik · install → reinstall
 
@@ -29,7 +29,7 @@
 | 9 | Premium | ✅ | premium view + entry points |
 | 10 | Powrót następnego dnia (persist) | ✅ | settings + GPS + favorites + cart keys |
 | 11 | Offline | ✅ | SW cache + offline event + banner |
-| 12 | Aktualizacja (PWA version) | ✅ | PWA_VERSION=28 synced + skipWaiting |
+| 12 | Aktualizacja (PWA version) | ✅ | PWA_VERSION=29 synced + skipWaiting |
 | 13 | Uninstall (czyszczenie) | ✅ | rg_* keys · empty-storage safe boot |
 | 14 | Reinstall | ✅ | SW re-register + install prompt + navigate |
 

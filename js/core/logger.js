@@ -50,6 +50,7 @@ export const DEV_LOG_PATTERNS = Object.freeze([
     /\[Regional Intelligence/i,
     /\[PopupLifecycle/i,
     /\[ADSENSE DIAGNOSTICS\]/i,
+    /\[MapDriveDiag\]/i,
     /__RG_[A-Z_]+/,
     /nawigacja gotowa/i
 ]);
@@ -265,6 +266,21 @@ export function installProductionConsole() {
     return { ok: true, env, minLevel: min };
 }
 
+/** Diagnostyka jazdy / GPS mapy — wyłącznie localhost (zero wpływu na produkcję). */
+export function logMapDriveDiag(event, data = {}) {
+    if (!isLocalhost()) return;
+    const payload = { ...data, ts: Date.now() };
+    try {
+        if (typeof performance !== 'undefined' && performance.memory) {
+            payload.heapUsedMB = Math.round(performance.memory.usedJSHeapSize / 1048576);
+            payload.heapTotalMB = Math.round(performance.memory.totalJSHeapSize / 1048576);
+        }
+    } catch {
+        /* ignore */
+    }
+    console.info('[MapDriveDiag]', event, payload);
+}
+
 export default {
     LOG_LEVELS,
     log,
@@ -273,5 +289,6 @@ export default {
     shouldEmit,
     getEffectiveMinLevel,
     isLocalhost,
-    isProductionHost
+    isProductionHost,
+    logMapDriveDiag
 };

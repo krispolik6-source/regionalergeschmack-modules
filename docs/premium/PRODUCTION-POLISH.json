@@ -1,7 +1,7 @@
 {
   "id": "production-polish-31",
   "title": "PRODUCTION POLISH — ETAP 31",
-  "generatedAt": "2026-07-23T18:33:00.417Z",
+  "generatedAt": "2026-08-01T05:05:16.006Z",
   "policy": {
     "autoApply": false,
     "autoFix": false,
@@ -10,20 +10,20 @@
   },
   "scores": {
     "ux": 86,
-    "ui": 88,
+    "ui": 84,
     "brand": 94,
     "performance": 96,
     "accessibility": 90,
     "mobile": 91,
     "pwa": 93,
     "emotion": 86,
-    "overall": 91
+    "overall": 90
   },
   "summary": {
     "fail": 0,
-    "warn": 1,
+    "warn": 2,
     "ok": 9,
-    "findings": 10
+    "findings": 11
   },
   "findings": [
     {
@@ -49,6 +49,12 @@
       "area": "pwa",
       "detail": "Manifest ikony obecne",
       "file": ""
+    },
+    {
+      "severity": "warn",
+      "area": "ui",
+      "detail": "1× „??” poza nullish w home.js",
+      "file": "js/views/home.js"
     },
     {
       "severity": "ok",

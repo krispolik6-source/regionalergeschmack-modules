@@ -10,6 +10,7 @@
  * GPS: nie jest API AdSense; region i tak idzie z IP.
  * P4: AdSense NIE pyta o GPS — tylko już zapisana pozycja (mapa/Home nadal używa GPS).
  */
+import { hasCookieConsentAccepted } from '../core/cookieConsent.js';
 import { t, getCurrentLanguage } from '../core/i18n.js';
 import {
     SUPPORTED_LANGUAGE_CODES,
@@ -22,8 +23,17 @@ import { EVENTS } from '../core/events.js';
 
 const LOADER_ID = 'rg-adsense-loader';
 const DIAG_PREFIX = '[ADSENSE DIAGNOSTICS]';
+const ADS_DIAG_PREFIX = '[AdsDiag]';
 /** P5: czas oczekiwania na data-ad-status po push (anti-CLS, bez display:none). */
 const UNFILLED_WATCH_MS = 4000;
+/** P1: lazy load — margines przed wejściem w viewport. */
+const LAZY_ROOT_MARGIN = '200px 0px';
+const LAZY_THRESHOLD = 0.01;
+
+/** @type {WeakMap<Element, { io?: IntersectionObserver, observers?: MutationObserver[], timers?: number[] }>} */
+const adHostObservers = new WeakMap();
+
+let adsenseInitialized = false;
 
 /** @type {{ lat: number, lng: number, source: string } | null} */
 let lastKnownGeo = null;
@@ -39,6 +49,198 @@ let languageRemountTimer = null;
 
 const LANG_REMOUNT_DEBOUNCE_MS = 200;
 const UI_LANG_STORAGE_KEY = 'rs_lang';
+
+/** P4: diagnostyka runtime — tylko localhost. */
+const adsRuntimeDiag = {
+    activeSlots: 0,
+    renders: 0,
+    errors: 0,
+    skippedInits: 0,
+    loadTimesMs: []
+};
+
+function isLocalhostDiag() {
+    if (typeof window === 'undefined') return false;
+    try {
+        const host = String(window.location?.hostname || '').toLowerCase();
+        return host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
+    } catch {
+        return false;
+    }
+}
+
+function adsDiagLog(message, extra = {}) {
+    if (!isLocalhostDiag()) return;
+    try {
+        console.info(ADS_DIAG_PREFIX, message, {
+            activeSlots: adsRuntimeDiag.activeSlots,
+            renders: adsRuntimeDiag.renders,
+            errors: adsRuntimeDiag.errors,
+            skippedInits: adsRuntimeDiag.skippedInits,
+            avgLoadMs: adsRuntimeDiag.loadTimesMs.length
+                ? Math.round(
+                    adsRuntimeDiag.loadTimesMs.reduce((a, b) => a + b, 0)
+                        / adsRuntimeDiag.loadTimesMs.length
+                )
+                : 0,
+            ...extra
+        });
+    } catch {
+        /* ignore */
+    }
+}
+
+function recordAdRender(unitCount, loadMs) {
+    adsRuntimeDiag.renders += 1;
+    adsRuntimeDiag.activeSlots = Math.max(adsRuntimeDiag.activeSlots, unitCount);
+    if (Number.isFinite(loadMs)) adsRuntimeDiag.loadTimesMs.push(loadMs);
+    adsDiagLog('render', { unitCount, loadMs: Math.round(loadMs || 0) });
+}
+
+function recordSkippedInit(reason) {
+    adsRuntimeDiag.skippedInits += 1;
+    adsDiagLog('skip-init', { reason });
+}
+
+function recordAdError(err) {
+    adsRuntimeDiag.errors += 1;
+    adsDiagLog('error', { message: String(err?.message || err) });
+}
+
+function getHostObserverState(host) {
+    if (!adHostObservers.has(host)) {
+        adHostObservers.set(host, { observers: [], timers: [] });
+    }
+    return adHostObservers.get(host);
+}
+
+export function disconnectHostAdObservers(host) {
+    if (!host) return;
+    const state = adHostObservers.get(host);
+    if (!state) return;
+    try {
+        state.io?.disconnect?.();
+    } catch {
+        /* ignore */
+    }
+    (state.observers || []).forEach((observer) => {
+        try {
+            observer.disconnect?.();
+        } catch {
+            /* ignore */
+        }
+    });
+    (state.timers || []).forEach((timer) => clearTimeout(timer));
+    adHostObservers.delete(host);
+}
+
+export function teardownHomeAdSense(root = document) {
+    const seen = new Set();
+    [root, document].forEach((scope) => {
+        scope?.querySelectorAll?.('[data-home-adsense]')?.forEach((host) => {
+            if (seen.has(host)) return;
+            seen.add(host);
+            disconnectHostAdObservers(host);
+        });
+    });
+    if (isLocalhostDiag()) {
+        adsRuntimeDiag.activeSlots = 0;
+        adsDiagLog('teardown');
+    }
+}
+
+function isElementVisibleForAds(el) {
+    if (!el?.isConnected) return false;
+    if (el.closest('[hidden]')) return false;
+
+    try {
+        const panel = el.closest('[data-view-panel]');
+        if (panel?.hidden) return false;
+        if (document.body?.classList?.contains('view-map-active')) {
+            const homePanel = el.closest('[data-view-panel="home"]');
+            if (homePanel && homePanel.hidden) return false;
+        }
+    } catch {
+        /* ignore */
+    }
+
+    try {
+        const style = window.getComputedStyle(el);
+        if (style.display === 'none' || style.visibility === 'hidden') return false;
+        if (Number.parseFloat(style.opacity) === 0) return false;
+    } catch {
+        /* ignore */
+    }
+    return true;
+}
+
+function isHostAlreadyInitialized(host) {
+    if (!host) return false;
+    if (host.getAttribute('data-rg-ad-initialized') === '1') return true;
+    const ins = host.querySelector('ins.adsbygoogle');
+    return Boolean(ins?.getAttribute('data-adsbygoogle-status'));
+}
+
+function markHostInitialized(host) {
+    host?.setAttribute?.('data-rg-ad-initialized', '1');
+}
+
+function isNearViewport(el) {
+    if (typeof window === 'undefined' || !el?.getBoundingClientRect) return true;
+    const rect = el.getBoundingClientRect();
+    const margin = 200;
+    return rect.bottom >= -margin && rect.top <= (window.innerHeight || 0) + margin;
+}
+
+function attachLazyAdObserver(host) {
+    if (!host || typeof IntersectionObserver === 'undefined') {
+        pushAdUnits(host);
+        return;
+    }
+
+    disconnectHostAdObservers(host);
+    const state = getHostObserverState(host);
+
+    const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            if (!isElementVisibleForAds(host)) continue;
+            disconnectHostAdObservers(host);
+            pushAdUnits(host);
+            break;
+        }
+    }, {
+        root: null,
+        rootMargin: LAZY_ROOT_MARGIN,
+        threshold: LAZY_THRESHOLD
+    });
+
+    state.io = io;
+    try {
+        io.observe(host);
+        adsDiagLog('lazy-observer-attached');
+    } catch {
+        disconnectHostAdObservers(host);
+        pushAdUnits(host);
+    }
+}
+
+function scheduleAdLoad(host) {
+    if (!host || !shouldShowAdSense() || !isAdSenseConfigured()) return;
+    if (isHostAlreadyInitialized(host)) {
+        recordSkippedInit('already-init');
+        return;
+    }
+    if (!isElementVisibleForAds(host)) {
+        recordSkippedInit('hidden-container');
+        return;
+    }
+    if (isNearViewport(host)) {
+        pushAdUnits(host);
+        return;
+    }
+    attachLazyAdObserver(host);
+}
 
 function hasManualUiLanguage() {
     try {
@@ -120,6 +322,7 @@ const HTML_LANG_MAP = Object.freeze({
 });
 
 export function shouldShowAdSense() {
+    if (!hasCookieConsentAccepted()) return false;
     return ADSENSE_CONFIG?.enabled !== false;
 }
 
@@ -361,6 +564,7 @@ function annotateAdHostsWithGeo(root = document) {
 }
 
 export function ensureAdSenseScript() {
+    if (!hasCookieConsentAccepted()) return false;
     if (!isAdSenseConfigured()) return false;
     const client = String(ADSENSE_CONFIG.clientId).trim();
     const src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(client)}`;
@@ -411,9 +615,9 @@ export function buildHomeAdSenseHtml() {
            </div>`;
 
     return `
-        <aside class="rg-adsense-home app-section" aria-label="${aria}" data-home-adsense data-rg-ad-lang="${escapeHtml(lang)}" data-rg-ad-html-lang="${escapeHtml(toHtmlLang(lang))}"${geoAttrs}>
-            <span class="rg-adsense-label rg-ad-label">${label}</span>
-            <div class="rg-adsense-frame">
+        <aside class="rg-adsense-home app-section" role="complementary" aria-label="${aria}" data-home-adsense data-rg-ad-lang="${escapeHtml(lang)}" data-rg-ad-html-lang="${escapeHtml(toHtmlLang(lang))}"${geoAttrs}>
+            <span class="rg-adsense-label rg-ad-label" aria-hidden="true">${label}</span>
+            <div class="rg-adsense-frame" role="region" aria-label="${aria}">
                 ${inner}
             </div>
         </aside>
@@ -426,6 +630,7 @@ export function buildHomeAdSenseHtml() {
  */
 function watchAdUnitFill(host) {
     if (!host || typeof document === 'undefined') return;
+    const state = getHostObserverState(host);
     const units = host.querySelectorAll?.('ins.adsbygoogle') || [];
     units.forEach((ins) => {
         if (!ins || ins.getAttribute('data-rg-unfilled-watch') === '1') return;
@@ -440,19 +645,28 @@ function watchAdUnitFill(host) {
             } catch {
                 /* ignore */
             }
-            if (timer != null) clearTimeout(timer);
+            if (timer != null) {
+                clearTimeout(timer);
+                const idx = state.timers.indexOf(timer);
+                if (idx >= 0) state.timers.splice(idx, 1);
+            }
+            if (observer && state.observers) {
+                const oIdx = state.observers.indexOf(observer);
+                if (oIdx >= 0) state.observers.splice(oIdx, 1);
+            }
         };
 
         const reportUnfilled = () => {
-            // Zachowaj wysokość / display:block — tylko atrybuty diagnostyczne
             ins.setAttribute('data-rg-ad-unfilled', '1');
             host.setAttribute('data-rg-ad-unfilled', '1');
-            try {
-                console.info(
-                    `${DIAG_PREFIX} Ad unit unfilled (data-ad-status=unfilled) — height preserved, no display:none`
-                );
-            } catch {
-                /* ignore */
+            if (isLocalhostDiag()) {
+                try {
+                    console.info(
+                        `${DIAG_PREFIX} Ad unit unfilled (data-ad-status=unfilled) — height preserved, no display:none`
+                    );
+                } catch {
+                    /* ignore */
+                }
             }
         };
 
@@ -482,6 +696,7 @@ function watchAdUnitFill(host) {
                     attributes: true,
                     attributeFilter: ['data-ad-status', 'data-adsbygoogle-status']
                 });
+                state.observers.push(observer);
             } catch {
                 observer = null;
             }
@@ -491,22 +706,42 @@ function watchAdUnitFill(host) {
             check();
             finish(observer, timer);
         }, UNFILLED_WATCH_MS);
+        state.timers.push(timer);
     });
 }
 
 function pushAdUnits(host) {
-    if (!host || !isAdSenseConfigured()) return;
+    if (!host || !hasCookieConsentAccepted() || !isAdSenseConfigured()) return false;
+    if (!isElementVisibleForAds(host)) {
+        recordSkippedInit('hidden-on-push');
+        return false;
+    }
+    if (isHostAlreadyInitialized(host)) {
+        recordSkippedInit('already-init-on-push');
+        return false;
+    }
+
     ensureAdSenseScript();
+    const started = typeof performance !== 'undefined' ? performance.now() : 0;
+
     try {
         window.adsbygoogle = window.adsbygoogle || [];
         const units = host.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status])');
+        if (!units.length) {
+            recordSkippedInit('no-pending-units');
+            return false;
+        }
         units.forEach(() => {
-            // Brak pola language w API — Google bierze język z dokumentu / użytkownika / IP.
             window.adsbygoogle.push({});
         });
+        markHostInitialized(host);
+        recordAdRender(units.length, typeof performance !== 'undefined' ? performance.now() - started : 0);
         watchAdUnitFill(host);
+        return true;
     } catch (e) {
+        recordAdError(e);
         console.warn('[AdSense]', e);
+        return false;
     }
 }
 
@@ -561,8 +796,11 @@ export function remountHomeAdSense(root = document, opts = {}) {
 
     const client = escapeHtml(String(ADSENSE_CONFIG.clientId || '').trim());
     const slot = escapeHtml(String(ADSENSE_CONFIG.slotBanner || '').trim());
+    disconnectHostAdObservers(host);
+    host.removeAttribute('data-rg-ad-initialized');
+    host.removeAttribute('data-rg-ad-unfilled');
     frame.innerHTML = buildInsHtml(client, slot);
-    pushAdUnits(host);
+    scheduleAdLoad(host);
     lastRemountedLanguage = lang;
     logAdSenseDiagnostics(source, { event: eventName });
 }
@@ -578,7 +816,7 @@ export function mountHomeAdSense(root = document) {
     if (!isAdSenseConfigured()) return;
 
     void refreshAdSenseUserLocation().then(() => annotateAdHostsWithGeo(root));
-    pushAdUnits(host);
+    scheduleAdLoad(host);
 }
 
 function bindLocaleListeners() {
@@ -634,13 +872,17 @@ function bindLocaleListeners() {
 }
 
 export function initAdSense() {
+    if (!hasCookieConsentAccepted()) return;
+    if (adsenseInitialized) return;
+    adsenseInitialized = true;
+
     window.adsbygoogle = window.adsbygoogle || [];
     const initSource = detectAdSenseLocaleSource();
-    // UI → navigator.language → de
     const initLang = syncAdSenseDocumentLocale(getCurrentLanguage() || detectBrowserAdLanguage());
     lastRemountedLanguage = initLang;
     bindLocaleListeners();
     logAdSenseDiagnostics(initSource, { event: 'init' });
+    adsDiagLog('init');
 
     if (isAdSenseConfigured()) ensureAdSenseScript();
     void refreshAdSenseUserLocation();
@@ -649,6 +891,7 @@ export function initAdSense() {
         config: () => ({ ...ADSENSE_CONFIG }),
         mount: mountHomeAdSense,
         remount: remountHomeAdSense,
+        teardown: teardownHomeAdSense,
         configured: isAdSenseConfigured,
         shouldShow: shouldShowAdSense,
         locale: getAdSenseLocaleContext,
@@ -659,7 +902,13 @@ export function initAdSense() {
         supportedLanguages: () => [...SUPPORTED_LANGUAGE_CODES],
         logDiagnostics: logAdSenseDiagnostics,
         acceptsLanguageParam: false,
-        acceptsGps: false
+        acceptsGps: false,
+        ...(isLocalhostDiag()
+            ? {
+                diag: () => ({ ...adsRuntimeDiag }),
+                logAdsDiag: adsDiagLog
+            }
+            : {})
     };
 }
 
@@ -668,6 +917,8 @@ export default {
     buildHomeAdSenseHtml,
     mountHomeAdSense,
     remountHomeAdSense,
+    teardownHomeAdSense,
+    disconnectHostAdObservers,
     shouldShowAdSense,
     isAdSenseConfigured,
     ensureAdSenseScript,

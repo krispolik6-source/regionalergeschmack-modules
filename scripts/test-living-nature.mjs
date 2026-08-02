@@ -98,9 +98,12 @@ assert(src.includes('ln-fields'), 'landscape fields layer');
 assert(src.includes('ln-orchard'), 'orchard layer');
 assert(src.includes('syncLivingNatureScene'), 'scene sync');
 
-for (const base of ['spring-birds', 'summer-birds', 'autumn-birds', 'winter-birds']) {
-    assert(existsSync(join(ROOT, 'assets/audio/nature', `${base}.mp3`)), `audio ${base}.mp3`);
-}
+const climateSrc = readFileSync(join(ROOT, 'js/presentation/climateAtmosphere.js'), 'utf8');
+assert(
+    climateSrc.includes('cdn.freesound.org/previews/623/623806_13197878-lq.mp3'),
+    'ambient uses external Freesound URL'
+);
+assert(climateSrc.includes('birds_natural_forest.mp3'), 'ambient local fallback');
 
 if (failed) {
     console.error(`\n${failed} failure(s)`);

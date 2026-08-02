@@ -60,6 +60,13 @@ body {
 
 .main-header .header-brand-mark {
     flex-shrink: 0;
+    align-self: center;
+    margin: 0;
+}
+
+.main-header .header-left h1 {
+    margin: 0 !important;
+    align-self: center;
 }
 
 @media screen and (max-width: 359px) {

@@ -24,6 +24,7 @@ import { enrichProducersWithProducts, enrichProducerWithProducts } from './produ
 import { getRegisteredUserProducers } from './userProducerStore.js';
 import { getContentProducerById, getContentProducers } from './contentProducers.js';
 import { isCacheNearLocation } from '../core/userLocation.js';
+import { logMapDriveDiag } from '../core/logger.js';
 
 const CACHE_KEY = 'rg_producers_data_v9';
 const LEGACY_CACHE_KEYS = Object.freeze([
@@ -73,6 +74,7 @@ let lastLoadMeta = {
  */
 export function abortPendingDataLoads() {
     registryEpoch += 1;
+    logMapDriveDiag('data_load_abort', { registryEpoch });
     abortInflightOsmRequests();
 }
 

@@ -1,6 +1,6 @@
 # PRODUCTION POLISH — ETAP 31
 
-Wygenerowano: 2026-07-23T18:33:00.417Z
+Wygenerowano: 2026-08-01T05:05:16.006Z
 
 ## Polityka
 
@@ -8,21 +8,21 @@ Wygenerowano: 2026-07-23T18:33:00.417Z
 - Bez nowych funkcji · bez zmian architektury
 - Store / EventBus / API / GPS / Leaflet / routing — nietknięte
 
-## Overall: **91 / 100**
+## Overall: **90 / 100**
 
 ## Oceny
 
 | Obszar | Score |
 |--------|------:|
 | UX | 86 |
-| UI | 88 |
+| UI | 84 |
 | Brand | 94 |
 | Performance | 96 |
 | Accessibility | 90 |
 | Mobile | 91 |
 | PWA | 93 |
 | Emotion | 86 |
-| **Overall** | **91** |
+| **Overall** | **90** |
 
 ## Checklist
 
@@ -40,6 +40,7 @@ Wygenerowano: 2026-07-23T18:33:00.417Z
 - [✓] **brand** — Header Premium = logo-master
 - [✓] **pwa** — Install banner ::before = --brand-logo (logo-master)
 - [✓] **pwa** — Manifest ikony obecne
+- [!] **ui** — 1× „??” poza nullish w home.js · `js/views/home.js`
 - [✓] **ui** — For You bez placeholder „?”
 - [✓] **ui** — Brak typowych mojibake N?he/Men? w index
 - [✓] **dev** — isDevMode blokuje produkcję

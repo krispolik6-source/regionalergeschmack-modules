@@ -86,7 +86,7 @@ export function renderPremium(container) {
     container.innerHTML = `
         <div class="premium-page">
             <header class="view-hero premium-hero">
-                <img class="premium-hero-icon" src="/assets/icons/logo-master.svg?v=28" width="56" height="56" alt="" aria-hidden="true">
+                <img class="premium-hero-icon" src="/assets/icons/logo-master.svg?v=29" width="56" height="56" alt="" aria-hidden="true">
                 <h2>${escapeHtml(t('premium.title'))}</h2>
                 <p class="text-muted">${escapeHtml(t('premium.subtitle'))}</p>
             </header>

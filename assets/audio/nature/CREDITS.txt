@@ -1,8 +1,14 @@
 Regionaler Geschmack – nature ambient
 
-Primary (app): authentic seasonal bird mixes
+Primary (runtime): Freesound CDN preview
+  https://cdn.freesound.org/previews/623/623806_13197878-lq.mp3
+
+Offline fallback (optional – wrzuć plik ręcznie):
+  birds_natural_forest.mp3
+  Instrukcja: birds_natural_forest.README.txt
+
+Legacy seasonal mixes (build scripts / opcjonalne):
   spring-birds.mp3 | summer-birds.mp3 | autumn-birds.mp3 | winter-birds.mp3
   Attribution / sources: CREDITS-BIRDS.txt
 
-Legacy procedural assets (*-forest.*) may remain unused.
 Master volume in app: ~10–12%.

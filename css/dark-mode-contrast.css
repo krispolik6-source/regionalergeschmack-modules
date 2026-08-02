@@ -252,6 +252,17 @@ body.dark-mode .producer-modal-toolbar {
     border-color: var(--surface-border-dark) !important;
 }
 
+body.dark-mode .producer-modal-header--compact {
+    background: #2a241c !important;
+    color: #f5efe3 !important;
+}
+
+body.dark-mode .producer-modal-header--compact::before,
+body.dark-mode .producer-modal-header--compact::after {
+    display: none !important;
+    content: none !important;
+}
+
 body.dark-mode .toast {
     background: #2a241c !important;
     color: var(--text-primary) !important;

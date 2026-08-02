@@ -38,13 +38,18 @@ function pushRecent(id) {
 export function pickSurpriseProducer(opts = {}) {
     const radiusKm = Number(opts.radiusKm) > 0 ? Number(opts.radiusKm) : 15;
     const user = getLastPosition();
-    let pool = (getProducers() || []).filter((p) => p && p.id && p.category !== 'other');
-    if (user?.lat && user?.lng) {
-        const near = getProducersInRadius(pool, radiusKm, user);
-        if (near.length) pool = near;
-        else {
-            const wider = getProducersInRadius(pool, Math.max(radiusKm, 40), user);
-            if (wider.length) pool = wider;
+    let pool;
+    if (Array.isArray(opts.pool)) {
+        pool = opts.pool.filter((p) => p && p.id && p.category !== 'other');
+    } else {
+        pool = (getProducers() || []).filter((p) => p && p.id && p.category !== 'other');
+        if (user?.lat && user?.lng) {
+            const near = getProducersInRadius(pool, radiusKm, user);
+            if (near.length) pool = near;
+            else {
+                const wider = getProducersInRadius(pool, Math.max(radiusKm, 40), user);
+                if (wider.length) pool = wider;
+            }
         }
     }
     if (!pool.length) return null;

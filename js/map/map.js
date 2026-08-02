@@ -13,6 +13,7 @@ import {
     livingMapCueLabelKey
 } from '../presentation/livingMap.js';
 import { isProducerPromoted } from '../core/premiumService.js';
+import { logMapDriveDiag } from '../core/logger.js';
 
 /** Diagnostyka lifecycle popupów (ETAP 8.1) – tymczasowe, świadome logi */
 export function logPopupLifecycle(event, detail = {}) {
@@ -207,6 +208,8 @@ function ensureMarkerLayers(map) {
                 animate: false,
                 // Bez animacji klastrów – stabilniejszy widok przy zoom/pan
                 animateAddingMarkers: false,
+                // Pan mapy: nie usuwaj markerów poza viewport (zamykało popup)
+                removeOutsideVisibleBounds: false,
                 // Wygląd klastra: kolor/emoji gdy jedna kategoria (logika grupowania bez zmian)
                 iconCreateFunction: createClusterIcon
             }).addTo(map);
@@ -251,6 +254,7 @@ function createProducerMarker(producer) {
             minWidth: 240,
             // autoPan przesuwa mapę → MarkerCluster przelicza warstwę i zamyka popup
             autoPan: false,
+            autoClose: false,
             closeOnClick: false,
             className: 'producer-leaflet-popup'
         });
@@ -521,6 +525,8 @@ export function addMarkers(map, producers = [], options = {}) {
     const list = Array.isArray(producers) ? producers : [];
     const desiredIds = new Set();
     const toAdd = [];
+    const markerRenderStartedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    let removedCount = 0;
 
     for (const producer of list) {
         const id = String(producer?.id ?? '');
@@ -544,10 +550,24 @@ export function addMarkers(map, producers = [], options = {}) {
             if (openedPopupId && id === String(openedPopupId)) continue;
             if (marker.isPopupOpen?.()) continue;
             detachMarker(marker, { animate: true });
+            removedCount += 1;
         }
     }
 
-    const finishSync = () => {
+    const logMarkerRenderDiag = (addedCount) => {
+        const renderMs = Math.round(
+            (typeof performance !== 'undefined' ? performance.now() : Date.now()) - markerRenderStartedAt
+        );
+        logMapDriveDiag('markers_sync', {
+            added: addedCount,
+            removed: removedCount,
+            total: markerRegistry.size,
+            renderMs,
+            deferred: Boolean(deferAdds || deferRemovals)
+        });
+    };
+
+    const finishSync = (addedCount = 0) => {
         // reopen TYLKO gdy jawnie dozwolone i popup faktycznie zgasł (nie po OSM sync)
         if (allowReopen && openedPopupId) {
             const marker = getMarkerById(openedPopupId);
@@ -563,6 +583,7 @@ export function addMarkers(map, producers = [], options = {}) {
                 map.fitBounds(bounds.pad(0.12));
             }
         }
+        logMarkerRenderDiag(addedCount);
     };
 
     if (deferAdds || toAdd.length === 0) {
@@ -572,7 +593,7 @@ export function addMarkers(map, producers = [], options = {}) {
                 queuedAdds: toAdd.length
             });
         }
-        finishSync();
+        finishSync(0);
         return preserve || deferRemovals || deferAdds
             ? markerRegistry.size
             : desiredIds.size;
@@ -604,7 +625,7 @@ export function addMarkers(map, producers = [], options = {}) {
             return;
         }
 
-        finishSync();
+        finishSync(toAdd.length);
     };
 
     addBatch(0);

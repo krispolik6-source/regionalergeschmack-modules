@@ -117,8 +117,8 @@ export function buildHomeAdBannersHtml() {
     }).join('');
 
     return `
-        <section class="rg-ad-home app-section" aria-label="${escapeHtml(t('ads.sectionLabel'))}" data-home-ad-panel>
-            <div class="rg-ad-banner" data-home-ad-banner>
+        <section class="rg-ad-home app-section" role="complementary" aria-label="${escapeHtml(t('ads.sectionLabel'))}" data-home-ad-panel>
+            <div class="rg-ad-banner" role="region" aria-label="${escapeHtml(t('ads.sectionLabel'))}" data-home-ad-banner>
                 ${slides}
             </div>
         </section>
@@ -230,8 +230,8 @@ export function buildPopupAdHtml(producerId = '') {
         : `<button type="button" class="rg-ad-popup-link" data-ad-action="${escapeHtml(tip.action)}">${escapeHtml(t(tip.textKey))}</button>`;
 
     return `
-        <div class="rg-ad-popup" data-popup-ad>
-            <span class="rg-ad-label rg-ad-label--inline">${escapeHtml(t('ads.label'))}</span>
+        <div class="rg-ad-popup" data-popup-ad role="note" aria-label="${escapeHtml(t('ads.label'))}">
+            <span class="rg-ad-label rg-ad-label--inline" aria-hidden="true">${escapeHtml(t('ads.label'))}</span>
             ${cta}
         </div>
     `;

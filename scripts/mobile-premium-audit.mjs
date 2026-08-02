@@ -41,6 +41,7 @@ function read(rel) {
 
 const mp = read('css/mobile-premium.css');
 const style = read('css/style.css');
+const brandStack = read('css/brand-stack.css');
 const ph = read('css/premium-header.css');
 const allCss = `${mp}\n${style}\n${ph}`;
 
@@ -48,7 +49,7 @@ const checks = [];
 const assert = (id, ok, detail) => checks.push({ id, ok, detail });
 
 assert('file-mobile-premium', Boolean(mp), 'css/mobile-premium.css istnieje');
-assert('imported', style.includes('mobile-premium.css'), '@import mobile-premium.css');
+assert('imported', style.includes('mobile-premium.css') || brandStack.includes('mobile-premium.css'), '@import mobile-premium.css');
 assert('overflow-x-clip', mp.includes('overflow-x: clip'), 'global overflow-x');
 assert('touch-min', mp.includes('--mp-touch-min: 44px'), 'min touch 44px');
 assert('contrast-safe', mp.includes('--mp-text-safe') && mp.includes('--mp-muted-safe'), 'kontrast tokeny');

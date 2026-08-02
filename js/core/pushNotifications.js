@@ -8,6 +8,7 @@ import { eventBus } from './eventBus.js';
 import { EVENTS } from './events.js';
 import { getSettings, saveSettings } from './settings.js';
 import { t } from './i18n.js';
+import { safeLocalStorageSetItem, byteLen, ensureLocalStorageHeadroom } from './safeStorage.js';
 
 const SEASON_NOTIFY_KEY = 'rg_push_season_notified';
 const NEARBY_NOTIFY_KEY = 'rg_push_nearby_ids';
@@ -21,6 +22,14 @@ const PUSH_POLL_INTERVAL_MS = Number(CONFIG.PUSH_POLL_INTERVAL_MS) > 0
 
 const SUBSCRIPTION_KEY = 'rg_push_subscription';
 const SNAPSHOT_KEY = 'rg_push_content_snapshot';
+const SNAPSHOT_BASELINE_KEY = 'rg_push_snapshot_v3_baseline';
+const SNAPSHOT_VERSION = 3;
+/** Maks. rozmiar snapshotu — powyżej tylko fingerprint + metadane. */
+const SNAPSHOT_MAX_BYTES = 200 * 1024;
+
+/** Kompaktowe klucze ofert w pamięci sesji (diff bez tysięcy kluczy w LS). */
+/** @type {Set<string> | null} */
+let runtimeSnapshotKeys = null;
 
 let pollTimer = null;
 let placesDebounce = null;
@@ -46,28 +55,212 @@ export function getStoredSubscription() {
 }
 
 function saveSubscription(subscription) {
-    localStorage.setItem(SUBSCRIPTION_KEY, JSON.stringify(subscription));
+    safeLocalStorageSetItem(SUBSCRIPTION_KEY, JSON.stringify(subscription));
 }
 
 export function clearStoredSubscription() {
     localStorage.removeItem(SUBSCRIPTION_KEY);
 }
 
-function readSnapshot() {
+export function compactOfferKey(jsonKey) {
+    const parsed = typeof jsonKey === 'string' ? parseOfferKey(jsonKey) : jsonKey;
+    const type = String(parsed?.type || 'offer');
+    const producerId = String(parsed?.producerId || '');
+    const itemId = String(parsed?.itemId || '');
+    return `${type}|${producerId}|${itemId}`;
+}
+
+function hashFingerprint(input) {
+    const str = String(input ?? '');
+    let hash = 5381;
+    for (let i = 0; i < str.length; i += 1) {
+        hash = ((hash << 5) + hash) ^ str.charCodeAt(i);
+    }
+    return (hash >>> 0).toString(36);
+}
+
+function summarizeProducers(keys, producers) {
+    const byProducer = new Map();
+    for (const key of keys || []) {
+        const compact = typeof key === 'string' && key.includes('|') && !key.startsWith('{')
+            ? key
+            : compactOfferKey(key);
+        const producerId = compact.split('|')[1] || '';
+        if (!producerId) continue;
+        if (!byProducer.has(producerId)) byProducer.set(producerId, []);
+        byProducer.get(producerId).push(compact);
+    }
+
+    const lookup = new Map((producers || []).map((p) => [String(p.id), p]));
+    return [...byProducer.entries()].map(([id, producerKeys]) => {
+        const producer = lookup.get(id);
+        const updatedAt = producer?.updatedAt
+            ?? producer?.updated_at
+            ?? producer?.modifiedAt
+            ?? null;
+        return {
+            id,
+            updatedAt,
+            offerCount: producerKeys.length,
+            fp: hashFingerprint(producerKeys.sort().join('\n'))
+        };
+    });
+}
+
+export function buildMinimalSnapshotPayload(keys, producers) {
+    const compactKeys = [...(keys || [])]
+        .map((key) => compactOfferKey(key))
+        .sort();
+    const fingerprint = hashFingerprint(compactKeys.join('\n'));
+
+    return {
+        v: SNAPSHOT_VERSION,
+        updatedAt: Date.now(),
+        offerCount: compactKeys.length,
+        fingerprint,
+        producers: summarizeProducers(compactKeys, producers).map(({ id, updatedAt, offerCount, fp }) => ({
+            id,
+            updatedAt,
+            offerCount,
+            fp
+        }))
+    };
+}
+
+export function buildFingerprintOnlySnapshotPayload(keys) {
+    const compactKeys = [...(keys || [])]
+        .map((key) => compactOfferKey(key))
+        .sort();
+
+    return {
+        v: SNAPSHOT_VERSION,
+        updatedAt: Date.now(),
+        offerCount: compactKeys.length,
+        fingerprint: hashFingerprint(compactKeys.join('\n')),
+        producers: []
+    };
+}
+
+/** @deprecated v2 — zawierał keys[] (duży rozmiar). Użyj buildMinimalSnapshotPayload. */
+export function buildLightSnapshotPayload(keys, producers) {
+    const minimal = buildMinimalSnapshotPayload(keys, producers);
+    const compactKeys = [...(keys || [])].map((key) => compactOfferKey(key)).sort();
+    return {
+        ...minimal,
+        v: 2,
+        keys: compactKeys
+    };
+}
+
+/** @deprecated v1 – pełne JSON-klucze ofert (duży rozmiar). */
+export function buildLegacySnapshotPayload(keys) {
+    return {
+        keys: [...keys],
+        updatedAt: Date.now()
+    };
+}
+
+function readSnapshotData() {
     try {
         const raw = localStorage.getItem(SNAPSHOT_KEY);
-        const data = raw ? JSON.parse(raw) : null;
-        return Array.isArray(data?.keys) ? new Set(data.keys) : null;
+        return raw ? JSON.parse(raw) : null;
     } catch (_) {
         return null;
     }
 }
 
-function writeSnapshot(keys) {
-    localStorage.setItem(SNAPSHOT_KEY, JSON.stringify({
-        keys: [...keys],
-        updatedAt: Date.now()
-    }));
+/**
+ * Odtwarza znane klucze z hashów producentów (bez pełnej listy w LS).
+ * @param {object} data
+ * @param {Set<string>} currentCompactSet
+ */
+function hydrateKnownKeysFromSnapshot(data, currentCompactSet) {
+    if (!data) return null;
+
+    const currentArr = [...currentCompactSet];
+    const currentFp = hashFingerprint([...currentArr].sort().join('\n'));
+
+    if (data.fingerprint === currentFp) {
+        return new Set(currentArr);
+    }
+
+    const prevProducers = new Map((data.producers || []).map((p) => [String(p.id), p]));
+    const known = new Set();
+    const byProducer = new Map();
+
+    for (const compact of currentArr) {
+        const producerId = compact.split('|')[1] || '';
+        if (!producerId) continue;
+        if (!byProducer.has(producerId)) byProducer.set(producerId, []);
+        byProducer.get(producerId).push(compact);
+    }
+
+    for (const [producerId, producerKeys] of byProducer.entries()) {
+        const sorted = [...producerKeys].sort();
+        const fp = hashFingerprint(sorted.join('\n'));
+        const prev = prevProducers.get(producerId);
+        if (prev && prev.fp === fp) {
+            sorted.forEach((k) => known.add(k));
+        }
+    }
+
+    return known;
+}
+
+function readSnapshot(currentKeys) {
+    if (runtimeSnapshotKeys) {
+        return new Set(runtimeSnapshotKeys);
+    }
+
+    const data = readSnapshotData();
+    if (!data) return null;
+
+    if (Array.isArray(data.keys) && data.keys.length > 0) {
+        const compact = data.keys.map((key) => compactOfferKey(key));
+        runtimeSnapshotKeys = new Set(compact);
+        return runtimeSnapshotKeys;
+    }
+
+    const currentCompact = new Set([...(currentKeys || [])].map((key) => compactOfferKey(key)));
+    const known = hydrateKnownKeysFromSnapshot(data, currentCompact);
+    if (!known) return null;
+
+    if (known.size === 0 && (data.producers || []).length > 0) {
+        return null;
+    }
+
+    const currentFp = hashFingerprint([...currentCompact].sort().join('\n'));
+    if (
+        data.v === SNAPSHOT_VERSION
+        && data.fingerprint !== currentFp
+        && !localStorage.getItem(SNAPSHOT_BASELINE_KEY)
+    ) {
+        safeLocalStorageSetItem(SNAPSHOT_BASELINE_KEY, String(Date.now()), { skipOnQuota: true });
+        return null;
+    }
+
+    runtimeSnapshotKeys = known;
+    return known;
+}
+
+function writeSnapshot(keys, producers) {
+    ensureLocalStorageHeadroom();
+
+    const compactKeys = [...keys].map((key) => compactOfferKey(key));
+    runtimeSnapshotKeys = new Set(compactKeys);
+
+    let payload = buildMinimalSnapshotPayload(keys, producers);
+    let json = JSON.stringify(payload);
+
+    if (byteLen(json) > SNAPSHOT_MAX_BYTES) {
+        payload = buildFingerprintOnlySnapshotPayload(keys);
+        json = JSON.stringify(payload);
+    }
+
+    const result = safeLocalStorageSetItem(SNAPSHOT_KEY, json, { skipOnQuota: true });
+    if (!result.ok && result.skipped) {
+        console.warn('[Push] Pominięto zapis snapshotu — brak miejsca w localStorage');
+    }
 }
 
 export function collectOfferKeys(producers) {
@@ -191,7 +384,7 @@ async function showNotification({ title, body, tag, url }) {
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         new Notification(title, {
             body,
-            icon: '/assets/icons/icon-192.png?v=28',
+            icon: '/assets/icons/icon-192.png?v=29',
             tag
         });
         return true;
@@ -238,7 +431,7 @@ export async function subscribeToPush() {
         : { mode: 'local', permission: 'granted', savedAt: Date.now() };
 
     saveSubscription(stored);
-    writeSnapshot(collectOfferKeys(getProducers()));
+    writeSnapshot(collectOfferKeys(getProducers()), getProducers());
 
     return { ok: true, subscription: stored };
 }
@@ -285,7 +478,7 @@ function notifySeasonalIfNeeded() {
     const season = getCurrentSeason();
     try {
         if (localStorage.getItem(SEASON_NOTIFY_KEY) === season) return 0;
-        localStorage.setItem(SEASON_NOTIFY_KEY, season);
+        safeLocalStorageSetItem(SEASON_NOTIFY_KEY, season);
     } catch (_) {
         return 0;
     }
@@ -331,7 +524,10 @@ function notifyNearbyProducers(producers) {
     }
 
     try {
-        localStorage.setItem(NEARBY_NOTIFY_KEY, JSON.stringify([...new Set([...known, ...nextIds])].slice(-80)));
+        safeLocalStorageSetItem(
+            NEARBY_NOTIFY_KEY,
+            JSON.stringify([...new Set([...known, ...nextIds])].slice(-80))
+        );
     } catch (_) {
         /* ignore */
     }
@@ -347,15 +543,15 @@ export function checkForNewOffers({ forceBaseline = false } = {}) {
 
     const producers = getProducers();
     const currentKeys = collectOfferKeys(producers);
-    const previousKeys = readSnapshot();
+    const previousKeys = readSnapshot(currentKeys);
 
     if (!previousKeys || forceBaseline) {
-        writeSnapshot(currentKeys);
+        writeSnapshot(currentKeys, producers);
         notifySeasonalIfNeeded();
         return { notified: 0, baselined: true };
     }
 
-    const newKeys = [...currentKeys].filter((key) => !previousKeys.has(key));
+    const newKeys = [...currentKeys].filter((key) => !previousKeys.has(compactOfferKey(key)));
     let notified = 0;
 
     for (const key of newKeys) {
@@ -399,7 +595,7 @@ export function checkForNewOffers({ forceBaseline = false } = {}) {
     notified += notifySeasonalIfNeeded();
     notified += notifyNearbyProducers(producers);
 
-    writeSnapshot(currentKeys);
+    writeSnapshot(currentKeys, producers);
     return { notified };
 }
 
@@ -486,5 +682,10 @@ export default {
     checkForNewOffers,
     checkPushOffersNow,
     getStoredSubscription,
-    collectOfferKeys
+    collectOfferKeys,
+    compactOfferKey,
+    buildMinimalSnapshotPayload,
+    buildFingerprintOnlySnapshotPayload,
+    buildLightSnapshotPayload,
+    buildLegacySnapshotPayload
 };

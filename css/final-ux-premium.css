@@ -264,10 +264,12 @@ body.dark-mode .producer-product-image {
 
 /* --- 5. PRODUCENT – więcej produktów na ekranie --- */
 
+.producer-modal-header--compact .producer-photo-frame,
 .producer-modal-header .producer-photo-frame {
-    height: var(--photo-modal-height, 160px) !important;
-    max-height: 160px !important;
-    margin: 0 0 16px !important;
+    height: var(--photo-modal-height, 200px) !important;
+    max-height: min(250px, 30vh) !important;
+    min-height: 140px !important;
+    margin: 0 !important;
     border-radius: var(--fx-radius-sm) !important;
 }
 
@@ -375,10 +377,11 @@ body.dark-mode .producer-product-image {
     font-size: 12px !important;
 }
 
-.map-popup-btn,
-.map-popup-btn-details {
-    min-height: 40px !important;
-    padding: 8px 12px !important;
+.leaflet-popup.producer-leaflet-popup .map-popup-btn,
+.leaflet-popup.producer-leaflet-popup .map-popup-btn-details {
+    min-height: 44px !important;
+    height: 44px !important;
+    padding: 0 12px !important;
     font-size: 13px !important;
     border-radius: var(--fx-radius-sm) !important;
 }
@@ -431,9 +434,11 @@ body.dark-mode .producer-product-image {
         font-size: 11px !important;
     }
 
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: clamp(96px, 14vh, 128px) !important;
-        max-height: 128px !important;
+        height: clamp(140px, 28vh, 200px) !important;
+        max-height: min(220px, 30vh) !important;
+        min-height: 140px !important;
     }
 
     .producer-product-card {
@@ -492,9 +497,11 @@ body.dark-mode .producer-product-image {
 }
 
 @media screen and (max-width: 320px) {
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: clamp(88px, 13vh, 112px) !important;
-        max-height: 112px !important;
+        height: clamp(140px, 28vh, 200px) !important;
+        max-height: min(220px, 30vh) !important;
+        min-height: 140px !important;
     }
 
     .producer-product-image {
@@ -527,8 +534,11 @@ body.dark-mode .producer-product-image {
 }
 
 @media screen and (min-width: 768px) {
+    .producer-modal-header--compact .producer-photo-frame,
     .producer-modal-header .producer-photo-frame {
-        height: clamp(130px, 18vh, 160px) !important;
+        height: var(--photo-modal-height, 200px) !important;
+        max-height: min(220px, 28vh) !important;
+        min-height: 140px !important;
     }
 
     .producer-product-image {

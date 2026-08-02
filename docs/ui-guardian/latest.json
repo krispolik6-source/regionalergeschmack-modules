@@ -1,7 +1,7 @@
 {
   "id": "etap-41-ui-guardian",
   "verdict": "PASS",
-  "generatedAt": "2026-07-23T18:33:00.622Z",
+  "generatedAt": "2026-08-01T05:05:16.209Z",
   "intervalMs": 4000,
   "policy": {
     "localOnly": true,

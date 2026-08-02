@@ -11,7 +11,7 @@ globalThis.localStorage = {
     clear: () => storage.clear()
 };
 
-const { register, login, logout, getCurrentUser, changePassword, ACCOUNT_TYPES } = await import('../js/auth/auth.js');
+const { register, login, logout, getCurrentUser, changePassword, ACCOUNT_TYPES, ensureAdminSeed } = await import('../js/auth/auth.js');
 const { getProducerAccount } = await import('../js/data/userProducerStore.js');
 const { addReview, getReviewsForUser } = await import('../js/data/reviews.js');
 
@@ -22,6 +22,10 @@ function ok(msg) { passes.push(msg); console.log(`✅ ${msg}`); }
 function fail(msg) { failures.push(msg); console.error(`❌ ${msg}`); }
 
 storage.clear();
+
+const seededOffHost = await ensureAdminSeed();
+if (!seededOffHost && !storage.has('rg_auth_users')) ok('Admin seed wyłączony poza localhost');
+else fail('Admin seed nie powinien działać poza localhost');
 
 const clientReg = await register({
     email: 'klient@test.pl',

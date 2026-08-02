@@ -2,27 +2,29 @@
 import { getSettings, saveSettings } from '../core/settings.js';
 import { getCurrentSeason } from '../data/seasonCalendar.js';
 import { initSeasonTheme } from './seasonTheme.js';
+import { showToast } from '../core/toast.js';
+import { t } from '../core/i18n.js';
+import { eventBus } from '../core/eventBus.js';
+import { EVENTS } from '../core/events.js';
 
 const AMBIENT_KEY = 'ambientNature';
 /** Master 11% – subtelne tło relaksacyjne (zakres 10–12%) */
 export const MASTER_VOLUME = 0.11;
-const AUDIO_BASE = '/assets/audio/nature';
-/** Cache-bust ścieżek audio (SW / przeglądarka) */
-const AUDIO_CACHE_VER = '3';
+/** Toast przy braku sieci – 2–3 s */
+const AMBIENT_OFFLINE_TOAST_MS = 2500;
 
 /**
- * Tło: autentyczne sezonowe nagrania ptaków z łąki (wg miesiąca).
+ * Naturalny śpiew ptaków leśnych w słoneczny dzień.
+ * Primary: Freesound CDN · fallback: lokalny plik na serwerze.
  * Sterowanie: 🎵 / 🔇 na Home + Profil.
  */
-const LAYERS = Object.freeze([
-    { id: 'springBirds', file: 'spring-birds', gain: 1, seasons: Object.freeze(['spring']) },
-    { id: 'summerBirds', file: 'summer-birds', gain: 1, seasons: Object.freeze(['summer']) },
-    { id: 'autumnBirds', file: 'autumn-birds', gain: 1, seasons: Object.freeze(['autumn']) },
-    { id: 'winterBirds', file: 'winter-birds', gain: 1, seasons: Object.freeze(['winter']) }
-]);
+const FOREST_BIRDS_URL = 'https://cdn.freesound.org/previews/623/623806_13197878-lq.mp3';
+const FOREST_BIRDS_LOCAL = '/assets/audio/nature/birds_natural_forest.mp3';
+const AMBIENT_SOURCE_CHAIN = Object.freeze([FOREST_BIRDS_URL, FOREST_BIRDS_LOCAL]);
 
-/** Preferencja: mp3 → wav → webm */
-const EXT_CANDIDATES = Object.freeze(['mp3', 'wav', 'webm']);
+const LAYERS = Object.freeze([
+    { id: 'forestBirds', url: FOREST_BIRDS_URL, gain: 1 }
+]);
 
 let atmosphereReady = false;
 let boundVisibility = false;
@@ -30,6 +32,8 @@ let daypartTimer = null;
 /** @type {Map<string, HTMLAudioElement>} */
 const players = new Map();
 let fadeTimer = null;
+/** Jednorazowy toast przy pierwszej nieudanej próbie włączenia (sesja) */
+let offlineToastShown = false;
 
 const LANDSCAPE_HTML = `
   <div class="ln-sky" aria-hidden="true"></div>
@@ -99,26 +103,77 @@ export function isAmbientNatureEnabled() {
     return getSettings()[AMBIENT_KEY] === true;
 }
 
-export function setAmbientNatureEnabled(enabled) {
+export function setAmbientNatureEnabled(enabled, options = {}) {
     saveSettings({ [AMBIENT_KEY]: Boolean(enabled) });
     if (typeof document === 'undefined') return Boolean(enabled);
-    if (enabled) startAmbientAudio();
-    else stopAmbientAudio();
+    if (enabled) {
+        startAmbientAudio({ userInitiated: Boolean(options.userInitiated) });
+    } else {
+        stopAmbientAudio();
+    }
     return Boolean(enabled);
 }
 
-function layerSrc(fileBase) {
-    return EXT_CANDIDATES.map(
-        (ext) => `${AUDIO_BASE}/${fileBase}.${ext}?v=${AUDIO_CACHE_VER}`
-    );
+/** Aktywny URL ambientu (diagnostyka / test) */
+export function getActiveAmbientSrc() {
+    const layer = LAYERS.find((l) => l.url);
+    return layer?.url ?? null;
 }
 
-/** Aktywny plik sezonu (diagnostyka / test) */
-export function getActiveAmbientSrc(now = new Date()) {
-    const season = getCurrentSeason(now);
-    const layer = LAYERS.find((l) => !l.seasons || l.seasons.includes(season));
-    if (!layer) return null;
-    return layerSrc(layer.file)[0];
+/** Ciche wyciszenie przy błędzie sieci / braku pliku – bez rzucania wyjątku */
+function silentStopAudio(audio) {
+    if (!audio) return;
+    try {
+        audio.pause();
+        audio.volume = 0;
+    } catch { /* brak sieci / decode error – ignoruj */ }
+}
+
+function notifyAmbientUnavailable(userInitiated) {
+    if (!userInitiated) return;
+    saveSettings({ [AMBIENT_KEY]: false });
+    stopAmbientAudio();
+    if (!offlineToastShown) {
+        offlineToastShown = true;
+        try {
+            showToast(t('home.ambientNatureOffline'), 'info', AMBIENT_OFFLINE_TOAST_MS);
+        } catch { /* ignore */ }
+    }
+    try {
+        eventBus.emit(EVENTS.AMBIENT_UNAVAILABLE);
+    } catch { /* ignore */ }
+}
+
+function waitForCanPlay(audio, timeoutMs = 4500) {
+    if (audio.readyState >= 2 && !audio.error) return Promise.resolve(true);
+    return new Promise((resolve) => {
+        let settled = false;
+        const done = (ok) => {
+            if (settled) return;
+            settled = true;
+            audio.removeEventListener('canplay', onReady);
+            audio.removeEventListener('error', onError);
+            resolve(ok);
+        };
+        const onReady = () => done(true);
+        const onError = () => done(false);
+        audio.addEventListener('canplay', onReady, { once: true });
+        audio.addEventListener('error', onError, { once: true });
+        try { audio.load(); } catch { done(false); return; }
+        window.setTimeout(() => {
+            done(!audio.error && audio.readyState >= 2);
+        }, timeoutMs);
+    });
+}
+
+async function assignSource(audio, src) {
+    try {
+        audio.loop = true;
+        audio.src = src;
+        return await waitForCanPlay(audio);
+    } catch {
+        return false;
+    }
 }
 
 function createLayerAudio(layer) {
@@ -131,16 +186,11 @@ function createLayerAudio(layer) {
     audio.setAttribute('webkit-playsinline', '');
     audio.dataset.layer = layer.id;
 
-    const sources = layerSrc(layer.file);
-    let i = 0;
-    const assign = () => {
-        if (i >= sources.length) return;
-        audio.src = sources[i];
-        i += 1;
-        try { audio.load(); } catch { /* ignore */ }
-    };
-    audio.addEventListener('error', () => assign());
-    assign();
+    try {
+        audio.src = layer.url;
+        audio.load();
+    } catch { /* playSafe próbuje fallback */ }
+
     return audio;
 }
 
@@ -199,31 +249,36 @@ function fadeAllTo(targets, ms = 900) {
     }, 40);
 }
 
-async function playSafe(audio) {
-    if (!audio) return;
+async function playSafe(audio, { userInitiated = false } = {}) {
+    if (!audio) return false;
     try {
         audio.muted = false;
-        if (!audio.src) return;
-        if (audio.readyState < 2) {
-            await new Promise((resolve) => {
-                let done = false;
-                const finish = () => {
-                    if (done) return;
-                    done = true;
-                    audio.removeEventListener('canplay', finish);
-                    audio.removeEventListener('error', finish);
-                    resolve();
-                };
-                audio.addEventListener('canplay', finish, { once: true });
-                audio.addEventListener('error', finish, { once: true });
-                try { audio.load(); } catch { /* ignore */ }
-                setTimeout(finish, 2000);
-            });
+        let loaded = false;
+
+        if (audio.src && !audio.error && audio.readyState >= 2) {
+            loaded = true;
+        } else {
+            for (const src of AMBIENT_SOURCE_CHAIN) {
+                if (await assignSource(audio, src)) {
+                    loaded = true;
+                    break;
+                }
+            }
         }
+
+        if (!loaded || audio.error) {
+            silentStopAudio(audio);
+            notifyAmbientUnavailable(userInitiated);
+            return false;
+        }
+
         const p = audio.play();
         if (p && typeof p.then === 'function') await p;
+        return true;
     } catch {
-        /* autoplay zablokowany – kolejny gest użytkownika (🎵) odblokuje */
+        silentStopAudio(audio);
+        notifyAmbientUnavailable(userInitiated);
+        return false;
     }
 }
 
@@ -275,29 +330,36 @@ export function initClimateAtmosphere() {
     };
 }
 
-export function startAmbientAudio() {
+export function startAmbientAudio(options = {}) {
     // reduced-motion nie wycisza ambientu – tylko legacy iOS9
     if (isLegacy()) return;
     if (!isAmbientNatureEnabled()) return;
 
-    ensurePlayers();
-    const season = getCurrentSeason();
-    const targets = new Map();
-    for (const layer of LAYERS) {
-        const audio = players.get(layer.id);
-        if (!audio) continue;
-        const vol = targetVolumeFor(layer, season);
-        targets.set(layer.id, vol);
-        if (vol > 0) {
-            audio.muted = false;
-            // od razu słyszalny poziom (fade domyka resztę) – unikamy „ciszy przy volume 0”
-            if (audio.volume < 0.02) audio.volume = Math.min(MASTER_VOLUME, 0.06);
-            void playSafe(audio);
-        } else {
-            try { audio.pause(); } catch { /* ignore */ }
+    const userInitiated = Boolean(options.userInitiated);
+
+    try {
+        ensurePlayers();
+        const season = getCurrentSeason();
+        const targets = new Map();
+        for (const layer of LAYERS) {
+            const audio = players.get(layer.id);
+            if (!audio) continue;
+            const vol = targetVolumeFor(layer, season);
+            targets.set(layer.id, vol);
+            if (vol > 0) {
+                audio.muted = false;
+                // od razu słyszalny poziom (fade domyka resztę) – unikamy „ciszy przy volume 0”
+                if (audio.volume < 0.02) audio.volume = Math.min(MASTER_VOLUME, 0.06);
+                void playSafe(audio, { userInitiated });
+            } else {
+                try { audio.pause(); } catch { /* ignore */ }
+            }
         }
+        fadeAllTo(targets, 1200);
+    } catch {
+        players.forEach((a) => silentStopAudio(a));
+        notifyAmbientUnavailable(userInitiated);
     }
-    fadeAllTo(targets, 1200);
 }
 
 function pauseAmbientAudio() {

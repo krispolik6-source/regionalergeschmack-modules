@@ -15,6 +15,7 @@ import {
     getMarkerById,
     getRegisteredMarkerCount,
     hasMarkerClusterGroup,
+    reopenProducerPopup,
     logPopupLifecycle
 } from '../map/map.js?v=26';
 import {
@@ -26,6 +27,7 @@ import {
     hydrateProducersFromCache,
     abortPendingDataLoads
 } from '../data/dataService.js';
+import { getActiveAbortControllerCount } from '../data/osmService.js?v=9';
 import { formatDistanceLabel, formatEtaLabels } from '../presentation/geoFormat.js';
 import { sortProducersByDistance } from '../presentation/smartRecommend.js';
 import { filterProducersBySearch, searchGlobalResults, formatSearchNoResults } from '../presentation/searchFilter.js?v=4';
@@ -46,6 +48,7 @@ import { handleNativeAdClick } from '../presentation/nativeAds.js?v=3';
 import { handlePromoFlyerToggle } from '../presentation/producerDisplay.js';
 import { isProducerPromoted } from '../core/premiumService.js';
 import { showToast } from '../core/toast.js';
+import { logMapDriveDiag } from '../core/logger.js';
 import { diffMapChanges, formatMapChangesMessage, ensureMapVisitBaseline } from '../presentation/mapChanges.js';
 import {
     initMapSettings,
@@ -60,6 +63,10 @@ import {
     closeMapSettingsPanel
 } from '../map/mapSettingsPanel.js?v=2';
 import { initMapControlsDrag } from '../map/mapControlsDrag.js';
+import {
+    attachDraggableProducerPopup,
+    detachDraggableProducerPopup
+} from '../map/draggableProducerPopup.js';
 import { CATEGORY_ICONS } from '../presentation/categoryIcons.js';
 import {
     LIST_REFRESH_DEBOUNCE_MS,
@@ -246,6 +253,8 @@ let lastGpsPinLocation = null;
 let lastMarkerSyncLocation = null;
 let locationDataFetchInFlight = false;
 let pendingOsmRefresh = null;
+/** Najnowsza lokalizacja oczekująca na debounce OSM (bez resetu timera). */
+let pendingOsmRefreshLocation = null;
 let osmRefreshDebounceTimer = null;
 let lastOsmRefreshAt = 0;
 /** Ostatnia pozycja, przy której odświeżono listę producentów (K2). */
@@ -254,6 +263,13 @@ let listRefreshDebounceTimer = null;
 let pendingListRefreshLocation = null;
 let lastDataEmptyArea = false;
 let isPopupOpen = false;
+/** Producent, którego popup ma pozostać otwarty (pan mapy / sync markerów). */
+let pinnedPopupProducerId = null;
+/** Zamknięcie przez X / filtr / modal — bez auto-reopen. */
+let suppressPopupReopen = false;
+/** Pan/zoom z otwartym popupem — odzysk po moveend. */
+let mapGesturePreservePopup = false;
+let popupRecoveryTimer = null;
 /** Mirror flagi modala – popupclose nie może zamykać / flushować gdy true */
 let isModalOpen = false;
 /** Odłożony pełny sync markerów (po zamknięciu popupu / modalu) */
@@ -289,6 +305,16 @@ function clearDeferredMapTimers() {
     deferredMapTimers.clear();
 }
 
+/** Liczba aktywnych timerów mapy (diagnostyka localhost). */
+function getMapActiveTimerCount() {
+    let count = deferredMapTimers.size;
+    if (osmRefreshDebounceTimer != null) count += 1;
+    if (listRefreshDebounceTimer != null) count += 1;
+    if (markerRefreshRaf != null) count += 1;
+    if (resumeMapRaf != null) count += 1;
+    return count;
+}
+
 /** Pauza pracy w tle mapy – bez wycieków timerów / kolejki OSM */
 function pauseMapBackgroundWork() {
     clearGeoWatch();
@@ -306,6 +332,7 @@ function pauseMapBackgroundWork() {
         clearTimeout(osmRefreshDebounceTimer);
         osmRefreshDebounceTimer = null;
     }
+    pendingOsmRefreshLocation = null;
     if (listRefreshDebounceTimer) {
         clearTimeout(listRefreshDebounceTimer);
         listRefreshDebounceTimer = null;
@@ -329,6 +356,7 @@ function pauseMapBackgroundWork() {
     }
 
     pendingOsmRefresh = null;
+    pendingOsmRefreshLocation = null;
     dataFetchGeneration += 1;
 
     try {
@@ -378,6 +406,7 @@ function stopLocationWatch() {
         listRefreshDebounceTimer = null;
     }
     pendingListRefreshLocation = null;
+    pendingOsmRefreshLocation = null;
 }
 
 function setGpsTrackingUi({ tracking = gpsTrackingEnabled, fetching = false } = {}) {
@@ -402,6 +431,38 @@ function hasMovedEnoughForGpsPin(location) {
 function hasMovedEnoughForMarkerSync(location) {
     if (!lastMarkerSyncLocation) return true;
     return distanceMeters(lastMarkerSyncLocation, location) >= MARKER_SYNC_MOVE_M;
+}
+
+/**
+ * P1: debounce OSM bez resetu timera przy ciągłej jeździe — aktualizuj tylko docelową lokalizację.
+ */
+function scheduleOsmRefreshAtLocation(lat, lng) {
+    if (!leafletMap || typeof document !== 'undefined' && document.hidden) return;
+
+    pendingOsmRefreshLocation = { lat, lng };
+    if (osmRefreshDebounceTimer != null) return;
+
+    const runScheduledOsmRefresh = () => {
+        osmRefreshDebounceTimer = null;
+        const loc = pendingOsmRefreshLocation;
+        if (!loc || !leafletMap || (typeof document !== 'undefined' && document.hidden)) return;
+
+        const now = Date.now();
+        const sinceLast = now - lastOsmRefreshAt;
+        if (sinceLast < OSM_REFRESH_MIN_INTERVAL_MS) {
+            osmRefreshDebounceTimer = setTimeout(
+                runScheduledOsmRefresh,
+                OSM_REFRESH_MIN_INTERVAL_MS - sinceLast
+            );
+            return;
+        }
+
+        pendingOsmRefreshLocation = null;
+        lastOsmRefreshAt = now;
+        refreshOsmDataAtLocation(loc.lat, loc.lng);
+    };
+
+    osmRefreshDebounceTimer = setTimeout(runScheduledOsmRefresh, OSM_REFRESH_DEBOUNCE_MS);
 }
 
 function maybeSaveLastPosition(lat, lng) {
@@ -565,9 +626,10 @@ function handlePositionUpdate(location) {
     if (pinMoved) {
         lastGpsPinLocation = { lat: location.lat, lng: location.lng };
         updateGpsPin(leafletMap, latLng);
-        // Markery: NIE odświeżaj przy ticku GPS (miganie). Sync po OSM / filtrze.
+        // P2: sync markerów w promieniu co MARKER_SYNC_MOVE_M — diff, bez migania
         if (hasMovedEnoughForMarkerSync(location)) {
             lastMarkerSyncLocation = { lat: location.lat, lng: location.lng };
+            scheduleRefreshMapMarkers({ fitBounds: false, sync: true });
         }
     }
 
@@ -589,7 +651,7 @@ function handlePositionUpdate(location) {
                 force: true,
                 sync: true
             };
-            logPopupLifecycle('SYNC_DEFERRED', { reason: 'gps-first-fix' });
+            logPopupLifecycle('SYNC_DEFERRED', { reason: 'gps-marker-sync' });
         } else {
             scheduleRefreshMapMarkers({ fitBounds: false, sync: true });
         }
@@ -613,17 +675,19 @@ function handlePositionUpdate(location) {
 
     const movedEnough = hasMovedEnoughForDataRefresh(location);
 
-    eventBus.emit(EVENTS.LOCATION_UPDATED, {
-        lat: location.lat,
-        lng: location.lng,
-        movedEnough,
-        isFirstFix
-    });
+    // P5: nie emituj przy każdym ticku — pinezka/okrąg aktualizowane lokalnie
+    if (isFirstFix || pinMoved || movedEnough) {
+        eventBus.emit(EVENTS.LOCATION_UPDATED, {
+            lat: location.lat,
+            lng: location.lng,
+            movedEnough,
+            isFirstFix,
+            pinMoved
+        });
+    }
 
     if (movedEnough) {
-        lastDataFetchLocation = { lat: location.lat, lng: location.lng };
-        eventBus.emit(EVENTS.LOCATION_CHANGED, { lat: location.lat, lng: location.lng });
-        // Markery doładują się w tle po OSM – bez synchronicznego refresh przy ticku GPS
+        scheduleOsmRefreshAtLocation(location.lat, location.lng);
     }
 }
 
@@ -690,12 +754,30 @@ function loadProducersInBackground(lat, lng, { forceRefresh = false } = {}) {
 
     if (locationDataFetchInFlight) {
         pendingOsmRefresh = { lat: latitude, lng: longitude, forceRefresh };
+        logMapDriveDiag('osm_fetch_abort_prev', {
+            lat: latitude,
+            lng: longitude,
+            activeTimers: getMapActiveTimerCount(),
+            activeControllers: getActiveAbortControllerCount()
+        });
+        try {
+            abortPendingDataLoads();
+        } catch (_) {
+            /* ignore */
+        }
         return;
     }
 
     const fetchGen = ++dataFetchGeneration;
     locationDataFetchInFlight = true;
     setOsmFetching(true);
+    logMapDriveDiag('osm_fetch_start_map', {
+        lat: latitude,
+        lng: longitude,
+        activeTimers: getMapActiveTimerCount(),
+        activeControllers: getActiveAbortControllerCount()
+    });
+    const mapFetchStartedAt = typeof performance !== 'undefined' ? performance.now() : Date.now();
 
     loadAllData(latitude, longitude, {
         radiusKm: currentRadiusKm,
@@ -703,14 +785,40 @@ function loadProducersInBackground(lat, lng, { forceRefresh = false } = {}) {
     })
         .then((result) => {
             if (fetchGen !== dataFetchGeneration) return;
-            if (result?.stale) return;
+            if (result?.stale || result?.aborted) return;
             applyDataLoadResult(result);
+            // P4: lastDataFetchLocation dopiero po udanym pobraniu
+            lastDataFetchLocation = { lat: latitude, lng: longitude };
+            eventBus.emit(EVENTS.LOCATION_CHANGED, { lat: latitude, lng: longitude });
+            logMapDriveDiag('osm_fetch_end_map', {
+                lat: latitude,
+                lng: longitude,
+                totalMs: Math.round(
+                    (typeof performance !== 'undefined' ? performance.now() : Date.now()) - mapFetchStartedAt
+                ),
+                producerCount: result.producers.length,
+                source: result.source,
+                aborted: false,
+                activeTimers: getMapActiveTimerCount(),
+                activeControllers: getActiveAbortControllerCount()
+            });
             console.info(
                 `[Karte] Producenci w tle: ${result.producers.length} (źródło: ${result.source})`
             );
         })
         .catch((error) => {
             if (fetchGen !== dataFetchGeneration) return;
+            logMapDriveDiag('osm_fetch_end_map', {
+                lat: latitude,
+                lng: longitude,
+                totalMs: Math.round(
+                    (typeof performance !== 'undefined' ? performance.now() : Date.now()) - mapFetchStartedAt
+                ),
+                aborted: error?.name === 'AbortError' || /abort/i.test(String(error?.message || '')),
+                error: String(error?.message || error),
+                activeTimers: getMapActiveTimerCount(),
+                activeControllers: getActiveAbortControllerCount()
+            });
             console.warn('[Karte] Błąd pobierania w tle:', error);
         })
         .finally(() => {
@@ -739,26 +847,11 @@ function refreshOsmDataAtLocation(lat, lng) {
     loadProducersInBackground(lat, lng, { forceRefresh: true });
 }
 
-eventBus.on(EVENTS.LOCATION_UPDATED, ({ lat, lng, movedEnough, isFirstFix }) => {
+eventBus.on(EVENTS.LOCATION_UPDATED, ({ lat, lng, isFirstFix }) => {
     const location = { lat, lng };
     if (shouldRefreshProducerListOnGps(lastListRefreshLocation, location, { isFirstFix: !!isFirstFix })) {
         scheduleSoftRefreshProducerList(location, { immediate: !!isFirstFix });
     }
-
-    if (!movedEnough || !leafletMap) return;
-    // Nie pobieraj OSM gdy aplikacja w tle
-    if (typeof document !== 'undefined' && document.hidden) return;
-
-    if (osmRefreshDebounceTimer) clearTimeout(osmRefreshDebounceTimer);
-    osmRefreshDebounceTimer = setTimeout(() => {
-        osmRefreshDebounceTimer = null;
-        if (typeof document !== 'undefined' && document.hidden) return;
-        const now = Date.now();
-        if (now - lastOsmRefreshAt < OSM_REFRESH_MIN_INTERVAL_MS) return;
-        lastOsmRefreshAt = now;
-        // Asynchronicznie w tle – UI zostaje aktywny
-        refreshOsmDataAtLocation(lat, lng);
-    }, OSM_REFRESH_DEBOUNCE_MS);
 });
 
 function formatRadiusHint(km, count) {
@@ -1451,6 +1544,113 @@ function bindMapLegend(container) {
     });
 }
 
+function markIntentionalPopupClose() {
+    suppressPopupReopen = true;
+}
+
+function bindPopupCloseButton(popup) {
+    const btn = popup?._container?.querySelector?.('.leaflet-popup-close-button');
+    if (!btn || btn.dataset.rgCloseBound === '1') return;
+    btn.dataset.rgCloseBound = '1';
+    btn.addEventListener('click', () => markIntentionalPopupClose(), { capture: true });
+}
+
+function finishPopupClosedState() {
+    isPopupOpen = false;
+    popupOpeningGuardUntil = 0;
+    pinnedPopupProducerId = null;
+    document.body.classList.remove('map-popup-open');
+    if (popupRecoveryTimer) {
+        clearTimeout(popupRecoveryTimer);
+        popupRecoveryTimer = null;
+    }
+    if (!syncModalOpenFlag()) {
+        logPopupLifecycle('POPUP_CLOSE', { source: 'map' });
+        requestAnimationFrame(() => flushDeferredMarkerRefresh());
+    }
+}
+
+function schedulePinnedPopupRecovery(reason = 'recover') {
+    if (!pinnedPopupProducerId || !leafletMap) {
+        finishPopupClosedState();
+        return;
+    }
+    if (suppressPopupReopen) {
+        finishPopupClosedState();
+        return;
+    }
+    if (!producerPassesActiveFilter(pinnedPopupProducerId)) {
+        pinnedPopupProducerId = null;
+        finishPopupClosedState();
+        return;
+    }
+
+    const attemptReopen = () => {
+        if (!pinnedPopupProducerId || !leafletMap || suppressPopupReopen) {
+            finishPopupClosedState();
+            return;
+        }
+        if (leafletMap.isPopupOpen?.()) {
+            syncPopupOpenState();
+            return;
+        }
+        const reopened = reopenProducerPopup(pinnedPopupProducerId);
+        if (reopened) {
+            logPopupLifecycle('POPUP_REOPEN', {
+                id: pinnedPopupProducerId,
+                reason
+            });
+            syncPopupOpenState();
+            return;
+        }
+        popupRecoveryTimer = window.setTimeout(() => {
+            popupRecoveryTimer = null;
+            if (!pinnedPopupProducerId || !leafletMap) {
+                finishPopupClosedState();
+                return;
+            }
+            if (reopenProducerPopup(pinnedPopupProducerId)) {
+                logPopupLifecycle('POPUP_REOPEN', {
+                    id: pinnedPopupProducerId,
+                    reason: `${reason}-retry`
+                });
+                syncPopupOpenState();
+            } else {
+                finishPopupClosedState();
+            }
+        }, 80);
+    };
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(attemptReopen);
+    });
+}
+
+function bindPopupMapGesturePreserve(map) {
+    if (!map || map.__rgPopupPreserveBound) return;
+    map.__rgPopupPreserveBound = true;
+
+    const onGestureStart = () => {
+        mapGesturePreservePopup = Boolean(
+            pinnedPopupProducerId && (leafletMap?.isPopupOpen?.() || isPopupOpen)
+        );
+    };
+
+    const onGestureEnd = () => {
+        if (mapGesturePreservePopup && pinnedPopupProducerId) {
+            schedulePinnedPopupRecovery('map-gesture');
+        }
+        mapGesturePreservePopup = false;
+    };
+
+    map.on('movestart', onGestureStart);
+    map.on('dragstart', onGestureStart);
+    map.on('zoomstart', onGestureStart);
+    map.on('moveend', onGestureEnd);
+    map.on('dragend', onGestureEnd);
+    map.on('zoomend', onGestureEnd);
+}
+
 function syncModalOpenFlag() {
     isModalOpen = Boolean(isProducerModalOpen());
     return isModalOpen;
@@ -1528,6 +1728,7 @@ function refreshMapMarkers({
             id: openedPopupId,
             reason: 'filter-excludes-producer'
         });
+        markIntentionalPopupClose();
         try {
             leafletMap.closePopup();
         } catch (_) {
@@ -1585,7 +1786,7 @@ function refreshMapMarkers({
         deferRemovals: false,
         deferAdds: false,
         openedPopupId,
-        allowReopen: false
+        allowReopen: Boolean(openedPopupId)
     });
 
     // Lista / nagłówek / markery – ten sam zbiór (po limicie MARKER_LIMIT)
@@ -1649,6 +1850,13 @@ function canReuseLeafletMap(container) {
 function destroyLeafletMap() {
     mapInitGeneration += 1;
     pauseMapBackgroundWork();
+    markIntentionalPopupClose();
+    pinnedPopupProducerId = null;
+    mapGesturePreservePopup = false;
+    if (popupRecoveryTimer) {
+        clearTimeout(popupRecoveryTimer);
+        popupRecoveryTimer = null;
+    }
 
     if (mapControlsDragCleanup) {
         mapControlsDragCleanup();
@@ -1827,52 +2035,60 @@ export function renderMap(container, options = {}) {
             <div id="map" role="region" aria-label="${t('a11y.map')}"></div>
             ${buildMapSkeletonHtml()}
             <div class="map-bottom-panel">
-                <div id="radiusControl" class="radius-control map-draggable-control" data-map-control-id="suwak">
-                    <div class="radius-control-row">
-                        <span id="radiusValue" class="radius-value">${currentRadiusKm} km</span>
-                        <input
-                            type="range"
-                            id="radiusSlider"
-                            min="${RADIUS_MIN}"
-                            max="${RADIUS_MAX}"
-                            value="${currentRadiusKm}"
-                            step="1"
-                            aria-label="${t('a11y.searchRadius')}"
-                        >
+                <div class="map-toolbar-unified" role="toolbar" aria-label="${escapeListLabel(t('a11y.map'))}">
+                    <div class="map-toolbar-section map-toolbar-section--radius">
+                        <div id="radiusControl" class="radius-control">
+                            <div class="radius-control-row">
+                                <span id="radiusValue" class="radius-value">${currentRadiusKm} km</span>
+                                <input
+                                    type="range"
+                                    id="radiusSlider"
+                                    min="${RADIUS_MIN}"
+                                    max="${RADIUS_MAX}"
+                                    value="${currentRadiusKm}"
+                                    step="1"
+                                    aria-label="${t('a11y.searchRadius')}"
+                                >
+                            </div>
+                            <p id="radiusHint" class="radius-hint">${formatRadiusHint(currentRadiusKm, 0)}</p>
+                        </div>
                     </div>
-                    <p id="radiusHint" class="radius-hint">${formatRadiusHint(currentRadiusKm, 0)}</p>
-                </div>
-                <button type="button" id="mapGpsBtn" class="map-bottom-btn map-draggable-control" data-map-control-id="gps"><span class="map-btn-emoji" aria-hidden="true">📍</span> ${t('map.gps')}</button>
-                <button type="button" id="mapOsmBtn" class="map-bottom-btn map-draggable-control" data-map-control-id="osm"><span class="map-btn-emoji" aria-hidden="true">🗺️</span> ${t('map.osm')}</button>
-                <button type="button" id="mapWhatsNewBtn" class="map-bottom-btn map-draggable-control" data-map-control-id="whatsnew" aria-label="${t('map.whatsNew')}">
-                    <span class="map-btn-emoji" aria-hidden="true">🔄</span> ${t('map.whatsNew')}
-                </button>
-                <nav id="mapProducerList" class="map-producer-list map-draggable-control" data-map-control-id="lista" aria-label="${t('map.producerList')}">
-                    <div id="mapCategoryHeader" class="map-category-header" hidden>
-                        <h2 id="mapCategoryTitle" class="map-category-title"></h2>
-                        <p id="mapCategoryCount" class="map-category-count"></p>
-                        <button type="button" id="mapCategoryClear" class="map-category-clear">
-                            ${t('map.clearFilter')}
+                    <div class="map-toolbar-section map-toolbar-section--actions">
+                        <button type="button" id="mapGpsBtn" class="map-bottom-btn"><span class="map-btn-emoji" aria-hidden="true">📍</span> ${t('map.gps')}</button>
+                        <button type="button" id="mapRecenterBtn" class="map-bottom-btn map-recenter-btn" hidden aria-label="${escapeListLabel(getBackToLocationLabel())}">
+                            ${getBackToLocationLabel()}
                         </button>
+                        <div id="mapLegendWrap" class="map-legend-wrap">
+                            <button type="button" id="mapLegendBtn" class="map-bottom-btn map-legend-btn" aria-expanded="false" aria-controls="mapLegendPanel">
+                                <span class="map-btn-emoji" aria-hidden="true">📋</span> ${t('map.legend')}
+                            </button>
+                            <div id="mapLegendPanel" class="map-legend-panel" hidden>
+                                <p class="map-legend-title">${t('map.legendTitle')}</p>
+                                <ul id="mapLegendList" class="map-legend-list"></ul>
+                            </div>
+                        </div>
+                        <nav id="mapProducerList" class="map-producer-list" aria-label="${t('map.producerList')}">
+                            <div id="mapCategoryHeader" class="map-category-header" hidden>
+                                <h2 id="mapCategoryTitle" class="map-category-title"></h2>
+                                <p id="mapCategoryCount" class="map-category-count"></p>
+                                <button type="button" id="mapCategoryClear" class="map-category-clear">
+                                    ${t('map.clearFilter')}
+                                </button>
+                            </div>
+                            <button type="button" id="mapListToggle" class="map-bottom-btn map-list-toggle" aria-expanded="false" aria-controls="mapProducerListItems">
+                                ${t('map.listToggle').replace('{count}', '0')}
+                            </button>
+                            <ul id="mapProducerListItems" class="map-producer-list-items" hidden></ul>
+                        </nav>
                     </div>
-                    <button type="button" id="mapListToggle" class="map-bottom-btn map-list-toggle" aria-expanded="false" aria-controls="mapProducerListItems">
-                        ${t('map.listToggle').replace('{count}', '0')}
-                    </button>
-                    <ul id="mapProducerListItems" class="map-producer-list-items" hidden></ul>
-                </nav>
-                <div id="mapLegendWrap" class="map-legend-wrap map-draggable-control" data-map-control-id="legenda">
-                    <button type="button" id="mapLegendBtn" class="map-bottom-btn map-legend-btn" aria-expanded="false" aria-controls="mapLegendPanel">
-                        <span class="map-btn-emoji" aria-hidden="true">📋</span> ${t('map.legend')}
-                    </button>
-                    <div id="mapLegendPanel" class="map-legend-panel" hidden>
-                        <p class="map-legend-title">${t('map.legendTitle')}</p>
-                        <ul id="mapLegendList" class="map-legend-list"></ul>
+                    <div class="map-toolbar-section map-toolbar-section--extra">
+                        <button type="button" id="mapOsmBtn" class="map-bottom-btn"><span class="map-btn-emoji" aria-hidden="true">🗺️</span> ${t('map.osm')}</button>
+                        <button type="button" id="mapWhatsNewBtn" class="map-bottom-btn" aria-label="${t('map.whatsNew')}">
+                            <span class="map-btn-emoji" aria-hidden="true">🔄</span> ${t('map.whatsNew')}
+                        </button>
                     </div>
                 </div>
             </div>
-            <button type="button" id="mapRecenterBtn" class="map-recenter-btn" hidden aria-label="${escapeListLabel(getBackToLocationLabel())}">
-                ${getBackToLocationLabel()}
-            </button>
         </div>
     `;
 
@@ -1911,6 +2127,7 @@ export function renderMap(container, options = {}) {
         leafletMap.on('popupopen', (event) => {
             isPopupOpen = true;
             popupOpeningGuardUntil = 0;
+            suppressPopupReopen = false;
             document.body.classList.add('map-popup-open');
             // GPS follow + autoPan nie mogą ruszać mapy przy otwartym popupie
             disableGpsFollowMode();
@@ -1919,21 +2136,27 @@ export function renderMap(container, options = {}) {
             } catch (_) {
                 /* ignore */
             }
+            if (event?.popup?._container?.classList?.contains('producer-leaflet-popup')) {
+                attachDraggableProducerPopup(event.popup, leafletMap);
+                bindPopupCloseButton(event.popup);
+            }
             const source = event?.popup?._source;
             const producerId = source?.options?.producerId
                 || source?.__rgMeta?.id
                 || '';
+            if (producerId) {
+                pinnedPopupProducerId = String(producerId);
+            }
             console.log('[Map] Popup open:', producerId || '(brak id)');
             logPopupLifecycle('OPEN', { id: producerId || null, source: 'map' });
             if (!producerId) {
                 console.warn('[Map] popupopen bez producerId na markerze');
             }
         });
-        leafletMap.on('popupclose', () => {
-            isPopupOpen = false;
+        leafletMap.on('popupclose', (event) => {
             popupOpeningGuardUntil = 0;
-            document.body.classList.remove('map-popup-open');
-            // Modal otwarty (np. „Szczegóły”) – nie flushuj warstwy i NIE ruszaj modala
+            detachDraggableProducerPopup(event?.popup);
+
             if (syncModalOpenFlag()) {
                 logPopupLifecycle('POPUP_CLOSE', {
                     source: 'map',
@@ -1941,10 +2164,27 @@ export function renderMap(container, options = {}) {
                 });
                 return;
             }
-            logPopupLifecycle('POPUP_CLOSE', { source: 'map' });
-            // Pełny sync odłożony podczas popupu – po zamknięciu
-            requestAnimationFrame(() => flushDeferredMarkerRefresh());
+
+            if (suppressPopupReopen) {
+                suppressPopupReopen = false;
+                finishPopupClosedState();
+                return;
+            }
+
+            if (pinnedPopupProducerId) {
+                logPopupLifecycle('POPUP_CLOSE', {
+                    id: pinnedPopupProducerId,
+                    reason: 'recover-after-gesture',
+                    source: 'map'
+                });
+                schedulePinnedPopupRecovery('popupclose');
+                return;
+            }
+
+            finishPopupClosedState();
         });
+
+        bindPopupMapGesturePreserve(leafletMap);
 
         if (!document.documentElement.dataset.rgMarkerClickBound) {
             document.documentElement.dataset.rgMarkerClickBound = 'true';
@@ -2252,6 +2492,7 @@ function bindPopupActions(container) {
                             id: producerId,
                             reason: 'details-open-modal'
                         });
+                        markIntentionalPopupClose();
                         leafletMap?.closePopup?.();
                     } catch (_) {
                         /* ignore */
@@ -2388,6 +2629,8 @@ function bindResizeEvents() {
 
     eventBus.on(EVENTS.VIEW_CHANGED, ({ view }) => {
         if (view !== 'map') {
+            markIntentionalPopupClose();
+            pinnedPopupProducerId = null;
             closeProducerModal({ force: true });
             isModalOpen = false;
             if (mapViewContainer) closeMapSettingsPanel(mapViewContainer);
@@ -2434,6 +2677,7 @@ function bindVisibilityBatteryPause() {
                 osmRefreshDebounceTimer = null;
             }
             pendingOsmRefresh = null;
+            pendingOsmRefreshLocation = null;
             dataFetchGeneration += 1;
             try {
                 abortPendingDataLoads();
@@ -2471,11 +2715,66 @@ function injectMapStyles() {
         }
         .map-popup {
             font-size: 13px;
-            line-height: 1.4;
+            line-height: 1.45;
+            --map-popup-gap: 12px;
         }
         .leaflet-popup.producer-leaflet-popup,
         .leaflet-popup-pane {
             z-index: 1200 !important;
+        }
+        .leaflet-popup.producer-leaflet-popup {
+            width: min(320px, calc(100vw - 24px)) !important;
+            min-width: min(280px, calc(100vw - 24px)) !important;
+            max-width: min(320px, calc(100vw - 24px)) !important;
+            box-sizing: border-box;
+        }
+        .leaflet-popup.producer-leaflet-popup .leaflet-popup-content-wrapper {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: auto;
+            max-height: min(90dvh, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 72px));
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+        }
+        body.map-popup-scroll-active .leaflet-container {
+            touch-action: none;
+        }
+        body.map-popup-scroll-active .leaflet-popup.producer-leaflet-popup .leaflet-popup-content-wrapper {
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+        .map-popup-btn,
+        .map-popup-btn--link,
+        .leaflet-popup.producer-leaflet-popup .leaflet-popup-close-button,
+        .promo-flyer-toggle {
+            touch-action: manipulation;
+        }
+        .leaflet-popup.producer-leaflet-popup .leaflet-popup-content {
+            margin: 0;
+            width: 100% !important;
+            min-width: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .map-popup {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .map-popup-section--actions {
+            position: sticky;
+            bottom: 0;
+            z-index: 2;
+            padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
+            background: linear-gradient(180deg, rgba(255, 252, 245, 0.92) 0%, rgba(255, 252, 245, 0.98) 24%, rgba(255, 252, 245, 1) 100%);
+        }
+        .map-popup-drag-handle {
+            touch-action: none;
         }
         .leaflet-popup {
             pointer-events: auto;
@@ -2484,63 +2783,48 @@ function injectMapStyles() {
             z-index: 1300 !important;
         }
         .map-popup .producer-header-top {
-            align-items: center;
+            align-items: flex-start;
+            cursor: grab;
         }
-        .map-popup-desc em,
+        .map-popup-desc,
         .map-popup em {
             color: var(--color-text-muted);
             font-style: normal;
         }
-        .map-popup-promo {
-            margin-top: 8px;
-            padding: 6px 8px;
-            background: rgba(196, 124, 58, 0.12);
-            border: 1px solid rgba(196, 124, 58, 0.35);
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--color-btn-location-hover);
-        }
         .map-popup-actions {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-top: 8px;
+            gap: var(--map-popup-gap, 10px);
+            margin: 0;
         }
-        .map-popup-btn {
+        .map-popup-btn,
+        .map-popup-btn--link {
             font-size: 13px;
-            padding: 10px 12px;
+            font-weight: 600;
+            padding: 0 12px;
             min-height: 44px;
-            min-width: 44px;
-            border: 1px solid var(--color-bg);
-            border-radius: 6px;
-            background: #fff;
+            height: 44px;
+            border: 1px solid rgba(42, 63, 40, 0.16);
+            border-radius: 10px;
+            background: var(--color-card, #fff);
             cursor: pointer;
             text-align: center;
             text-decoration: none;
-            color: inherit;
+            color: var(--color-primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: inherit;
             box-sizing: border-box;
+            width: 100%;
         }
-        .map-popup-btn-details {
-            min-height: 44px;
-            padding: 10px 16px;
-            background: var(--color-accent);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-        .map-popup-btn-details:hover {
-            background: var(--color-accent-dark);
-        }
-        .map-popup-nav {
-            font-weight: 600;
-            color: var(--color-primary);
+        .map-popup-btn:hover,
+        .map-popup-btn:focus-visible,
+        .map-popup-btn--link:hover,
+        .map-popup-btn--link:focus-visible {
+            background: rgba(79, 107, 60, 0.08);
+            border-color: rgba(79, 107, 60, 0.28);
+            outline: none;
         }
         .map-bottom-controls {
             display: none;
@@ -2555,7 +2839,7 @@ function injectMapStyles() {
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
         }
         .map-producer-list {
-            position: absolute;
+            position: relative;
             pointer-events: auto;
         }
         .map-list-toggle {
@@ -2610,7 +2894,7 @@ function injectMapStyles() {
             line-height: 1;
         }
         .map-legend-wrap {
-            position: absolute;
+            position: relative;
             pointer-events: auto;
         }
         .map-legend-btn {

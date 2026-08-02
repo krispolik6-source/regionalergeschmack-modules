@@ -213,12 +213,6 @@ const DE = ui(
             save: 'Speichern',
             reset: 'Zurücksetzen',
             backToLocationLabel: 'Zurück zum Standort',
-            whatsNew: 'Was ist neu?',
-            whatsNewFirst: 'Merke mir die Umgebung – beim nächsten Mal zeige ich Neues.',
-            whatsNewEmpty: 'Seit dem letzten Besuch nichts Neues in der Nähe.',
-            whatsNewProducers: 'Neu: {names}',
-            whatsNewPromos: '{count} neue Angebote',
-            whatsNewRemoved: '{count} Orte nicht mehr in Reichweite',
             style: { light: 'Hell', dark: 'Dunkel', satellite: 'Satellit', terrain: 'Gelände' }
         },
         regions: {
@@ -357,6 +351,9 @@ const DE = ui(
             locationTitle: 'Standort',
             phone: 'Telefon',
             email: 'E-Mail',
+            website: 'Website',
+            actionsMenu: 'Aktionen',
+            actionShare: 'Produkt teilen',
             storyTitle: 'Unsere Geschichte',
             photoAlt: 'Foto des Anbieters',
             amenitiesTitle: 'Ausstattung',
@@ -591,12 +588,6 @@ const EN = ui(
             save: 'Save',
             reset: 'Reset',
             backToLocationLabel: 'Back to location',
-            whatsNew: "What's new?",
-            whatsNewFirst: "I'll remember this area — next time I'll show what's new.",
-            whatsNewEmpty: 'Nothing new nearby since your last visit.',
-            whatsNewProducers: 'New: {names}',
-            whatsNewPromos: '{count} new offers',
-            whatsNewRemoved: '{count} places no longer in range',
             style: { light: 'Light', dark: 'Dark', satellite: 'Satellite', terrain: 'Terrain' }
         },
         regions: {
@@ -695,6 +686,9 @@ const EN = ui(
             locationTitle: 'Location',
             phone: 'Phone',
             email: 'Email',
+            website: 'Website',
+            actionsMenu: 'Actions',
+            actionShare: 'Share product',
             storyTitle: 'Our story',
             photoAlt: 'Producer photo',
             amenitiesTitle: 'Amenities',
@@ -969,12 +963,6 @@ const PL = ui(
             save: 'Zapisz',
             reset: 'Reset',
             backToLocationLabel: 'Powrót do lokalizacji',
-            whatsNew: 'Co nowego?',
-            whatsNewFirst: 'Zapamiętam okolicę — następnym razem pokażę nowości.',
-            whatsNewEmpty: 'Od ostatniej wizyty nic nowego w okolicy.',
-            whatsNewProducers: 'Nowi: {names}',
-            whatsNewPromos: '{count} nowe oferty',
-            whatsNewRemoved: '{count} miejsc poza zasięgiem',
             style: { light: 'Jasny', dark: 'Ciemny', satellite: 'Satelita', terrain: 'Teren' }
         },
         regions: {
@@ -1073,6 +1061,9 @@ const PL = ui(
             locationTitle: 'Lokalizacja',
             phone: 'Telefon',
             email: 'E-mail',
+            website: 'Strona WWW',
+            actionsMenu: 'Akcje',
+            actionShare: 'Udostępnij produkt',
             storyTitle: 'Nasza historia',
             photoAlt: 'Zdjęcie producenta',
             amenitiesTitle: 'Udogodnienia',
@@ -1749,6 +1740,17 @@ for (const [code, menu] of Object.entries(MENU_I18N)) {
             sectionDev: menu.sectionDev,
             devVault: menu.devVault
         }
+    });
+}
+
+const NO_CURRENT_DATA_I18N = Object.freeze({
+    de: 'Keine aktuellen Daten',
+    en: 'No current data',
+    pl: 'Brak aktualnych danych'
+});
+for (const code of Object.keys(built)) {
+    built[code] = deepMerge(built[code], {
+        msg: { noCurrentData: NO_CURRENT_DATA_I18N[code] || NO_CURRENT_DATA_I18N.en }
     });
 }
 

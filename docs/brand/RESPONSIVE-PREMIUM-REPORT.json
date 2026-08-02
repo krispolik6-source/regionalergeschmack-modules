@@ -1,7 +1,7 @@
 {
   "id": "responsive-premium-28c",
   "title": "Responsive Premium Report — ETAP 28C",
-  "generatedAt": "2026-07-26T08:35:21.150Z",
+  "generatedAt": "2026-08-01T05:05:15.576Z",
   "policy": {
     "cssOnly": true,
     "architectureUnchanged": true,
@@ -30,9 +30,9 @@
     "screens": 8,
     "viewports": 7,
     "cells": 56,
-    "checksPassed": 21,
+    "checksPassed": 22,
     "checksTotal": 22,
-    "ok": false
+    "ok": true
   },
   "issueTypesCovered": [
     "ucięte napisy",
@@ -492,7 +492,7 @@
     },
     {
       "id": "imported",
-      "ok": false,
+      "ok": true,
       "detail": "@import mobile-premium.css"
     },
     {

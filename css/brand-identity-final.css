@@ -52,7 +52,7 @@
 
     --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
     --font-display: 'Literata', Georgia, 'Times New Roman', serif;
-    --brand-logo: url('/assets/icons/logo-master.svg?v=28');
+    --brand-logo: url('/assets/icons/logo-master.svg?v=29');
 }
 
 body.dark-mode,

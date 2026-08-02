@@ -10,7 +10,7 @@ import {
 import { getOpeningHoursDisplay } from '../data/openingHours.js';
 import { getProducerStory } from '../data/producerStories.js';
 import { getPlaceHistoryFact } from '../data/placeHistory.js';
-import { buildTrustBadgeHtml } from './producerTrust.js';
+import { buildTrustBadgeHtml, buildProducerPhotoHtml } from './producerTrust.js';
 import { formatDistanceLabel, formatEtaLabels } from './geoFormat.js';
 import { getDistanceKm } from '../data/producerHelpers.js';
 import { getLastPosition } from '../core/userLocation.js';
@@ -39,7 +39,11 @@ function formatRatingStars(rating) {
 export function buildOpenStatusHtml(producer) {
     const status = getOpeningHoursDisplay(producer);
     if (!status.known) {
-        return '';
+        return `
+            <p class="home-card-status producer-open-status producer-open-status--unknown">
+                <span class="producer-open-status-main">${escapeHtml(t('msg.noCurrentData'))}</span>
+            </p>
+        `;
     }
 
     if (status.isOpen) {
@@ -87,7 +91,7 @@ export function buildProducerHeaderHtml(producer, options = {}) {
     const ratingNum = Number(producer.rating);
     const ratingHtml = stars && Number.isFinite(ratingNum)
         ? `<div class="producer-header-rating"><span class="producer-stars" aria-hidden="true">${stars}</span><span class="producer-rating-value">${escapeHtml(String(ratingNum))}</span></div>`
-        : `<div class="producer-header-rating producer-header-rating--new"><span class="producer-rating-new" aria-hidden="true">${escapeHtml(t('home.ratingNew'))}</span></div>`;
+        : `<div class="producer-header-rating producer-header-rating--missing"><span class="producer-rating-new">${escapeHtml(t('msg.noCurrentData'))}</span></div>`;
 
     const statusHtml = buildOpenStatusHtml(producer);
     const trustHtml = buildTrustBadgeHtml(producer);
@@ -242,11 +246,52 @@ export function handlePromoFlyerToggle(target) {
     return true;
 }
 
+function buildMapPopupMissingHtml(extraClass = '') {
+    const cls = ['map-popup-missing', extraClass].filter(Boolean).join(' ');
+    return `<p class="${cls}">${escapeHtml(t('msg.noCurrentData'))}</p>`;
+}
+
+/**
+ * @param {object} producer
+ */
+function buildMapPopupDistanceEtaHtml(producer) {
+    const user = getLastPosition();
+    let km = Number(producer.distanceKm);
+    if (!Number.isFinite(km) && user && Number.isFinite(Number(producer.lat)) && Number.isFinite(Number(producer.lng))) {
+        km = getDistanceKm(user.lat, user.lng, Number(producer.lat), Number(producer.lng));
+    }
+
+    if (!Number.isFinite(km) && producer.distance) {
+        return {
+            distance: `<p class="map-popup-distance">${escapeHtml(String(producer.distance))}</p>`,
+            eta: ''
+        };
+    }
+    if (!Number.isFinite(km)) {
+        return { distance: '', eta: '' };
+    }
+
+    const dist = formatDistanceLabel(km);
+    const eta = formatEtaLabels(km);
+    return {
+        distance: `<p class="map-popup-distance" data-distance-line data-distance-km="${km.toFixed(4)}"><span data-distance-label>${escapeHtml(dist)}</span></p>`,
+        eta: `<p class="map-popup-eta" aria-label="${escapeHtml(t('a11y.eta'))}"><span>🚶 ${escapeHtml(eta.walk)}</span><span>🚲 ${escapeHtml(eta.bike)}</span><span>🚗 ${escapeHtml(eta.car)}</span></p>`
+    };
+}
+
+function buildMapPopupRatingHtml(producer) {
+    const stars = formatRatingStars(producer.rating);
+    const ratingNum = Number(producer.rating);
+    if (!stars || !Number.isFinite(ratingNum)) return '';
+    return `<div class="map-popup-rating"><span class="producer-stars" aria-hidden="true">${stars}</span><span class="producer-rating-value">${escapeHtml(String(ratingNum))}</span></div>`;
+}
+
 /**
  * @param {object} producer
  * @param {{ favoriteLabel: string }} ctx
  */
 export function buildMapPopupHtml(producer, ctx) {
+    const displayName = getProducerDisplayName(producer);
     const description = tProducerDescription(
         producer.id,
         producer.description,
@@ -257,14 +302,42 @@ export function buildMapPopupHtml(producer, ctx) {
     const story = storyRaw
         ? translateSoft(storyRaw, { from: 'de', protect: [producer.name, producer.address].filter(Boolean) })
         : '';
-    const header = buildProducerHeaderHtml(producer, { compact: true });
+    const photoHtml = buildProducerPhotoHtml(producer, { className: 'map-popup-photo' });
+    const statusHtml = buildOpenStatusHtml(producer);
+    const { distance: distanceHtml, eta: etaHtml } = buildMapPopupDistanceEtaHtml(producer);
+    const ratingHtml = buildMapPopupRatingHtml(producer);
+    const trustHtml = buildTrustBadgeHtml(producer);
+    const promotedHtml = isProducerPromoted(producer)
+        ? `<span class="rg-promoted-badge map-popup-promoted">${escapeHtml(t('ads.promoted'))}</span>`
+        : '';
     const flyerHtml = buildPromotionsFlyerHtml(producer, { compact: true });
-    const storyHtml = story
-        ? `<p class="map-popup-story">${escapeHtml(story)}</p>`
+
+    const mediaHtml = photoHtml
+        ? `<div class="map-popup-media">${photoHtml}</div>`
+        : `<div class="map-popup-media map-popup-media--empty">${buildMapPopupMissingHtml('map-popup-missing--photo')}</div>`;
+
+    const nameText = String(displayName || producer.name || '').trim() || t('msg.noCurrentData');
+    const titleMetaHtml = (promotedHtml || trustHtml || ratingHtml)
+        ? `<div class="map-popup-title-meta">${promotedHtml}${trustHtml}${ratingHtml}</div>`
         : '';
-    const descHtml = description
-        ? `<p class="map-popup-desc"><em>${escapeHtml(description)}</em></p>`
-        : '';
+
+    const distanceSection = distanceHtml || buildMapPopupMissingHtml();
+    const etaSection = etaHtml || buildMapPopupMissingHtml();
+
+    const addressSection = producer.address
+        ? `<p class="map-popup-address">${escapeHtml(producer.address)}</p>`
+        : buildMapPopupMissingHtml();
+
+    const descParts = [];
+    if (description) {
+        descParts.push(`<p class="map-popup-desc">${escapeHtml(description)}</p>`);
+    }
+    if (story) {
+        descParts.push(`<p class="map-popup-story">${escapeHtml(story)}</p>`);
+    }
+    const descSection = descParts.length
+        ? descParts.join('')
+        : buildMapPopupMissingHtml();
 
     const statusChips = (producer.products || [])
         .slice(0, 3)
@@ -272,17 +345,18 @@ export function buildMapPopupHtml(producer, ctx) {
             const chip = buildCompactAvailabilityHtml(p, t);
             if (!chip) return '';
             const pname = tProductField(producer.id, index, 'name', p.name || '');
-            return `<li class="map-popup-product-status"><span>${escapeHtml(pname)}</span> ${chip}</li>`;
+            return `<li class="map-popup-product-status"><span class="map-popup-product-name">${escapeHtml(pname)}</span>${chip}</li>`;
         })
         .filter(Boolean)
         .join('');
 
-    const productsHtml = statusChips
+    const productsSection = statusChips
         ? `<ul class="map-popup-product-statuses">${statusChips}</ul>`
-        : '';
+        : buildMapPopupMissingHtml();
 
-    // Lazy import uniknięty – wstawiamy pasek reklamowy przez dynamiczny helper w map.js
-    // (buildPopupAdHtml wołany z map.js, aby nie cyklić zależności).
+    const promoSection = flyerHtml || buildMapPopupMissingHtml();
+    const promoSectionClass = flyerHtml ? 'map-popup-section map-popup-section--promo map-popup-promo-card' : 'map-popup-section map-popup-section--promo';
+
     const adHtml = typeof ctx.buildAdHtml === 'function'
         ? ctx.buildAdHtml(producer.id)
         : '';
@@ -290,23 +364,34 @@ export function buildMapPopupHtml(producer, ctx) {
     return `
         <div class="map-popup"
             data-producer-id="${escapeHtml(producer.id)}"
-            data-producer-name="${escapeHtml(getProducerDisplayName(producer) || producer.name || t('map.unknownProducer') || '')}"
+            data-producer-name="${escapeHtml(displayName || producer.name || t('map.unknownProducer') || '')}"
             data-producer-lat="${Number.isFinite(Number(producer.lat)) ? Number(producer.lat) : ''}"
             data-producer-lng="${Number.isFinite(Number(producer.lng)) ? Number(producer.lng) : ''}"
             data-producer-category="${escapeHtml(producer.category || '')}"
             data-producer-address="${escapeHtml(producer.address || '')}"
         >
-            ${header}
-            ${descHtml}
-            ${storyHtml}
-            ${flyerHtml}
-            ${productsHtml}
-            <div class="map-popup-actions">
-                <button type="button" class="map-popup-btn map-popup-btn-details" data-details-id="${escapeHtml(producer.id)}">📋 ${t('btn.details')}</button>
-                <button type="button" class="map-popup-btn" data-favorite-id="${escapeHtml(producer.id)}">${ctx.favoriteLabel}</button>
-                <a class="map-popup-btn map-popup-nav" href="${escapeHtml(ctx.navUrl)}" target="_blank" rel="noopener noreferrer">🧭 ${t('btn.navigate')}</a>
+            ${mediaHtml}
+            <div class="map-popup-stack">
+                <section class="map-popup-section map-popup-section--title producer-header-top">
+                    <h2 class="map-popup-name producer-header-name">${escapeHtml(nameText)}</h2>
+                    ${titleMetaHtml}
+                </section>
+                <section class="map-popup-section map-popup-section--status">${statusHtml}</section>
+                <section class="map-popup-section map-popup-section--distance">${distanceSection}</section>
+                <section class="map-popup-section map-popup-section--eta">${etaSection}</section>
+                <section class="map-popup-section map-popup-section--address">${addressSection}</section>
+                <section class="map-popup-section map-popup-section--desc" aria-label="${escapeHtml(t('btn.details'))}">${descSection}</section>
+                <section class="map-popup-section map-popup-section--products" aria-label="${escapeHtml(t('nav.search'))}">${productsSection}</section>
+                <section class="${promoSectionClass}">${promoSection}</section>
+                <section class="map-popup-section map-popup-section--actions">
+                    <div class="map-popup-actions">
+                        <button type="button" class="map-popup-btn" data-details-id="${escapeHtml(producer.id)}">${t('btn.details')}</button>
+                        <button type="button" class="map-popup-btn" data-favorite-id="${escapeHtml(producer.id)}">${ctx.favoriteLabel}</button>
+                        <a class="map-popup-btn map-popup-btn--link" href="${escapeHtml(ctx.navUrl)}" target="_blank" rel="noopener noreferrer">${t('btn.navigate')}</a>
+                    </div>
+                </section>
+                ${adHtml}
             </div>
-            ${adHtml}
         </div>
     `;
 }

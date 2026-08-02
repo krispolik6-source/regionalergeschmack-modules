@@ -66,7 +66,7 @@ import {
     buildVenueCardsWithSponsoredHtml,
     handleNativeAdClick
 } from '../presentation/nativeAds.js?v=3';
-import { buildHomeAdSenseHtml, mountHomeAdSense } from '../presentation/adsense.js';
+import { buildHomeAdSenseHtml, mountHomeAdSense, teardownHomeAdSense } from '../presentation/adsense.js';
 import { showToast } from '../core/toast.js';
 import { pickSurpriseProducer, formatSurpriseMessage } from '../presentation/surpriseMe.js';
 
@@ -75,7 +75,55 @@ const SEARCH_DEBOUNCE_MS = 280;
 let homeSearchDebounceTimer = null;
 const NEARBY_LIMIT = 5;
 const VENUE_SECTION_LIMIT = 8;
-const DEFAULT_NEARBY_RADIUS_KM = Number(CONFIG.defaultRadius) || 10;
+const MAP_PREFS_KEY = 'rg_map_prefs_v1';
+const RADIUS_MIN = Number(CONFIG.minRadius) || 1;
+const RADIUS_MAX = Number(CONFIG.maxRadius) || 50;
+const RADIUS_DEFAULT = Number(CONFIG.defaultRadius) || 10;
+
+function clampMapRadius(km) {
+    const value = Number(km);
+    if (!Number.isFinite(value)) return RADIUS_DEFAULT;
+    return Math.min(RADIUS_MAX, Math.max(RADIUS_MIN, Math.round(value)));
+}
+
+function readMapPrefs() {
+    if (typeof localStorage === 'undefined') return {};
+    try {
+        const raw = localStorage.getItem(MAP_PREFS_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch {
+        return {};
+    }
+}
+
+/** Ten sam środek i promień co mapa (rg_map_prefs_v1 + fallback GPS). */
+function resolveHomeMapScope() {
+    const prefs = readMapPrefs();
+    const radiusKm = clampMapRadius(prefs.radiusKm ?? RADIUS_DEFAULT);
+    const prefLat = Number(prefs.mapLat);
+    const prefLng = Number(prefs.mapLng);
+    if (Number.isFinite(prefLat) && Number.isFinite(prefLng)) {
+        return { center: { lat: prefLat, lng: prefLng }, radiusKm };
+    }
+    const user = getLastPosition();
+    if (user && Number.isFinite(Number(user.lat)) && Number.isFinite(Number(user.lng))) {
+        return { center: { lat: Number(user.lat), lng: Number(user.lng) }, radiusKm };
+    }
+    return { center: null, radiusKm };
+}
+
+/** Producenci wyłącznie w okręgu mapy — bez fallbacku poza promień. */
+function getMapAreaPool(sourceProducers) {
+    const { center, radiusKm } = resolveHomeMapScope();
+    if (!center) return [];
+    return getProducersInRadius(sourceProducers, radiusKm, center);
+}
+
+function buildEmptySectionHtml() {
+    return `<p class="placeholder home-no-data">${escapeHtml(t('msg.noCurrentData'))}</p>`;
+}
 
 /** Siatka 2×4 · bez „Wszystkie” */
 /** Kanoniczna siatka Home — bez duplikatów (honey/dairy itd. → farmers). */
@@ -172,24 +220,16 @@ function sortByDistance(producers) {
 }
 
 function getNearbyByHomeCategory(homeCategoryId, limit = VENUE_SECTION_LIMIT) {
-    const user = getUserLocation();
     const filtered = filterProducersByCategory(getProducers(), homeCategoryId);
-    if (!user) {
-        return sortByDistance(filtered).slice(0, limit);
-    }
-    const inRadius = getProducersInRadius(filtered, DEFAULT_NEARBY_RADIUS_KM, user);
-    const pool = inRadius.length ? inRadius : filtered;
+    const pool = getMapAreaPool(filtered);
     return sortByDistance(pool).slice(0, limit);
 }
 
 function getRecommendedNearby(limit = NEARBY_LIMIT) {
     const user = getUserLocation();
     const all = getProducers().filter((p) => p && p.category !== 'other');
-    if (!user) {
-        return rankProducersSmart(all, limit, null);
-    }
-    const inRadius = getProducersInRadius(all, DEFAULT_NEARBY_RADIUS_KM, user);
-    const pool = inRadius.length ? inRadius : all;
+    const pool = getMapAreaPool(all);
+    if (!pool.length) return [];
     return rankProducersSmart(pool, limit, user);
 }
 
@@ -197,17 +237,23 @@ function getForYouProducers(limit = NEARBY_LIMIT) {
     // ETAP 18B · silniejsze wagi lokalnego uczenia dla sekcji „Dla Ciebie”
     const user = getUserLocation();
     const all = getProducers().filter((p) => p && p.category !== 'other');
-    if (!user) {
-        return rankProducersSmart(all, limit, null, { learningWeight: 1.85 });
-    }
-    const inRadius = getProducersInRadius(all, DEFAULT_NEARBY_RADIUS_KM, user);
-    const pool = inRadius.length ? inRadius : all;
+    const pool = getMapAreaPool(all);
+    if (!pool.length) return [];
     return rankProducersSmart(pool, limit, user, { learningWeight: 1.85 });
 }
 
 function getRecentlyViewedProducers(limit = 6) {
-    const ids = getRecentlyViewedIds(limit);
-    return ids.map((id) => getProducerById(id)).filter(Boolean);
+    const poolIds = new Set(getMapAreaPool(getProducers()).map((p) => String(p.id)));
+    const ids = getRecentlyViewedIds(limit * 3);
+    return ids
+        .map((id) => getProducerById(id))
+        .filter((p) => p && poolIds.has(String(p.id)))
+        .slice(0, limit);
+}
+
+function getFeaturedProductsInMapArea() {
+    const poolIds = new Set(getMapAreaPool(getProducers()).map((p) => String(p.id)));
+    return featuredProducts.filter((p) => poolIds.has(String(p.producerId)));
 }
 
 function seasonalLabel(item) {
@@ -705,7 +751,7 @@ function buildQuickFiltersHtml() {
 
 function applyQuickFilter(filterId) {
     const user = getUserLocation();
-    let pool = getProducers().filter((p) => p && p.category !== 'other');
+    let pool = getMapAreaPool(getProducers().filter((p) => p && p.category !== 'other'));
 
     if (filterId === 'open') {
         pool = pool.filter((p) => {
@@ -718,7 +764,8 @@ function applyQuickFilter(filterId) {
             return trust === 'verified' || trust === 'confirmed';
         });
     } else if (filterId === 'near5') {
-        if (user) pool = getProducersInRadius(pool, 5, user);
+        const { center } = resolveHomeMapScope();
+        if (center) pool = getProducersInRadius(pool, 5, center);
     } else if (filterId === 'bio') {
         pool = pool.filter((p) => /bio|organic|ökologisch|eko/i.test([
             p.name, p.description, ...(p.products || []).map((x) => x.name)
@@ -748,7 +795,7 @@ function buildProducerLabel(product) {
 
 function buildProducerRatingHtml(producer) {
     if (!producer) {
-        return `<p class="home-card-rating home-card-rating--new" aria-hidden="true">${escapeHtml(t('home.ratingNew'))}</p>`;
+        return `<p class="home-card-rating home-card-rating--missing">${escapeHtml(t('msg.noCurrentData'))}</p>`;
     }
     const reviews = getReviews(producer.id);
     if (reviews.length > 0) {
@@ -761,7 +808,7 @@ function buildProducerRatingHtml(producer) {
         const stars = formatRatingStars(producer.rating);
         return `<p class="home-card-rating" aria-label="${avg}"><span aria-hidden="true">${stars}</span> <span class="home-card-rating-value">${avg}</span></p>`;
     }
-    return `<p class="home-card-rating home-card-rating--new" aria-hidden="true">${escapeHtml(t('home.ratingNew'))}</p>`;
+    return `<p class="home-card-rating home-card-rating--missing">${escapeHtml(t('msg.noCurrentData'))}</p>`;
 }
 
 function buildRatingHtml(product) {
@@ -778,7 +825,7 @@ function buildRatingHtml(product) {
         return `<p class="home-card-rating" aria-label="${avg}"><span aria-hidden="true">${stars}</span> <span class="home-card-rating-value">${avg}</span></p>`;
     }
 
-    return `<p class="home-card-rating home-card-rating--new" aria-hidden="true">${escapeHtml(t('home.ratingNew'))}</p>`;
+    return `<p class="home-card-rating home-card-rating--missing">${escapeHtml(t('msg.noCurrentData'))}</p>`;
 }
 
 function buildFavoriteBtnHtml(producerId) {
@@ -878,7 +925,7 @@ function buildVenueCardHtml(producer) {
 
 function buildVenueCardsHtml(producers, { sponsored = false } = {}) {
     if (!producers.length) {
-        return `<p class="placeholder">${escapeHtml(t('search.noResults'))}</p>`;
+        return buildEmptySectionHtml();
     }
     if (sponsored) {
         return buildVenueCardsWithSponsoredHtml(producers, buildVenueCardHtml);
@@ -909,7 +956,7 @@ function buildSectionHeader(title, categoryId) {
 }
 
 function buildCategoriesHtml() {
-    const counts = countProducersByHomeCategory(getProducers());
+    const counts = countProducersByHomeCategory(getMapAreaPool(getProducers()));
     const favoritesCount = getFavoritesCount();
     const seen = new Set();
 
@@ -944,7 +991,8 @@ function pruneHomeCategoryCards(root) {
 }
 
 function buildProductCardsHtml(limit) {
-    const list = limit ? featuredProducts.slice(0, limit) : featuredProducts;
+    const inArea = getFeaturedProductsInMapArea();
+    const list = limit ? inArea.slice(0, limit) : inArea;
     return list.map((product) => {
         const rawName = getFeaturedProductName(product, t);
         const name = escapeHtml(rawName);
@@ -995,10 +1043,49 @@ function recipeName(recipe) {
     return translated !== key ? translated : recipe.name;
 }
 
+function resolveRecipeLinkedProducer(recipe) {
+    const id = recipe?.linkedProducerIds?.[0];
+    if (!id) return null;
+    return getProducerById(id) || getContentProducerById(id) || null;
+}
+
+function buildRecipeProducerLogoHtml(producer) {
+    if (!producer) return '';
+    const logo = buildProducerLogoHtml(producer, {
+        size: 20,
+        className: 'home-producer-logo',
+        preferChainOnly: false
+    });
+    if (!logo.url) return '';
+    return `<img class="home-producer-logo" src="${escapeHtml(logo.url)}" alt="${escapeHtml(String(producer.name || ''))}" width="20" height="20" loading="lazy" decoding="async" />`;
+}
+
+function buildRecipeBadgeTagsHtml(producer) {
+    if (!producer) return '';
+    const tags = [];
+    if (isProducerPromoted(producer)) {
+        tags.push(`<span class="home-recipe-badge home-recipe-badge--promo">${escapeHtml(t('ads.promoted'))}</span>`);
+    }
+    const price = Number(producer.products?.[0]?.price);
+    if (Number.isFinite(price) && price > 0) {
+        tags.push(`<span class="home-recipe-badge home-recipe-badge--price">${escapeHtml(formatPrice(price))}</span>`);
+    }
+    return tags.join('');
+}
+
+function buildRecipeBadgesHtml(recipe) {
+    const producer = resolveRecipeLinkedProducer(recipe);
+    const logoHtml = buildRecipeProducerLogoHtml(producer);
+    const tagsHtml = buildRecipeBadgeTagsHtml(producer);
+    return `<div class="home-recipe-badges">${logoHtml}${tagsHtml}</div>`;
+}
+
 function buildRecipesHtml() {
     return getRecipes().map((recipe) => {
         const rawName = recipeName(recipe);
         const name = escapeHtml(rawName);
+        const linkedProducer = resolveRecipeLinkedProducer(recipe);
+        const producerId = linkedProducer?.id || recipe.linkedProducerIds?.[0] || '';
         const imageHtml = buildProductImageHtml(getRecipeImageUrl(recipe), t, {
             className: 'home-recipe-photo',
             alt: rawName,
@@ -1011,16 +1098,23 @@ function buildRecipesHtml() {
 
         return `
             <article class="home-recipe-card home-recipe-card--compact" data-recipe-id="${escapeHtml(recipe.id)}">
-                <div class="home-recipe-media">${imageHtml}</div>
+                <div class="home-recipe-media">
+                    ${imageHtml}
+                    <button type="button" class="home-recipe-open" data-recipe-producer="${escapeHtml(String(producerId))}">
+                        <span class="home-recipe-open-text">${escapeHtml(t('recipes.openProducer'))}</span>
+                        <span class="home-recipe-open-arrow" aria-hidden="true">&rarr;</span>
+                    </button>
+                </div>
                 <div class="home-recipe-body">
-                    <h3 class="home-recipe-name">${name}</h3>
+                    <div class="home-recipe-title-row">
+                        <h3 class="home-recipe-name">${name}</h3>
+                        <span class="home-recipe-chevron" aria-hidden="true">&rsaquo;</span>
+                    </div>
                     <p class="home-recipe-meta">
                         <span>${escapeHtml(time)}</span>
                         <span>${escapeHtml(difficulty)}</span>
                     </p>
-                    <button type="button" class="home-recipe-open" data-recipe-producer="${escapeHtml(recipe.linkedProducerIds[0] || '')}">
-                        ${escapeHtml(t('recipes.openProducer'))}
-                    </button>
+                    ${buildRecipeBadgesHtml(recipe)}
                 </div>
             </article>
         `;
@@ -1032,6 +1126,8 @@ export const renderHome = (container) => {
         console.warn('Home: brak kontenera');
         return;
     }
+
+    destroyHome();
 
     const recommended = getRecommendedNearby(NEARBY_LIMIT);
     const forYou = getForYouProducers(NEARBY_LIMIT);
@@ -1052,7 +1148,7 @@ export const renderHome = (container) => {
     container.innerHTML = `
         <div class="home-page home-page--v2 home-page--v1">
             <section class="home-greeting" aria-label="${escapeHtml(welcomeTitle)}">
-                <p class="home-greeting-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="20" height="20" alt="" aria-hidden="true"> Regionaler Geschmack</p>
+                <p class="home-greeting-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="20" height="20" alt="" aria-hidden="true"> Regionaler Geschmack</p>
                 <div class="home-greeting-title-row">
                     <h2 class="home-greeting-title">${escapeHtml(welcomeTitle)}</h2>
                     <button
@@ -1130,13 +1226,12 @@ export const renderHome = (container) => {
                 </div>
             </section>
 
-            ${recent.length ? `
             <section class="home-recent app-section" aria-label="${t('home.recentTitle')}" data-home-section="recent">
                 ${buildSectionHeader(`🕒 ${t('home.recentTitle')}`, null)}
                 <div class="home-carousel" data-carousel="recent">
                     ${buildVenueCardsHtml(recent)}
                 </div>
-            </section>` : ''}
+            </section>
 
             ${buildTastesOfDaySectionHtml()}
             ${buildTasteAdvisorSectionHtml()}
@@ -1164,9 +1259,9 @@ export const renderHome = (container) => {
             <section class="home-recommended home-featured app-section" aria-label="${t('home.featured')}">
                 ${buildSectionHeader(`⭐ ${t('home.featured')}`, null)}
                 <div class="home-carousel home-carousel--products" data-carousel="products">
-                    ${featuredProducts.length
+                    ${getFeaturedProductsInMapArea().length
                         ? buildProductCardsHtml()
-                        : `<p class="placeholder">${t('msg.noProducts')}</p>`}
+                        : buildEmptySectionHtml()}
                 </div>
             </section>
 
@@ -1179,7 +1274,7 @@ export const renderHome = (container) => {
 
             <section class="app-section home-premium-section">
                 <button type="button" class="home-premium-cta" id="homePremiumBtn" aria-label="${t('premium.title')}">
-                    <img class="home-premium-icon home-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="28" height="28" alt="" aria-hidden="true">
+                    <img class="home-premium-icon home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true">
                     <span class="home-premium-text">
                         <strong class="home-premium-title">${t('premium.title')}${isPremiumActive() ? ` · ${t('premium.statusActive')}` : ''}</strong>
                         <span class="home-premium-desc">${isPremiumActive() ? t('premium.benefitsUnlocked') : t('home.premiumTeaser')}</span>
@@ -1198,7 +1293,7 @@ export const renderHome = (container) => {
 
             <footer class="home-footer">
                 <p class="home-motto">${escapeHtml(t('home.motto'))}</p>
-                <p class="footer-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=28" width="18" height="18" alt="" aria-hidden="true"> Regionaler Geschmack</p>
+                <p class="footer-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="18" height="18" alt="" aria-hidden="true"> Regionaler Geschmack</p>
                 <p class="footer-row">
                     <span aria-hidden="true">✉️</span>
                     <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>
@@ -1227,7 +1322,7 @@ function renderHomeSearchResults(container, query) {
         return;
     }
 
-    const { items } = searchGlobalResults(getProducers(), trimmed, t);
+    const { items } = searchGlobalResults(getMapAreaPool(getProducers()), trimmed, t);
 
     if (items.length === 0) {
         resultsEl.hidden = false;
@@ -1365,14 +1460,33 @@ function refreshVenueSections(container) {
     bindVenueCardClicks(container, homeUiAbort?.signal);
 }
 
-let placesListenerBound = false;
-let reviewsListenerBound = false;
-let locationListenerBound = false;
+/** Odsubskrybowanie listenerów EventBus Home */
+let homeBusUnsubs = [];
 /** Abort poprzednich listenerów UI Home przy ponownym renderze */
 let homeUiAbort = null;
 
+export function destroyHome() {
+    while (homeBusUnsubs.length) {
+        try {
+            homeBusUnsubs.pop()?.();
+        } catch {
+            /* ignore */
+        }
+    }
+    if (homeSearchDebounceTimer) {
+        clearTimeout(homeSearchDebounceTimer);
+        homeSearchDebounceTimer = null;
+    }
+    if (homeUiAbort) {
+        try { homeUiAbort.abort(); } catch { /* ignore */ }
+        homeUiAbort = null;
+    }
+    stopHomeAdRotation();
+    teardownHomeAdSense();
+}
+
 function refreshCategoryCounts(container) {
-    const counts = countProducersByHomeCategory(getProducers());
+    const counts = countProducersByHomeCategory(getMapAreaPool(getProducers()));
     const favoritesCount = getFavoritesCount();
 
     container.querySelectorAll('.category-card').forEach((item) => {
@@ -1385,10 +1499,19 @@ function refreshCategoryCounts(container) {
     });
 }
 
+function syncHomeAmbientToggle(container, on) {
+    const btn = container.querySelector('#homeAmbientNatureBtn');
+    if (!btn) return;
+    const icon = btn.querySelector('.home-ambient-toggle-icon');
+    if (icon) icon.textContent = on ? '🔇' : '🎵';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const label = on ? t('home.ambientNatureMute') : t('home.ambientNaturePlay');
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+}
+
 function bindPlacesRefresh(container) {
-    if (placesListenerBound) return;
-    placesListenerBound = true;
-    eventBus.on(EVENTS.PLACES_LOADED, () => {
+    homeBusUnsubs.push(eventBus.on(EVENTS.PLACES_LOADED, () => {
         const home = document.querySelector('.home-page');
         if (home) {
             refreshCategoryCounts(home);
@@ -1398,34 +1521,30 @@ function bindPlacesRefresh(container) {
                 renderHomeSearchResults(home.parentElement || container, input.value);
             }
         }
-    });
-    eventBus.on(EVENTS.FAVORITES_CHANGED, () => {
+    }));
+    homeBusUnsubs.push(eventBus.on(EVENTS.FAVORITES_CHANGED, () => {
         const home = document.querySelector('.home-page');
         if (home) refreshCategoryCounts(home);
-    });
+    }));
 }
 
 function bindReviewsRefresh() {
-    if (reviewsListenerBound) return;
-    reviewsListenerBound = true;
-    eventBus.on(EVENTS.REVIEWS_CHANGED, () => {
+    homeBusUnsubs.push(eventBus.on(EVENTS.REVIEWS_CHANGED, () => {
         const home = document.querySelector('.home-page');
         if (!home) return;
         refreshProductRatings(home);
-    });
+    }));
 }
 
 function bindLocationRefresh() {
-    if (locationListenerBound) return;
-    locationListenerBound = true;
-    eventBus.on(EVENTS.LOCATION_UPDATED, () => {
+    homeBusUnsubs.push(eventBus.on(EVENTS.LOCATION_UPDATED, () => {
         const home = document.querySelector('.home-page');
         if (home) refreshFeaturedDistances(home, { rebuild: false });
-    });
-    eventBus.on(EVENTS.LOCATION_CHANGED, () => {
+    }));
+    homeBusUnsubs.push(eventBus.on(EVENTS.LOCATION_CHANGED, () => {
         const home = document.querySelector('.home-page');
         if (home) refreshFeaturedDistances(home, { rebuild: true });
-    });
+    }));
 }
 
 function bindVenueCardClicks(container, signal) {
@@ -1476,20 +1595,17 @@ function setupEvents(container) {
 
     on(container.querySelector('#homeAmbientNatureBtn'), 'click', () => {
         const next = !isAmbientNatureEnabled();
-        setAmbientNatureEnabled(next);
+        setAmbientNatureEnabled(next, { userInitiated: next });
         // drugi kick w tym samym geście użytkownika (iOS / autoplay)
         if (next && typeof window !== 'undefined' && window.__RG_NATURE_AUDIO__?.start) {
-            window.__RG_NATURE_AUDIO__.start();
+            window.__RG_NATURE_AUDIO__.start({ userInitiated: true });
         }
-        const btn = container.querySelector('#homeAmbientNatureBtn');
-        if (!btn) return;
-        const icon = btn.querySelector('.home-ambient-toggle-icon');
-        if (icon) icon.textContent = next ? '🔇' : '🎵';
-        btn.setAttribute('aria-pressed', next ? 'true' : 'false');
-        const label = next ? t('home.ambientNatureMute') : t('home.ambientNaturePlay');
-        btn.setAttribute('aria-label', label);
-        btn.title = label;
+        syncHomeAmbientToggle(container, next);
     });
+
+    homeBusUnsubs.push(eventBus.on(EVENTS.AMBIENT_UNAVAILABLE, () => {
+        syncHomeAmbientToggle(container, false);
+    }));
 
     on(container.querySelector('#homePremiumBtn'), 'click', () => {
         eventBus.emit(EVENTS.NAVIGATE, { view: 'premium' });
@@ -1504,9 +1620,10 @@ function setupEvents(container) {
     });
 
     on(container.querySelector('#homeSurpriseBtn'), 'click', () => {
-        const pick = pickSurpriseProducer({ radiusKm: DEFAULT_NEARBY_RADIUS_KM });
+        const pool = getMapAreaPool(getProducers().filter((p) => p && p.category !== 'other'));
+        const pick = pickSurpriseProducer({ pool });
         if (!pick?.producer?.id) {
-            showToast(t('home.surpriseNone'));
+            showToast(t('msg.noCurrentData'));
             return;
         }
         showToast(formatSurpriseMessage(pick, t));
@@ -1688,4 +1805,4 @@ function setupEvents(container) {
     bindLocationRefresh();
 }
 
-export default { renderHome };
+export default { renderHome, destroyHome };
