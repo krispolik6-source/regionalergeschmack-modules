@@ -18,22 +18,11 @@ function assert(cond, msg) {
 }
 
 const dir = join(ROOT, 'assets/audio/nature');
-const fieldMp3 = join(dir, 'field-sounds.mp3');
-const fieldWav = join(dir, 'field-sounds.wav');
-assert(existsSync(fieldMp3) || existsSync(fieldWav), 'file field-sounds.mp3|wav');
-assert(existsSync(fieldMp3), 'field-sounds.mp3 preferred');
-assert(statSync(fieldMp3).size > 1000, 'field-sounds.mp3 not empty');
-
-assert(existsSync(join(dir, 'CREDITS-BIRDS.txt')), 'CREDITS-BIRDS.txt');
-
-for (const base of ['birds', 'wind', 'frogs', 'insects']) {
-    const mp3 = join(dir, `${base}.mp3`);
-    const wav = join(dir, `${base}.wav`);
-    assert(existsSync(mp3) || existsSync(wav), `file ${base}.mp3|wav`);
-    if (existsSync(mp3)) assert(statSync(mp3).size > 1000, `${base}.mp3 not empty`);
-    if (existsSync(wav)) assert(statSync(wav).size > 1000, `${base}.wav not empty`);
-}
+const forestMp3 = join(dir, 'birds_natural_forest.mp3');
+assert(existsSync(forestMp3), 'birds_natural_forest.mp3');
+assert(statSync(forestMp3).size > 10000, 'birds_natural_forest.mp3 not empty');
 assert(existsSync(join(dir, 'CREDITS.txt')), 'CREDITS.txt');
+assert(existsSync(join(dir, 'birds_natural_forest.README.txt')), 'birds_natural_forest.README.txt');
 
 const store = new Map();
 globalThis.localStorage = {
