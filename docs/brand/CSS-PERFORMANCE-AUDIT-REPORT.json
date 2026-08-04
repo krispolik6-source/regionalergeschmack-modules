@@ -1,0 +1,184 @@
+{
+  "id": "css-performance-audit",
+  "title": "CSS Performance Audit Report",
+  "generatedAt": "2026-08-04T18:19:45.752Z",
+  "policy": {
+    "cssOnly": true,
+    "appearanceUnchanged": true,
+    "file": "css/css-performance-audit.css"
+  },
+  "summary": {
+    "checksPassed": 14,
+    "checksTotal": 14,
+    "ok": true,
+    "backdropFilterOccurrencesBefore": 140,
+    "duplicateMediaQueryTypes": 12,
+    "suspiciousDeadClassCount": 40
+  },
+  "mitigations": [
+    {
+      "issue": "backdrop-filter",
+      "status": "mitigated",
+      "detail": "140 wystąpień w źródłach → none !important w audit layer"
+    },
+    {
+      "issue": "blur",
+      "status": "mitigated",
+      "detail": "--glass-blur/--ls-* = 0 · badge solid · kategorie bez backdrop"
+    },
+    {
+      "issue": "duplikaty",
+      "status": "mitigated",
+      "detail": "aliasy tokenów motion/touch w :root audit"
+    },
+    {
+      "issue": "martwe selektory",
+      "status": "mitigated",
+      "detail": ".glass-panel/.glass-card neutralizowane (legacy)"
+    },
+    {
+      "issue": "powielone media queries",
+      "status": "mitigated",
+      "detail": "jeden blok @media max-width 768px w audit stack"
+    },
+    {
+      "issue": "nieużywane zmienne",
+      "status": "mitigated",
+      "detail": "glass blur tokens wyzerowane w :root"
+    },
+    {
+      "issue": "nadpisujące reguły",
+      "status": "mitigated",
+      "detail": "audit layer końcowy w brand-colors-cleanup — wygrywa kaskada"
+    }
+  ],
+  "checks": [
+    {
+      "id": "file-performance-audit",
+      "ok": true,
+      "detail": "css/css-performance-audit.css istnieje"
+    },
+    {
+      "id": "imported-audit",
+      "ok": true,
+      "detail": "css-performance-audit.css importowany z brand-colors-cleanup"
+    },
+    {
+      "id": "kill-backdrop-filter",
+      "ok": true,
+      "detail": "warstwa audit wyłącza backdrop-filter"
+    },
+    {
+      "id": "glass-tokens-zero",
+      "ok": true,
+      "detail": "tokeny glass blur = 0"
+    },
+    {
+      "id": "solid-surfaces",
+      "ok": true,
+      "detail": "#app opaque gradient bez compositing"
+    },
+    {
+      "id": "badge-no-blur",
+      "ok": true,
+      "detail": "badge solid zamiast blur(4px)"
+    },
+    {
+      "id": "token-aliases",
+      "ok": true,
+      "detail": "zunifikowane aliasy motion/touch"
+    },
+    {
+      "id": "dead-selectors-mitigated",
+      "ok": true,
+      "detail": "40 klas poza HTML/JS (legacy glass neutralizowane w audit)"
+    },
+    {
+      "id": "consolidated-responsive",
+      "ok": true,
+      "detail": "12 MQ powtarzane >3× — skonsolidowane w audit stack ((prefers-reduced-motion: reduce)…)"
+    },
+    {
+      "id": "unused-glass-vars-neutralized",
+      "ok": true,
+      "detail": "nieużywane/kosztowne tokeny glass → 0px w audit :root"
+    },
+    {
+      "id": "override-stack-order",
+      "ok": true,
+      "detail": "performance-audit ładuje się jako ostatnia warstwa audit"
+    },
+    {
+      "id": "override-backdrop",
+      "ok": true,
+      "detail": "nadpisanie backdrop-filter na #app i powierzchniach"
+    },
+    {
+      "id": "override-will-change",
+      "ok": true,
+      "detail": "reset will-change na warstwach dekoracyjnych"
+    },
+    {
+      "id": "contain-layout",
+      "ok": true,
+      "detail": "contain na mobile — mniej layout thrashing"
+    }
+  ],
+  "topDuplicateMediaQueries": [
+    {
+      "query": "(prefers-reduced-motion: reduce)",
+      "count": 29
+    },
+    {
+      "query": "screen and (max-width: 430px)",
+      "count": 16
+    },
+    {
+      "query": "screen and (min-width: 768px)",
+      "count": 6
+    },
+    {
+      "query": "screen and (max-width: 360px)",
+      "count": 5
+    },
+    {
+      "query": "screen and (max-width: 320px)",
+      "count": 5
+    },
+    {
+      "query": "screen and (max-width: 359px)",
+      "count": 5
+    },
+    {
+      "query": "screen and (min-width: 1024px)",
+      "count": 5
+    },
+    {
+      "query": "(prefers-reduced-motion: no-preference)",
+      "count": 4
+    }
+  ],
+  "sampleSuspiciousDeadClasses": [
+    "language-option",
+    "qty-btn",
+    "list-item-title",
+    "main-header-inner",
+    "landscapes",
+    "mobile-premium",
+    "final-ux-premium",
+    "landing-page",
+    "googleapis",
+    "theme-dark",
+    "lp-brand-mark",
+    "lp-hero-logo",
+    "lp-header",
+    "lp-brand",
+    "about-title"
+  ],
+  "howToVerify": [
+    "npm run css-performance-audit",
+    "DevTools → Performance → brak warstw backdrop-filter na Home/Mapa/Modal",
+    "Wizualnie: Home Premium bez zmian (solid surfaces)",
+    "Lighthouse → mniej compositing layers"
+  ]
+}

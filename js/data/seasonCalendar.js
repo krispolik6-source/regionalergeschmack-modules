@@ -50,30 +50,8 @@ export function isSeasonalProduct(product, season = getCurrentSeason()) {
 /**
  * @param {SeasonId} [season]
  */
-export function getSeasonalDemoItems(season = getCurrentSeason()) {
-    const labels = {
-        spring: [
-            { id: 'season-asparagus', name: 'Szparagi', nameDe: 'Spargel', nameEn: 'Asparagus', icon: '🌱' },
-            { id: 'season-radish', name: 'Rzodkiewka', nameDe: 'Radieschen', nameEn: 'Radish', icon: '🌱' },
-            { id: 'season-strawberry', name: 'Truskawki', nameDe: 'Erdbeeren', nameEn: 'Strawberries', icon: '🍓' }
-        ],
-        summer: [
-            { id: 'season-raspberry', name: 'Maliny', nameDe: 'Himbeeren', nameEn: 'Raspberries', icon: '🫐' },
-            { id: 'season-blueberry', name: 'Jagody', nameDe: 'Heidelbeeren', nameEn: 'Blueberries', icon: '🫐' },
-            { id: 'season-tomato', name: 'Pomidory', nameDe: 'Tomaten', nameEn: 'Tomatoes', icon: '🍅' }
-        ],
-        autumn: [
-            { id: 'season-pumpkin', name: 'Dynia', nameDe: 'Kürbis', nameEn: 'Pumpkin', icon: '🎃' },
-            { id: 'season-apple', name: 'Jabłka', nameDe: 'Äpfel', nameEn: 'Apples', icon: '🍎' },
-            { id: 'season-mushroom', name: 'Grzyby', nameDe: 'Pilze', nameEn: 'Mushrooms', icon: '🍄' }
-        ],
-        winter: [
-            { id: 'season-cabbage', name: 'Kapusta', nameDe: 'Kohl', nameEn: 'Cabbage', icon: '🥬' },
-            { id: 'season-potato', name: 'Ziemniaki', nameDe: 'Kartoffeln', nameEn: 'Potatoes', icon: '🥔' },
-            { id: 'season-beet', name: 'Buraki', nameDe: 'Rote Bete', nameEn: 'Beetroot', icon: '🟣' }
-        ]
-    };
-    return labels[season] || labels.summer;
+export function getSeasonalDemoItems(_season = getCurrentSeason()) {
+    return [];
 }
 
 export default {

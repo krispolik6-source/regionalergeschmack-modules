@@ -1,7 +1,7 @@
 {
   "id": "visual-brand-verification-28g",
   "title": "VISUAL BRAND VERIFICATION — ETAP 28G",
-  "generatedAt": "2026-07-21T18:04:33.556Z",
+  "generatedAt": "2026-08-03T19:10:25.532Z",
   "verdict": "PASS",
   "policy": {
     "identicalLogoOnly": true,
@@ -185,19 +185,19 @@
     {
       "id": "Install banner",
       "ok": true,
-      "detail": "banner ::before = --brand-logo (logo-master)",
+      "detail": "banner ::before = --brand-icon-app (premium PWA icon)",
       "file": "css/brand-identity-final.css"
     },
     {
       "id": "Splash",
       "ok": true,
-      "detail": "Splash CSS + splash-logo.png = icon-512",
+      "detail": "Splash premium + splash-logo.png = icon-512",
       "file": "css/brand-identity-final.css + assets/brand/splash-logo.png"
     },
     {
       "id": "PWA",
       "ok": true,
-      "detail": "manifest icons z master (192/maskable/monochrome)",
+      "detail": "manifest icons premium (192/maskable/monochrome)",
       "file": "manifest.json"
     },
     {

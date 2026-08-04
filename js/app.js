@@ -20,7 +20,7 @@ import { refreshCartBadge, adoptGuestCartForCurrentUser } from './views/cart.js'
 import { syncFavoritesOnStartup } from './core/favoritesStore.js';
 import { invalidateTasteAdvisorDayCache } from './presentation/tasteAdvisor.js';
 import { invalidateReturnMagicDayCache } from './presentation/returnMagic.js';
-import { initToast } from './core/toast.js';
+import { initToast, showToast } from './core/toast.js';
 import { initAuth } from './auth/auth.js';
 import { initLoginModal } from './auth/login.js';
 import { initRegisterModal } from './auth/register.js';
@@ -30,7 +30,6 @@ import {
     maybeAutoSyncTrial,
     canActivateTrial
 } from './core/premiumService.js';
-import { showToast } from './core/toast.js';
 import { refreshFavoritesBadge, adoptGuestFavoritesForCurrentUser } from './views/favorites.js';
 import { initShellSettings, updateLanguageButtonLabel, refreshShellAccessibility } from './core/settings.js';
 import { syncDocumentMeta } from './core/documentMeta.js';
@@ -64,6 +63,7 @@ import { initProjectAdvisor } from './diagnostics/projectAdvisor.js';
 import { initDailyDeveloperReport } from './diagnostics/dailyDeveloperReport.js';
 import { initDeveloperDashboard } from './diagnostics/developerDashboard.js';
 import { initWeeklyPremiumReport } from './diagnostics/weeklyPremiumReport.js';
+import { dismissSplashScreen } from './core/splashScreen.js';
 
 const VIEW_KEYS = ['home', 'map', 'premium', 'favorites', 'cart', 'profile'];
 
@@ -217,6 +217,7 @@ async function bootstrap() {
     if (bootstrapped) return;
     bootstrapped = true;
 
+    try {
     const app = document.getElementById('app');
     if (!app) throw new Error('Brak kontenera #app');
 
@@ -303,6 +304,9 @@ async function bootstrap() {
     window.updatePwaInstallButtons = refreshPwaInstallUi;
 
     console.info(`[${APP_NAME}] nawigacja gotowa`);
+    } finally {
+        dismissSplashScreen();
+    }
 }
 
 if (document.readyState === 'loading') {

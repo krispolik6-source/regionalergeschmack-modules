@@ -1,0 +1,238 @@
+/* ============================================================
+   Brand Book — Color Cleanup (strict palette, CSS only)
+   Dozwolone: #2A3F28 #243528 #1E2A20 #141810
+              #F7F3EA #F3F7F2 #FFF8EE #FFFFFF
+              #C9A227 #E8C97A #E6EFDF
+   ============================================================ */
+
+:root {
+    /* Zielenie marki */
+    --brand-green: #2a3f28;
+    --brand-green-mid: #2a3f28;
+    --brand-green-soft: #2a3f28;
+    --color-primary: #2a3f28;
+    --color-primary-dark: #243528;
+    --color-btn-location: #2a3f28;
+    --color-btn-location-hover: #243528;
+    --btn-see-all: #2a3f28;
+    --nav-icon-home: #2a3f28;
+    --nav-icon-map: #2a3f28;
+    --cat-icon-farmers: #2a3f28;
+    --cat-icon-bakeries: #c9a227;
+    --cat-icon-meat: #c9a227;
+    --cat-icon-shops: #c9a227;
+    --cat-icon-restaurants: #c9a227;
+    --cat-icon-vending: #243528;
+    --cat-icon-favorites: #c9a227;
+    --nav-icon-search: #c9a227;
+    --nav-icon-favorites: #c9a227;
+    --nav-icon-profile: #c9a227;
+
+    /* Złoto */
+    --brand-gold: #c9a227;
+    --brand-gold-deep: #c9a227;
+    --brand-honey: #c9a227;
+    --brand-wheat: #e8c97a;
+    --color-accent: #c9a227;
+    --color-accent-dark: #c9a227;
+    --color-btn-nearby: #c9a227;
+    --color-btn-nearby-hover: #c9a227;
+
+    /* Tekst — bez brązowego ink */
+    --brand-ink: #2a3f28;
+    --brand-ink-soft: rgba(42, 63, 40, 0.72);
+    --color-text: #2a3f28;
+    --color-text-muted: rgba(42, 63, 40, 0.72);
+
+    /* Powierzchnie (paleta — bez zmiany ciepła tła light) */
+    --brand-cream-card: #fff8ee;
+    --home-surface-border: #e6efdf;
+    --glass-border: #e6efdf;
+
+    /* Markery — bez slate Tailwind */
+    --marker-other: #243528;
+}
+
+/* ——— Map canvas: ciepły fallback z palety ——— */
+[data-view-panel='map'] #map,
+[data-view-panel='map'] .leaflet-container {
+    background: #f3f7f2 !important;
+}
+
+/* ——— Slate / blue-gray ——— */
+.map-category-count {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+.producer-story-text {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+.producer-product-image {
+    background: #f3f7f2 !important;
+}
+
+.home-recipes-intro {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+.home-recipe-ingredients {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+.home-page--v1 .home-greeting-sub {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+/* ——— Brązowy ink ——— */
+.main-header .header-title,
+.main-header .brand-name {
+    color: #2a3f28 !important;
+    -webkit-text-fill-color: #2a3f28 !important;
+}
+
+.mobile-premium {
+    --mp-text-safe: #2a3f28;
+    --mp-muted-safe: rgba(42, 63, 40, 0.72);
+}
+
+.final-ux-premium {
+    --fx-surface-solid: #2a3f28;
+}
+
+.landing-page {
+    --lp-text: #2a3f28;
+}
+
+.premium-header {
+    --ph-ink: #2a3f28;
+}
+
+.producer-modal-meta-line,
+.producer-modal-chip,
+.producer-modal-chip-status .producer-open-status {
+    color: rgba(42, 63, 40, 0.85) !important;
+}
+
+.producer-modal-chip-type,
+.producer-modal-chip-rating {
+    color: #c9a227 !important;
+}
+
+.producer-modal .producer-header-type {
+    color: #2a3f28 !important;
+}
+
+.home-recipe-meta {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+.radius-value,
+.radius-hint {
+    color: #2a3f28 !important;
+}
+
+.map-region-select {
+    color: #2a3f28 !important;
+}
+
+.map-region-label {
+    color: rgba(42, 63, 40, 0.72) !important;
+}
+
+/* ——— Side menu: navy hover ——— */
+body.dark-mode .side-menu-item:hover,
+body.dark-mode .side-menu-item:focus-visible {
+    background: rgba(36, 53, 40, 0.92) !important;
+}
+
+body.dark-mode .product-actions-menu {
+    background: #1e2a20 !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+/* ——— Markery: kolor „other” z palety ——— */
+.producer-marker-badge--other {
+    --marker-color: #243528;
+}
+
+body.dark-mode .producer-marker-badge.has-chain-logo {
+    background: color-mix(in srgb, var(--marker-color, #243528) 30%, #141810) !important;
+}
+
+/* ——— Dark mode: slate → paleta ——— */
+body.dark-mode .producer-story-text {
+    color: #e8c97a !important;
+}
+
+body.dark-mode .home-recipe-card {
+    background: #1e2a20 !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+body.dark-mode .home-recipe-ingredients,
+body.dark-mode .home-recipe-meta {
+    color: #e8c97a !important;
+}
+
+body.dark-mode .home-recipe-card--compact .home-recipe-chevron {
+    color: #e8c97a !important;
+}
+
+body.dark-mode .product-actions-item {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .producer-modal-meta-line,
+body.dark-mode .producer-modal-header--compact .producer-modal-chip {
+    color: rgba(247, 243, 234, 0.88) !important;
+}
+
+body.dark-mode .app-legal-footer {
+    background: #1e2a20 !important;
+    border-top-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+body.dark-mode .map-status {
+    background: rgba(30, 42, 32, 0.92) !important;
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .map-offline-banner {
+    background: rgba(30, 42, 32, 0.94) !important;
+    color: #f7f3ea !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+/* ——— Focus: gold ——— */
+:focus-visible {
+    outline-color: #c9a227 !important;
+}
+
+.switch input:focus-visible + .slider,
+.home-all-categories-btn:focus-visible,
+.home-product-card-open:focus-visible,
+.taste-diary-star:has(input:focus-visible) span {
+    outline-color: #c9a227 !important;
+}
+
+/* ——— Primary buttons: #2A3F28 ——— */
+.btn-primary,
+.home-search-submit,
+.btn-location {
+    background: #2a3f28 !important;
+    border-color: rgba(42, 63, 40, 0.2) !important;
+}
+
+/* ——— Trust badge community (navy) ——— */
+@import url('/css/mobile-premium-audit.css?v=1');
+@import url('/css/accessibility-audit.css?v=1');
+@import url('/css/animation-audit.css?v=2');
+@import url('/css/css-performance-audit.css?v=1');
+@import url('/css/release-ready-audit.css?v=1');
+
+.producer-trust-badge--community {
+    background: #243528 !important;
+    color: #ffffff !important;
+    border-color: #e6efdf !important;
+}

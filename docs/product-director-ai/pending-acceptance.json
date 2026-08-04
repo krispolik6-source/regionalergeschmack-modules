@@ -1,6 +1,6 @@
 {
-  "day": "2026-07-23",
-  "generatedAt": "2026-07-23T18:35:51.015Z",
+  "day": "2026-08-03",
+  "generatedAt": "2026-08-03T19:06:35.085Z",
   "headline": "Dzisiaj największy wpływ na jakość aplikacji będzie miało:",
   "policy": {
     "autoApply": false,
@@ -29,6 +29,22 @@
       "status": "pending_acceptance"
     },
     {
+      "id": "signal-release",
+      "title": "Domknięcie krytycznych punktów Release Validator przed wydaniem.",
+      "why": "1 krytyczny błąd",
+      "impact": "high",
+      "risk": "low",
+      "effort": "zależnie od faili",
+      "expectedEffect": "Ready for Production = YES",
+      "priority": 95,
+      "sources": [
+        "release-validator"
+      ],
+      "theme": "domknięcie krytycznych punktów release validator",
+      "rank": 2,
+      "status": "pending_acceptance"
+    },
+    {
       "id": "pi-pi-premium-subtle-signal",
       "title": "Jedna dyskretna linia wartości Premium pod CTA (bez nowego ekranu / popupu).",
       "why": "Premium widoczność: nie (severity 62)",
@@ -43,26 +59,6 @@
         "Wartość „dlaczego jutro zapłacić” nadal warunkowa (Final Review / Product Status)"
       ],
       "theme": "premium",
-      "rank": 2,
-      "status": "pending_acceptance"
-    },
-    {
-      "id": "pi-pi-hide-low-value-sections",
-      "title": "Ukryj lub zwiń najniżej zaangażowane sekcje Home + usuń martwy Font Awesome z krytycznej ścieżki.",
-      "why": "Prawie nieużywane: tak (severity 60)",
-      "impact": "medium",
-      "risk": "low",
-      "effort": "2–4 h",
-      "expectedEffect": "Lżejszy DOM/CSS, czytelniejszy scroll, mniej szumu",
-      "priority": 92,
-      "sources": [
-        "product-intelligence",
-        "Home poniżej foldu: wiele sekcji narracyjnych (Smaki dnia, Doradca, Nature, Story, Live…) — ryzyko scroll fatigue",
-        "Font Awesome all.min.css prawdopodobnie martwy (brak klas fa w app)",
-        "Diagnostics (12+ init) w cold path — koszt bez wartości dla użytkownika końcowego",
-        "Health unusedJs count 1"
-      ],
-      "theme": "home",
       "rank": 3,
       "status": "pending_acceptance"
     }

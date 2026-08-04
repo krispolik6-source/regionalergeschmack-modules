@@ -109,7 +109,7 @@ body.view-map-active [data-view-panel='map'] {
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    background: #e8eef2;
+    background: #f3f7f2;
     height: 100% !important;
 }
 
@@ -167,8 +167,8 @@ body.dark-mode .map-bottom-btn,
 body.dark-mode #radiusControl,
 body.dark-mode .radius-control,
 body.dark-mode .map-category-header {
-    background: rgba(28, 32, 36, 0.92) !important;
-    color: #f0ebe3 !important;
+    background: var(--dm-surface, #1e2a20) !important;
+    color: var(--dm-text, #f5f5f2) !important;
 }
 
 /* ——— 4. Zdjęcia większe (180 / 300) ——— */
@@ -333,50 +333,49 @@ body.dark-mode .home-actions .btn-location {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Dark mode: kontrolki mapy / promień – ciemniejszy navy + biały tekst */
+/* Dark mode: kontrolki mapy / modal — paleta Brand Book (dark-mode-contrast.css) */
 body.dark-mode .map-bottom-btn,
 body.dark-mode .map-legend-btn,
 body.dark-mode .map-list-toggle,
 body.dark-mode #radiusControl,
 body.dark-mode .radius-control {
-    background: rgba(28, 52, 82, 0.9) !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    background: var(--dm-green, #2a3f28) !important;
+    color: var(--dm-text, #f5f5f2) !important;
+    border: 1px solid var(--dm-border, rgba(201, 162, 39, 0.18)) !important;
     font-size: 13px !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
 }
 
 body.dark-mode .radius-value,
 body.dark-mode .radius-hint {
-    color: #ffffff !important;
+    color: var(--dm-text-muted, #d4e4b0) !important;
     font-size: 13px !important;
     font-weight: 600;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
 }
 
 body.dark-mode .language-dropdown {
-    background: #152536 !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: var(--dm-surface, #1e2a20) !important;
+    border: 1px solid var(--dm-border, rgba(201, 162, 39, 0.18)) !important;
 }
 
 body.dark-mode .language-option {
-    color: #ffffff !important;
+    color: var(--dm-text, #f5f5f2) !important;
     font-size: 14px !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
 }
 
 body.dark-mode .language-option:hover,
 body.dark-mode .language-option.active {
-    background: #1e3a58 !important;
-    color: #fff8ee !important;
-    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(42, 63, 40, 0.55) !important;
+    color: var(--dm-gold, #c9a227) !important;
+    border-color: var(--dm-border, rgba(201, 162, 39, 0.18));
 }
 
-/* Dark mode: modal producenta – jaśniejszy tekst na navy */
 body.dark-mode .producer-modal-dialog,
 body.dark-mode .producer-modal-content,
 body.dark-mode .producer-modal-body {
-    color: #f4f7fb !important;
+    color: var(--dm-text, #f5f5f2) !important;
 }
 
 body.dark-mode .producer-modal-toolbar,
@@ -384,30 +383,30 @@ body.dark-mode .producer-modal-header,
 body.dark-mode .producer-modal-footer,
 body.dark-mode .producer-product-card,
 body.dark-mode .producer-review-card {
-    background: #121f33 !important;
-    border-color: rgba(255, 255, 255, 0.18) !important;
+    background: var(--dm-surface, #1e2a20) !important;
+    border-color: var(--dm-border, rgba(201, 162, 39, 0.18)) !important;
 }
 
 body.dark-mode .producer-modal-back {
-    background: rgba(40, 78, 120, 0.55) !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: var(--dm-green, #2a3f28) !important;
+    color: var(--dm-text, #f5f5f2) !important;
+    border: 1px solid var(--dm-border-strong, rgba(201, 162, 39, 0.28)) !important;
     font-size: 14px !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
 }
 
 body.dark-mode .producer-header-name,
 body.dark-mode .producer-modal-header h2,
 body.dark-mode .producer-section-title,
 body.dark-mode .producer-product-name {
-    color: #ffffff !important;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    color: var(--dm-text, #f5f5f2) !important;
+    text-shadow: none;
 }
 
 body.dark-mode .producer-header-meta,
 body.dark-mode .producer-header-address,
 body.dark-mode .producer-product-desc,
 body.dark-mode .producer-modal-empty {
-    color: rgba(244, 247, 251, 0.92) !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    color: var(--dm-text-muted, #d4e4b0) !important;
+    text-shadow: none;
 }

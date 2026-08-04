@@ -1,0 +1,210 @@
+/* ============================================================
+   CSS Performance Audit — warstwa końcowa
+   Usuwa kosztowne blur/backdrop (bez zmiany wyglądu Home Premium)
+   Porządkuje tokeny · redukuje nadpisania kaskady
+   ============================================================ */
+
+:root {
+    /* Wyłączenie glass blur — tła już solid (Home Premium) */
+    --glass-blur: 0px;
+    --glass-saturate: 100%;
+    --ls-glass-blur: 0px;
+    --ls-glass-saturate: 100%;
+    --ls-cat-glass-blur: 0px;
+    --ls-cat-glass-saturate: 100%;
+    --ls-bg-blur: 0px;
+    --ls-photo-blur: 0px;
+
+    /* Powierzchnie wydajne (opaque = bez compositing blur) */
+    --perf-surface-light: #fffef8;
+    --perf-surface-dark: #1e2a20;
+    --perf-border: #e6efdf;
+}
+
+/* ——— backdrop-filter: wyłącz tam, gdzie wygląd = solid (Home Premium) ——— */
+#app,
+.card,
+.surface-panel,
+.list-item,
+.favorite-item,
+.cart-item,
+.cart-summary,
+.premium-feature-card,
+.setting-item,
+.account-item,
+.view-hero,
+.home-page,
+.home-page--v1,
+.home-page--v2,
+.home-greeting,
+.home-hub,
+.home-actions,
+.home-search-field,
+.home-premium-cta,
+.home-product-card,
+.home-product-card--compact,
+.home-venue-card,
+.home-recipe-card,
+.home-recipe-card--compact,
+.home-seasonal-card,
+.home-live-region-item,
+.home-living-region-item,
+.home-region-soul,
+.home-return-magic,
+.home-taste-advisor,
+.home-nature-calendar,
+.home-region-story,
+.home-smart-today-reason,
+.category-card,
+.category-card--tile,
+.category-card--photo,
+.placeholder,
+.empty-state,
+.search-result-card,
+.rg-ad-banner,
+.main-header,
+.main-header-inner,
+.bottom-nav,
+.bottom-nav-inner,
+.side-menu,
+.side-menu-panel,
+.side-menu-header,
+.producer-modal,
+.producer-modal-dialog,
+.producer-modal-content,
+.producer-modal-header,
+.producer-modal-body,
+.producer-modal-footer,
+.producer-modal-toolbar,
+.producer-product-card,
+.map-toolbar-unified,
+.map-toolbar-sheet-handle,
+.map-bottom-panel,
+.map-legend-panel,
+.map-producer-list-items,
+.map-settings-panel,
+.map-offline-banner,
+.map-status,
+.map-category-header,
+.pwa-install-banner,
+.toast,
+.language-dropdown,
+.app-legal-footer,
+.cookie-consent-banner,
+.profile-card,
+.profile-page,
+.premium-page,
+.favorites-page,
+.cart-page,
+.search-page,
+[data-view-panel] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* #app — gradient opaque zamiast glass compositing */
+body:not(.view-map-active) #app {
+    background: var(--warm-card-gradient, linear-gradient(155deg, #fffef8 0%, #f7f3ea 100%)) !important;
+}
+
+body.dark-mode:not(.view-map-active) #app {
+    background: var(--perf-surface-dark) !important;
+    border-color: var(--dm-border, rgba(201, 162, 39, 0.18)) !important;
+}
+
+/* Badge sample — solid zamiast blur(4px) */
+.product-image-sample-badge,
+.producer-photo-sample-badge,
+.category-sample-badge,
+.product-image-badge--sample {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(60, 48, 28, 0.82) !important;
+}
+
+/* Kategorie Home v1 — bez blur na ::before (już w home-v1, wzmocnienie) */
+.home-page--v1 .home-categories .category-card--photo.category-card--tile::before {
+    filter: brightness(1.06) saturate(1.05) !important;
+}
+
+/* Mapa / modal — spójność z map-premium / producer-modal-premium */
+body.view-map-active [data-view-panel='map'] .map-toolbar-unified,
+body.view-map-active [data-view-panel='map'] .map-toolbar-sheet-handle,
+body.producer-modal-open .producer-modal-dialog {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* Klimat / natura — warstwy dekoracyjne bez GPU blur */
+#climateAtmosphere,
+#climateAtmosphere *,
+.climate-atmosphere,
+.climate-rays,
+.climate-grass,
+.climate-meadow,
+.climate-motif,
+.ln-clouds,
+.ln-wheat,
+.ln-leaves,
+.ln-snow {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    will-change: auto !important;
+}
+
+/* ——— will-change: tylko gdzie potrzebne ——— */
+.map-toolbar-sheet-body,
+.side-menu-panel,
+.producer-modal-dialog,
+.rg-splash {
+    will-change: auto;
+}
+
+/* ——— Martwe / legacy glass selektory (neutralizacja bez usuwania plików) ——— */
+.glass-panel,
+.glass-card,
+.glass-surface,
+[data-glass='true'] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: var(--perf-surface-light) !important;
+}
+
+body.dark-mode .glass-panel,
+body.dark-mode .glass-card,
+body.dark-mode .glass-surface,
+body.dark-mode [data-glass='true'] {
+    background: var(--perf-surface-dark) !important;
+}
+
+/* ——— Zduplikowane tokeny motion → jeden alias (audit stack) ——— */
+:root {
+    --home-motion-ease: var(--motion-ease, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+    --home-motion-duration: var(--motion-duration, 0.28s);
+    --home-motion-tap-duration: var(--motion-tap-duration, 0.14s);
+    --mpa-touch: var(--a11y-touch, 44px);
+    --mp-touch-min: var(--a11y-touch, 44px);
+}
+
+/* ——— Jeden blok responsive (konsolidacja audit stack) ——— */
+@media screen and (max-width: 768px) {
+    #app,
+    [data-view-panel],
+    .home-page,
+    .map-toolbar-unified {
+        contain: layout style;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #climateAtmosphere,
+    #climateAtmosphere * {
+        filter: none !important;
+    }
+}
+
+@media (prefers-reduced-data: reduce) {
+    .home-categories .category-card::before {
+        filter: brightness(1.04) saturate(1.02) !important;
+    }
+}

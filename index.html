@@ -24,7 +24,7 @@
     <meta name="google" content="notranslate">
     <meta name="theme-color" content="#2a3f28">
     <meta name="msapplication-TileColor" content="#2a3f28">
-    <meta name="msapplication-TileImage" content="/assets/icons/icon-144.png?v=29">
+    <meta name="msapplication-TileImage" content="/assets/icons/icon-144.png?v=30">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -33,24 +33,46 @@
     <meta name="keywords" content="regional, Lebensmittel, Produzenten, Bauernhof, Bäckerei, Karte, lokal, Bio, Direktverkauf">
     <meta property="og:title" content="Regionaler Geschmack">
     <meta property="og:description" content="Regionale Lebensmittel und Produzenten in deiner Nähe.">
-    <meta property="og:image" content="/assets/brand/og-share.png?v=29">
+    <meta property="og:image" content="/assets/brand/og-share.png?v=30">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="/assets/brand/og-share.png?v=29">
+    <meta name="twitter:image" content="/assets/brand/og-share.png?v=30">
 
     <title>Regionaler Geschmack</title>
 
-    <link rel="icon" href="/assets/icons/favicon.ico?v=29" type="image/x-icon">
-    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-master.svg?v=29">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png?v=29">
-    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=29">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png?v=29">
-    <link rel="manifest" href="/manifest.json?v=29">
+    <link rel="preload" href="/assets/icons/logo-master.svg?v=30" as="image" type="image/svg+xml">
+    <style id="rg-splash-critical">
+        html.rg-booting{background-color:#f7f3ea}
+        html.rg-booting.dark-mode-boot{background-color:#1a1f18}
+        #rgSplashScreen{position:fixed;inset:0;z-index:200000;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fbf8f2 0%,#f7f3ea 42%,#eee5d6 100%)}
+        html.dark-mode-boot #rgSplashScreen{background:linear-gradient(180deg,#243d28 0%,#1a1f18 48%,#141810 100%)}
+    </style>
+    <script>
+        (function () {
+            document.documentElement.classList.add('rg-booting');
+            try {
+                var raw = localStorage.getItem('regionalny_smak_settings');
+                if (raw && JSON.parse(raw).darkMode) {
+                    document.documentElement.classList.add('dark-mode-boot');
+                }
+            } catch (_) { /* ignore */ }
+        })();
+    </script>
+
+    <link rel="icon" href="/assets/icons/favicon.ico?v=30" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png?v=30">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png?v=30">
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/logo-master.svg?v=30">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192.png?v=30">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=30">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png?v=30">
+    <link rel="manifest" href="/manifest.json?v=30">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@500;600;700;800&family=Literata:opsz,wght@7..72,600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/style.css?v=568">
+    <link rel="stylesheet" href="/css/style.css?v=572">
+    <link rel="stylesheet" href="/css/brand-colors-cleanup.css?v=8">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
@@ -98,15 +120,31 @@
     </script>
 </head>
 <body>
+    <div id="rgSplashScreen" class="rg-splash" aria-hidden="true">
+        <div class="rg-splash__logo-wrap">
+            <img class="rg-splash__logo" src="/assets/icons/logo-master.svg?v=30" width="128" height="128" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+        </div>
+    </div>
+    <script>
+        (function () {
+            var splash = document.getElementById('rgSplashScreen');
+            if (!splash) return;
+            requestAnimationFrame(function () {
+                splash.classList.add('is-entering');
+            });
+        })();
+    </script>
     <header id="mainHeader" class="main-header">
         <div class="header-content">
             <div class="header-left">
                 <button type="button" id="menuBtn" class="header-icon" aria-label="Menü" data-i18n-aria="a11y.menu">☰</button>
-                <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true" title="Regionaler Geschmack">
-                <h1>Regionaler Geschmack</h1>
+                <div class="header-brand">
+                    <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="48" height="48" alt="" aria-hidden="true" title="Regionaler Geschmack">
+                    <h1>Regionaler Geschmack</h1>
+                </div>
             </div>
             <div class="header-right">
-                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=29" width="22" height="22" alt="" aria-hidden="true"></button>
+                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=30" width="22" height="22" alt="" aria-hidden="true"></button>
                 <div class="header-lang-wrap">
                     <button type="button" id="languageSwitcherBtn" class="header-lang" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria="a11y.chooseLanguage">
                         <span id="languageSwitcherLabel">🇩🇪 Deutsch</span>
@@ -114,7 +152,7 @@
                     </button>
                     <ul id="languageDropdown" class="language-dropdown" role="listbox" hidden></ul>
                 </div>
-                <button type="button" id="darkModeToggleBtn" class="header-icon theme-toggle-premium" aria-label="Dunkelmodus" aria-pressed="false" data-i18n-aria="a11y.darkMode">🌞</button>
+                <button type="button" id="darkModeToggleBtn" class="theme-toggle-premium" aria-label="Dunkelmodus" aria-pressed="false" data-i18n-aria="a11y.darkMode">🌞</button>
             </div>
         </div>
     </header>
@@ -146,11 +184,11 @@
 
     <div id="cookieConsentBanner" class="cookie-consent-banner" hidden role="dialog" aria-labelledby="cookieConsentText" aria-modal="true">
         <p id="cookieConsentText" class="cookie-consent-text">
-            Ta strona używa plików cookie w celu wyświetlania spersonalizowanych reklam. Klikając &quot;Akceptuję&quot;, wyrażasz zgodę.
+            Diese Seite verwendet Cookies für personalisierte Werbung. Mit &quot;Akzeptieren&quot; stimmen Sie zu.
         </p>
         <div class="cookie-consent-actions">
-            <button type="button" id="cookieAccept" class="cookie-consent-btn cookie-consent-btn--accept btn-primary" data-cookie-consent="accepted">Akceptuję</button>
-            <button type="button" id="cookieReject" class="cookie-consent-btn cookie-consent-btn--reject btn-secondary" data-cookie-consent="rejected">Odrzuć</button>
+            <button type="button" id="cookieAccept" class="cookie-consent-btn cookie-consent-btn--accept btn-primary" data-cookie-consent="accepted">Akzeptieren</button>
+            <button type="button" id="cookieReject" class="cookie-consent-btn cookie-consent-btn--reject btn-secondary" data-cookie-consent="rejected">Ablehnen</button>
         </div>
     </div>
 
@@ -170,7 +208,7 @@
             <header class="side-menu-header">
                 <button type="button" class="side-menu-back" data-side-menu-action="back" hidden aria-label="Zurück" data-i18n-aria="a11y.back">←</button>
                 <h2 id="sideMenuTitle" class="side-menu-title">
-                    <img class="side-menu-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true">
+                    <img class="side-menu-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="28" height="28" alt="" aria-hidden="true">
                     <span id="sideMenuTitleText" data-i18n-menu="title">Menu</span>
                 </h2>
                 <button type="button" class="side-menu-close" data-side-menu-close aria-label="Schließen" data-i18n-aria="a11y.close">×</button>
@@ -185,7 +223,7 @@
                         <li><button type="button" class="side-menu-item" data-side-menu-action="favorites"><span class="side-menu-item-icon" aria-hidden="true">❤️</span><span class="side-menu-item-label" data-i18n-menu="favorites">Favoriten</span></button></li>
                         <li><button type="button" class="side-menu-item" data-side-menu-action="taste-diary"><span class="side-menu-item-icon" aria-hidden="true">📔</span><span class="side-menu-item-label" data-i18n-menu="tasteDiary">Geschmackstagebuch</span></button></li>
                         <li><button type="button" class="side-menu-item" data-side-menu-action="cart"><span class="side-menu-item-icon" aria-hidden="true">🛒</span><span class="side-menu-item-label" data-i18n-menu="cart">Warenkorb</span></button></li>
-                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="premium"><span class="side-menu-item-icon" aria-hidden="true"><img class="side-menu-premium-mark" src="/assets/icons/logo-master.svg?v=29" width="22" height="22" alt="" aria-hidden="true"></span><span class="side-menu-item-label" data-i18n-menu="premium">Premium</span></button></li>
+                        <li><button type="button" class="side-menu-item side-menu-item-highlight" data-side-menu-action="premium"><span class="side-menu-item-icon" aria-hidden="true"><img class="side-menu-premium-mark" src="/assets/icons/logo-master.svg?v=30" width="22" height="22" alt="" aria-hidden="true"></span><span class="side-menu-item-label" data-i18n-menu="premium">Premium</span></button></li>
                     </ul>
 
                     <p class="side-menu-section-label" data-i18n-menu-section="sectionLegal" data-i18n-menu-icon="📖">📖 Rechtliches</p>
@@ -558,7 +596,7 @@
                 <section class="side-menu-detail" data-side-menu-view="share-app" hidden>
                     <h3 class="side-menu-detail-title">🔗 <span data-i18n-menu="shareApp">Udostępnij aplikację</span></h3>
                     <p class="side-menu-detail-lead" data-i18n-testing="shareLead">Udostępnij ten tekst znajomym i testerom:</p>
-                    <pre class="side-menu-share-text" id="sideMenuShareText" aria-label="" data-i18n-aria="a11y.shareText"></pre>
+                    <pre class="side-menu-share-text" id="sideMenuShareText" aria-label="Text zum Teilen" data-i18n-aria="a11y.shareText"></pre>
                     <p class="side-menu-share-url" id="sideMenuShareUrl">https://admirable-cascaron-c76940.netlify.app</p>
                     <button type="button" class="side-menu-download-btn" id="sideMenuShareNativeBtn" data-i18n-testing="shareNative" hidden>Udostępnij…</button>
                     <button type="button" class="side-menu-download-btn" id="sideMenuShareCopyBtn" data-i18n-testing="shareCopy">Kopiuj tekst</button>
@@ -574,7 +612,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/sw.js?v=29').catch(function (err) {
+                navigator.serviceWorker.register('/sw.js?v=30').catch(function (err) {
                     console.warn('[SW] Rejestracja nie powiodła się:', err);
                 });
             });

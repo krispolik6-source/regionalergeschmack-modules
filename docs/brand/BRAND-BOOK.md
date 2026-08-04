@@ -30,11 +30,12 @@
 | Plik | Rola |
 |------|------|
 | [`assets/icons/logo-master.svg`](../../assets/icons/logo-master.svg) | **Jedyna ikona aplikacji** — z niej regenerujesz wszystko |
+| [`assets/icons/logo-icon.svg`](../../assets/icons/logo-icon.svg) | Pochodna glyph do PNG (generator) — lekko pogrubione kłosy |
 | `assets/icons/icon-source.svg` | Alias = kopia master |
 | `assets/icons/icon-symbol.svg` | Alias = kopia master |
 
 **Motyw znaku (master SVG):** wyłącznie dwa złote kłosy, łodygi zielone, pochylenie w prawo — **bez tła** (glyph).  
-**Ikony PWA/PNG:** generator dokłada krem `#f5efe3`.  
+**Ikony PWA/PNG:** generator dokłada tło premium — baza `#f7f3ea`, gradient `#fbf8f2` → `#eee5d6`, delikatna głębia.  
 **Header / UI:** ten sam `logo-master.svg` (same kłosy, bez kafelka).  
 **Bez tekstu** w pliku ikony.  
 **Monochrome:** `assets/icons/monochrome-512.png` (Android 13+).
@@ -71,7 +72,7 @@ Wszystkie poniższe to **ta sama ikona aplikacji** (dwa kłosy), tylko inne rozm
 | Google Play | `assets/store/google-play/icon-512.png` |
 | App Store | `assets/store/app-store/icon-1024.png` |
 
-**Manifest:** `theme_color` `#2a3f28` · `background_color` `#f5efe3`
+**Manifest:** `theme_color` `#2a3f28` · `background_color` `#f7f3ea` (tło systemu ikon / splash PWA)
 
 **Powiadomienia / OG / splash:**
 
@@ -94,7 +95,10 @@ Wszystkie poniższe to **ta sama ikona aplikacji** (dwa kłosy), tylko inne rozm
 | Złoto głębokie | `#a67c1a` | `--brand-gold-deep` | Hover / głębia |
 | Pszenica | `#e8c97a` | `--brand-wheat` | Światło, dark accent |
 | Miód | `#d4a84b` | `--brand-honey` | CTA miękkie, ikony |
-| Ciepły krem | `#f5efe3` | `--brand-cream` | Tło aplikacji |
+| Tło ikon (PWA) | `#f7f3ea` | — | Manifest, splash, PNG, install |
+| Gradient ikon (góra) | `#fbf8f2` | — | Tło PNG (generator) |
+| Gradient ikon (dół) | `#eee5d6` | — | Tło PNG (generator) |
+| Ciepły krem | `#f5efe3` | `--brand-cream` | Tło aplikacji (UI) |
 | Krem karty | `#fff8ee` | `--brand-cream-card` | Karty / powierzchnie |
 | Atrament | `#1c1812` | `--brand-ink` | Tekst |
 
@@ -230,7 +234,7 @@ Szablony wizualne: sekcja „Store” w [`brand-book.html`](./brand-book.html).
 - [ ] Feature graphic Play przycięty do 1024×500  
 - [ ] 5 zrzutów telefonu w ramce Brand Book  
 - [ ] Brak Inter/Roboto w landing (Living Brand → fonts)  
-- [ ] Manifest theme/background zgodne z tabelą kolorów  
+- [ ] Manifest theme `#2a3f28`, background `#f7f3ea` (tło ikon)
 
 ---
 

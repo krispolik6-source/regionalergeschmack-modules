@@ -1,0 +1,401 @@
+/* ============================================================
+   Accessibility Audit — warstwa końcowa (CSS only)
+   focus-visible · kontrast · touch · czytelność · dark/light
+   ============================================================ */
+
+:root {
+    --a11y-focus: #c9a227;
+    --a11y-focus-width: 2px;
+    --a11y-focus-offset: 2px;
+    --a11y-text: #2a2218;
+    --a11y-text-muted: #4a3f32;
+    --a11y-text-on-dark: #f5f5f2;
+    --a11y-text-muted-dark: #d4e4b0;
+    --a11y-touch: 44px;
+    --a11y-scroll-top: calc(var(--header-height, 49px) + var(--safe-top, 0px) + 10px);
+    --a11y-scroll-bottom: calc(var(--nav-height, 60px) + var(--legal-footer-height, 44px) + var(--safe-bottom, 0px) + 10px);
+}
+
+body.dark-mode {
+    --a11y-text: var(--a11y-text-on-dark);
+    --a11y-text-muted: var(--a11y-text-muted-dark);
+}
+
+/* ——— Focus: tylko focus-visible (klawiatura), nie mysz ——— */
+:focus:not(:focus-visible) {
+    outline: none !important;
+}
+
+:focus-visible {
+    outline: var(--a11y-focus-width) solid var(--a11y-focus) !important;
+    outline-offset: var(--a11y-focus-offset);
+}
+
+/* Interaktywne — spójny pierścień złoty */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+.bottom-nav .nav-item:focus-visible,
+.main-header .header-icon:focus-visible,
+.main-header .header-lang:focus-visible,
+.main-header .header-btn:focus-visible,
+.theme-toggle:focus-visible,
+#darkModeToggleBtn:focus-visible,
+#menuBtn:focus-visible,
+#languageSwitcherBtn:focus-visible,
+.language-option:focus-visible,
+.home-search-submit:focus-visible,
+.home-all-categories-btn:focus-visible,
+.home-quick-chip:focus-visible,
+.home-thematic-chip:focus-visible,
+.home-product-btn:focus-visible,
+.home-product-card-open:focus-visible,
+.category-card:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.map-bottom-btn:focus-visible,
+.map-recenter-btn:focus-visible,
+.map-legend-btn:focus-visible,
+.map-list-toggle:focus-visible,
+.map-producer-list-btn:focus-visible,
+.map-settings-close:focus-visible,
+.map-category-clear:focus-visible,
+.map-popup-btn:focus-visible,
+.map-popup-btn--link:focus-visible,
+.producer-modal-back:focus-visible,
+.producer-modal-close:focus-visible,
+.producer-modal .btn-primary:focus-visible,
+.producer-modal .btn-secondary:focus-visible,
+.producer-modal .product-actions-toggle:focus-visible,
+.producer-modal .product-actions-item:focus-visible,
+.producer-modal .taste-diary-open-btn:focus-visible,
+.producer-modal .producer-location-nav:focus-visible,
+.producer-modal .producer-story-toggle:focus-visible,
+.side-menu-item:focus-visible,
+.side-menu-close:focus-visible,
+.side-menu-back:focus-visible,
+.favorite-item .btn-remove:focus-visible,
+.cart-item .qty-btn:focus-visible,
+.cart-item .btn-remove:focus-visible,
+.setting-item:focus-visible,
+.account-item:focus-visible,
+.premium-cta-section button:focus-visible,
+.app-legal-footer-link:focus-visible,
+.legal-page-back:focus-visible,
+.cookie-consent-btn:focus-visible,
+.pwa-install-banner-dismiss:focus-visible,
+.switch input:focus-visible + .slider,
+.taste-diary-star:has(input:focus-visible) span,
+.producer-modal .producer-review-field input:focus-visible,
+.producer-modal .producer-review-field select:focus-visible,
+.producer-modal .producer-review-field textarea:focus-visible,
+.producer-modal .taste-diary-field input:focus-visible,
+.producer-modal .taste-diary-field textarea:focus-visible,
+.side-menu-field input:focus-visible,
+.side-menu-field select:focus-visible,
+.side-menu-field textarea:focus-visible,
+#radiusSlider:focus-visible,
+input[type='range']:focus-visible,
+input[type='checkbox']:focus-visible,
+input[type='radio']:focus-visible {
+    outline: var(--a11y-focus-width) solid var(--a11y-focus) !important;
+    outline-offset: var(--a11y-focus-offset);
+    box-shadow: none;
+}
+
+body.view-map-active [data-view-panel='map'] .leaflet-control-zoom a:focus-visible {
+    outline: var(--a11y-focus-width) solid var(--a11y-focus) !important;
+    outline-offset: var(--a11y-focus-offset);
+}
+
+/* ——— Keyboard navigation: scroll-margin pod fixed chrome ——— */
+a,
+button,
+input,
+select,
+textarea,
+summary,
+[tabindex]:not([tabindex='-1']),
+.bottom-nav .nav-item,
+.category-card,
+.home-product-card,
+.favorite-item,
+.cart-item,
+.setting-item,
+.side-menu-item {
+    scroll-margin-top: var(--a11y-scroll-top);
+    scroll-margin-bottom: var(--a11y-scroll-bottom);
+}
+
+body.view-map-active a,
+body.view-map-active button,
+body.view-map-active .map-bottom-btn {
+    scroll-margin-bottom: calc(var(--nav-height, 60px) + var(--safe-bottom, 0px) + 10px);
+}
+
+/* ——— Czytelność tekstu ——— */
+body {
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+}
+
+p,
+.section-desc,
+.home-greeting-sub,
+.meta,
+.cart-item .meta,
+.favorite-item .meta,
+.setting-item .desc,
+.account-item .desc,
+.legal-page-body,
+.empty-state p,
+.premium-note {
+    line-height: 1.55;
+}
+
+input,
+select,
+textarea,
+.home-search-input {
+    font-size: max(16px, 1rem);
+    line-height: 1.4;
+}
+
+.bottom-nav .nav-label {
+    line-height: 1.35;
+}
+
+/* ——— Kontrast — light mode ——— */
+.section-title,
+.home-greeting-title,
+.view-hero h2,
+.premium-hero h2,
+.producer-header-name,
+.favorite-item .title,
+.cart-item .title,
+.setting-item .title,
+.list-item-title,
+.main-header .header-title,
+.main-header .brand-name {
+    color: var(--a11y-text);
+}
+
+.section-desc,
+.text-muted,
+.home-greeting-sub,
+.home-premium-desc,
+.meta,
+.favorite-item .meta,
+.cart-item .meta,
+.setting-item .desc,
+.account-item .desc,
+.profile-meta,
+.empty-state p,
+.rg-ad-text,
+.home-footer-copy,
+.producer-header-meta,
+.producer-product-desc {
+    color: var(--a11y-text-muted);
+}
+
+a:not(.btn):not(.nav-item):not(.header-icon):not(.app-legal-footer-link) {
+    color: #2a3f28;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+a:not(.btn):not(.nav-item):hover {
+    color: #1e2f1c;
+}
+
+/* ——— Kontrast — dark mode ——— */
+body.dark-mode .section-title,
+body.dark-mode .home-greeting-title,
+body.dark-mode .view-hero h2,
+body.dark-mode .premium-hero h2,
+body.dark-mode .producer-header-name,
+body.dark-mode .favorite-item .title,
+body.dark-mode .cart-item .title,
+body.dark-mode .setting-item .title,
+body.dark-mode .list-item-title,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4 {
+    color: var(--a11y-text-on-dark) !important;
+    -webkit-text-fill-color: var(--a11y-text-on-dark) !important;
+}
+
+body.dark-mode .section-desc,
+body.dark-mode .text-muted,
+body.dark-mode .home-greeting-sub,
+body.dark-mode .meta,
+body.dark-mode .favorite-item .meta,
+body.dark-mode .cart-item .meta,
+body.dark-mode .setting-item .desc,
+body.dark-mode .empty-state p,
+body.dark-mode .producer-header-meta,
+body.dark-mode .producer-product-desc,
+body.dark-mode .bottom-nav .nav-item:not(.active) {
+    color: var(--a11y-text-muted-dark) !important;
+    -webkit-text-fill-color: var(--a11y-text-muted-dark) !important;
+}
+
+body.dark-mode .bottom-nav .nav-item.active,
+body.dark-mode .bottom-nav .nav-item.active .nav-label {
+    color: var(--a11y-text-on-dark) !important;
+    -webkit-text-fill-color: var(--a11y-text-on-dark) !important;
+}
+
+body.dark-mode a:not(.btn):not(.nav-item):not(.header-icon) {
+    color: var(--a11y-text-muted-dark);
+}
+
+body.dark-mode a:not(.btn):not(.nav-item):hover {
+    color: var(--a11y-focus);
+}
+
+body.dark-mode ::placeholder {
+    color: rgba(212, 228, 176, 0.72) !important;
+    opacity: 1;
+}
+
+/* ——— Touch targets (spójność z mobile audit) ——— */
+@media (pointer: coarse), (max-width: 768px) {
+    button,
+    .btn,
+    [role='button'],
+    .bottom-nav .nav-item,
+    .header-icon,
+    .header-lang,
+    .header-btn,
+    .theme-toggle,
+    .home-search-submit,
+    .map-bottom-btn,
+    .map-recenter-btn,
+    .map-legend-btn,
+    .map-list-toggle,
+    .map-settings-close,
+    .product-actions-toggle,
+    .side-menu-close,
+    .side-menu-back,
+    .side-menu-item,
+    .cookie-consent-btn,
+    .app-legal-footer-link,
+    .favorite-item .btn-remove,
+    .cart-item .qty-btn,
+    .cart-item .btn-remove,
+    .legal-page-back {
+        min-height: var(--a11y-touch);
+        min-width: var(--a11y-touch);
+    }
+
+    .bottom-nav .nav-item {
+        min-width: 0;
+    }
+
+    .header-icon,
+    .header-lang,
+    .header-btn,
+    .theme-toggle {
+        box-sizing: border-box;
+    }
+}
+
+/* ——— Tab order: widoczność fokusu w overflow ——— */
+.bottom-nav,
+.main-header-inner,
+.side-menu-panel,
+.producer-modal-dialog,
+.map-toolbar-unified,
+.cookie-consent-inner {
+    overflow: visible;
+}
+
+.producer-modal,
+.side-menu {
+    overflow: clip;
+}
+
+/* Aktywny element listy — subtelne tło (klawiatura) */
+.side-menu-item:focus-visible,
+.setting-item:focus-visible,
+.account-item:focus-visible,
+.map-producer-list-btn:focus-visible,
+.language-option:focus-visible {
+    background: rgba(201, 162, 39, 0.1);
+}
+
+body.dark-mode .side-menu-item:focus-visible,
+body.dark-mode .setting-item:focus-visible,
+body.dark-mode .account-item:focus-visible,
+body.dark-mode .map-producer-list-btn:focus-visible,
+body.dark-mode .language-option:focus-visible {
+    background: rgba(201, 162, 39, 0.14) !important;
+}
+
+/* ——— Reduced motion (wzmocnienie) ——— */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    :focus-visible {
+        transition: none !important;
+    }
+}
+
+/* ——— Wysoki kontrast systemowy ——— */
+@media (prefers-contrast: more) {
+    :root {
+        --a11y-focus-width: 3px;
+        --a11y-focus-offset: 3px;
+    }
+
+    .section-desc,
+    .text-muted,
+    .meta,
+    .home-greeting-sub {
+        color: var(--a11y-text) !important;
+    }
+
+    body.dark-mode .section-desc,
+    body.dark-mode .text-muted,
+    body.dark-mode .meta {
+        color: var(--a11y-text-on-dark) !important;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .bottom-nav,
+    .main-header,
+    .card,
+    .category-card {
+        border-width: 2px;
+    }
+}
+
+/* ——— Disabled: widoczne, nie myli z aktywnym ——— */
+button:disabled,
+.btn:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+[aria-disabled='true'] {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+button:disabled:focus-visible,
+.btn:disabled:focus-visible {
+    outline-color: rgba(201, 162, 39, 0.65) !important;
+}

@@ -1,7 +1,7 @@
 # ETAP 38 — Release Candidate
 
-**Data:** 2026-08-01  
-**Werdykt:** **PASS**  
+**Data:** 2026-08-04  
+**Werdykt:** **FAIL**  
 **Persona:** Pierwszy użytkownik · install → reinstall
 
 > To nie jest sam audyt — to ścieżka Release Candidate: od instalacji do reinstall.
@@ -10,8 +10,8 @@
 
 | Metryka | Wartość |
 |---------|---------|
-| Status | **PASS** |
-| Kroki RC | 22/22 |
+| Status | **FAIL** |
+| Kroki RC | 21/22 |
 | Ścieżka persony | 14/14 |
 
 ## Ścieżka użytkownika
@@ -29,7 +29,7 @@
 | 9 | Premium | ✅ | premium view + entry points |
 | 10 | Powrót następnego dnia (persist) | ✅ | settings + GPS + favorites + cart keys |
 | 11 | Offline | ✅ | SW cache + offline event + banner |
-| 12 | Aktualizacja (PWA version) | ✅ | PWA_VERSION=29 synced + skipWaiting |
+| 12 | Aktualizacja (PWA version) | ✅ | PWA_VERSION=30 synced + skipWaiting |
 | 13 | Uninstall (czyszczenie) | ✅ | rg_* keys · empty-storage safe boot |
 | 14 | Reinstall | ✅ | SW re-register + install prompt + navigate |
 
@@ -41,7 +41,7 @@
 | Push offer regex (DE) | ✅ | DE product matchers OK |
 | Live user simulation wiring | ✅ | ?realusers=1 / __RG_REAL_USERS__.run() |
 | Child: functional-audit | ✅ |  | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0 |
-| Child: translations | ✅ | --- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe. |
+| Child: translations | ❌ |    - legal.impressumS3Body |  | --- Wymagane klucze testowe --- |
 | Child: PWA | ✅ |  | --- PWA test --- | OK |
 | Child: landing | ✅ |  | --- Landing test --- | OK |
 | Child: device-lab | ✅ | [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\audit\ETAP-37-DEVICE-LAB.md |
@@ -49,7 +49,7 @@
 ## Child audits
 
 - ✅ **functional-audit** (exit 0) —  | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0
-- ✅ **check-translations** (exit 0) — --- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.
+- ❌ **check-translations** (exit 1) —    - legal.impressumS3Body |  | --- Wymagane klucze testowe ---
 - ✅ **test-pwa** (exit 0) —  | --- PWA test --- | OK
 - ✅ **test-landing** (exit 0) —  | --- Landing test --- | OK
 - ✅ **device-lab** (exit 0) — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\audit\ETAP-37-DEVICE-LAB.md
@@ -75,4 +75,4 @@
 
 ---
 
-*ETAP 38 · Release Candidate · PASS*
+*ETAP 38 · Release Candidate · FAIL*

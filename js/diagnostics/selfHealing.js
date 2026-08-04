@@ -12,7 +12,7 @@
  *  - stary Service Worker → propozycja odświeżenia
  */
 
-import { getCategoryImage, getCategoryImageJpeg } from '../presentation/categoryImages.js?v=6';
+import { getCategoryImage, getCategoryImageJpeg } from '../presentation/categoryImages.js?v=8';
 import { ensureNavigationHealed } from '../controllers/navigation.js';
 import { showToast } from '../core/toast.js';
 import { getSettings } from '../core/settings.js';
@@ -23,7 +23,7 @@ const DAY_KEY = 'rg_self_heal_day';
 const SW_PROMPT_KEY = 'rg_self_heal_sw_prompt';
 const MAX_LOG = 80;
 const WATCHDOG_MS = 28000;
-const PLACEHOLDER_SRC = '/assets/icons/logo-master.svg?v=29';
+const PLACEHOLDER_SRC = '/assets/icons/logo-master.svg?v=30';
 
 /** @type {{ at: string, area: string, action: string, detail?: string }[]} */
 let sessionFixes = [];

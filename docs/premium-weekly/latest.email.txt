@@ -1,49 +1,76 @@
 From: Regionaler Smak <raporty@regionalergeschmack.com>
 To: krispolik6@gmail.com
-Subject: Raport tygodniowy – Regionaler Smak 2026-07-21
+Subject: Raport tygodniowy – Regionaler Smak 2026-08-03
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-Raport tygodniowy – Regionaler Smak 2026-07-21
+Raport tygodniowy – Regionaler Smak 2026-08-03
 ==============================================
 
-Tydzien: 2026-W30
-Data: 2026-07-21
+Tydzien: 2026-W32
+Data: 2026-08-03
 Odbiorca: krispolik6@gmail.com
 
 === Health Score ===
-  Health overall : 98
-  App score      : 95%
+  Health overall : 94
+  App score      : 92%
 
 === Guardian ===
-  Findings: 18
+  Findings: 29
   - [cosmetic] Brak wzorca dataset.bound w js/controllers/navigation.js
-  - [high] setInterval bez clearInterval: js/core/premiumService.js
   - [medium] Możliwy race async→DOM: js/core/pwaInstall.js
   - [medium] Możliwy race async→DOM: js/core/sideMenu.js
-  - [cosmetic] Brak wzorca dataset.bound w js/views/adminPanel.js
-  - [cosmetic] Brak wzorca dataset.bound w js/views/clientPanel.js
-  - [cosmetic] Brak wzorca dataset.bound w js/views/home.js
-  - [cosmetic] Brak wzorca dataset.bound w js/views/producerPanel.js
+  - [medium] Możliwy race async→DOM: js/diagnostics/developerDashboard.js
+  - [medium] Możliwy race async→DOM: js/diagnostics/developerVaultPanel.js
+  - [medium] Możliwy race async→DOM: js/diagnostics/healthDevPanel.js
+  - [high] setInterval bez clearInterval: js/diagnostics/mapGuardian.js
+  - [medium] Możliwy race async→DOM: js/diagnostics/memoryCleaner.js
 
 === Taste Diary ===
   Taste Diary: dane w localStorage przegladarki (rg_taste_diary). CLI nie odczytuje wpisow uzytkownika.
   Klucz: rg_taste_diary
 
 === Bledy (Errors) ===
-  - [high] setInterval bez clearInterval: js/core/premiumService.js
-  - [high] setInterval bez clearInterval: js/core/premiumService.js
-  - [high] setInterval bez clearInterval: js/core/premiumService.js
+  - [high] setInterval bez clearInterval: js/diagnostics/mapGuardian.js
+  - [high] setInterval bez clearInterval: js/diagnostics/selfHealing.js
+  - [high] setInterval bez clearInterval: js/diagnostics/uiGuardian.js
+  - [high] setInterval bez clearInterval: js/presentation/learningEngine.js
+  - [high] Duży łączny JS: 4050 KB
+  - [high] check-translations zakończony błędem
+  - [high] Duży łączny JS: 1863 KB
+  - [high] Regresja: healthOverall (98 → 94)
+  - [high] Regresja: healthPerformance (99 → 85)
+  - [high] Regresja: healthMemory (99 → 84)
+  - [high] Regresja: guardianProductionReady (8.7 → 8)
+  - [high] Regresja: guardianQuality (5.4 → 2.4)
+  - [high] Regresja: dailyAppScore (96 → 92)
+  - [high] Regresja: failedCheck:memory (ok → fail)
+  - [high] check-translations zakończony błędem
+  - [high] Duży łączny JS: 1863 KB
   - [medium] Failed check: css
+  - [medium] Failed check: memory
   - failed check: css
+  - failed check: memory
 
 === Poprawki (Fixes) ===
-  - [pending_approval] setInterval bez clearInterval: js/core/premiumService.js
+  - [pending_approval] Regresja: healthOverall (98 → 94)
+  - [pending_approval] Regresja: healthPerformance (99 → 85)
+  - [pending_approval] Regresja: healthMemory (99 → 84)
+  - [pending_approval] Regresja: guardianProductionReady (8.7 → 8)
+  - [pending_approval] Regresja: guardianQuality (5.4 → 2.4)
+  - [pending_approval] Regresja: dailyAppScore (96 → 92)
+  - [pending_approval] Regresja: failedCheck:memory (ok → fail)
+  - [pending_approval] check-translations zakończony błędem
+  - [pending_approval] Duży łączny JS: 1863 KB
   - [pending_approval] Popraw UX / Mobile
   - [pending_approval] Potencjalne konflikty CSS: 40
   - [pending_approval] Uporządkuj konflikty CSS (40)
+  - [pending_approval] Podejrzenie nieużywanego kodu: 16 plików
   - [pending_approval] Potencjalne konflikty CSS: 40
   - [pending_approval] Checklist fail: css
+  - [pending_approval] Checklist fail: memory
+  - [medium] Popraw wynik Performance z raportu Health
+  - [medium] Popraw wynik Memory
 
 ---
 Format: text/plain w tresci (bez HTML, bez zalacznikow)

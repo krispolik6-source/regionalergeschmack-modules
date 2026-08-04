@@ -198,7 +198,7 @@ const DE = ui(
             dataCached: 'Es werden zuletzt gespeicherte Daten angezeigt.',
             dataError: 'Daten konnten gerade nicht aktualisiert werden.',
             offlineNotice: 'Keine Internetverbindung. Es werden zuletzt gespeicherte Daten angezeigt.',
-            noDataInArea: 'In dieser Umgebung wurden noch keine Orte gefunden.',
+            noDataInArea: 'Zurzeit sind keine Produzenten in deiner Nähe registriert.',
             radiusFilter: '🔵 Reichweite: {km} km ({count} Orte)',
             producerList: 'Anbieter in Reichweite',
             listToggle: '📋 Liste ({count})',
@@ -213,6 +213,8 @@ const DE = ui(
             save: 'Speichern',
             reset: 'Zurücksetzen',
             backToLocationLabel: 'Zurück zum Standort',
+            toolbarExpand: 'Kartenleiste einblenden',
+            toolbarCollapse: 'Kartenleiste ausblenden',
             style: { light: 'Hell', dark: 'Dunkel', satellite: 'Satellit', terrain: 'Gelände' }
         },
         regions: {
@@ -573,7 +575,7 @@ const EN = ui(
             dataCached: 'Showing your recently saved data.',
             dataError: 'Could not refresh places right now.',
             offlineNotice: 'You are offline. Showing your recently saved data.',
-            noDataInArea: 'No places found in this area yet.',
+            noDataInArea: 'No producers are registered in your area yet.',
             radiusFilter: '🔵 Radius: {km} km ({count} places)',
             producerList: 'Providers in range',
             listToggle: '📋 List ({count})',
@@ -588,6 +590,8 @@ const EN = ui(
             save: 'Save',
             reset: 'Reset',
             backToLocationLabel: 'Back to location',
+            toolbarExpand: 'Expand map panel',
+            toolbarCollapse: 'Collapse map panel',
             style: { light: 'Light', dark: 'Dark', satellite: 'Satellite', terrain: 'Terrain' }
         },
         regions: {
@@ -963,6 +967,8 @@ const PL = ui(
             save: 'Zapisz',
             reset: 'Reset',
             backToLocationLabel: 'Powrót do lokalizacji',
+            toolbarExpand: 'Rozwiń panel mapy',
+            toolbarCollapse: 'Zwiń panel mapy',
             style: { light: 'Jasny', dark: 'Ciemny', satellite: 'Satelita', terrain: 'Teren' }
         },
         regions: {
@@ -1744,13 +1750,16 @@ for (const [code, menu] of Object.entries(MENU_I18N)) {
 }
 
 const NO_CURRENT_DATA_I18N = Object.freeze({
-    de: 'Keine aktuellen Daten',
-    en: 'No current data',
-    pl: 'Brak aktualnych danych'
+    de: 'Zurzeit sind keine Produzenten in deiner Nähe registriert.',
+    en: 'No producers are registered in your area yet.',
+    pl: 'W Twojej okolicy nie ma jeszcze zarejestrowanych producentów.'
 });
 for (const code of Object.keys(built)) {
     built[code] = deepMerge(built[code], {
-        msg: { noCurrentData: NO_CURRENT_DATA_I18N[code] || NO_CURRENT_DATA_I18N.en }
+        msg: {
+            noCurrentData: NO_CURRENT_DATA_I18N[code] || NO_CURRENT_DATA_I18N.en,
+            noProducersNearby: NO_CURRENT_DATA_I18N[code] || NO_CURRENT_DATA_I18N.en
+        }
     });
 }
 

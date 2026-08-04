@@ -5,16 +5,16 @@
 
 :root {
     /* --- Fotografie kategorii --- */
-    --ls-cat-all: url('/assets/images/backgrounds/category_all.webp?v=22');
-    --ls-cat-farmers: url('/assets/images/backgrounds/category_farmers.webp?v=22');
-    --ls-cat-bakeries: url('/assets/images/backgrounds/category_bakeries.webp?v=22');
-    --ls-cat-meat: url('/assets/images/backgrounds/category_meat.webp?v=22');
-    --ls-cat-restaurants: url('/assets/images/backgrounds/category_restaurants.webp?v=22');
-    --ls-cat-shops: url('/assets/images/backgrounds/category_shops.webp?v=22');
-    --ls-cat-vending: url('/assets/images/backgrounds/category_vending.webp?v=22');
-    --ls-cat-favorites: url('/assets/images/backgrounds/category_favorites.webp?v=22');
-    --ls-cat-fastFood: url('/assets/images/backgrounds/category_fastFood.webp?v=22');
-    --ls-cat-honey: url('/assets/images/backgrounds/category_honey.webp?v=22');
+    --ls-cat-all: url('/assets/images/backgrounds/category_all.webp?v=24');
+    --ls-cat-farmers: url('/assets/images/backgrounds/category_all.webp?v=25');
+    --ls-cat-bakeries: url('/assets/images/backgrounds/category_bakeries.webp?v=25');
+    --ls-cat-meat: url('/assets/images/products/steak.webp?v=25');
+    --ls-cat-restaurants: url('/assets/images/products/daily-dish.webp?v=25');
+    --ls-cat-shops: url('/assets/images/backgrounds/category_shops.webp?v=25');
+    --ls-cat-vending: url('/assets/images/backgrounds/category_vending.webp?v=25');
+    --ls-cat-favorites: url('/assets/images/products/vegetables.webp?v=25');
+    --ls-cat-fastFood: url('/assets/images/backgrounds/category_fastFood.webp?v=25');
+    --ls-cat-honey: url('/assets/images/backgrounds/category_honey.webp?v=25');
 
     /* --- Fotografie ekranów i sekcji --- */
     --ls-screen-home: url('/assets/images/backgrounds/screen-home.webp');
@@ -228,14 +228,9 @@ body.dark-mode .list-item {
     transition: opacity var(--ls-transition), filter var(--ls-transition);
 }
 
-/* Photo tiles: warstwa ::before (--ls-cat-photo) jest źródłem zdjęcia kategorii.
-   Inline --category-image na samym buttonie wyłączamy, żeby nie dublować tła. */
+/* Photo tiles: zdjęcie z warstwy ::before (--ls-cat-photo), bez duplikatu na buttonie. */
 .home-categories .category-card--photo {
     background-image: none;
-}
-
-.home-categories .category-card--photo::before {
-    content: '' !important;
 }
 
 /* Tylko kanoniczna ósemka kategorii na Home */
@@ -288,7 +283,7 @@ body.dark-mode .list-item {
     content: none;
 }
 
-.home-categories .category-card .category-name {
+.home-categories .category-card:not(.category-card--photo) .category-name {
     font-weight: 700;
     color: #2a3340;
     text-shadow:
@@ -321,7 +316,7 @@ body.dark-mode .home-categories .category-icon {
         inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
-body.dark-mode .home-categories .category-card .category-name {
+body.dark-mode .home-categories .category-card:not(.category-card--photo) .category-name {
     color: #f0f4f8;
     text-shadow:
         0 1px 4px rgba(0, 0, 0, 0.45),

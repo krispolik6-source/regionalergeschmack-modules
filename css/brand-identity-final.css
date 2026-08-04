@@ -52,7 +52,12 @@
 
     --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
     --font-display: 'Literata', Georgia, 'Times New Roman', serif;
-    --brand-logo: url('/assets/icons/logo-master.svg?v=29');
+    --brand-logo: url('/assets/icons/logo-master.svg?v=30');
+    --brand-icon-app: url('/assets/icons/icon-192.png?v=30');
+    --brand-icon-splash: url('/assets/brand/splash-logo.png?v=30');
+    --brand-icon-bg: #f7f3ea;
+    --brand-icon-gradient-top: #fbf8f2;
+    --brand-icon-gradient-bottom: #eee5d6;
 }
 
 body.dark-mode,
@@ -189,15 +194,106 @@ body {
     color: var(--brand-ink);
 }
 
-/* Splash / loading – warstwa wizualna (jeśli body ma stan ładowania) */
-body.is-loading::before,
-html.rg-booting::before {
-    content: '';
+/* ============================================================
+   Premium Splash Screen (PWA / cold start)
+   ============================================================ */
+
+html.rg-booting {
+    background-color: var(--brand-icon-bg);
+}
+
+html.rg-booting.dark-mode-boot {
+    background-color: #1a1f18;
+}
+
+.rg-splash {
     position: fixed;
     inset: 0;
     z-index: 200000;
-    background: var(--brand-cream) var(--brand-logo) center 42% / min(160px, 36vw) no-repeat;
-    box-shadow: inset 0 0 0 100vmax rgba(245, 239, 227, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+        env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    background: linear-gradient(
+        180deg,
+        var(--brand-icon-gradient-top) 0%,
+        var(--brand-icon-bg) 42%,
+        var(--brand-icon-gradient-bottom) 100%
+    );
+    opacity: 1;
+    transition: opacity 280ms ease;
+    pointer-events: none;
+    contain: strict;
+    will-change: opacity;
+}
+
+html.dark-mode-boot .rg-splash,
+body.dark-mode .rg-splash {
+    background: linear-gradient(180deg, #243d28 0%, #1a1f18 48%, #141810 100%);
+}
+
+.rg-splash__logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.96);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.rg-splash__logo {
+    display: block;
+    width: min(168px, 38vw);
+    height: min(168px, 38vw);
+    max-width: 100%;
+    object-fit: contain;
+    border: none;
+    filter: drop-shadow(0 3px 10px rgba(42, 63, 40, 0.1));
+}
+
+html.dark-mode-boot .rg-splash__logo,
+body.dark-mode .rg-splash__logo {
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+}
+
+.rg-splash.is-entering .rg-splash__logo-wrap {
+    animation: rg-splash-enter 400ms ease forwards;
+}
+
+.rg-splash.is-exiting {
+    opacity: 0;
+}
+
+@keyframes rg-splash-enter {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rg-splash.is-entering .rg-splash__logo-wrap {
+        animation: rg-splash-enter-reduced 220ms ease forwards;
+    }
+
+    .rg-splash__logo-wrap {
+        transform: scale(1);
+    }
+
+    @keyframes rg-splash-enter-reduced {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .rg-splash.is-exiting {
+        transition: none;
+        opacity: 0;
+    }
 }
 
 /* PWA install banner – znak marki */
@@ -216,8 +312,7 @@ html.rg-booting::before {
     width: 40px;
     height: 40px;
     flex-shrink: 0;
-    /* IDENTYCZNY znak: logo-master (glyph) na kremie jak ikona PWA */
-    background: var(--brand-cream) var(--brand-logo) center / 78% no-repeat;
+    background: var(--brand-icon-app) center / cover no-repeat;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }

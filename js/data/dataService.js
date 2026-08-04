@@ -8,7 +8,7 @@ import {
     fetchProducers as fetchOsmProducers,
     abortInflightOsmRequests,
     isOsmAbortError
-} from './osmService.js?v=9';
+} from './osmService.js?v=10';
 import { fetchGovData } from './govDataService.js';
 import {
     dedupeProducers,
@@ -209,6 +209,18 @@ export function getLastLoadMeta() {
     return { ...lastLoadMeta };
 }
 
+/** True gdy OSM zwrócił pusty wynik dla obszaru (bez fallbacku na ręczne dane). */
+export function isProducersEmptyArea() {
+    return !!lastLoadMeta.emptyArea;
+}
+
+/** Czy zakończono co najmniej jedno pobranie OSM (live / cache / pusty obszar). */
+export function isProducersLoadSettled() {
+    const source = lastLoadMeta.source;
+    if (!source || source === 'empty-seed' || source === 'none') return false;
+    return lastLoadMeta.loadedAt > 0;
+}
+
 /**
  * Synchronicznie wstaw producentów z localStorage (świeży lub stale cache)
  * — markery widoczne zanim wróci sieć OSM.
@@ -232,7 +244,8 @@ export function hydrateProducersFromCache(lat, lng) {
         setRegistry(enriched, {
             source: 'cache-hydrate',
             fromCache: true,
-            apiFailed: false
+            apiFailed: false,
+            supplementContent: true
         });
         return { ok: true, count: getProducers().length, source: 'cache-hydrate' };
     }
@@ -245,7 +258,8 @@ export function hydrateProducersFromCache(lat, lng) {
             setRegistry(enriched, {
                 source: 'stale-cache-hydrate',
                 fromCache: true,
-                apiFailed: false
+                apiFailed: false,
+                supplementContent: true
             });
             return { ok: true, count: getProducers().length, source: 'stale-cache-hydrate' };
         }
@@ -407,12 +421,13 @@ function setRegistry(producers, meta) {
         name: ensureProducerName(p),
         category: normalizeProducerCategory(p.category)
     }));
-    const withBaselines = mergeBaselineProducers(normalized);
+    const withBaselines = mergeBaselineProducers(normalized, meta);
     producersRegistry = [...withBaselines];
     lastLoadMeta = {
         source: meta.source,
         fromCache: !!meta.fromCache,
         apiFailed: !!meta.apiFailed,
+        emptyArea: !!meta.emptyArea,
         loadedAt: Date.now()
     };
 
@@ -427,33 +442,52 @@ function setRegistry(producers, meta) {
     eventBus.emit(EVENTS.CACHE_UPDATED, { key: CACHE_KEY, ...lastLoadMeta });
 }
 
+const LIVE_OSM_SOURCES = new Set([
+    'live',
+    'cache',
+    'cache-hydrate',
+    'stale-cache',
+    'stale-cache-hydrate'
+]);
+
 /**
- * Content + user + live/cache – content gwarantuje markery przy awarii OSM.
- * @param {object[]} producers
+ * Ręczni producenci (producerData.js) tylko gdy OSM zwrócił dane dla obszaru.
+ * @param {object[]} incoming – OSM (+ GovData) z fetchLiveData / cache
+ * @param {object} [meta]
  */
-function mergeBaselineProducers(producers) {
-    const content = getContentProducers().map((p) => enrichProducerWithProducts({ ...p }));
+function mergeBaselineProducers(incoming, meta = {}) {
+    const live = Array.isArray(incoming) ? incoming : [];
     const userProducers = getRegisteredUserProducers();
-    const incoming = Array.isArray(producers) ? producers : [];
-    return dedupeProducers([...content, ...incoming, ...userProducers]);
+
+    const supplementContent = !meta.emptyArea
+        && live.length > 0
+        && (meta.supplementContent === true || LIVE_OSM_SOURCES.has(meta.source));
+
+    const curated = supplementContent
+        ? getContentProducers().map((p) => enrichProducerWithProducts({ ...p }))
+        : [];
+
+    // OSM/live pierwsze, potem ręczne uzupełnienie (dedupe preferuje OSM), na końcu user
+    return dedupeProducers([...live, ...curated, ...userProducers]);
 }
 
 function mergeUserProducers(producers) {
-    return mergeBaselineProducers(producers);
+    return mergeBaselineProducers(producers, lastLoadMeta);
 }
 
 export function refreshUserProducersOnMap() {
-    const osmOnly = producersRegistry.filter((p) => p.source !== 'user' && p.source !== 'content');
-    setRegistry(osmOnly, { ...lastLoadMeta, source: lastLoadMeta.source || 'refresh' });
+    const liveOnly = producersRegistry.filter((p) => p.source !== 'user' && p.source !== 'content');
+    setRegistry(liveOnly, { ...lastLoadMeta, source: lastLoadMeta.source || 'refresh' });
 }
 
-// Od razu content producers w rejestrze – mapa nie startuje z 0 markerów przy wolnym OSM
-producersRegistry = mergeBaselineProducers([]);
+// Pusty rejestr do czasu załadowania OSM – bez ręcznych producentów jako fallback
+producersRegistry = [];
 lastLoadMeta = {
-    source: 'content-seed',
+    source: 'empty-seed',
     fromCache: false,
     apiFailed: false,
-    loadedAt: Date.now()
+    emptyArea: false,
+    loadedAt: 0
 };
 
 function buildLoadKey(lat, lng, radiusKm) {
@@ -586,7 +620,8 @@ async function runLoadAllData(latitude, longitude, radiusKm, forceRefresh) {
                 return applyRegistryIfCurrent(epoch, enriched, {
                     source: 'cache',
                     fromCache: true,
-                    apiFailed: false
+                    apiFailed: false,
+                    supplementContent: true
                 });
             }
         }
@@ -623,7 +658,8 @@ async function runLoadAllData(latitude, longitude, radiusKm, forceRefresh) {
                 return applyRegistryIfCurrent(epoch, live.producers, {
                     source: 'live',
                     fromCache: false,
-                    apiFailed: live.partialFailure
+                    apiFailed: live.partialFailure,
+                    supplementContent: true
                 });
             }
 
@@ -653,7 +689,8 @@ async function runLoadAllData(latitude, longitude, radiusKm, forceRefresh) {
                     return applyRegistryIfCurrent(epoch, enriched, {
                         source: 'stale-cache',
                         fromCache: true,
-                        apiFailed: true
+                        apiFailed: true,
+                        supplementContent: true
                     });
                 }
             }
@@ -677,9 +714,9 @@ async function runLoadAllData(latitude, longitude, radiusKm, forceRefresh) {
                 };
             }
 
-            // Brak cache i OSM – i tak wstaw content producers (markery na mapie)
+            // Brak cache i OSM – pusty rejestr
             return applyRegistryIfCurrent(epoch, [], {
-                source: 'content-fallback',
+                source: 'empty-fallback',
                 fromCache: false,
                 apiFailed: true
             });
@@ -736,14 +773,15 @@ export async function loadAllData(lat, lng, options = {}) {
 }
 
 export function resetProducersForTests() {
-    producersRegistry = mergeBaselineProducers([]);
+    producersRegistry = [];
     activeLoad = null;
     queuedLoad = null;
     registryEpoch = 0;
     lastLoadMeta = {
-        source: 'content-seed',
+        source: 'empty-seed',
         fromCache: false,
         apiFailed: false,
-        loadedAt: Date.now()
+        emptyArea: false,
+        loadedAt: 0
     };
 }

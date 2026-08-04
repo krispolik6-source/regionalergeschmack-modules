@@ -92,7 +92,7 @@ function injectStyles() {
         .favorite-item .info { flex: 1; min-width: 0; }
         .favorite-item .name { font-weight: 600; margin-bottom: 2px; }
         .favorite-item .meta { font-size: var(--text-sm); color: var(--text-muted); }
-        .favorite-remove { min-height: 36px; padding: var(--space-xs) var(--space-md); font-size: var(--text-sm); color: var(--color-error); background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+        .favorite-remove { min-height: 44px; min-width: 44px; padding: var(--space-xs) var(--space-md); font-size: var(--text-sm); color: var(--color-error); background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
         .favorites-route-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
         .favorites-routes { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .favorite-route-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }

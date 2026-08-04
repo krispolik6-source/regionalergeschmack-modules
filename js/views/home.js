@@ -8,7 +8,10 @@ import {
     getProducerById,
     countProducersByHomeCategory,
     filterProducersByCategory,
-    getProducersInRadius
+    getProducersInRadius,
+    loadAllData,
+    isProducersEmptyArea,
+    isProducersLoadSettled
 } from '../data/dataService.js';
 import { getDistanceKm, normalizeProducerCategory } from '../data/producerHelpers.js';
 import { getContentProducerById } from '../data/contentProducers.js';
@@ -20,7 +23,7 @@ import {
 import { getRecipes, getRecipeImageUrl } from '../data/recipes.js';
 import { getReviews, getAverageRating, formatRatingStars } from '../data/reviews.js';
 import { CATEGORY_ICONS } from '../presentation/categoryIcons.js';
-import { buildCategoryImageStyle, getCategoryImage } from '../presentation/categoryImages.js?v=6';
+import { buildCategoryImageStyle, getCategoryImage } from '../presentation/categoryImages.js?v=8';
 import { resolveProducerChain, buildChainLogoHtml, buildProducerLogoHtml, getFastFoodImage } from '../presentation/chainBrands.js';
 import { buildProductImageHtml } from '../presentation/productImage.js';
 import { buildOpenStatusHtml } from '../presentation/producerDisplay.js';
@@ -75,6 +78,30 @@ const SEARCH_DEBOUNCE_MS = 280;
 let homeSearchDebounceTimer = null;
 const NEARBY_LIMIT = 5;
 const VENUE_SECTION_LIMIT = 8;
+
+/** Biała ikona głośnika – Premium Audio Button (SVG, nie emoji). */
+const HOME_AMBIENT_SPEAKER_SVG = '<svg class="home-ambient-toggle-icon" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+
+/** Zdjęcie karty rekomendacji — tylko warstwa prezentacji (bez zmiany inteligencji). */
+const REGION_REC_PHOTO_OVERRIDES = {
+    visitApiary: 'honey',
+    eveningApiary: 'honey',
+    honeyFlowPeak: 'honey',
+    honeyMeadow: 'honey',
+    orchardWalk: 'orchard',
+    orchardFirstApples: 'orchard',
+    firstApples: 'orchard',
+    firstPlums: 'orchard',
+    summerBerries: 'orchard',
+    springBlossomWalk: 'orchard',
+    hotOrchardShade: 'orchard',
+    berryRipening: 'orchard'
+};
+
+function regionRecPhotoKey(category, tipId) {
+    if (tipId && REGION_REC_PHOTO_OVERRIDES[tipId]) return REGION_REC_PHOTO_OVERRIDES[tipId];
+    return category || 'farmers';
+}
 const MAP_PREFS_KEY = 'rg_map_prefs_v1';
 const RADIUS_MIN = Number(CONFIG.minRadius) || 1;
 const RADIUS_MAX = Number(CONFIG.maxRadius) || 50;
@@ -122,7 +149,22 @@ function getMapAreaPool(sourceProducers) {
 }
 
 function buildEmptySectionHtml() {
-    return `<p class="placeholder home-no-data">${escapeHtml(t('msg.noCurrentData'))}</p>`;
+    return `<div class="empty-state home-empty-producers" role="status">
+        <p class="home-no-data">${escapeHtml(t('msg.noProducersNearby'))}</p>
+    </div>`;
+}
+
+/** Pusty stan tylko po zakończeniu pobrania OSM – nie podczas initial seed. */
+function shouldShowProducersEmptyState(producers) {
+    if (producers?.length) return false;
+    if (isProducersEmptyArea()) return true;
+    return isProducersLoadSettled();
+}
+
+function ensureHomeProducersLoaded() {
+    const { center, radiusKm } = resolveHomeMapScope();
+    if (!center) return;
+    loadAllData(center.lat, center.lng, { radiusKm }).catch(() => {});
 }
 
 /** Siatka 2×4 · bez „Wszystkie” */
@@ -142,10 +184,6 @@ function escapeHtml(text) {
 
 function formatPrice(value) {
     return `${Number(value || 0).toFixed(2)} €`;
-}
-
-function formatDistanceKm(km) {
-    return formatDistanceLabel(km);
 }
 
 function formatDistanceEtaHtml(km) {
@@ -441,7 +479,7 @@ function buildRegionalIntelligenceHtml() {
         const soul = getRegionSoulNarration();
         if (!soul?.text) return '';
         return `
-        <div class="home-region-soul" data-home-section="region-soul">
+        <div class="home-region-soul" data-home-section="region-soul" data-region-rec-photo="${escapeHtml(regionRecPhotoKey(soul.category, soul.id))}">
             <button type="button" class="home-region-soul-btn" data-region-soul-category="${escapeHtml(soul.category)}" aria-label="${escapeHtml(soul.text)}">
                 <span class="home-region-soul-icon" aria-hidden="true">${soul.icon}</span>
                 <span class="home-region-soul-body">
@@ -455,7 +493,7 @@ function buildRegionalIntelligenceHtml() {
 
     const aria = rec.support ? `${rec.headline} ${rec.support}` : rec.headline;
     return `
-        <div class="home-region-soul home-regional-intel" data-home-section="regional-intelligence">
+        <div class="home-region-soul home-regional-intel" data-home-section="regional-intelligence" data-region-rec-photo="${escapeHtml(regionRecPhotoKey(rec.category, rec.id))}">
             <button type="button" class="home-region-soul-btn" data-region-soul-category="${escapeHtml(rec.category)}" aria-label="${escapeHtml(aria)}">
                 <span class="home-region-soul-icon" aria-hidden="true">${rec.icon}</span>
                 <span class="home-region-soul-body">
@@ -925,7 +963,7 @@ function buildVenueCardHtml(producer) {
 
 function buildVenueCardsHtml(producers, { sponsored = false } = {}) {
     if (!producers.length) {
-        return buildEmptySectionHtml();
+        return shouldShowProducersEmptyState(producers) ? buildEmptySectionHtml() : '';
     }
     if (sponsored) {
         return buildVenueCardsWithSponsoredHtml(producers, buildVenueCardHtml);
@@ -1140,27 +1178,31 @@ export const renderHome = (container) => {
         ? `<section class="home-region-rec app-section" data-home-section="region-rec" aria-label="${escapeHtml(t('home.regionalIntelLabel') || t('home.regionSoulLabel'))}">${regionalIntelHtml}</section>`
         : '';
     const ambientOn = isAmbientNatureEnabled();
-    const ambientIcon = ambientOn ? '🔇' : '🎵';
     const ambientLabel = ambientOn ? t('home.ambientNatureMute') : t('home.ambientNaturePlay');
+    const ambientStatusText = ambientOn ? t('home.ambientNatureStatusOn') : t('home.ambientNatureStatusOff');
 
     /* Home fold: logo · powitanie · szukaj (drugorzędne) · JEDNO CTA „Otwórz mapę”.
        Tip regionu / kategorie / filtry — poniżej foldu. Bez zmiany handlerów / EventBus. */
     container.innerHTML = `
         <div class="home-page home-page--v2 home-page--v1">
             <section class="home-greeting" aria-label="${escapeHtml(welcomeTitle)}">
-                <p class="home-greeting-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="20" height="20" alt="" aria-hidden="true"> Regionaler Geschmack</p>
+                <p class="home-greeting-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="20" height="20" alt="" aria-hidden="true"> Regionaler Geschmack</p>
                 <div class="home-greeting-title-row">
                     <h2 class="home-greeting-title">${escapeHtml(welcomeTitle)}</h2>
-                    <button
-                        type="button"
-                        id="homeAmbientNatureBtn"
-                        class="home-ambient-toggle"
-                        aria-pressed="${ambientOn ? 'true' : 'false'}"
-                        aria-label="${escapeHtml(ambientLabel)}"
-                        title="${escapeHtml(ambientLabel)}"
-                    >
-                        <span class="home-ambient-toggle-icon" aria-hidden="true">${ambientIcon}</span>
-                    </button>
+                    <div class="home-ambient-control">
+                        <button
+                            type="button"
+                            id="homeAmbientNatureBtn"
+                            class="home-ambient-toggle${ambientOn ? ' is-on' : ' is-off'}"
+                            aria-pressed="${ambientOn ? 'true' : 'false'}"
+                            aria-label="${escapeHtml(ambientLabel)}"
+                            title="${escapeHtml(ambientLabel)}"
+                        >${HOME_AMBIENT_SPEAKER_SVG}</button>
+                        <p class="home-ambient-status${ambientOn ? ' is-on' : ' is-off'}" aria-live="polite">
+                            <span class="home-ambient-status-dot" aria-hidden="true"></span>
+                            <span class="home-ambient-status-text">${escapeHtml(ambientStatusText)}</span>
+                        </p>
+                    </div>
                 </div>
                 <p class="home-greeting-sub">${escapeHtml(t('home.greetingSub'))}</p>
             </section>
@@ -1190,9 +1232,6 @@ export const renderHome = (container) => {
                 <button type="button" class="btn-nearby" id="findNearbyBtn">
                     <span aria-hidden="true">🗺️</span> ${t('home.findNearby')}
                 </button>
-                <button type="button" class="btn-secondary home-surprise-btn" id="homeSurpriseBtn">
-                    <span aria-hidden="true">🎲</span> ${t('home.surpriseMe')}
-                </button>
             </section>
 
             ${regionRecBlock}
@@ -1201,7 +1240,7 @@ export const renderHome = (container) => {
 
             <section class="home-categories app-section" aria-labelledby="homeCategoriesHeading">
                 <button type="button" class="home-all-categories-btn" id="homeAllCategoriesBtn" aria-controls="homeCategoriesGrid">
-                    <span aria-hidden="true">🗂️</span>
+                    <span class="home-all-categories-icon" aria-hidden="true">🗂️</span>
                     <span id="homeCategoriesHeading">${escapeHtml(t('home.allCategories'))}</span>
                 </button>
                 <div id="homeCategoriesGrid" class="categories-grid categories-grid--2x4">
@@ -1221,6 +1260,9 @@ export const renderHome = (container) => {
 
             <section class="home-foryou app-section" aria-label="${t('home.forYouTitle')}" data-home-section="foryou">
                 ${buildSectionHeader(`✨ ${t('home.forYouTitle')}`, 'all')}
+                <button type="button" class="btn-secondary home-surprise-btn" id="homeSurpriseBtn">
+                    <span aria-hidden="true">🎲</span> ${escapeHtml(t('home.surpriseMe'))}
+                </button>
                 <div class="home-carousel" data-carousel="foryou">
                     ${buildVenueCardsHtml(forYou, { sponsored: true })}
                 </div>
@@ -1274,7 +1316,7 @@ export const renderHome = (container) => {
 
             <section class="app-section home-premium-section">
                 <button type="button" class="home-premium-cta" id="homePremiumBtn" aria-label="${t('premium.title')}">
-                    <img class="home-premium-icon home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="28" height="28" alt="" aria-hidden="true">
+                    <img class="home-premium-icon home-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="28" height="28" alt="" aria-hidden="true">
                     <span class="home-premium-text">
                         <strong class="home-premium-title">${t('premium.title')}${isPremiumActive() ? ` · ${t('premium.statusActive')}` : ''}</strong>
                         <span class="home-premium-desc">${isPremiumActive() ? t('premium.benefitsUnlocked') : t('home.premiumTeaser')}</span>
@@ -1283,17 +1325,11 @@ export const renderHome = (container) => {
                 </button>
             </section>
 
-            ${isPremiumActive()
-                ? ''
-                : `<section class="home-premium-hint app-section">
-                    <p class="placeholder">${t('home.recommendedPlaceholder')}</p>
-                   </section>`}
-
             ${buildHomeAdSenseHtml()}
 
             <footer class="home-footer">
                 <p class="home-motto">${escapeHtml(t('home.motto'))}</p>
-                <p class="footer-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=29" width="18" height="18" alt="" aria-hidden="true"> Regionaler Geschmack</p>
+                <p class="footer-brand"><img class="home-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="18" height="18" alt="" aria-hidden="true"> Regionaler Geschmack</p>
                 <p class="footer-row">
                     <span aria-hidden="true">✉️</span>
                     <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>
@@ -1502,12 +1538,21 @@ function refreshCategoryCounts(container) {
 function syncHomeAmbientToggle(container, on) {
     const btn = container.querySelector('#homeAmbientNatureBtn');
     if (!btn) return;
-    const icon = btn.querySelector('.home-ambient-toggle-icon');
-    if (icon) icon.textContent = on ? '🔇' : '🎵';
+    btn.classList.toggle('is-on', on);
+    btn.classList.toggle('is-off', !on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     const label = on ? t('home.ambientNatureMute') : t('home.ambientNaturePlay');
     btn.setAttribute('aria-label', label);
     btn.title = label;
+    const status = container.querySelector('.home-ambient-status');
+    if (status) {
+        status.classList.toggle('is-on', on);
+        status.classList.toggle('is-off', !on);
+        const textEl = status.querySelector('.home-ambient-status-text');
+        if (textEl) {
+            textEl.textContent = on ? t('home.ambientNatureStatusOn') : t('home.ambientNatureStatusOff');
+        }
+    }
 }
 
 function bindPlacesRefresh(container) {
@@ -1542,6 +1587,7 @@ function bindLocationRefresh() {
         if (home) refreshFeaturedDistances(home, { rebuild: false });
     }));
     homeBusUnsubs.push(eventBus.on(EVENTS.LOCATION_CHANGED, () => {
+        ensureHomeProducersLoaded();
         const home = document.querySelector('.home-page');
         if (home) refreshFeaturedDistances(home, { rebuild: true });
     }));
@@ -1578,6 +1624,7 @@ function bindVenueCardClicks(container, signal) {
 function setupEvents(container) {
     initProducerModal();
     bindPlacesRefresh(container);
+    ensureHomeProducersLoaded();
     stopHomeAdRotation();
     startHomeAdRotation(container);
     mountHomeAdSense(container);
@@ -1623,7 +1670,7 @@ function setupEvents(container) {
         const pool = getMapAreaPool(getProducers().filter((p) => p && p.category !== 'other'));
         const pick = pickSurpriseProducer({ pool });
         if (!pick?.producer?.id) {
-            showToast(t('msg.noCurrentData'));
+            showToast(t('msg.noProducersNearby'));
             return;
         }
         showToast(formatSurpriseMessage(pick, t));

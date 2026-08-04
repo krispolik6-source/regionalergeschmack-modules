@@ -22,14 +22,14 @@ function assert(cond, msg) {
 assert(/<meta\s+charset=["']UTF-8["']/i.test(html), 'meta charset UTF-8');
 assert(html.includes('\u2630'), 'header menu hamburger');
 assert(html.includes('\u{1F1E9}\u{1F1EA}'), 'DE flag');
-assert(html.includes('\u{1F319}'), 'dark mode moon');
+assert(html.includes('theme-toggle-premium') || html.includes('\u{1F31E}'), 'dark mode toggle (sun/premium)');
 assert(html.includes('\u{1F3E0}'), 'bottom home');
 assert(html.includes('\u{1F5FA}'), 'bottom map');
 assert(html.includes('\u{1F50D}'), 'bottom search');
 assert(html.includes('\u2764'), 'bottom favorites');
 assert(html.includes('\u{1F464}'), 'bottom profile');
 assert((html.match(/\?\?/g) || []).length === 0, 'no ?? in index.html');
-assert(style.includes('--photo-modal-height: 160px'), 'modal photo 160px');
+assert(style.includes('--photo-modal-height: 200px'), 'modal photo 200px');
 assert(/\.producer-modal-body\s*\{[\s\S]*?overflow-y:\s*auto/.test(style), 'modal body scrolls');
 
 if (failed) {

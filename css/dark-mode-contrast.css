@@ -1,31 +1,58 @@
 /**
- * Dark mode contrast — naprawa białego/kremowego tekstu na jasnych tłach.
- * Ładowane NA KOŃCU stacku (po warm-summer / ux-polish).
+ * Dark Mode — jedna paleta Brand Book (ETAP unified)
+ * Ładowane przed home-v1; style.css używa tych samych tokenów.
  * Klasa: body.dark-mode
+ *
+ * tło:           #141810
+ * powierzchnie:  #1E2A20
+ * zielony:       #2A3F28
+ * tekst:         #F5F5F2
+ * tekst 2:       #D4E4B0
+ * złoty:         #C9A227
  */
 
 body.dark-mode {
-    --bg-primary: #1c1812;
-    --bg-surface: #2a241c;
-    --bg-elevated: #342c22;
-    --text-primary: #f5efe3;
-    --text-secondary: #d4c4a8;
-    --text-on-primary: #fffaf2;
-    --surface-border-dark: rgba(255, 220, 170, 0.16);
+    /* Kanoniczne tokeny dark */
+    --dm-bg: #141810;
+    --dm-surface: #1e2a20;
+    --dm-surface-elevated: #243528;
+    --dm-green: #2a3f28;
+    --dm-text: #f5f5f2;
+    --dm-text-muted: #d4e4b0;
+    --dm-gold: #c9a227;
+    --dm-border: rgba(201, 162, 39, 0.18);
+    --dm-border-strong: rgba(201, 162, 39, 0.28);
+
+    /* Alias legacy — cała aplikacja */
+    --bg-primary: var(--dm-bg);
+    --bg-surface: var(--dm-surface);
+    --bg-elevated: var(--dm-surface-elevated);
+    --text-primary: var(--dm-text);
+    --text-secondary: var(--dm-text-muted);
+    --text-on-primary: var(--dm-text);
+    --surface-border-dark: var(--dm-border);
+    --color-bg: var(--dm-bg);
+    --color-card: var(--dm-surface);
+    --color-text: var(--dm-text);
+    --color-text-muted: var(--dm-text-muted);
+    --color-text-light: var(--dm-text);
+    --brand-cream: var(--dm-surface);
+    --brand-cream-card: var(--dm-surface-elevated);
+    --color-primary: #8fb86a;
+    --color-primary-dark: #7aa558;
+    --color-accent: var(--dm-gold);
+    --color-accent-dark: #a8871f;
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+    --shadow-up: 0 -4px 22px rgba(0, 0, 0, 0.35);
     --warm-card-gradient: linear-gradient(
         155deg,
-        rgba(50, 40, 28, 0.92) 0%,
-        rgba(36, 30, 22, 0.88) 100%
+        var(--dm-surface) 0%,
+        var(--dm-bg) 100%
     );
-    --color-bg: #1c1812;
-    --color-card: #2a241c;
-    --color-text: #f5efe3;
-    --color-text-muted: #d4c4a8;
-    --brand-cream: #2a241c;
-    --brand-cream-card: #342c22;
 }
 
-/* ——— Powierzchnie, które zostawały kremowe (!important z warm-summer) ——— */
+/* ——— Powierzchnie kremowe w light → powierzchnie marki ——— */
 body.dark-mode .card,
 body.dark-mode .surface-panel,
 body.dark-mode .list-item,
@@ -53,24 +80,22 @@ body.dark-mode .account-item,
 body.dark-mode .profile-card,
 body.dark-mode .category-card {
     background: var(--warm-card-gradient) !important;
-    border-color: var(--surface-border-dark) !important;
-    color: var(--text-primary) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .placeholder {
-    background: rgba(42, 34, 24, 0.85) !important;
-    color: rgba(245, 239, 227, 0.78) !important;
+    background: var(--dm-surface) !important;
+    color: rgba(245, 245, 242, 0.78) !important;
 }
 
-/* ——— Tekst: nagłówki, etykiety, opisy ——— */
+/* ——— Typografia ——— */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4,
 body.dark-mode .section-title,
 body.dark-mode .view-hero h2,
-body.dark-mode .home-greeting-title,
-body.dark-mode .home-greeting-brand,
 body.dark-mode .list-item-title,
 body.dark-mode .favorite-item .title,
 body.dark-mode .cart-item .title,
@@ -82,8 +107,8 @@ body.dark-mode .category-name,
 body.dark-mode .home-footer,
 body.dark-mode .home-footer a,
 body.dark-mode .home-footer-brand {
-    color: var(--text-primary) !important;
-    -webkit-text-fill-color: var(--text-primary) !important;
+    color: var(--dm-text) !important;
+    -webkit-text-fill-color: var(--dm-text) !important;
     text-shadow: none;
 }
 
@@ -100,23 +125,23 @@ body.dark-mode .empty-state p,
 body.dark-mode .category-desc,
 body.dark-mode .rg-ad-text,
 body.dark-mode .home-footer-copy {
-    color: var(--text-secondary) !important;
-    -webkit-text-fill-color: var(--text-secondary) !important;
+    color: var(--dm-text-muted) !important;
+    -webkit-text-fill-color: var(--dm-text-muted) !important;
 }
 
-/* ——— Dropdown języka (krem !important z premium-header) ——— */
+/* ——— Header / język ——— */
 body.dark-mode .language-dropdown,
 body.dark-mode .main-header .language-dropdown {
-    background: #1f2a1c !important;
-    border-color: rgba(255, 220, 170, 0.22) !important;
-    color: var(--text-primary) !important;
+    background: var(--dm-surface) !important;
+    border-color: var(--dm-border-strong) !important;
+    color: var(--dm-text) !important;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
 }
 
 body.dark-mode .language-option,
 body.dark-mode .main-header .language-dropdown .language-option {
-    color: var(--text-primary) !important;
-    -webkit-text-fill-color: var(--text-primary) !important;
+    color: var(--dm-text) !important;
+    -webkit-text-fill-color: var(--dm-text) !important;
     background: transparent !important;
     text-shadow: none !important;
 }
@@ -125,21 +150,21 @@ body.dark-mode .language-option:hover,
 body.dark-mode .language-option.active,
 body.dark-mode .main-header .language-dropdown .language-option:hover,
 body.dark-mode .main-header .language-dropdown .language-option.active {
-    background: rgba(143, 184, 106, 0.18) !important;
-    color: #e8c97a !important;
-    -webkit-text-fill-color: #e8c97a !important;
+    background: rgba(42, 63, 40, 0.55) !important;
+    color: var(--dm-gold) !important;
+    -webkit-text-fill-color: var(--dm-gold) !important;
 }
 
-/* ——— Menu boczne / panele (jedna paleta: #1a2218 / #2a241c) ——— */
+/* ——— Side menu ——— */
 body.dark-mode .side-menu,
 body.dark-mode .side-menu-panel,
 body.dark-mode .side-menu-body {
-    background: #1a2218 !important;
-    color: var(--text-primary, #f5efe3) !important;
+    background: var(--dm-bg) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .side-menu-header {
-    border-bottom-color: rgba(245, 239, 227, 0.12) !important;
+    border-bottom-color: var(--dm-border) !important;
 }
 
 body.dark-mode .side-menu-item,
@@ -155,12 +180,12 @@ body.dark-mode .side-menu-steps,
 body.dark-mode .side-menu-legal,
 body.dark-mode .side-menu-legal h4,
 body.dark-mode .side-menu-legal p {
-    color: var(--text-primary, #f5efe3) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .side-menu-item:hover,
 body.dark-mode .side-menu-item:focus-visible {
-    background: rgba(245, 239, 227, 0.08) !important;
+    background: rgba(201, 162, 39, 0.1) !important;
 }
 
 body.dark-mode .side-menu-field input,
@@ -168,45 +193,91 @@ body.dark-mode .side-menu-field select,
 body.dark-mode .side-menu-field textarea,
 body.dark-mode .side-menu-share-text,
 body.dark-mode .side-menu-share-url {
-    background: #2a241c !important;
-    color: var(--text-primary, #f5efe3) !important;
-    border-color: rgba(201, 162, 39, 0.35) !important;
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border-strong) !important;
 }
 
-body.dark-mode .side-menu-download-btn {
-    color: #ffffff !important;
-}
-
-/* ——— Mapa: legenda / lista ——— */
+/* ——— Mapa: legenda / lista (bez zmiany logiki mapy) ——— */
 body.dark-mode .map-legend-panel,
 body.dark-mode .map-producer-list-items,
 body.dark-mode .map-settings-panel {
-    background: rgba(28, 24, 18, 0.96) !important;
-    border-color: var(--surface-border-dark) !important;
-    color: var(--text-primary) !important;
+    background: rgba(20, 24, 16, 0.96) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .map-legend-item,
 body.dark-mode .map-producer-list-btn,
 body.dark-mode .map-popup-btn {
-    background: var(--bg-elevated) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
+    background: var(--dm-surface-elevated) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
+}
+
+body.dark-mode .map-toolbar-unified,
+body.dark-mode .map-toolbar-sheet-handle,
+body.dark-mode .map-category-header {
+    background: rgba(20, 24, 16, 0.94) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
+}
+
+body.dark-mode .map-toolbar-unified .map-bottom-btn,
+body.dark-mode .map-toolbar-unified .map-recenter-btn,
+body.dark-mode .map-bottom-btn,
+body.dark-mode .map-legend-btn,
+body.dark-mode .map-list-toggle,
+body.dark-mode .map-recenter-btn {
+    background: var(--dm-green) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
+}
+
+body.dark-mode .radius-control,
+body.dark-mode #radiusControl {
+    background: var(--dm-surface) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
+}
+
+body.dark-mode .radius-value,
+body.dark-mode .radius-hint {
+    color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode [data-view-panel="map"] #map {
+    background: var(--dm-bg) !important;
+}
+
+body.dark-mode .map-region-control {
+    background: rgba(20, 24, 16, 0.92) !important;
+    border-color: var(--dm-border) !important;
+}
+
+body.dark-mode .map-region-label {
+    color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode .map-region-select {
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
 }
 
 /* ——— Przyciski ——— */
 body.dark-mode .btn-secondary,
 body.dark-mode .home-product-btn {
-    background: rgba(42, 34, 24, 0.85) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
     text-shadow: none !important;
 }
 
 body.dark-mode .btn-secondary:hover,
 body.dark-mode .home-product-btn:hover {
-    background: rgba(58, 46, 34, 0.95) !important;
-    color: #fffaf2 !important;
+    background: var(--dm-surface-elevated) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .chip,
@@ -214,47 +285,59 @@ body.dark-mode .home-chip,
 body.dark-mode .home-quick-chip,
 body.dark-mode .filter-chip,
 body.dark-mode .producer-amenity-chip {
-    background: rgba(42, 34, 24, 0.9) !important;
-    color: #fffaf2 !important;
-    border-color: var(--surface-border-dark) !important;
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
 }
 
-/* ——— Stopka / reklamy ——— */
+/* ——— Stopka / reklamy / PWA ——— */
 body.dark-mode .home-footer {
-    background: #162016 !important;
-    color: var(--text-primary) !important;
-    border-color: rgba(255, 220, 170, 0.12) !important;
+    background: var(--dm-green) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
 }
 
-body.dark-mode .rg-ad-banner,
 body.dark-mode .rg-ad-title {
-    color: #e8c97a !important;
+    color: var(--dm-gold) !important;
 }
 
 body.dark-mode .rg-ad-text,
 body.dark-mode .rg-adsense-placeholder-text {
-    color: var(--text-secondary) !important;
+    color: var(--dm-text-muted) !important;
 }
 
 body.dark-mode .rg-adsense-frame {
-    background: rgba(20, 28, 22, 0.65) !important;
-    border-color: rgba(245, 239, 227, 0.18) !important;
+    background: rgba(20, 24, 16, 0.65) !important;
+    border-color: var(--dm-border) !important;
 }
 
-/* ——— Modal / toast ——— */
+body.dark-mode .pwa-install-banner {
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border-strong) !important;
+}
+
+body.dark-mode .pwa-install-banner-dismiss,
+body.dark-mode .pwa-install-banner .pwa-install-banner-dismiss {
+    color: var(--dm-text-muted) !important;
+}
+
+/* ——— Modal producenta ——— */
+body.dark-mode .producer-modal,
 body.dark-mode .producer-modal-dialog,
-body.dark-mode .producer-modal-header,
+body.dark-mode .producer-modal-content,
 body.dark-mode .producer-modal-body,
-body.dark-mode .producer-modal-footer,
-body.dark-mode .producer-modal-toolbar {
-    background: #1f2a1c !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
+body.dark-mode .producer-modal-toolbar,
+body.dark-mode .producer-modal-header,
+body.dark-mode .producer-modal-footer {
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
 }
 
 body.dark-mode .producer-modal-header--compact {
-    background: #2a241c !important;
-    color: #f5efe3 !important;
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
 }
 
 body.dark-mode .producer-modal-header--compact::before,
@@ -263,122 +346,71 @@ body.dark-mode .producer-modal-header--compact::after {
     content: none !important;
 }
 
-body.dark-mode .toast {
-    background: #2a241c !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
+body.dark-mode .producer-modal-header::after {
+    background: rgba(20, 24, 16, 0.88) !important;
 }
 
-/* ——— Formularze profilu ——— */
-body.dark-mode input:not([type='checkbox']):not([type='radio']),
-body.dark-mode select,
-body.dark-mode textarea {
-    background: #2a241c !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
+body.dark-mode .producer-modal-back {
+    background: var(--dm-green) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border-strong) !important;
 }
 
-body.dark-mode option {
-    background: #2a241c;
-    color: var(--text-primary);
-}
-
-/* ——— Ambient wash warm-summer ——— */
-body.dark-mode:not(.view-map-active)::after {
-    background: radial-gradient(
-        ellipse 80% 50% at 50% -10%,
-        rgba(80, 60, 30, 0.35) 0%,
-        transparent 70%
-    ) !important;
-}
-
-/* ——— PWA banner ——— */
-body.dark-mode .pwa-install-banner {
-    background: #2a241c !important;
-    color: var(--text-primary) !important;
-    border-color: var(--surface-border-dark) !important;
-}
-
-/* ——— K5/K6: Home LRE + karty producenta (LRE cream !important) ——— */
-body.dark-mode .home-page--v2 {
-    background: #2d2d2d !important;
-    color: #f0f0f0 !important;
-}
-
-body.dark-mode .home-page--v2 > .app-section + .app-section {
-    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent) !important;
-}
-
-body.dark-mode .home-page--v2 .home-greeting-brand,
-body.dark-mode .home-page--v2 .home-greeting-title {
-    color: #f0f0f0 !important;
-    -webkit-text-fill-color: #f0f0f0 !important;
+body.dark-mode .producer-header-name,
+body.dark-mode .producer-modal-header h2,
+body.dark-mode .producer-section-title,
+body.dark-mode .producer-product-name,
+body.dark-mode .producer-review-comment {
+    color: var(--dm-text) !important;
     text-shadow: none !important;
 }
 
-body.dark-mode .home-page--v2 .home-greeting-sub {
-    color: rgba(240, 240, 240, 0.78) !important;
-    -webkit-text-fill-color: rgba(240, 240, 240, 0.78) !important;
+body.dark-mode .producer-header-meta,
+body.dark-mode .producer-header-address,
+body.dark-mode .producer-product-desc,
+body.dark-mode .producer-rating-value,
+body.dark-mode .producer-review-date,
+body.dark-mode .producer-reviews-empty,
+body.dark-mode .producer-modal-empty {
+    color: var(--dm-text-muted) !important;
+    text-shadow: none !important;
 }
 
-body.dark-mode .home-living-region,
-body.dark-mode [data-home-section='living-region'] .home-living-region {
-    background: #2d2d2d !important;
-    border-color: #444 !important;
-    color: #f0f0f0 !important;
-    box-shadow: none !important;
+body.dark-mode .producer-product-card,
+body.dark-mode .producer-review-card {
+    background: var(--dm-surface-elevated) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
 }
 
-body.dark-mode .home-living-region::before {
-    background: rgba(240, 240, 240, 0.22) !important;
+body.dark-mode .producer-product-price,
+body.dark-mode .producer-contact-item {
+    color: var(--dm-gold) !important;
 }
 
-body.dark-mode .home-living-region-label {
-    color: #d4e4b0 !important;
+body.dark-mode .producer-review-field input,
+body.dark-mode .producer-review-field select,
+body.dark-mode .producer-review-field textarea {
+    background: var(--dm-bg) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
 }
 
-body.dark-mode .home-living-region-sub,
-body.dark-mode .home-living-region-item,
-body.dark-mode .home-living-region-text {
-    color: #f0f0f0 !important;
-    -webkit-text-fill-color: #f0f0f0 !important;
+body.dark-mode .producer-location-map {
+    background: var(--dm-bg) !important;
 }
 
-body.dark-mode .home-living-region-item:hover,
-body.dark-mode .home-living-region-item:focus-visible {
-    background: rgba(255, 255, 255, 0.08) !important;
-}
-
-body.dark-mode .home-region-soul {
-    background: #2d2d2d !important;
-    border-color: #444 !important;
-    color: #f0f0f0 !important;
-    animation: none !important;
-}
-
-body.dark-mode .home-region-soul::after {
-    opacity: 0.35 !important;
-}
-
-body.dark-mode .home-region-soul-line,
-body.dark-mode .home-region-soul-hint {
-    color: #f0f0f0 !important;
-    -webkit-text-fill-color: #f0f0f0 !important;
+body.dark-mode .producer-product-image {
+    background: var(--dm-surface-elevated) !important;
 }
 
 body.dark-mode .producer-header-card,
 body.dark-mode .producer-modal-header .producer-header-card,
 body.dark-mode .producer-modal[data-character] .producer-header-card,
-body.dark-mode .producer-modal[data-character='honey'] .producer-header-card,
-body.dark-mode .producer-modal[data-character='bakery'] .producer-header-card,
-body.dark-mode .producer-modal[data-character='farmer'] .producer-header-card,
-body.dark-mode .producer-modal[data-character='meat'] .producer-header-card,
-body.dark-mode .producer-modal[data-character='restaurant'] .producer-header-card,
-body.dark-mode .producer-modal[data-character='shop'] .producer-header-card,
 body.dark-mode .map-popup .producer-header-card {
-    background: #1e1e1e !important;
-    border-color: #444 !important;
-    color: #e8e8e8 !important;
+    background: var(--dm-surface) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
 }
 
@@ -389,19 +421,81 @@ body.dark-mode .producer-header-card .producer-header-address,
 body.dark-mode .producer-header-card .producer-header-category,
 body.dark-mode .producer-header-card .producer-header-distance,
 body.dark-mode .producer-header-card .producer-header-rating {
-    color: #e8e8e8 !important;
-    -webkit-text-fill-color: #e8e8e8 !important;
+    color: var(--dm-text) !important;
+    -webkit-text-fill-color: var(--dm-text) !important;
     text-shadow: none !important;
 }
 
-@media (prefers-color-scheme: dark) {
-    body.dark-mode .home-page--v2 {
-        background: #2d2d2d !important;
-    }
+body.dark-mode .toast {
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
+}
 
-    body.dark-mode .producer-header-card {
-        background: #1e1e1e !important;
-        border-color: #444 !important;
-        color: #e8e8e8 !important;
-    }
+/* ——— Formularze ——— */
+body.dark-mode input:not([type='checkbox']):not([type='radio']),
+body.dark-mode select,
+body.dark-mode textarea {
+    background: var(--dm-surface) !important;
+    color: var(--dm-text) !important;
+    border-color: var(--dm-border) !important;
+}
+
+body.dark-mode option {
+    background: var(--dm-surface);
+    color: var(--dm-text);
+}
+
+/* ——— Bottom nav ——— */
+body.dark-mode .bottom-nav {
+    background: var(--dm-bg) !important;
+    border-top-color: var(--dm-border) !important;
+}
+
+body.dark-mode #app {
+    background: rgba(20, 24, 16, 0.58) !important;
+    border-color: var(--dm-border) !important;
+}
+
+/* ——— Home v2 legacy (LRE) — neutralizacja szarości ——— */
+body.dark-mode .home-page--v2 {
+    background: transparent !important;
+    color: var(--dm-text) !important;
+}
+
+body.dark-mode .home-page--v2 > .app-section + .app-section {
+    background-image: none !important;
+}
+
+body.dark-mode .home-living-region,
+body.dark-mode [data-home-section='living-region'] .home-living-region {
+    background: transparent !important;
+    border-color: transparent !important;
+    color: var(--dm-text) !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .home-living-region::before {
+    display: none !important;
+}
+
+body.dark-mode .home-region-soul {
+    background: var(--dm-surface) !important;
+    border-color: var(--dm-border) !important;
+    color: var(--dm-text) !important;
+}
+
+body.dark-mode .home-region-soul-line,
+body.dark-mode .home-region-soul-hint {
+    color: var(--dm-text) !important;
+    -webkit-text-fill-color: var(--dm-text) !important;
+}
+
+/* ——— Ambient wash ——— */
+body.dark-mode:not(.view-map-active)::after {
+    background: radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgba(42, 63, 40, 0.28) 0%,
+        transparent 70%
+    ) !important;
 }

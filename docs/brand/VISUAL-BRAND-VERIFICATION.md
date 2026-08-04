@@ -1,6 +1,6 @@
 # VISUAL BRAND VERIFICATION — ETAP 28G
 
-Wygenerowano: 2026-07-21T18:04:33.556Z
+Wygenerowano: 2026-08-03T19:10:25.532Z
 
 ## Werdykt: **✅ PASS**
 
@@ -42,9 +42,9 @@ Master: `assets/icons/logo-master.svg` · hash `668be70eec6ce34788c7`
 - ✓ Header-img — header-brand-mark → logo-master · `index.html`
 - ✓ Menu-img — side-menu-brand-mark → logo-master · `index.html`
 - ✓ Premium — Premium hero = logo-master · `js/views/premium.js`
-- ✓ Install banner — banner ::before = --brand-logo (logo-master) · `css/brand-identity-final.css`
-- ✓ Splash — Splash CSS + splash-logo.png = icon-512 · `css/brand-identity-final.css + assets/brand/splash-logo.png`
-- ✓ PWA — manifest icons z master (192/maskable/monochrome) · `manifest.json`
+- ✓ Install banner — banner ::before = --brand-icon-app (premium PWA icon) · `css/brand-identity-final.css`
+- ✓ Splash — Splash premium + splash-logo.png = icon-512 · `css/brand-identity-final.css + assets/brand/splash-logo.png`
+- ✓ PWA — manifest icons premium (192/maskable/monochrome) · `manifest.json`
 - ✓ Launcher — launcher assets + SW network-first · `assets/icons + sw.js`
 - ✓ Home — Home brand + Premium CTA = logo-master · `js/views/home.js`
 - ✓ Landing — używa logo-master.svg · `landing.html`

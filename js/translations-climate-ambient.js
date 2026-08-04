@@ -12,6 +12,8 @@ export const CLIMATE_AMBIENT_I18N = Object.freeze({
         home: {
             ambientNaturePlay: 'Naturklänge einschalten',
             ambientNatureMute: 'Naturklänge ausschalten',
+            ambientNatureStatusOn: 'Ton eingeschaltet',
+            ambientNatureStatusOff: 'Ton ausgeschaltet',
             ambientNatureOffline: 'Keine Netzwerkverbindung'
         }
     },
@@ -23,6 +25,8 @@ export const CLIMATE_AMBIENT_I18N = Object.freeze({
         home: {
             ambientNaturePlay: 'Turn on nature sounds',
             ambientNatureMute: 'Turn off nature sounds',
+            ambientNatureStatusOn: 'Sound on',
+            ambientNatureStatusOff: 'Sound off',
             ambientNatureOffline: 'No network connection'
         }
     },
@@ -34,6 +38,8 @@ export const CLIMATE_AMBIENT_I18N = Object.freeze({
         home: {
             ambientNaturePlay: 'Włącz odgłosy natury',
             ambientNatureMute: 'Wyłącz odgłosy natury',
+            ambientNatureStatusOn: 'Dźwięk włączony',
+            ambientNatureStatusOff: 'Dźwięk wyłączony',
             ambientNatureOffline: 'Brak połączenia z siecią'
         }
     },
@@ -45,6 +51,8 @@ export const CLIMATE_AMBIENT_I18N = Object.freeze({
         home: {
             ambientNaturePlay: 'Вклучи звуци од природата',
             ambientNatureMute: 'Исклучи звуци од природата',
+            ambientNatureStatusOn: 'Звукот е вклучен',
+            ambientNatureStatusOff: 'Звукот е исклучен',
             ambientNatureOffline: 'Нема мрежна врска'
         }
     }

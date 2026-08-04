@@ -1,6 +1,6 @@
 /**
- * Generuje WSZYSTKIE ikony wyłącznie z logo-master.svg
- * Run: npm run generate-icons
+ * Generuje komplet ikon PWA / favicon / store z logo-icon.svg + premium tło.
+ * Master UI: logo-master.svg (bez zmian). Run: npm run generate-icons
  */
 import fs from 'fs';
 import path from 'path';
@@ -12,48 +12,79 @@ const root = path.join(__dirname, '..');
 const iconsDir = path.join(root, 'assets', 'icons');
 const brandDir = path.join(root, 'assets', 'brand');
 const masterPath = path.join(iconsDir, 'logo-master.svg');
-const masterSvg = fs.readFileSync(masterPath);
+const iconGlyphPath = path.join(iconsDir, 'logo-icon.svg');
 
-const CREAM = { r: 245, g: 239, b: 227, alpha: 1 };
-const WHITE = { r: 255, g: 255, b: 255, alpha: 1 };
+const BG_TOP = '#FBF8F2';
+const BG_BOTTOM = '#EEE5D6';
+const BG_BASE = '#F7F3EA';
 const DARK = { r: 26, g: 31, b: 24, alpha: 1 };
 
-const SIZES = [48, 72, 96, 128, 144, 152, 180, 192, 256, 384, 512, 1024];
+/** Logo ~62.5% powierzchni (bezpieczny margines Android / iOS) */
+const LOGO_RATIO = 0.625;
+/** Maskable — pełne tło, logo w strefie bezpiecznej (~62%) */
+const MASKABLE_LOGO_RATIO = 0.62;
 
-async function wheatOnBg(size, bg, padRatio = 0.12) {
-  const pad = Math.round(size * padRatio);
-  const inner = size - pad * 2;
-  const wheat = await sharp(masterSvg)
-    .resize(inner, inner, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
-    .toBuffer();
+const PNG_SIZES = [48, 72, 96, 128, 144, 152, 180, 192, 256, 384, 512, 1024];
+const FAVICON_SIZES = [16, 32];
 
-  return sharp({
-    create: { width: size, height: size, channels: 4, background: bg }
-  })
-    .composite([{ input: wheat, left: pad, top: pad }])
-    .png({ compressionLevel: 9, adaptiveFiltering: true })
-    .toBuffer();
+const iconGlyphSvg = fs.readFileSync(iconGlyphPath, 'utf8');
+const masterSvg = fs.readFileSync(masterPath);
+
+function extractSvgInner(svgText) {
+  return svgText
+    .replace(/<\?xml[^?]*\?>\s*/i, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<svg[^>]*>/, '')
+    .replace(/<\/svg>\s*$/, '')
+    .trim();
 }
 
-async function renderMaskable(size) {
-  const logoSize = Math.round(size * 0.72);
-  const wheat = await sharp(masterSvg)
-    .resize(logoSize, logoSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .png()
-    .toBuffer();
-  const offset = Math.round((size - logoSize) / 2);
-  return sharp({
-    create: { width: size, height: size, channels: 4, background: CREAM }
-  })
-    .composite([{ input: wheat, left: offset, top: offset }])
-    .png({ compressionLevel: 9 })
+const glyphInner = extractSvgInner(iconGlyphSvg);
+
+function buildPremiumIconSvg(size, logoRatio = LOGO_RATIO) {
+  const inner = size * logoRatio;
+  const scale = inner / 512;
+  const tx = (size - inner) / 2;
+  const ty = (size - inner) / 2;
+  const shadowDy = Math.max(1, size * 0.008);
+  const shadowBlur = Math.max(1.5, size * 0.012);
+  const highlightCy = size * 0.12;
+  const highlightR = size * 0.55;
+
+  return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="${size}" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${BG_TOP}"/>
+      <stop offset="1" stop-color="${BG_BOTTOM}"/>
+    </linearGradient>
+    <radialGradient id="topLight" cx="${size / 2}" cy="${highlightCy}" r="${highlightR}" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.30"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="logoShadow" x="-18%" y="-12%" width="136%" height="145%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="${shadowDy.toFixed(2)}" stdDeviation="${shadowBlur.toFixed(2)}" flood-color="#2a3f28" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <rect width="${size}" height="${size}" fill="url(#bgGrad)"/>
+  <rect width="${size}" height="${size}" fill="url(#topLight)"/>
+  <g filter="url(#logoShadow)" transform="translate(${tx.toFixed(3)} ${ty.toFixed(3)}) scale(${scale.toFixed(6)})">
+    ${glyphInner}
+  </g>
+</svg>`);
+}
+
+async function renderPremiumIcon(size, { maskable = false } = {}) {
+  const ratio = maskable ? MASKABLE_LOGO_RATIO : LOGO_RATIO;
+  const svg = buildPremiumIconSvg(size, ratio);
+  return sharp(svg)
+    .png({ compressionLevel: 9, adaptiveFiltering: true })
     .toBuffer();
 }
 
 /** Android 13+ monochrome — biały znak na przezroczystym */
 async function renderMonochrome(size) {
-  const wheat = await sharp(masterSvg)
+  const wheat = await sharp(iconGlyphPath)
     .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .ensureAlpha()
     .raw()
@@ -67,7 +98,6 @@ async function renderMonochrome(size) {
       data[i + 3] = 0;
     } else {
       data[i] = data[i + 1] = data[i + 2] = 255;
-      // zachowaj alpha z krawędzi
     }
   }
 
@@ -124,48 +154,69 @@ async function writePng(dir, filename, buffer) {
   console.log('OK', path.relative(root, out), `${Math.round(buffer.length / 1024)} KB`);
 }
 
-// ——— PNG sizes (kremowe tło z master glyph) ———
-for (const size of SIZES) {
-  await writePng(iconsDir, `icon-${size}.png`, await wheatOnBg(size, CREAM));
+// ——— PNG (premium gradient + cień) ———
+for (const size of PNG_SIZES) {
+  await writePng(iconsDir, `icon-${size}.png`, await renderPremiumIcon(size));
 }
 
-await writePng(iconsDir, 'apple-touch-icon.png', await wheatOnBg(180, CREAM));
-await writePng(iconsDir, 'maskable-512.png', await renderMaskable(512));
+for (const size of FAVICON_SIZES) {
+  await writePng(iconsDir, `favicon-${size}.png`, await renderPremiumIcon(size));
+}
+
+await writePng(iconsDir, 'apple-touch-icon.png', await renderPremiumIcon(180));
+await writePng(iconsDir, 'maskable-192.png', await renderPremiumIcon(192, { maskable: true }));
+await writePng(iconsDir, 'maskable-512.png', await renderPremiumIcon(512, { maskable: true }));
 await writePng(iconsDir, 'monochrome-512.png', await renderMonochrome(512));
 
 const icoImages = [];
 for (const size of [16, 32, 48]) {
-  icoImages.push({ size, png: await wheatOnBg(size, WHITE, 0.1) });
+  icoImages.push({ size, png: await renderPremiumIcon(size) });
 }
 fs.writeFileSync(path.join(iconsDir, 'favicon.ico'), encodeIco(icoImages));
 console.log('OK favicon.ico');
 
-// Aliasy SVG = bajtowo master
+// Aliasy SVG = bajtowo master (UI w aplikacji)
 fs.copyFileSync(masterPath, path.join(iconsDir, 'icon-source.svg'));
 fs.copyFileSync(masterPath, path.join(iconsDir, 'icon-symbol.svg'));
 console.log('OK icon-source.svg / icon-symbol.svg ← logo-master.svg');
 
-// Brand pack — wyłącznie z mastera
+// Brand pack — premium ikony + master glyph
 fs.mkdirSync(brandDir, { recursive: true });
 fs.copyFileSync(masterPath, path.join(brandDir, 'logo-mark.svg'));
-await writePng(brandDir, 'logo-on-light.png', await wheatOnBg(512, CREAM));
-await writePng(brandDir, 'logo-on-dark.png', await wheatOnBg(512, DARK));
-await writePng(brandDir, 'logo-mark.png', await sharp(masterSvg)
+await writePng(brandDir, 'logo-on-light.png', await renderPremiumIcon(512));
+await writePng(brandDir, 'logo-on-dark.png', await renderPremiumIcon(512));
+await writePng(brandDir, 'logo-mark.png', await sharp(iconGlyphPath)
   .resize(512, 512, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
   .png({ compressionLevel: 9 })
   .toBuffer());
 
-// on-light / on-dark SVG = master + tło (generowane, nie osobny znak)
 const masterText = masterSvg.toString('utf8');
-const withBg = (fill, label) => masterText
+const withPremiumBg = (label) => masterText
   .replace(
     '<defs>',
-    `<rect width="512" height="512" rx="96" fill="${fill}"/>\n  <defs>`
+    `<defs>
+    <linearGradient id="iconBg" x1="0" y1="0" x2="0" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${BG_TOP}"/>
+      <stop offset="1" stop-color="${BG_BOTTOM}"/>
+    </linearGradient>
+    <radialGradient id="iconHi" cx="256" cy="64" r="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>`
+  )
+  .replace(
+    '<g transform="translate(256 268)">',
+    `<rect width="512" height="512" fill="url(#iconBg)"/>
+  <rect width="512" height="512" fill="url(#iconHi)"/>
+  <g transform="translate(256 268)">`
   )
   .replace('dwa złote kłosy', label);
-fs.writeFileSync(path.join(brandDir, 'logo-on-light.svg'), withBg('#f5efe3', 'logo on light'));
-fs.writeFileSync(path.join(brandDir, 'logo-on-dark.svg'), withBg('#1a1f18', 'logo on dark'));
-console.log('OK assets/brand SVGs ← logo-master');
+fs.writeFileSync(path.join(brandDir, 'logo-on-light.svg'), withPremiumBg('logo on light'));
+fs.writeFileSync(
+  path.join(brandDir, 'logo-on-dark.svg'),
+  withPremiumBg('logo on dark').replace(BG_TOP, '#1a1f18').replace(BG_BOTTOM, '#141810')
+);
+console.log('OK assets/brand ← premium icon pack');
 
 const copies = [
   ['assets/brand/og-share.png', 'icon-512.png'],
@@ -182,4 +233,4 @@ for (const [destRel, srcName] of copies) {
   console.log('OK', destRel, '←', srcName);
 }
 
-console.log('Done. Single master: logo-master.svg → all icons.');
+console.log('Done. logo-icon.svg → premium icons · logo-master.svg → UI / aliases.');

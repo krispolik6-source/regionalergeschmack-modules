@@ -44,6 +44,12 @@ else fail('index.html: brak rejestracji SW');
 if (index.includes('pwaInstallMenuBtn')) ok('index.html: przycisk instalacji w menu');
 else fail('index.html: brak przycisku instalacji');
 
+if (index.includes('id="rgSplashScreen"') && index.includes('rg-splash-critical')) {
+    ok('index.html: premium splash (DOM + critical CSS)');
+} else {
+    fail('index.html: brak premium splash');
+}
+
 ['icon-192.png', 'icon-512.png'].forEach((file) => {
     const iconPath = path.join(root, 'assets', 'icons', file);
     if (fs.existsSync(iconPath)) ok(`ikona: ${file}`);

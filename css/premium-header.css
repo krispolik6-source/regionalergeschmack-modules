@@ -1,16 +1,30 @@
 /* ============================================================
-   ETAP 28B – Premium Header
+   ETAP 28B / 45 – Premium Header (Home Premium · DE)
    Tylko CSS/UI. Jedna ikona (logo-master). Wysoki kontrast.
-   Breakpointy: 320 · 360 · 390 · 412 · 430 · 768 · 1024
+   Breakpointy: 320 · 360 · 375 · 390 · 412 · 430 · 480 · 600 · 768
    ============================================================ */
 
 :root {
-    --ph-header-h: 56px;
-    --ph-logo: 38px;
+    /* Home Premium rhythm — ten sam krok co --home-v1-gap (12px) */
+    --ph-gap: 12px;
+    --ph-gap-chrome: var(--ph-gap);
     --ph-gap-brand: 10px;
-    --ph-gap-actions: 6px;
-    --ph-title: clamp(1.02rem, 4.1vw, 1.45rem);
-    --ph-btn: 37px;
+    --ph-gap-actions: var(--ph-gap);
+    --ph-gap-content: var(--ph-gap);
+    --ph-theme-gap: 10px;
+    --ph-header-h: 68px;
+    --ph-logo: 48px;
+    --ph-title: clamp(1.2rem, 4.8vw, 1.62rem);
+    --ph-btn: 44px;
+    --ph-btn-radius: 14px;
+    --ph-btn-border: 1.5px solid rgba(255, 254, 248, 0.48);
+    --ph-btn-bg: rgba(0, 0, 0, 0.26);
+    --ph-btn-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.24);
+    --ph-btn-shadow-hover:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        0 4px 12px rgba(0, 0, 0, 0.28);
     --ph-cream: #fffef8;
     --ph-ink: #1c1812;
     --ph-gold: #c9a227;
@@ -26,26 +40,71 @@
 
 /* ——— Shell ——— */
 .main-header {
-    background: linear-gradient(180deg, #1e3220 0%, var(--ph-green) 42%, #243d28 100%) !important;
-    border-bottom: 2px solid var(--ph-gold) !important;
+    background: linear-gradient(180deg, #243528 0%, var(--ph-green) 42%, var(--ph-green) 100%) !important;
+    border-bottom: 1px solid #e6efdf !important;
     box-shadow:
-        0 2px 0 rgba(201, 162, 39, 0.45),
-        0 10px 28px rgba(0, 0, 0, 0.32) !important;
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 1px 0 rgba(201, 162, 39, 0.42),
+        0 4px 18px rgba(42, 63, 40, 0.22) !important;
+}
+
+.main-header .header-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: var(--ph-header-h);
+    min-height: var(--ph-header-h);
+    padding: 0 max(12px, var(--app-gutter, 14px)) !important;
+    gap: var(--ph-gap-content) !important;
 }
 
 .header-content {
     height: var(--ph-header-h);
-    padding: 0 max(8px, var(--app-gutter, 10px));
-    gap: 6px;
+    padding: 0 max(12px, var(--app-gutter, 14px));
+    gap: var(--ph-gap-content);
     align-items: center;
+}
+
+.main-header .header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--ph-gap-chrome) !important;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* Logo + nazwa — jedna grupa marki (oś pionowa Premium Home) */
+.main-header .header-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--ph-gap-brand) !important;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .header-left {
     display: flex;
     align-items: center;
+    gap: var(--ph-gap-chrome);
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
     gap: var(--ph-gap-brand);
     min-width: 0;
     flex: 1 1 auto;
+}
+
+.main-header .header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--ph-gap-actions) !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    min-width: 0;
 }
 
 .header-right {
@@ -68,18 +127,22 @@
     object-fit: contain !important;
     flex-shrink: 0;
     align-self: center;
+    transform: scale(1.04);
+    transform-origin: center center;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
 }
 
-/* ——— Tytuł: większy, kontrast w słońcu, wyśrodkowany z logo ——— */
+/* ——— Tytuł: Literata, więcej oddechu, wyśrodkowany z logo w .header-brand ——— */
+.header-brand h1,
 .header-left h1,
+.main-header .header-brand h1,
 .main-header .header-left h1 {
     font-family: 'Literata', Georgia, 'Times New Roman', serif !important;
     font-size: var(--ph-title) !important;
     font-weight: 700 !important;
     color: var(--ph-cream) !important;
-    letter-spacing: 0.02em !important;
-    line-height: 1.12 !important;
+    letter-spacing: 0.03em !important;
+    line-height: 1.22 !important;
     margin: 0 !important;
     min-width: 0;
     flex: 1 1 auto;
@@ -90,80 +153,140 @@
     display: flex;
     align-items: center;
     text-shadow:
-        0 1px 0 rgba(0, 0, 0, 0.95),
-        0 2px 10px rgba(0, 0, 0, 0.75),
-        0 0 2px rgba(0, 0, 0, 1) !important;
+        0 1px 2px rgba(0, 0, 0, 0.55),
+        0 2px 8px rgba(0, 0, 0, 0.35) !important;
     -webkit-text-fill-color: var(--ph-cream);
 }
 
-/* ——— Przyciski akcji (menu / język / Premium / dark) ——— */
+/* ——— Przyciski akcji — jedna rodzina: menu · język · Premium · motyw · avatar ——— */
 .main-header .header-icon,
 .main-header .header-lang,
 .main-header #menuBtn,
-.main-header #darkModeToggleBtn,
 .main-header #languageSwitcherBtn,
-.main-header #headerPremiumBtn {
-    min-width: var(--ph-btn) !important;
-    min-height: var(--ph-btn) !important;
-    padding: 0 10px !important;
-    border-radius: 12px !important;
-    border: 1.5px solid rgba(255, 254, 248, 0.5) !important;
-    background: rgba(0, 0, 0, 0.28) !important;
+.main-header #headerPremiumBtn,
+.main-header .header-premium-btn,
+.main-header .header-avatar-btn,
+.main-header .header-account-btn,
+.main-header #headerAccountBtn,
+.main-header .header-avatar {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    width: max(var(--ph-btn), 44px) !important;
+    min-width: max(var(--ph-btn), 44px) !important;
+    max-width: max(var(--ph-btn), 44px) !important;
+    height: max(var(--ph-btn), 44px) !important;
+    min-height: max(var(--ph-btn), 44px) !important;
+    max-height: max(var(--ph-btn), 44px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: var(--ph-btn-radius) !important;
+    border: var(--ph-btn-border) !important;
+    background: var(--ph-btn-bg) !important;
     color: var(--ph-cream) !important;
     font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75) !important;
+    box-shadow: var(--ph-btn-shadow) !important;
+    animation: none !important;
+    transition:
+        transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .main-header .header-icon:hover,
 .main-header .header-lang:hover,
 .main-header #menuBtn:hover,
-.main-header #darkModeToggleBtn:hover,
-.main-header #languageSwitcherBtn:hover {
-    background: rgba(201, 162, 39, 0.38) !important;
+.main-header #languageSwitcherBtn:hover,
+.main-header #headerPremiumBtn:hover,
+.main-header .header-premium-btn:hover,
+.main-header .header-avatar-btn:hover,
+.main-header .header-account-btn:hover,
+.main-header #headerAccountBtn:hover {
+    background: rgba(201, 162, 39, 0.36) !important;
     border-color: var(--ph-wheat) !important;
+    box-shadow: var(--ph-btn-shadow-hover) !important;
+    transform: translateY(-2px) !important;
 }
 
 .main-header .header-icon:active,
-.main-header .header-lang:active {
-    transform: scale(0.97);
+.main-header .header-lang:active,
+.main-header #menuBtn:active,
+.main-header #languageSwitcherBtn:active,
+.main-header #headerPremiumBtn:active,
+.main-header .header-avatar-btn:active,
+.main-header .header-account-btn:active {
+    transform: translateY(0) scale(0.985) !important;
+    transition-duration: 0.14s;
 }
 
-/* Menu ☰ */
+.main-header .header-icon:focus-visible,
+.main-header .header-lang:focus-visible,
+.main-header #menuBtn:focus-visible,
+.main-header #languageSwitcherBtn:focus-visible,
+.main-header #headerPremiumBtn:focus-visible,
+.main-header .header-avatar-btn:focus-visible,
+.main-header .header-account-btn:focus-visible {
+    outline: 2px solid var(--ph-gold) !important;
+    outline-offset: 2px;
+}
+
+/* Menu ☰ — ta sama siatka i radius co pozostałe przyciski (bez dominacji nad logo) */
 .main-header #menuBtn {
-    font-size: 1.22rem !important;
-    letter-spacing: -0.04em;
-    padding: 0 !important;
-    width: var(--ph-btn);
+    flex-shrink: 0 !important;
+    align-self: center !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0;
+    border-radius: var(--ph-btn-radius) !important;
+    border: var(--ph-btn-border) !important;
+    background: var(--ph-btn-bg) !important;
+    box-shadow: var(--ph-btn-shadow) !important;
 }
 
-/* Dark Mode — rozmiar ikony: theme-toggle-premium.css (14px / ≤480) */
-.main-header #darkModeToggleBtn {
-    font-size: 14px !important;
-    padding: 0 !important;
-    width: var(--ph-btn);
-    background: rgba(0, 0, 0, 0.32) !important;
-}
+/* Motyw dzień/noc — css/theme-toggle-premium.css (okrągła ikona 🌞/🌙) */
 
-/* Premium – złoty akcent */
+/* Premium – złoty akcent, te same wymiary / radius / cień co pozostałe przyciski */
 .main-header #headerPremiumBtn,
 .main-header .header-premium-btn {
+    width: max(var(--ph-btn), 44px) !important;
+    min-width: max(var(--ph-btn), 44px) !important;
+    max-width: max(var(--ph-btn), 44px) !important;
     color: var(--ph-ink) !important;
-    background: linear-gradient(180deg, #f0d78a 0%, var(--ph-wheat) 40%, var(--ph-gold) 100%) !important;
+    background: linear-gradient(180deg, #f0d78a 0%, var(--ph-wheat) 42%, var(--ph-gold) 100%) !important;
+    border: var(--ph-btn-border) !important;
     border-color: #a67c1a !important;
     text-shadow: none !important;
-    font-size: 1.15rem !important;
-    box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.35),
-        0 2px 8px rgba(0, 0, 0, 0.25) !important;
-    padding: 0 !important;
-    width: var(--ph-btn);
+    box-shadow: var(--ph-btn-shadow) !important;
 }
 
-.main-header #headerPremiumBtn:hover {
-    background: linear-gradient(180deg, #fff3c4 0%, var(--ph-wheat) 45%, #d4a84b 100%) !important;
+.main-header #headerPremiumBtn:hover,
+.main-header .header-premium-btn:hover {
+    background: linear-gradient(180deg, #fff3c4 0%, var(--ph-wheat) 48%, #d4a84b 100%) !important;
     border-color: var(--ph-gold) !important;
+    box-shadow: var(--ph-btn-shadow-hover) !important;
+}
+
+/* Avatar / konto — ta sama siatka co ikony (gdy dodane) */
+.main-header .header-avatar-btn,
+.main-header .header-account-btn,
+.main-header #headerAccountBtn,
+.main-header .header-avatar {
+    width: max(var(--ph-btn), 44px) !important;
+    min-width: max(var(--ph-btn), 44px) !important;
+    max-width: max(var(--ph-btn), 44px) !important;
+    height: max(var(--ph-btn), 44px) !important;
+    min-height: max(var(--ph-btn), 44px) !important;
+    max-height: max(var(--ph-btn), 44px) !important;
+    overflow: hidden;
+    font-size: 0.82rem !important;
+    font-family: var(--font-sans, 'Source Sans 3', sans-serif) !important;
+    text-shadow: none !important;
+    letter-spacing: 0.02em;
 }
 
 /* ETAP 31 – Premium = logo-master (nie emoji) */
@@ -182,41 +305,79 @@
     justify-content: center;
 }
 
-/* Język */
+/* Język (DE-first) — wyśrodkowany, czytelna flaga + etykieta, bez nachodzenia na motyw */
 .main-header .header-lang,
 .main-header #languageSwitcherBtn {
+    width: 100% !important;
+    min-width: max(var(--ph-btn), 44px) !important;
+    max-width: 100% !important;
+    height: max(var(--ph-btn), 44px) !important;
+    min-height: max(var(--ph-btn), 44px) !important;
+    max-height: max(var(--ph-btn), 44px) !important;
+    padding: 0 10px !important;
     font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif !important;
-    font-size: 0.8rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
     font-variant-emoji: emoji;
+    letter-spacing: 0.02em;
+    text-transform: none;
     gap: 5px !important;
-    padding: 0 11px !important;
-    max-width: min(42vw, 160px);
     overflow: hidden;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 .main-header #languageSwitcherLabel {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    min-width: 0;
+    flex: 1 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--ph-cream) !important;
     font-weight: 700;
+    line-height: 1.1;
+}
+
+.main-header .header-lang-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 0 1 auto;
+    font-weight: 700;
+    letter-spacing: 0.01em;
 }
 
 .main-header .header-lang-caret {
-    font-size: 0.7rem;
-    opacity: 0.9;
+    font-size: 0.65rem;
+    opacity: 0.88;
     flex-shrink: 0;
     color: var(--ph-wheat);
+    line-height: 1;
+    margin-inline-start: 1px;
 }
 
 .main-header .header-lang-wrap {
     position: relative;
     display: flex;
     align-items: center;
+    flex: 0 1 auto;
     flex-shrink: 1;
     min-width: 0;
+    /* rezerwa miejsca na Premium + toggle (44+44+gap+theme-gap) */
+    max-width: min(8.5rem, calc(100vw - 15.5rem));
     margin: 0;
     overflow: visible;
+    z-index: 1;
+}
+
+.main-header .header-right #headerPremiumBtn,
+.main-header .header-right .header-premium-btn {
+    flex-shrink: 0 !important;
 }
 
 /* Dropdown czytelny — poza obcinaniem headera */
@@ -252,6 +413,11 @@ body.dark-mode .main-header .language-dropdown .language-option {
     font-weight: 500 !important;
 }
 
+.main-header .language-dropdown .language-option[data-lang='de'],
+.main-header .language-dropdown .language-option.active {
+    font-weight: 700 !important;
+}
+
 .main-header .language-option-flag-img {
     width: 20px !important;
     height: 15px !important;
@@ -260,18 +426,13 @@ body.dark-mode .main-header .language-dropdown .language-option {
     flex-shrink: 0;
 }
 
-.main-header #languageSwitcherLabel {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-}
-
 .main-header .header-lang-flag-img {
-    width: 18px !important;
-    height: 13px !important;
+    width: 20px !important;
+    height: 14px !important;
     border-radius: 2px;
     flex-shrink: 0;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
 }
 
 .main-header,
@@ -286,14 +447,16 @@ body.dark-mode .main-header .language-dropdown .language-option {
 
 /* ETAP 31: telefon — tytuł zawsze czytelny (2 linie, bez ucięcia „…”) */
 @media screen and (max-width: 429px) {
+    .header-brand h1,
     .header-left h1,
+    .main-header .header-brand h1,
     .main-header .header-left h1 {
         white-space: normal !important;
         display: -webkit-box !important;
         -webkit-line-clamp: 2;
         line-clamp: 2;
         -webkit-box-orient: vertical;
-        line-height: 1.15 !important;
+        line-height: 1.2 !important;
         overflow: hidden !important;
         text-overflow: unset !important;
         hyphens: manual;
@@ -305,124 +468,258 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 320 */
 @media screen and (max-width: 359px) {
     :root {
-        --ph-header-h: 51px;
-        --ph-logo: 28px;
-        --ph-gap-brand: 5px;
-        --ph-gap-actions: 3px;
-        --ph-title: 0.82rem;
-        --ph-btn: 35px;
+        --ph-header-h: 62px;
+        --ph-logo: 38px;
+        --ph-gap: 10px;
+        --ph-gap-brand: 8px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.02rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
+    }
+
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 14rem), 4.5rem);
     }
 
     .main-header .header-lang,
     .main-header #languageSwitcherBtn {
-        max-width: 3.4rem;
-        padding: 0 6px !important;
-        font-size: 0.68rem !important;
+        padding: 0 7px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .main-header .header-lang-text {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
     }
 
     .main-header .header-lang-caret {
         display: none;
     }
 
+    .main-header .header-content,
     .header-content {
-        padding: 0 4px;
-        gap: 3px;
+        padding: 0 8px !important;
+        gap: 10px !important;
     }
 }
 
-/* 360 */
+/* 360 · 375 */
 @media screen and (min-width: 360px) and (max-width: 389px) {
     :root {
-        --ph-header-h: 52px;
-        --ph-logo: 30px;
-        --ph-gap-brand: 7px;
-        --ph-gap-actions: 4px;
-        --ph-title: 0.88rem;
-        --ph-btn: 35px;
+        --ph-header-h: 64px;
+        --ph-logo: 40px;
+        --ph-gap: 11px;
+        --ph-gap-brand: 9px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.08rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
-    .main-header .header-lang {
-        max-width: 5.5rem;
-        font-size: 0.72rem !important;
-        padding: 0 8px !important;
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 14.5rem), 5.75rem);
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        font-size: 0.75rem !important;
+        padding: 0 9px !important;
     }
 }
 
 /* 390 */
 @media screen and (min-width: 390px) and (max-width: 411px) {
     :root {
-        --ph-header-h: 52px;
-        --ph-logo: 32px;
-        --ph-gap-brand: 8px;
-        --ph-gap-actions: 5px;
-        --ph-title: 0.96rem;
-        --ph-btn: 37px;
+        --ph-header-h: 66px;
+        --ph-logo: 42px;
+        --ph-gap: 12px;
+        --ph-gap-brand: 10px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.14rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
-    .main-header .header-lang {
-        max-width: 7rem;
-        font-size: 0.76rem !important;
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 15rem), 7rem);
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        font-size: 0.78rem !important;
     }
 }
 
 /* 412 */
 @media screen and (min-width: 412px) and (max-width: 429px) {
     :root {
-        --ph-header-h: 54px;
-        --ph-logo: 34px;
-        --ph-gap-brand: 9px;
-        --ph-title: 1rem;
-        --ph-btn: 37px;
+        --ph-header-h: 67px;
+        --ph-logo: 44px;
+        --ph-gap: 12px;
+        --ph-gap-brand: 10px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.18rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
-    .main-header .header-lang {
-        max-width: 8rem;
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 15rem), 7.5rem);
     }
 }
 
-/* 430+ phone — jedna linia gdy jest miejsce */
-@media screen and (min-width: 430px) and (max-width: 767px) {
+/* 430 */
+@media screen and (min-width: 430px) and (max-width: 479px) {
     :root {
-        --ph-header-h: 54px;
-        --ph-logo: 37px;
+        --ph-header-h: 68px;
+        --ph-logo: 46px;
+        --ph-gap: 12px;
         --ph-gap-brand: 10px;
-        --ph-gap-actions: 6px;
-        --ph-title: 1.08rem;
-        --ph-btn: 38px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.26rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
+    .header-brand h1,
     .header-left h1 {
         white-space: nowrap !important;
         display: flex !important;
         -webkit-line-clamp: unset;
         line-clamp: unset;
     }
+
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 15.5rem), 8.5rem);
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        font-size: 0.8125rem !important;
+        padding: 0 10px !important;
+    }
+}
+
+/* 480 */
+@media screen and (min-width: 480px) and (max-width: 599px) {
+    :root {
+        --ph-header-h: 68px;
+        --ph-logo: 47px;
+        --ph-gap: 12px;
+        --ph-gap-brand: 11px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.32rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
+    }
+
+    .header-brand h1,
+    .header-left h1 {
+        white-space: nowrap !important;
+        display: flex !important;
+        -webkit-line-clamp: unset;
+        line-clamp: unset;
+    }
+
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 16rem), 9rem);
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        font-size: 0.84rem !important;
+        padding: 0 11px !important;
+    }
+}
+
+/* 600 */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    :root {
+        --ph-header-h: 69px;
+        --ph-logo: 48px;
+        --ph-gap: 12px;
+        --ph-gap-brand: 11px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.38rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
+    }
+
+    .header-brand h1,
+    .header-left h1 {
+        white-space: nowrap !important;
+        display: flex !important;
+        -webkit-line-clamp: unset;
+        line-clamp: unset;
+    }
+
+    .main-header .header-lang-wrap {
+        max-width: min(calc(100vw - 16.5rem), 9.5rem);
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
+        font-size: 0.86rem !important;
+        padding: 0 12px !important;
+    }
 }
 
 /* 768 tablet */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
     :root {
-        --ph-header-h: 58px;
-        --ph-logo: 40px;
+        --ph-header-h: 70px;
+        --ph-logo: 50px;
+        --ph-gap: 12px;
         --ph-gap-brand: 12px;
-        --ph-gap-actions: 8px;
-        --ph-title: 1.35rem;
-        --ph-btn: 38px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.48rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
+    .main-header .header-content,
     .header-content {
         max-width: 960px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 22px !important;
     }
 
+    .header-brand h1,
     .header-left h1 {
         white-space: nowrap !important;
-        font-size: 1.35rem !important;
+        font-size: 1.48rem !important;
     }
 
-    .main-header .header-lang {
-        max-width: 12rem;
+    .main-header .header-lang-wrap {
+        max-width: min(12rem, calc(100vw - 18rem));
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
         font-size: 0.88rem !important;
         padding: 0 14px !important;
     }
@@ -431,28 +728,38 @@ body.dark-mode .main-header .language-dropdown .language-option {
 /* 1024+ desktop */
 @media screen and (min-width: 1024px) {
     :root {
-        --ph-header-h: 61px;
-        --ph-logo: 42px;
+        --ph-header-h: 72px;
+        --ph-logo: 52px;
+        --ph-gap: 12px;
         --ph-gap-brand: 12px;
-        --ph-gap-actions: 8px;
-        --ph-title: 1.45rem;
-        --ph-btn: 40px;
+        --ph-gap-chrome: var(--ph-gap);
+        --ph-gap-actions: var(--ph-gap);
+        --ph-gap-content: var(--ph-gap);
+        --ph-title: 1.62rem;
+        --ph-btn: 44px;
+        --ph-btn-radius: 14px;
     }
 
+    .main-header .header-content,
     .header-content {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 0 22px;
+        padding: 0 24px !important;
     }
 
+    .header-brand h1,
     .header-left h1 {
         white-space: nowrap !important;
-        font-size: 1.45rem !important;
-        letter-spacing: 0.02em !important;
+        font-size: 1.62rem !important;
+        letter-spacing: 0.03em !important;
     }
 
-    .main-header .header-lang {
+    .main-header .header-lang-wrap {
         max-width: none;
+    }
+
+    .main-header .header-lang,
+    .main-header #languageSwitcherBtn {
         font-size: 0.9rem !important;
         padding: 0 16px !important;
     }
@@ -462,12 +769,54 @@ body.dark-mode .main-header .language-dropdown .language-option {
 body.dark-mode .main-header,
 html.dark-mode .main-header,
 body.theme-dark .main-header {
-    background: linear-gradient(180deg, #141a12 0%, #1e2e1c 50%, #243528 100%) !important;
-    border-bottom-color: var(--ph-wheat) !important;
+    background: linear-gradient(180deg, #141810 0%, #1e2a20 55%, #243528 100%) !important;
+    border-bottom-color: rgba(201, 162, 39, 0.22) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 1px 0 rgba(201, 162, 39, 0.28),
+        0 4px 18px rgba(0, 0, 0, 0.32) !important;
 }
 
 body.dark-mode .header-left h1,
 html.dark-mode .header-left h1 {
     color: #fffef8 !important;
     -webkit-text-fill-color: #fffef8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .main-header .header-icon,
+    .main-header .header-lang,
+    .main-header #menuBtn,
+    .main-header #languageSwitcherBtn,
+    .main-header #headerPremiumBtn,
+    .main-header .header-premium-btn,
+    .main-header .header-avatar-btn,
+    .main-header .header-account-btn,
+    .main-header #headerAccountBtn,
+    .main-header .header-avatar {
+        transition: none !important;
+    }
+
+    .main-header .header-icon:hover,
+    .main-header .header-lang:hover,
+    .main-header #menuBtn:hover,
+    .main-header #languageSwitcherBtn:hover,
+    .main-header #headerPremiumBtn:hover,
+    .main-header .header-premium-btn:hover,
+    .main-header .header-avatar-btn:hover,
+    .main-header .header-account-btn:hover,
+    .main-header #headerAccountBtn:hover {
+        transform: none !important;
+    }
+
+    .main-header .header-icon:active,
+    .main-header .header-lang:active,
+    .main-header #menuBtn:active,
+    .main-header #languageSwitcherBtn:active,
+    .main-header #headerPremiumBtn:active,
+    .main-header .header-premium-btn:active,
+    .main-header .header-avatar-btn:active,
+    .main-header .header-account-btn:active {
+        transform: none !important;
+    }
 }

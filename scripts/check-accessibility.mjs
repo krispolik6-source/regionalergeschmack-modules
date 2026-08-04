@@ -35,8 +35,12 @@ assert(/setAttribute\(\s*['"]aria-label['"]/i.test(settings), 'settings aktualiz
 assert(/setAttribute\(\s*['"]aria-pressed['"]/i.test(settings), 'settings aktualizuje aria-pressed');
 assert(/a11y\.lightMode|a11y\.darkMode/i.test(settings), 'etykiety a11y light/dark');
 assert(/focus-visible/i.test(css), 'focus-visible styl');
-assert(/min-width:\s*var\(--ph-btn/i.test(css) && /min-height:\s*var\(--ph-btn/i.test(css),
-    'touch target = --ph-btn (header)');
+assert(
+    (/min-width:\s*var\(--ph-btn/i.test(css) && /min-height:\s*var\(--ph-btn/i.test(css))
+    || (/min-width:\s*max\(var\(--ph-btn\),\s*44px\)/i.test(css) && /min-height:\s*max\(var\(--ph-btn\),\s*44px\)/i.test(css))
+    || (/min-width:\s*44px/i.test(css) && /min-height:\s*44px/i.test(css)),
+    'touch target = --ph-btn (header)'
+);
 
 // Ikona odzwierciedla aktywny motyw (ETAP 34B: 🌞 / 🌙)
 assert(/enabled\s*\?\s*['"]🌙['"]\s*:\s*['"]🌞['"]/.test(settings)

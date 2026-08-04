@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'docs', 'brand');
 
-const PALETTE = ['#2a3f28', '#3d5c34', '#4f6b3c', '#c9a227', '#a67c1a', '#e8c97a', '#d4a84b', '#f5efe3', '#fff8ee', '#1c1812'];
+const PALETTE = ['#2a3f28', '#3d5c34', '#4f6b3c', '#c9a227', '#a67c1a', '#e8c97a', '#d4a84b', '#f7f3ea', '#fbf8f2', '#eee5d6', '#f5efe3', '#fff8ee', '#1c1812'];
 const FONTS_OK = ['literata', 'source sans 3', 'source sans'];
 const FONTS_BAD = ['inter', 'roboto', 'arial', 'helvetica neue', 'montserrat', 'poppins'];
 const COLD = ['#3b82f6', '#2563eb', '#1d4ed8', '#6366f1', '#4f46e5', '#8ec4ff', '#8ec0ff', '#007aff'];

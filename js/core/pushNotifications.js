@@ -384,7 +384,7 @@ async function showNotification({ title, body, tag, url }) {
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         new Notification(title, {
             body,
-            icon: '/assets/icons/icon-192.png?v=29',
+            icon: '/assets/icons/icon-192.png?v=30',
             tag
         });
         return true;

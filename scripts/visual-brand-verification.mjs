@@ -179,18 +179,17 @@ row(
 const brandCss = readText('css/brand-identity-final.css');
 row(
     'Install banner',
-    /pwa-install-banner::before[\s\S]{0,400}var\(--brand-logo\)/.test(brandCss)
-        && /--brand-logo:[^;]*logo-master\.svg/.test(brandCss),
-    'banner ::before = --brand-logo (logo-master)',
+    /pwa-install-banner::before[\s\S]{0,400}var\(--brand-icon-app\)/.test(brandCss)
+        && /--brand-icon-app:[^;]*icon-192\.png/.test(brandCss),
+    'banner ::before = --brand-icon-app (premium PWA icon)',
     'css/brand-identity-final.css'
 );
 row(
     'Splash',
-    /rg-booting::before|is-loading::before/.test(brandCss)
-        && /--brand-logo/.test(brandCss)
+    /rg-splash|rg-booting::before|is-loading::before/.test(brandCss)
         && exists('assets/brand/splash-logo.png')
         && h512 && sha(read('assets/brand/splash-logo.png')) === h512,
-    'Splash CSS + splash-logo.png = icon-512',
+    'Splash premium + splash-logo.png = icon-512',
     'css/brand-identity-final.css + assets/brand/splash-logo.png'
 );
 
@@ -199,10 +198,12 @@ row(
     'PWA',
     /icon-192\.png\?v=\d+/.test(manifest)
         && /maskable-512\.png/.test(manifest)
+        && /maskable-192\.png/.test(manifest)
         && /monochrome-512\.png/.test(manifest)
         && exists('assets/icons/icon-192.png')
+        && exists('assets/icons/maskable-192.png')
         && exists('assets/icons/maskable-512.png'),
-    'manifest icons z master (192/maskable/monochrome)',
+    'manifest icons premium (192/maskable/monochrome)',
     'manifest.json'
 );
 
@@ -211,7 +212,7 @@ row(
     exists('assets/icons/icon-192.png')
         && exists('assets/icons/icon-512.png')
         && exists('assets/icons/maskable-512.png')
-        && /rg-pwa-v2\d/.test(readText('sw.js'))
+        && /rg-pwa-v\$\{PWA_VERSION\}/.test(readText('sw.js'))
         && /isAppIconPath/.test(readText('sw.js')),
     'launcher assets + SW network-first',
     'assets/icons + sw.js'

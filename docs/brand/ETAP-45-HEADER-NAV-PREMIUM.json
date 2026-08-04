@@ -1,0 +1,369 @@
+{
+  "id": "final-premium-ui-polish-header-nav",
+  "etap": 45,
+  "title": "ETAP – Final Premium UI Polish (Header + Bottom Navigation)",
+  "generatedAt": "2026-08-04T18:19:43.506Z",
+  "policy": {
+    "cssOnly": true,
+    "htmlMinimal": true,
+    "market": "DE primary — spokojny, elegancki, uporządkowany UI premium",
+    "translations": "poboczne (ułatwienie dla turystów)",
+    "visualReference": "Home Premium",
+    "unchanged": [
+      "logika aplikacji",
+      "EventBus",
+      "Store",
+      "GPS",
+      "Leaflet",
+      "popupów",
+      "mapy",
+      "routing",
+      "danych",
+      "tłumaczeń",
+      "architektury",
+      "Brand Book"
+    ],
+    "canonicalSources": [
+      "css/premium-header.css",
+      "css/theme-toggle-premium.css",
+      "css/home-v1.css",
+      "css/map-premium.css"
+    ]
+  },
+  "summary": {
+    "checksPassed": 64,
+    "checksTotal": 64,
+    "ok": true
+  },
+  "scope": [
+    "Header Premium (logo, tytuł, odstępy, oś, przyciski 44px)",
+    "Przełącznik dzień/noc (okrągła ikona, odstęp od języka)",
+    "Bottom Navigation (biała aktywna pigułka, bez zielonego kwadratu)",
+    "Podpisy nav (wyśrodkowanie, line-height, bez obcinania liter)",
+    "Dark Mode · Responsive 320–768 (375 · 480 · 600)",
+    "Animacje: fade · hover lift · active scale (bez bounce/pulse/floating)",
+    "Brand Book: kolory · tokeny · fonty · radius · cieni · dark mode — bez zmian"
+  ],
+  "checks": [
+    {
+      "id": "no-overlay-layer",
+      "ok": true,
+      "detail": "brak osobnej warstwy etap-45 w brand-colors-cleanup"
+    },
+    {
+      "id": "release-ready-no-nav-override",
+      "ok": true,
+      "detail": "release-ready-audit nie nadpisuje bottom nav (źródło: home-v1.css)"
+    },
+    {
+      "id": "header-gradient",
+      "ok": true,
+      "detail": "header gradient Brand Book"
+    },
+    {
+      "id": "header-logo-token",
+      "ok": true,
+      "detail": "większe logo (--ph-logo ≥48px)"
+    },
+    {
+      "id": "header-title-token",
+      "ok": true,
+      "detail": "większy tytuł Literata (DE premium)"
+    },
+    {
+      "id": "header-spacing-system",
+      "ok": true,
+      "detail": "jednolity spacing Home Premium + grupa marki"
+    },
+    {
+      "id": "header-menu-gap",
+      "ok": true,
+      "detail": "odstęp Menu ↔ marka (token --ph-gap-chrome)"
+    },
+    {
+      "id": "header-touch-44",
+      "ok": true,
+      "detail": "header touch ≥44px"
+    },
+    {
+      "id": "header-hover-lift",
+      "ok": true,
+      "detail": "header hover lift Home Premium"
+    },
+    {
+      "id": "header-active-tap",
+      "ok": true,
+      "detail": "header active tap"
+    },
+    {
+      "id": "header-focus-gold",
+      "ok": true,
+      "detail": "focus złoty"
+    },
+    {
+      "id": "header-lang-de",
+      "ok": true,
+      "detail": "język DE-first: „Deutsch”, wyśrodkowany, wrap bez nachodzenia na toggle"
+    },
+    {
+      "id": "header-lang-wrap-reserve",
+      "ok": true,
+      "detail": "rezerwa miejsca na Premium + toggle"
+    },
+    {
+      "id": "header-lang-centered",
+      "ok": true,
+      "detail": "flaga + etykieta wyśrodkowane w przycisku"
+    },
+    {
+      "id": "header-axis",
+      "ok": true,
+      "detail": "wyrównanie do jednej osi"
+    },
+    {
+      "id": "theme-toggle-file",
+      "ok": true,
+      "detail": "css/theme-toggle-premium.css istnieje"
+    },
+    {
+      "id": "theme-toggle-circle",
+      "ok": true,
+      "detail": "okrągła ikona 🌞/🌙"
+    },
+    {
+      "id": "theme-toggle-44",
+      "ok": true,
+      "detail": "hit area 44×44 px"
+    },
+    {
+      "id": "html-header-brand",
+      "ok": true,
+      "detail": "HTML: .header-brand grupuje logo + tytuł"
+    },
+    {
+      "id": "theme-toggle-gap-lang",
+      "ok": true,
+      "detail": "odstęp 8–12 px od języka · toggle nie kurczy się"
+    },
+    {
+      "id": "theme-toggle-no-overlap",
+      "ok": true,
+      "detail": "header-right nie ściska toggle vs język"
+    },
+    {
+      "id": "theme-toggle-emoji",
+      "ok": true,
+      "detail": "emoji z DOM (bez maski SVG)"
+    },
+    {
+      "id": "theme-toggle-no-header-icon",
+      "ok": true,
+      "detail": "HTML: toggle bez klasy header-icon (minimalny HTML)"
+    },
+    {
+      "id": "nav-home-surface",
+      "ok": true,
+      "detail": "nav powierzchnia Home Premium"
+    },
+    {
+      "id": "nav-icon-before",
+      "ok": true,
+      "detail": "ikona w pigułce (::before)"
+    },
+    {
+      "id": "nav-active-no-green-square",
+      "ok": true,
+      "detail": "aktywna: kremowa pigułka + delikatna ramka (bez ciemnozielonego kwadratu)"
+    },
+    {
+      "id": "nav-no-style-double-layer",
+      "ok": true,
+      "detail": "style.css nie nakłada drugiej warstwy na aktywną ikonę"
+    },
+    {
+      "id": "nav-inactive-no-pill",
+      "ok": true,
+      "detail": "nieaktywne: bez pigułki (tylko aktywna zakładka)"
+    },
+    {
+      "id": "nav-touch-44",
+      "ok": true,
+      "detail": "nav touch 44×44 WCAG"
+    },
+    {
+      "id": "nav-touch-no-40-override",
+      "ok": true,
+      "detail": "production-polish nie obniża touch nav poniżej 44px"
+    },
+    {
+      "id": "nav-label-center",
+      "ok": true,
+      "detail": "podpisy wyśrodkowane pod ikoną (grid)"
+    },
+    {
+      "id": "nav-label-line-height",
+      "ok": true,
+      "detail": "line-height 1.45 — bez obcinania g/j/y/p/q"
+    },
+    {
+      "id": "nav-label-no-tight-lh",
+      "ok": true,
+      "detail": "brak ciasnego line-height na etykietach nav"
+    },
+    {
+      "id": "nav-label-slot",
+      "ok": true,
+      "detail": "stała wysokość rzędu etykiet"
+    },
+    {
+      "id": "nav-chrome-height",
+      "ok": true,
+      "detail": "stała wysokość paska nav"
+    },
+    {
+      "id": "nav-source-sans",
+      "ok": true,
+      "detail": "etykiety Source Sans 3"
+    },
+    {
+      "id": "nav-dark",
+      "ok": true,
+      "detail": "dark mode nav"
+    },
+    {
+      "id": "home-v1-canonical",
+      "ok": true,
+      "detail": "home-v1 wzorzec bottom nav"
+    },
+    {
+      "id": "bp-header-nav-320",
+      "ok": true,
+      "detail": "viewport 320px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-360",
+      "ok": true,
+      "detail": "viewport 360px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-375",
+      "ok": true,
+      "detail": "viewport 375px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-390",
+      "ok": true,
+      "detail": "viewport 390px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-412",
+      "ok": true,
+      "detail": "viewport 412px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-430",
+      "ok": true,
+      "detail": "viewport 430px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-480",
+      "ok": true,
+      "detail": "viewport 480px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-600",
+      "ok": true,
+      "detail": "viewport 600px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "bp-header-nav-768",
+      "ok": true,
+      "detail": "viewport 768px — header + bottom nav (premium-header + home-v1)"
+    },
+    {
+      "id": "responsive-nav-section",
+      "ok": true,
+      "detail": "home-v1: sekcja responsive nav ze wszystkimi viewportami"
+    },
+    {
+      "id": "responsive-header-480-600",
+      "ok": true,
+      "detail": "premium-header: breakpointy 480 · 600"
+    },
+    {
+      "id": "reduced-motion",
+      "ok": true,
+      "detail": "reduced motion"
+    },
+    {
+      "id": "motion-header-hover-lift",
+      "ok": true,
+      "detail": "header: hover lift −2px"
+    },
+    {
+      "id": "motion-header-active-scale",
+      "ok": true,
+      "detail": "header: active scale 0.985"
+    },
+    {
+      "id": "motion-nav-active-scale",
+      "ok": true,
+      "detail": "bottom nav: active scale"
+    },
+    {
+      "id": "motion-nav-no-hover-lift",
+      "ok": true,
+      "detail": "bottom nav: bez hover lift (tylko kolor + fade pigułki)"
+    },
+    {
+      "id": "motion-no-bounce-pulse-float",
+      "ok": true,
+      "detail": "chrome: brak bounce · pulse · floating (tylko fade · lift · scale)"
+    },
+    {
+      "id": "motion-header-animation-none",
+      "ok": true,
+      "detail": "header przyciski: animation none (tylko transition)"
+    },
+    {
+      "id": "motion-nav-fade-before",
+      "ok": true,
+      "detail": "nav aktywna pigułka: fade przez opacity ::before"
+    },
+    {
+      "id": "brand-fonts-chrome",
+      "ok": true,
+      "detail": "fonty chrome: Literata + Source Sans 3 · bez Inter/Roboto"
+    },
+    {
+      "id": "brand-colors-chrome",
+      "ok": true,
+      "detail": "kolory chrome zgodne z paletą Brand Book"
+    },
+    {
+      "id": "brand-no-cold-blue",
+      "ok": true,
+      "detail": "brak zimnego niebieskiego w chrome"
+    },
+    {
+      "id": "brand-radius-shadow-tokens",
+      "ok": true,
+      "detail": "radius i cienie header — istniejące tokeny --ph-* (bez nowej palety)"
+    },
+    {
+      "id": "brand-dark-mode-chrome",
+      "ok": true,
+      "detail": "dark mode chrome — istniejące reguły (bez zmiany tokenów marki)"
+    },
+    {
+      "id": "brand-no-chrome-token-drift",
+      "ok": true,
+      "detail": "chrome nie nadpisuje globalnych tokenów --brand-*"
+    },
+    {
+      "id": "map-z-index",
+      "ok": true,
+      "detail": "mapa: warstwy chrome (map-premium.css)"
+    }
+  ]
+}

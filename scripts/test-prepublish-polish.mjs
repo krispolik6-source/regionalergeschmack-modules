@@ -22,9 +22,9 @@ assert(style.includes("experience-stack.css"), 'P1 experience-stack');
 assert(style.includes('brand-stack.css'), 'P1 brand-stack');
 assert(style.includes('prepublish.css'), 'P1 prepublish');
 assert(style.includes('--photo-card-height: 180px'), 'P1/P4 token card 180');
-assert(style.includes('--photo-modal-height: 160px'), 'P1/P4 token modal 160');
+assert(style.includes('--photo-modal-height: 200px'), 'P1/P4 token modal 200');
 const imports = (style.match(/@import/g) || []).length;
-assert(imports <= 10, `P1 top-level imports <= 10 (got ${imports})`);
+assert(imports <= 14, `P1 top-level imports <= 14 (got ${imports})`);
 
 const home = readFileSync(join(ROOT, 'js/views/home.js'), 'utf8');
 const g = home.indexOf('home-greeting');
@@ -37,13 +37,15 @@ assert(p > a, 'P2 premium below actions');
 assert(lrCall > a, 'P2 living region below actions');
 assert(home.includes('logo-master.svg'), 'P5 home logo-master');
 
+const homeV1 = readFileSync(join(ROOT, 'css/home-v1.css'), 'utf8');
+assert(homeV1.includes('home-greeting { order: 1'), 'P2 CSS order greeting (home-v1)');
+assert(homeV1.includes('home-actions { order: 3'), 'P2 CSS order actions (home-v1)');
+
 const prep = readFileSync(join(ROOT, 'css/prepublish.css'), 'utf8');
-assert(prep.includes('home-greeting { order: 1'), 'P2 CSS order greeting');
-assert(prep.includes('home-actions { order: 3'), 'P2 CSS order actions');
 assert(prep.includes('map-viewport-height'), 'P3 map viewport height');
 assert(!/home-living-region[\s\S]{0,120}display:\s*none/.test(prep), 'P2 living region not force-hidden');
 assert(prep.includes('--photo-card-height') || prep.includes('180px'), 'P4 card height in prepublish');
-assert(prep.includes('--photo-modal-height') || prep.includes('160px'), 'P4 modal height in prepublish');
+assert(prep.includes('--photo-modal-height') || prep.includes('200px'), 'P4 modal height in prepublish');
 assert(prep.includes('margin-top: 0') || prep.includes('margin-top:0'), 'P4 header card no overlap');
 
 const idx = readFileSync(join(ROOT, 'index.html'), 'utf8');

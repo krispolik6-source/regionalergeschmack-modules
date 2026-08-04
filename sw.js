@@ -3,7 +3,7 @@
 // ETAP 28F – ikony: network-first + twardy bump cache (Android launcher)
 
 /** ETAP 35B — jedna kanoniczna wersja PWA (SW + manifest + ikony). */
-const PWA_VERSION = '29';
+const PWA_VERSION = '30';
 const CACHE_VERSION = `rg-pwa-v${PWA_VERSION}`;
 const IMAGE_CACHE = `rg-runtime-images-v${PWA_VERSION}`;
 const ICON_VERSION = PWA_VERSION;
@@ -14,6 +14,8 @@ const PRECACHE_URLS = [
     '/index.html',
     `/manifest.json?v=${ICON_VERSION}`,
     `/assets/icons/favicon.ico?v=${ICON_VERSION}`,
+    `/assets/icons/favicon-16.png?v=${ICON_VERSION}`,
+    `/assets/icons/favicon-32.png?v=${ICON_VERSION}`,
     `/assets/icons/logo-master.svg?v=${ICON_VERSION}`,
     `/assets/icons/apple-touch-icon.png?v=${ICON_VERSION}`,
     `/assets/icons/icon-48.png?v=${ICON_VERSION}`,
@@ -28,12 +30,14 @@ const PRECACHE_URLS = [
     `/assets/icons/icon-384.png?v=${ICON_VERSION}`,
     `/assets/icons/icon-512.png?v=${ICON_VERSION}`,
     `/assets/icons/icon-1024.png?v=${ICON_VERSION}`,
+    `/assets/icons/maskable-192.png?v=${ICON_VERSION}`,
     `/assets/icons/maskable-512.png?v=${ICON_VERSION}`,
     `/assets/icons/monochrome-512.png?v=${ICON_VERSION}`,
     `/assets/brand/og-share.png?v=${ICON_VERSION}`,
     `/assets/brand/splash-logo.png?v=${ICON_VERSION}`,
     `/assets/brand/notifications-icon.png?v=${ICON_VERSION}`,
-    '/css/style.css?v=568',
+    '/css/style.css?v=572',
+    '/css/brand-colors-cleanup.css?v=8',
     '/js/app.js?v=611'
 ];
 

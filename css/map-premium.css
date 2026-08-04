@@ -1,0 +1,556 @@
+/* ============================================================
+   Map View — Premium Polish (CSS only, spójność z Home v1)
+   Toolbar · lista · offline · bottom sheet · Brand Book
+   Bez popupów i markerów (Leaflet logic unchanged)
+   ============================================================ */
+
+body.view-map-active,
+[data-view-panel='map'] {
+    --map-card-radius: 18px;
+    --map-btn-radius: 14px;
+    --map-inner-radius: 12px;
+    --map-border: #e6efdf;
+    --map-border-hover: #dce8d4;
+    --map-surface: #fff;
+    --map-surface-cream: #fffef8;
+    --map-canvas: #f3f7f2;
+    --map-text: #2a3f28;
+    --map-text-muted: rgba(42, 63, 40, 0.72);
+    --map-card-shadow:
+        0 2px 10px rgba(42, 63, 40, 0.08),
+        0 1px 3px rgba(42, 63, 40, 0.04);
+    --map-card-shadow-hover:
+        0 6px 18px rgba(42, 63, 40, 0.12),
+        0 2px 6px rgba(42, 63, 40, 0.06);
+    --map-btn-shadow:
+        0 2px 10px rgba(42, 63, 40, 0.08),
+        0 1px 3px rgba(42, 63, 40, 0.04);
+    --map-btn-shadow-hover:
+        0 6px 18px rgba(42, 63, 40, 0.12),
+        0 2px 6px rgba(42, 63, 40, 0.06);
+    --map-btn-shadow-active:
+        0 2px 8px rgba(42, 63, 40, 0.1),
+        0 1px 3px rgba(42, 63, 40, 0.05);
+    --map-btn-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --map-btn-duration: 0.28s;
+    --map-focus: var(--brand-gold, #c9a227);
+}
+
+/* Chrome nad warstwami mapy (Leaflet) */
+body.view-map-active .main-header {
+    z-index: 1001;
+}
+
+body.view-map-active .bottom-nav {
+    z-index: 1000;
+}
+
+/* ——— Canvas (ciepły fallback zamiast chłodnego blue-gray) ——— */
+body.view-map-active [data-view-panel='map'] #map,
+body.view-map-active [data-view-panel='map'] .leaflet-container,
+[data-view-panel='map'] #map,
+[data-view-panel='map'] .leaflet-container {
+    background: var(--map-canvas) !important;
+}
+
+/* ——— Bottom sheet · toolbar ——— */
+body.view-map-active .map-toolbar-sheet-handle,
+body.view-map-active .map-toolbar-unified {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    color: var(--map-text);
+    box-shadow: var(--map-card-shadow) !important;
+}
+
+body.view-map-active .map-toolbar-sheet-handle {
+    border-bottom: none !important;
+    border-radius: var(--map-card-radius) var(--map-card-radius) 0 0 !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.72),
+        var(--map-card-shadow) !important;
+}
+
+body.view-map-active .map-bottom-panel.is-sheet-active.is-collapsed .map-toolbar-sheet-handle {
+    border-bottom: 1px solid var(--map-border) !important;
+    border-radius: var(--map-card-radius) !important;
+    box-shadow: var(--map-card-shadow-hover) !important;
+}
+
+body.view-map-active .map-bottom-panel.is-sheet-active .map-toolbar-unified {
+    border-radius: 0 0 var(--map-card-radius) var(--map-card-radius) !important;
+}
+
+body.view-map-active .map-toolbar-sheet-handle:active {
+    background: var(--map-surface-cream) !important;
+}
+
+/* ——— Przyciski mapy (język Home Premium) ——— */
+body.view-map-active .map-bottom-btn,
+body.view-map-active .map-recenter-btn,
+body.view-map-active .map-legend-btn,
+body.view-map-active .map-list-toggle,
+body.view-map-active .map-toolbar-unified .map-bottom-btn,
+body.view-map-active .map-toolbar-unified .map-recenter-btn {
+    font-family: var(--font-sans, 'Source Sans 3', sans-serif) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    color: var(--map-text) !important;
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-btn-radius) !important;
+    box-shadow: var(--map-btn-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    text-shadow: none !important;
+    min-height: 36px;
+    padding: 6px 10px !important;
+    transition:
+        transform var(--map-btn-duration) var(--map-btn-ease),
+        box-shadow var(--map-btn-duration) var(--map-btn-ease),
+        border-color var(--map-btn-duration) var(--map-btn-ease),
+        background-color var(--map-btn-duration) var(--map-btn-ease),
+        color var(--map-btn-duration) var(--map-btn-ease) !important;
+}
+
+body.view-map-active .map-bottom-btn:hover,
+body.view-map-active .map-recenter-btn:hover,
+body.view-map-active .map-legend-btn:hover,
+body.view-map-active .map-list-toggle:hover,
+body.view-map-active .map-toolbar-unified .map-bottom-btn:hover,
+body.view-map-active .map-toolbar-unified .map-recenter-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--map-border-hover) !important;
+    box-shadow: var(--map-btn-shadow-hover) !important;
+    background: var(--map-surface) !important;
+}
+
+body.view-map-active .map-bottom-btn:active,
+body.view-map-active .map-recenter-btn:active,
+body.view-map-active .map-legend-btn:active,
+body.view-map-active .map-list-toggle:active,
+body.view-map-active .map-toolbar-unified .map-bottom-btn:active,
+body.view-map-active .map-toolbar-unified .map-recenter-btn:active {
+    transform: translateY(0) scale(0.985) !important;
+    box-shadow: var(--map-btn-shadow-active) !important;
+    transition-duration: 0.14s !important;
+}
+
+body.view-map-active .map-bottom-btn:focus-visible,
+body.view-map-active .map-recenter-btn:focus-visible,
+body.view-map-active .map-legend-btn:focus-visible,
+body.view-map-active .map-list-toggle:focus-visible,
+body.view-map-active .map-toolbar-sheet-handle:focus-visible,
+body.view-map-active #radiusSlider:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 2px;
+}
+
+/* GPS / OSM — stany aktywne (bez zmiany logiki) */
+body.view-map-active #mapOsmBtn.is-fetching,
+body.view-map-active #mapGpsBtn.is-fetching,
+body.view-map-active #mapGpsBtn.is-tracking {
+    color: #c9a227 !important;
+    border-color: rgba(201, 162, 39, 0.55) !important;
+    box-shadow: 0 2px 10px rgba(201, 162, 39, 0.22) !important;
+}
+
+/* ——— Radius ——— */
+body.view-map-active #radiusControl,
+body.view-map-active .radius-control,
+body.view-map-active .map-toolbar-unified #radiusControl,
+body.view-map-active .map-toolbar-unified .radius-control {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    padding: 6px 10px !important;
+}
+
+body.view-map-active .radius-value,
+body.view-map-active .radius-hint,
+body.view-map-active .map-toolbar-unified .radius-hint {
+    color: var(--map-text) !important;
+    text-shadow: none !important;
+}
+
+body.view-map-active #radiusSlider {
+    background: linear-gradient(
+        to right,
+        var(--color-primary, #2a3f28) 0%,
+        var(--color-primary, #2a3f28) var(--radius-pct, 18%),
+        rgba(42, 63, 40, 0.14) var(--radius-pct, 18%),
+        rgba(42, 63, 40, 0.14) 100%
+    ) !important;
+}
+
+body.view-map-active #radiusSlider::-webkit-slider-thumb {
+    background: var(--color-primary, #2a3f28) !important;
+    border-color: #fff !important;
+}
+
+body.view-map-active #radiusSlider::-moz-range-thumb {
+    background: var(--color-primary, #2a3f28) !important;
+    border-color: #fff !important;
+}
+
+/* ——— Nagłówek kategorii ——— */
+body.view-map-active .map-category-header {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    padding: 8px 12px !important;
+}
+
+body.view-map-active .map-category-title {
+    color: var(--map-text) !important;
+    font-family: var(--font-serif, 'Literata', Georgia, serif);
+}
+
+body.view-map-active .map-category-count {
+    color: var(--map-text-muted) !important;
+}
+
+body.view-map-active .map-category-clear {
+    color: var(--color-primary, #2a3f28) !important;
+    border-color: var(--map-border) !important;
+    border-radius: 10px;
+}
+
+body.view-map-active .map-category-clear:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 2px;
+}
+
+/* ——— Lista producentów · legenda ——— */
+body.view-map-active .map-producer-list-items,
+body.view-map-active .map-legend-panel {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow-hover) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    color: var(--map-text);
+}
+
+body.view-map-active .map-producer-list-btn,
+body.view-map-active .map-list-item-name,
+body.view-map-active .map-legend-item,
+body.view-map-active .map-legend-title {
+    color: var(--map-text) !important;
+    text-shadow: none !important;
+}
+
+body.view-map-active .map-list-item-meta {
+    color: var(--map-text-muted) !important;
+}
+
+body.view-map-active .map-producer-list-btn {
+    background: transparent !important;
+    border: none !important;
+    border-radius: var(--map-inner-radius) !important;
+    transition: background-color 0.2s ease;
+}
+
+body.view-map-active .map-producer-list-btn:hover,
+body.view-map-active .map-producer-list-btn:focus-visible {
+    background: rgba(42, 63, 40, 0.06) !important;
+    outline: none;
+}
+
+body.view-map-active .map-producer-list-btn:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 1px;
+}
+
+body.view-map-active .map-legend-item {
+    border-radius: 10px;
+}
+
+body.view-map-active .map-legend-item:hover {
+    background: rgba(42, 63, 40, 0.05);
+}
+
+/* ——— Offline banner · status ——— */
+body.view-map-active .map-offline-banner {
+    color: var(--map-text) !important;
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow-hover) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    padding: 8px 14px;
+}
+
+body.view-map-active .map-status {
+    color: var(--map-text) !important;
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* ——— Region control (jeśli widoczny) ——— */
+body.view-map-active .map-region-control {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    box-shadow: var(--map-card-shadow) !important;
+}
+
+body.view-map-active .map-region-label {
+    color: var(--map-text-muted) !important;
+}
+
+body.view-map-active .map-region-select {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: 10px !important;
+    color: var(--map-text) !important;
+}
+
+body.view-map-active .map-region-select:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 2px;
+}
+
+/* ——— Ustawienia mapy (sheet) ——— */
+body.view-map-active .map-settings-sheet {
+    background: var(--map-surface-cream) !important;
+    border-top: 1px solid var(--map-border) !important;
+    border-radius: var(--map-card-radius) var(--map-card-radius) 0 0 !important;
+    box-shadow: 0 -8px 26px rgba(42, 63, 40, 0.11) !important;
+}
+
+body.view-map-active .map-settings-header,
+body.view-map-active .map-settings-footer {
+    border-color: var(--map-border) !important;
+}
+
+body.view-map-active .map-settings-header h3,
+body.view-map-active .map-settings-section-title {
+    color: var(--map-text);
+    font-family: var(--font-serif, 'Literata', Georgia, serif);
+}
+
+body.view-map-active .map-settings-style-option,
+body.view-map-active .map-settings-category-row {
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-inner-radius) !important;
+    color: var(--map-text);
+}
+
+body.view-map-active .map-settings-close:focus-visible,
+body.view-map-active .map-settings-btn:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 2px;
+}
+
+body.view-map-active .map-settings-btn-reset {
+    color: var(--map-text) !important;
+    background: var(--map-surface) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: var(--map-btn-radius) !important;
+    box-shadow: var(--map-btn-shadow) !important;
+}
+
+body.view-map-active .map-settings-btn-save {
+    background: var(--color-primary, #2a3f28) !important;
+    border-color: rgba(42, 63, 40, 0.2) !important;
+    border-radius: var(--map-btn-radius) !important;
+    box-shadow: var(--map-btn-shadow) !important;
+    color: #fff !important;
+}
+
+/* ——— Leaflet zoom · attribution (chrome, nie popup) ——— */
+body.view-map-active [data-view-panel='map'] .leaflet-control-zoom a {
+    background: var(--map-surface) !important;
+    color: var(--map-text) !important;
+    border: 1px solid var(--map-border) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--map-btn-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+body.view-map-active [data-view-panel='map'] .leaflet-control-zoom a:hover,
+body.view-map-active [data-view-panel='map'] .leaflet-control-zoom a:focus-visible {
+    background: var(--map-surface-cream) !important;
+    border-color: var(--map-border-hover) !important;
+    color: var(--map-text) !important;
+}
+
+body.view-map-active [data-view-panel='map'] .leaflet-control-zoom a:focus-visible {
+    outline: 2px solid var(--map-focus) !important;
+    outline-offset: 2px;
+}
+
+body.view-map-active [data-view-panel='map'] .leaflet-control-attribution {
+    background: rgba(255, 254, 248, 0.88) !important;
+    color: var(--map-text-muted) !important;
+    border-radius: 8px;
+    border: 1px solid var(--map-border);
+}
+
+body.view-map-active .map-btn-emoji {
+    text-shadow: none;
+}
+
+/* ——— Dark mode (Brand Book unified) ——— */
+body.dark-mode.view-map-active,
+body.dark-mode.view-map-active [data-view-panel='map'] {
+    --map-border: rgba(201, 162, 39, 0.18);
+    --map-border-hover: rgba(201, 162, 39, 0.28);
+    --map-surface: var(--dm-surface, #1e2a20);
+    --map-surface-cream: var(--dm-surface, #1e2a20);
+    --map-canvas: var(--dm-bg, #141810);
+    --map-text: var(--dm-text, #f5f5f2);
+    --map-text-muted: var(--dm-text-muted, #d4e4b0);
+    --map-card-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.22),
+        0 1px 4px rgba(0, 0, 0, 0.14);
+    --map-card-shadow-hover:
+        0 6px 18px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.18);
+    --map-btn-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.22),
+        0 1px 4px rgba(0, 0, 0, 0.14);
+    --map-btn-shadow-hover:
+        0 6px 18px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.18);
+    --map-btn-shadow-active:
+        0 2px 8px rgba(0, 0, 0, 0.22),
+        0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-mode.view-map-active [data-view-panel='map'] #map,
+body.dark-mode.view-map-active [data-view-panel='map'] .leaflet-container {
+    background: var(--map-canvas) !important;
+}
+
+body.dark-mode.view-map-active .map-toolbar-sheet-handle,
+body.dark-mode.view-map-active .map-toolbar-unified,
+body.dark-mode.view-map-active .map-category-header,
+body.dark-mode.view-map-active .map-producer-list-items,
+body.dark-mode.view-map-active .map-legend-panel,
+body.dark-mode.view-map-active .map-offline-banner,
+body.dark-mode.view-map-active .map-status,
+body.dark-mode.view-map-active .map-region-control,
+body.dark-mode.view-map-active .map-settings-sheet {
+    background: var(--map-surface) !important;
+    border-color: var(--map-border) !important;
+    color: var(--map-text) !important;
+}
+
+body.dark-mode.view-map-active .map-bottom-btn,
+body.dark-mode.view-map-active .map-recenter-btn,
+body.dark-mode.view-map-active .map-legend-btn,
+body.dark-mode.view-map-active .map-list-toggle,
+body.dark-mode.view-map-active .map-toolbar-unified .map-bottom-btn,
+body.dark-mode.view-map-active .map-toolbar-unified .map-recenter-btn,
+body.dark-mode.view-map-active #radiusControl,
+body.dark-mode.view-map-active .radius-control,
+body.dark-mode.view-map-active .map-toolbar-unified #radiusControl,
+body.dark-mode.view-map-active .map-toolbar-unified .radius-control,
+body.dark-mode.view-map-active .map-settings-btn-reset {
+    color: var(--map-text-muted) !important;
+    background: rgba(30, 42, 32, 0.94) !important;
+    border-color: var(--map-border) !important;
+    text-shadow: none !important;
+    box-shadow: var(--map-btn-shadow) !important;
+}
+
+body.dark-mode.view-map-active .map-bottom-btn:hover,
+body.dark-mode.view-map-active .map-recenter-btn:hover,
+body.dark-mode.view-map-active .map-legend-btn:hover,
+body.dark-mode.view-map-active .map-list-toggle:hover,
+body.dark-mode.view-map-active .map-toolbar-unified .map-bottom-btn:hover,
+body.dark-mode.view-map-active .map-toolbar-unified .map-recenter-btn:hover {
+    border-color: var(--map-border-hover) !important;
+    box-shadow: var(--map-btn-shadow-hover) !important;
+}
+
+body.dark-mode.view-map-active .map-category-title,
+body.dark-mode.view-map-active .map-producer-list-btn,
+body.dark-mode.view-map-active .map-list-item-name,
+body.dark-mode.view-map-active .map-legend-item,
+body.dark-mode.view-map-active .map-legend-title,
+body.dark-mode.view-map-active .radius-value,
+body.dark-mode.view-map-active .radius-hint {
+    color: var(--map-text) !important;
+    text-shadow: none !important;
+}
+
+body.dark-mode.view-map-active .map-category-count,
+body.dark-mode.view-map-active .map-list-item-meta,
+body.dark-mode.view-map-active .map-region-label {
+    color: var(--map-text-muted) !important;
+}
+
+body.dark-mode.view-map-active .map-producer-list-btn:hover,
+body.dark-mode.view-map-active .map-producer-list-btn:focus-visible {
+    background: rgba(42, 63, 40, 0.45) !important;
+}
+
+body.dark-mode.view-map-active .map-region-select,
+body.dark-mode.view-map-active .map-settings-style-option,
+body.dark-mode.view-map-active .map-settings-category-row {
+    background: var(--dm-bg, #141810) !important;
+    border-color: var(--map-border) !important;
+    color: var(--map-text) !important;
+}
+
+body.dark-mode.view-map-active .map-settings-btn-save {
+    background: var(--dm-green, #2a3f28) !important;
+    border-color: rgba(201, 162, 39, 0.28) !important;
+    color: #fff !important;
+}
+
+body.dark-mode.view-map-active #mapOsmBtn.is-fetching,
+body.dark-mode.view-map-active #mapGpsBtn.is-fetching,
+body.dark-mode.view-map-active #mapGpsBtn.is-tracking {
+    color: var(--dm-gold, #c9a227) !important;
+    border-color: rgba(201, 162, 39, 0.45) !important;
+    box-shadow: 0 2px 12px rgba(201, 162, 39, 0.2) !important;
+}
+
+body.dark-mode.view-map-active [data-view-panel='map'] .leaflet-control-zoom a {
+    background: rgba(30, 42, 32, 0.94) !important;
+    color: var(--map-text-muted) !important;
+    border-color: var(--map-border) !important;
+}
+
+body.dark-mode.view-map-active [data-view-panel='map'] .leaflet-control-attribution {
+    background: rgba(20, 24, 16, 0.82) !important;
+    color: var(--map-text-muted) !important;
+    border-color: var(--map-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.view-map-active .map-bottom-btn,
+    body.view-map-active .map-recenter-btn,
+    body.view-map-active .map-legend-btn,
+    body.view-map-active .map-list-toggle,
+    body.view-map-active .map-toolbar-unified .map-bottom-btn,
+    body.view-map-active .map-toolbar-unified .map-recenter-btn {
+        transition: none !important;
+    }
+
+    body.view-map-active .map-bottom-btn:hover,
+    body.view-map-active .map-recenter-btn:hover,
+    body.view-map-active .map-legend-btn:hover,
+    body.view-map-active .map-list-toggle:hover {
+        transform: none !important;
+    }
+}

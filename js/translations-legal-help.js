@@ -7,6 +7,14 @@
 export const LEGAL_HELP_I18N = Object.freeze({
     de: {
         legal: {
+            impressumTitle: 'Impressum',
+            impressumS1Title: 'Angaben gemäß § 5 TMG',
+            impressumS1Body: '<strong>Krzysztof Polikarski</strong><br>Polikarski Krzysztof<br>Deutschland<br><br>E-Mail: <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>',
+            impressumS2Title: 'Verantwortlich für den Inhalt (§ 55 Abs. 2 RStV)',
+            impressumS2Body: 'Krzysztof Polikarski, Anschrift wie oben.',
+            impressumS3Title: 'Haftung für Inhalte',
+            impressumS3Body: 'Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.',
+
             termsTitle: '📜 Nutzungsbedingungen',
             termsS1Title: '§1 Allgemeine Bestimmungen',
             termsS1Body: 'Diese Nutzungsbedingungen regeln die Nutzung der Webanwendung Regionaler Geschmack („App“). Die Nutzung der App gilt als Annahme dieser Bedingungen.',
@@ -15,7 +23,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             termsS3Title: '§3 Nutzungsregeln',
             termsS3Body: 'Der Nutzer verpflichtet sich, die App rechtmäßig und ohne Verletzung der Rechte Dritter zu nutzen. Es ist untersagt, beleidigende, falsche oder sittenwidrige Inhalte einzustellen.',
             termsS4Title: '§4 Registrierung',
-            termsS4Body: 'Grundfunktionen der App sind ohne Registrierung verfügbar. Eine optionale Kontoregistrierung ermöglicht das Speichern von Favoriten und die Verfolgung von Bestellungen – sie wird in künftigen Versionen bereitgestellt.',
+            termsS4Body: 'Grundfunktionen der App sind ohne Registrierung verfügbar. Ein optionales Konto kann Favoriten, Bestellungen und Einstellungen auf dem Gerät speichern – die Daten bleiben lokal im Browser.',
             termsS5Title: '§5 Haftung',
             termsS5Body: 'Der Anbieter haftet nicht für Inhalte von Produzenten und nicht für die Qualität von Produkten. Informationen in der App sind informativ – Einzelheiten klären Sie bitte direkt mit dem Produzenten.',
             termsS6Title: '§6 Schlussbestimmungen',
@@ -105,7 +113,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             downloadIos1: 'Öffnen Sie <strong>Safari</strong> → diese Seite aufrufen.',
             downloadIos2: 'Tippen Sie auf <strong>Teilen</strong> → <strong>Zum Home-Bildschirm</strong>.',
             downloadStoresTitle: 'App-Stores',
-            downloadStoresNote: 'Store-Versionen – demnächst.',
+            downloadStoresNote: 'Aktuell als PWA und APK verfügbar. Store-Einträge folgen bei Bedarf.',
             downloadPlay: '▶ Google Play',
             downloadAppStore: '🍎 App Store',
 
@@ -156,6 +164,14 @@ export const LEGAL_HELP_I18N = Object.freeze({
 
     en: {
         legal: {
+            impressumTitle: 'Legal notice (Impressum)',
+            impressumS1Title: 'Information pursuant to § 5 TMG',
+            impressumS1Body: '<strong>Krzysztof Polikarski</strong><br>Polikarski Krzysztof<br>Germany<br><br>Email: <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>',
+            impressumS2Title: 'Responsible for content (§ 55 Abs. 2 RStV)',
+            impressumS2Body: 'Krzysztof Polikarski, address as above.',
+            impressumS3Title: 'Liability for content',
+            impressumS3Body: 'As a service provider we are responsible for our own content on these pages under general laws. We are not obliged to monitor transmitted or stored third-party information or to investigate circumstances indicating illegal activity.',
+
             termsTitle: '📜 Terms of use',
             termsS1Title: '§1 General provisions',
             termsS1Body: 'These terms govern use of the Regionaler Geschmack web application (“App”). Using the App means you accept these terms.',
@@ -164,7 +180,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             termsS3Title: '§3 Rules of use',
             termsS3Body: 'The User agrees to use the App lawfully and without infringing third-party rights. Posting offensive, false, or improper content is prohibited.',
             termsS4Title: '§4 Registration',
-            termsS4Body: 'Basic App features are available without registration. Optional account registration for saving favourites and tracking orders will be available in future versions.',
+            termsS4Body: 'Basic App features are available without registration. An optional account can store favourites, orders, and settings on the device – data remains locally in the browser.',
             termsS5Title: '§5 Liability',
             termsS5Body: 'The Provider is not liable for content posted by producers or for product quality. Information in the App is informative – confirm details directly with the producer.',
             termsS6Title: '§6 Final provisions',
@@ -254,7 +270,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             downloadIos1: 'Open <strong>Safari</strong> → visit this page.',
             downloadIos2: 'Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>.',
             downloadStoresTitle: 'App stores',
-            downloadStoresNote: 'Store versions – coming soon.',
+            downloadStoresNote: 'Currently available as PWA and APK. Store listings will follow if needed.',
             downloadPlay: '▶ Google Play',
             downloadAppStore: '🍎 App Store',
 
@@ -305,6 +321,14 @@ export const LEGAL_HELP_I18N = Object.freeze({
 
     pl: {
         legal: {
+            impressumTitle: 'Impressum',
+            impressumS1Title: 'Informacje zgodnie z § 5 TMG',
+            impressumS1Body: '<strong>Krzysztof Polikarski</strong><br>Polikarski Krzysztof<br>Niemcy<br><br>E-mail: <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>',
+            impressumS2Title: 'Odpowiedzialny za treść (§ 55 Abs. 2 RStV)',
+            impressumS2Body: 'Krzysztof Polikarski, adres jak wyżej.',
+            impressumS3Title: 'Odpowiedzialność za treści',
+            impressumS3Body: 'Jako usługodawca odpowiadamy za własne treści na tych stronach zgodnie z powszechnie obowiązującymi przepisami. Nie jesteśmy zobowiązani do monitorowania przekazywanych lub przechowywanych informacji osób trzecich.',
+
             termsTitle: '📜 Regulamin',
             termsS1Title: '§1 Postanowienia ogólne',
             termsS1Body: 'Niniejszy regulamin określa zasady korzystania z aplikacji internetowej Regionaler Geschmack („Aplikacja”). Korzystanie z Aplikacji oznacza akceptację regulaminu.',
@@ -313,7 +337,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             termsS3Title: '§3 Zasady korzystania',
             termsS3Body: 'Użytkownik zobowiązuje się do korzystania z Aplikacji zgodnie z prawem, w sposób nienaruszający praw osób trzecich. Zabronione jest wprowadzanie treści obraźliwych, fałszywych lub naruszających dobre obyczaje.',
             termsS4Title: '§4 Rejestracja',
-            termsS4Body: 'Podstawowe funkcje Aplikacji są dostępne bez rejestracji. Opcjonalna rejestracja konta umożliwia zapisywanie ulubionych i śledzenie zamówień – zostanie udostępniona w przyszłych wersjach.',
+            termsS4Body: 'Podstawowe funkcje Aplikacji są dostępne bez rejestracji. Opcjonalne konto może zapisywać ulubione, zamówienia i ustawienia na urządzeniu – dane pozostają lokalnie w przeglądarce.',
             termsS5Title: '§5 Odpowiedzialność',
             termsS5Body: 'Usługodawca nie ponosi odpowiedzialności za treści zamieszczane przez producentów ani za jakość produktów. Informacje w Aplikacji mają charakter informacyjny – szczegóły ustalaj bezpośrednio z producentem.',
             termsS6Title: '§6 Postanowienia końcowe',
@@ -403,7 +427,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             downloadIos1: 'Otwórz <strong>Safari</strong> → wejdź na tę stronę.',
             downloadIos2: 'Kliknij <strong>Udostępnij</strong> → <strong>Dodaj do ekranu początkowego</strong>.',
             downloadStoresTitle: 'Sklepy z aplikacjami',
-            downloadStoresNote: 'Wersje w sklepach – wkrótce.',
+            downloadStoresNote: 'Obecnie dostępne jako PWA i APK. Wersje w sklepach – w razie potrzeby.',
             downloadPlay: '▶ Google Play',
             downloadAppStore: '🍎 App Store',
 
@@ -454,6 +478,14 @@ export const LEGAL_HELP_I18N = Object.freeze({
 
     mk: {
         legal: {
+            impressumTitle: 'Impressum',
+            impressumS1Title: 'Информации согласно § 5 TMG',
+            impressumS1Body: '<strong>Krzysztof Polikarski</strong><br>Polikarski Krzysztof<br>Germany<br><br>E-mail: <a href="mailto:krispolik6@gmail.com">krispolik6@gmail.com</a>',
+            impressumS2Title: 'Одговорен за содржина (§ 55 Abs. 2 RStV)',
+            impressumS2Body: 'Krzysztof Polikarski, адреса како погоре.',
+            impressumS3Title: 'Одговорност за содржини',
+            impressumS3Body: 'Како давател на услуга одговараме за сопствените содржини на овие страници согласно општите закони. Не сме должни да ги следиме пренесените или зачуваните информации од трети лица.',
+
             termsTitle: '📜 Услови за користење',
             termsS1Title: '§1 Општи одредби',
             termsS1Body: 'Овие услови ги утврдуваат правилата за користење на веб-апликацијата Regionaler Geschmack („Апликација“). Користењето на Апликацијата значи прифаќање на условите.',
@@ -462,7 +494,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             termsS3Title: '§3 Правила за користење',
             termsS3Body: 'Корисникот се обврзува да ја користи Апликацијата во согласност со законот, без повреда на правата на трети лица. Забрането е објавување навредливи, лажни или непристојни содржини.',
             termsS4Title: '§4 Регистрација',
-            termsS4Body: 'Основните функции на Апликацијата се достапни без регистрација. Опционалната регистрација на сметка овозможува зачувување омилени и следење нарачки – ќе биде достапна во идни верзии.',
+            termsS4Body: 'Основните функции на Апликацијата се достапни без регистрација. Опционална сметка може локално да зачува омилени, нарачки и поставки на уредот – податоците остануваат во прелистувачот.',
             termsS5Title: '§5 Одговорност',
             termsS5Body: 'Давателот на услуга не одговара за содржини објавени од производители ниту за квалитетот на производите. Информациите во Апликацијата се информативни – деталите утврдете ги директно со производителот.',
             termsS6Title: '§6 Завршни одредби',
@@ -552,7 +584,7 @@ export const LEGAL_HELP_I18N = Object.freeze({
             downloadIos1: 'Отворете <strong>Safari</strong> → посетете ја оваа страница.',
             downloadIos2: 'Допрете <strong>Сподели</strong> → <strong>Додади на почетен екран</strong>.',
             downloadStoresTitle: 'Продавници за апликации',
-            downloadStoresNote: 'Верзии во продавниците – наскоро.',
+            downloadStoresNote: 'Моментално достапно како PWA и APK. Верзии во продавниците – при потреба.',
             downloadPlay: '▶ Google Play',
             downloadAppStore: '🍎 App Store',
 

@@ -1,43 +1,43 @@
 # Regionaler Geschmack Premium Audit
 
-Wygenerowano: 2026-07-21T17:32:41.813Z
+Wygenerowano: 2026-08-03T18:59:45.553Z
 
-## Ocena końcowa: **93 / 100** (A)
+## Ocena końcowa: **89 / 100** (B+)
 
 ## Oceny cząstkowe
 
 | Obszar | Wynik | Grade |
 |--------|------:|:-----:|
-| UX | 90 | A |
-| UI | 94 | A |
-| Brand | 93 | A |
+| UX | 89 | B+ |
+| UI | 90 | A |
+| Brand | 90 | A |
 | Mobile | 94 | A |
-| Performance | 97 | A+ |
+| Performance | 83 | B |
 | PWA | 99 | A+ |
 | Accessibility | 98 | A+ |
-| Code Quality | 84 | B |
-| Launch Readiness | 92 | A |
+| Code Quality | 67 | D |
+| Launch Readiness | 90 | A |
 
 ## Źródła diagnostyczne
 
-- **health:** 98
-- **guardianQuality:** 5.4
+- **health:** 94
+- **guardianQuality:** 2.4
 - **emotionReturn:** 89
-- **livingBrand:** 95
+- **livingBrand:** 93
 - **productDirector:** 92
-- **dailyAppScore:** 95
+- **dailyAppScore:** 92
 - **qualityLoopHealth:** 98
-- **logoAudit:** true
-- **headerAudit:** true
+- **logoAudit:** false
+- **headerAudit:** false
 - **mobilePremium:** true
 - **virtualUser:** awaiting-browser-run
 
 ## Podsumowanie issues
 
 - Krytyczne: **0**
-- Wysokie: **0**
-- Średnie: **4**
-- Kosmetyczne / naprawione: **10**
+- Wysokie: **4**
+- Średnie: **5**
+- Kosmetyczne / naprawione: **9**
 
 ## CRITICAL
 
@@ -45,10 +45,14 @@ _Brak._
 
 ## HIGH
 
-_Brak._
+- **[PWA]** Brak CACHE_VERSION w sw.js — sw.js
+- **[Brand]** Logo audit nie OK — docs/brand/LOGO-AUDIT.md
+- **[Guardian]** check-translations zakończony błędem — js/translations.js
+- **[Guardian]** Duży łączny JS: 1863 KB — js/translations.js
 
 ## MEDIUM
 
+- **[UI]** Brak premium-final.css — css/style.css
 - **[Health]** Potencjalne konflikty CSS: 40 — body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]
 - **[Virtual User]** Brak świeżego przebiegu w przeglądarce — docs/virtual-user/
 - **[Emotion]** Zmęczenie CTA (fatigue 50) — Home — premium-final łagodzi

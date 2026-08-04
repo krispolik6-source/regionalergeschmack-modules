@@ -72,6 +72,7 @@ export function updateNavLabels() {
         const label = item.querySelector('.nav-label');
         if (label && view) {
             label.textContent = t(`nav.${view}`);
+            item.setAttribute('aria-label', t(`nav.${view}`));
         }
     });
     refreshFavoritesBadge();

@@ -764,40 +764,8 @@ function recipesBlock(title, intro, timeMin, openProducer, easy, medium, hard, i
     };
 }
 
-function featured(lang) {
-    const map = {
-        de: {
-            'feat-apples': { name: 'Bio-Äpfel', desc: 'Frisch vom Hof Müller – knackig und regional.' },
-            'feat-bread': { name: 'Bauernbrot', desc: 'Sauerteigbrot aus der Bäckerei Schmidt.' },
-            'feat-cheese': { name: 'Regionaler Käse', desc: 'Reifung über dem Rhein – mild und aromatisch.' },
-            'feat-sausage': { name: 'Hausmacherwurst', desc: 'Nach Familienrezept von Metzgerei Berg.' },
-            'feat-honey': { name: 'Blütenhonig', desc: 'Von der Imkerei Sonne aus der Rheinebene.' },
-            'feat-yogurt': { name: 'Naturjoghurt', desc: 'Mild und cremig – ohne Zusatzstoffe.' },
-            'feat-eggs': { name: 'Freilandeier', desc: 'Von Hühnern mit Auslauf auf dem Hof Müller.' },
-            'feat-daily': { name: 'Tagesgericht', desc: 'Saisonal zubereitet im Gasthof Eifelblick.' }
-        },
-        en: {
-            'feat-apples': { name: 'Organic apples', desc: 'Fresh from Hof Müller – crisp and regional.' },
-            'feat-bread': { name: 'Farmhouse bread', desc: 'Sourdough from Bäckerei Schmidt.' },
-            'feat-cheese': { name: 'Regional cheese', desc: 'Aged by the Rhine – mild and aromatic.' },
-            'feat-sausage': { name: 'Homemade sausage', desc: 'Family recipe from Metzgerei Berg.' },
-            'feat-honey': { name: 'Blossom honey', desc: 'From Imkerei Sonne in the Rhine plain.' },
-            'feat-yogurt': { name: 'Natural yogurt', desc: 'Mild and creamy – no additives.' },
-            'feat-eggs': { name: 'Free-range eggs', desc: 'From hens with outdoor access at Hof Müller.' },
-            'feat-daily': { name: 'Dish of the day', desc: 'Seasonal cooking at Gasthof Eifelblick.' }
-        },
-        pl: {
-            'feat-apples': { name: 'Jabłka bio', desc: 'Prosto z Hof Müller – chrupiące i regionalne.' },
-            'feat-bread': { name: 'Chleb wiejski', desc: 'Na zakwasie z Bäckerei Schmidt.' },
-            'feat-cheese': { name: 'Ser regionalny', desc: 'Dojrzewający nad Renem – łagodny i aromatyczny.' },
-            'feat-sausage': { name: 'Kiełbasa domowa', desc: 'Według rodzinnej receptury Metzgerei Berg.' },
-            'feat-honey': { name: 'Miód kwiatowy', desc: 'Z Imkerei Sonne z Niziny Nadreńskiej.' },
-            'feat-yogurt': { name: 'Jogurt naturalny', desc: 'Łagodny i kremowy – bez dodatków.' },
-            'feat-eggs': { name: 'Jaja od kur z wolnego wybiegu', desc: 'Z Hof Müller – kury z dostępem do wybiegów.' },
-            'feat-daily': { name: 'Danie dnia', desc: 'Sezonowe danie w Gasthof Eifelblick.' }
-        }
-    };
-    return map[lang] || map.en;
+function featured(_lang) {
+    return {};
 }
 
 function storyTitle(lang) {

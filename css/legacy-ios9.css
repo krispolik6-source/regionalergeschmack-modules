@@ -225,7 +225,7 @@ html.legacy-ios9 .category-card[data-category="all"]::before {
 }
 
 html.legacy-ios9 .category-card[data-category="farmers"]::before {
-    background-image: url('/assets/images/backgrounds/category_farmers.jpg?v=20');
+    background-image: url('/assets/images/backgrounds/category_all.jpg?v=25');
 }
 
 html.legacy-ios9 .category-card[data-category="bakeries"]::before {
@@ -233,11 +233,11 @@ html.legacy-ios9 .category-card[data-category="bakeries"]::before {
 }
 
 html.legacy-ios9 .category-card[data-category="meat"]::before {
-    background-image: url('/assets/images/backgrounds/category_meat.jpg?v=20');
+    background-image: url('/assets/images/products/steak.jpg?v=25');
 }
 
 html.legacy-ios9 .category-card[data-category="restaurants"]::before {
-    background-image: url('/assets/images/backgrounds/category_restaurants.jpg?v=20');
+    background-image: url('/assets/images/products/daily-dish.jpg?v=25');
 }
 
 html.legacy-ios9 .category-card[data-category="shops"]::before {
@@ -257,7 +257,7 @@ html.legacy-ios9 .category-card[data-category="honey"]::before {
 }
 
 html.legacy-ios9 .category-card[data-category="favorites"]::before {
-    background-image: url('/assets/images/backgrounds/category_favorites.jpg?v=21');
+    background-image: url('/assets/images/products/vegetables.jpg?v=25');
     opacity: 0.34;
 }
 

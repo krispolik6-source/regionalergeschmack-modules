@@ -26,7 +26,10 @@ export const BRAND = Object.freeze({
     creamCard: '#fff8ee',
     ink: '#1c1812',
     themeColor: '#2a3f28',
-    backgroundColor: '#f5efe3',
+    /** Tło systemu ikon: manifest PWA, splash, PNG (generator) */
+    backgroundColor: '#f7f3ea',
+    iconGradientTop: '#fbf8f2',
+    iconGradientBottom: '#eee5d6',
     displayFont: 'Literata',
     uiFont: 'Source Sans 3',
     masterLogo: 'assets/icons/logo-master.svg'
@@ -134,7 +137,8 @@ export function brandProtectionToMarkdown(report) {
 
     lines.push('## Zasady Brand Book', '');
     lines.push(`- Logo master: \`${BRAND.masterLogo}\``);
-    lines.push(`- Paleta: ${BRAND.green} / ${BRAND.gold} / ${BRAND.cream}`);
+    lines.push(`- Paleta: ${BRAND.green} / ${BRAND.gold} / UI ${BRAND.cream}`);
+    lines.push(`- Tło ikon (PWA/manifest): ${BRAND.backgroundColor} · gradient ${BRAND.iconGradientTop} → ${BRAND.iconGradientBottom}`);
     lines.push(`- Fonty: ${BRAND.displayFont} + ${BRAND.uiFont}`);
     lines.push(`- Manifest: theme ${BRAND.themeColor} · background ${BRAND.backgroundColor}`);
     lines.push('');

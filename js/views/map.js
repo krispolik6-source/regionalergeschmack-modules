@@ -25,14 +25,16 @@ import {
     getProducersInRadius,
     getDistanceKm,
     hydrateProducersFromCache,
-    abortPendingDataLoads
+    abortPendingDataLoads,
+    isProducersEmptyArea,
+    isProducersLoadSettled
 } from '../data/dataService.js';
-import { getActiveAbortControllerCount } from '../data/osmService.js?v=9';
+import { getActiveAbortControllerCount } from '../data/osmService.js?v=10';
 import { formatDistanceLabel, formatEtaLabels } from '../presentation/geoFormat.js';
 import { sortProducersByDistance } from '../presentation/smartRecommend.js';
 import { filterProducersBySearch, searchGlobalResults, formatSearchNoResults } from '../presentation/searchFilter.js?v=4';
 import { HOME_CATEGORY_MAP, normalizeProducerCategory } from '../data/producerHelpers.js';
-import { saveLastPosition, getLastPosition, resolveUserLocation } from '../core/userLocation.js';
+import { saveLastPosition, getLastPosition, resolveUserLocation, requestCurrentPosition } from '../core/userLocation.js';
 import {
     getRegionById,
     getSelectedRegionId
@@ -81,6 +83,11 @@ const RADIUS_MIN = CONFIG.minRadius ?? 1;
 const RADIUS_MAX = CONFIG.maxRadius ?? 50;
 const RADIUS_DEFAULT = CONFIG.defaultRadius ?? 10;
 const MAP_PREFS_KEY = 'rg_map_prefs_v1';
+const MAP_TOOLBAR_SHEET_MQ = '(max-width: 768px)';
+/** Poniżej tej wysokości roboczej – auto-zwijanie panelu przy popupie (px). */
+const MAP_TOOLBAR_AUTO_COLLAPSE_HEIGHT_PX = 700;
+/** Landscape phone: sheet aktywny przy małej wysokości do tej szerokości (px). */
+const MAP_TOOLBAR_COMPACT_MAX_WIDTH_PX = 1024;
 
 function clampRadius(km) {
     const value = Number(km);
@@ -124,6 +131,7 @@ function persistMapPrefs() {
         mapLng: center ? Number(center.lng) : undefined,
         gpsFollow: !!gpsFollowMode,
         gpsTracking: !!gpsTrackingEnabled,
+        toolbarExpanded: !!mapToolbarExpanded,
         category: activeCategoryFilter || 'all',
         searchQuery: activeSearchQuery || ''
     });
@@ -186,6 +194,9 @@ function restoreMapPrefsState() {
     }
     restoredGpsFollow = !!prefs.gpsFollow;
     restoredGpsTracking = !!prefs.gpsTracking;
+    if (typeof prefs.toolbarExpanded === 'boolean') {
+        mapToolbarExpanded = prefs.toolbarExpanded;
+    }
 }
 
 let currentRadiusKm = RADIUS_DEFAULT;
@@ -194,6 +205,16 @@ let activeSearchQuery = '';
 let restoredMapZoom = null;
 let restoredGpsFollow = false;
 let restoredGpsTracking = false;
+/** Dolny panel mapy (mobile): rozwinięty / zwinięty */
+let mapToolbarExpanded = true;
+/** Stan przed auto-zwinięciem przy popupie – null gdy brak popupu */
+let mapToolbarExpandedBeforePopup = null;
+let mapToolbarSheetCleanup = null;
+let mapToolbarSheetMq = null;
+let mapToolbarSheetMqHandler = null;
+let mapToolbarViewportTimer = null;
+/** Ostatni znany układ: sheet|compact — ogranicza zbędne sync UI */
+let mapToolbarLayoutSnapshot = null;
 /** Krótka ochrona przed soft-sync w trakcie otwierania popupu (przed popupopen). */
 let popupOpeningGuardUntil = 0;
 
@@ -354,6 +375,16 @@ function pauseMapBackgroundWork() {
         mapControlsDragCleanup();
         mapControlsDragCleanup = null;
     }
+    if (mapToolbarSheetCleanup) {
+        mapToolbarSheetCleanup();
+        mapToolbarSheetCleanup = null;
+    }
+    if (mapToolbarViewportTimer) {
+        clearTimeout(mapToolbarViewportTimer);
+        mapToolbarViewportTimer = null;
+    }
+    mapToolbarLayoutSnapshot = null;
+    mapToolbarExpandedBeforePopup = null;
 
     pendingOsmRefresh = null;
     pendingOsmRefreshLocation = null;
@@ -522,25 +553,310 @@ function updateRecenterButtonVisibility() {
 }
 
 function resumeGpsFollow() {
-    const stored = lastTrackedLocation || getLastPosition();
-    if (!stored) {
-        if (!gpsTrackingEnabled) toggleGpsTracking();
+    const recenterBtn = document.querySelector('#mapRecenterBtn');
+    if (recenterBtn?.disabled) return;
+
+    const runRecenter = async () => {
+        if (recenterBtn) recenterBtn.disabled = true;
+
+        let loc = null;
+        try {
+            loc = await requestCurrentPosition({
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 12000
+            });
+        } catch (_) {
+            loc = lastTrackedLocation || getLastPosition();
+        }
+
+        if (!loc) {
+            if (!gpsTrackingEnabled) toggleGpsTracking();
+            return;
+        }
+
+        if (!gpsTrackingEnabled) {
+            gpsTrackingEnabled = true;
+            startLocationWatch({ active: false });
+            setGpsTrackingUi({ tracking: true, fetching: false });
+        }
+
+        maybeSaveLastPosition(loc.lat, loc.lng);
+        lastTrackedLocation = { lat: loc.lat, lng: loc.lng };
+
+        const latLng = [loc.lat, loc.lng];
+        currentMapCenter = latLng;
+        lastGpsPinLocation = { lat: loc.lat, lng: loc.lng };
+        updateRadiusCircle(leafletMap, latLng, currentRadiusKm);
+        updateGpsPin(leafletMap, latLng);
+        enableGpsFollowMode();
+
+        if (leafletMap) {
+            const zoom = leafletMap.getZoom?.() ?? restoredMapZoom ?? MAP_ZOOM;
+            leafletMap.flyTo(latLng, zoom, {
+                animate: true,
+                duration: GPS_FOLLOW_FLY_MS / 1000,
+                easeLinearity: 0.35
+            });
+        }
+
+        const location = { lat: loc.lat, lng: loc.lng };
+        const needsMarkerRefresh = hasMovedEnoughForMarkerSync(location);
+        const needsDataRefresh = hasMovedEnoughForDataRefresh(location);
+
+        if (needsMarkerRefresh) {
+            lastMarkerSyncLocation = location;
+            refreshMapMarkers({
+                fitBounds: false,
+                sync: true,
+                force: needsDataRefresh
+            });
+        }
+        if (needsDataRefresh) {
+            scheduleOsmRefreshAtLocation(loc.lat, loc.lng);
+        }
+    };
+
+    runRecenter()
+        .catch(() => {
+            /* ignore */
+        })
+        .finally(() => {
+            if (recenterBtn) recenterBtn.disabled = false;
+            updateRecenterButtonVisibility();
+        });
+}
+
+function getMapWorkAreaHeight() {
+    if (typeof window === 'undefined') return Number.POSITIVE_INFINITY;
+    const vv = window.visualViewport;
+    if (vv && Number.isFinite(vv.height) && vv.height > 32) {
+        return Math.round(vv.height);
+    }
+    const innerH = window.innerHeight;
+    if (Number.isFinite(innerH) && innerH > 0) return Math.round(innerH);
+    const clientH = document.documentElement?.clientHeight;
+    if (Number.isFinite(clientH) && clientH > 0) return Math.round(clientH);
+    return Number.POSITIVE_INFINITY;
+}
+
+function isMapWorkAreaCompact() {
+    return getMapWorkAreaHeight() < MAP_TOOLBAR_AUTO_COLLAPSE_HEIGHT_PX;
+}
+
+function isMapToolbarSheetActive() {
+    if (typeof window === 'undefined' || !window.matchMedia) return false;
+
+    const compactHeight = isMapWorkAreaCompact();
+    const mobileWidth = window.matchMedia(MAP_TOOLBAR_SHEET_MQ).matches;
+    const viewportW = window.innerWidth
+        || document.documentElement?.clientWidth
+        || 0;
+
+    if (mobileWidth) return true;
+
+    if (compactHeight && viewportW > 0 && viewportW <= MAP_TOOLBAR_COMPACT_MAX_WIDTH_PX) {
+        return true;
+    }
+
+    if (window.matchMedia('(min-width: 769px)').matches && !compactHeight) {
+        return false;
+    }
+
+    return false;
+}
+
+function shouldAutoCollapseToolbarForPopup() {
+    if (!isMapToolbarSheetActive()) return false;
+    return isMapWorkAreaCompact();
+}
+
+function isMapPopupCurrentlyOpen() {
+    if (isPopupOpen) return true;
+    try {
+        return Boolean(leafletMap?.isPopupOpen?.());
+    } catch (_) {
+        return false;
+    }
+}
+
+function handleMapToolbarViewportChange(container) {
+    const sheetActive = isMapToolbarSheetActive();
+    const compact = isMapWorkAreaCompact();
+    const layoutKey = `${sheetActive}|${compact}`;
+    const popupOpen = isMapPopupCurrentlyOpen();
+
+    if (popupOpen && sheetActive) {
+        if (compact && mapToolbarExpanded) {
+            if (mapToolbarExpandedBeforePopup === null) {
+                mapToolbarExpandedBeforePopup = mapToolbarExpanded;
+            }
+            if (mapToolbarLayoutSnapshot !== `${layoutKey}|collapsed`) {
+                mapToolbarLayoutSnapshot = `${layoutKey}|collapsed`;
+                setMapToolbarExpanded(false, { persist: false });
+            }
+            return;
+        }
+        if (!compact && mapToolbarExpandedBeforePopup === true && !mapToolbarExpanded) {
+            if (mapToolbarLayoutSnapshot !== `${layoutKey}|expanded`) {
+                mapToolbarLayoutSnapshot = `${layoutKey}|expanded`;
+                setMapToolbarExpanded(true, { persist: false });
+            }
+            return;
+        }
+    }
+
+    if (mapToolbarLayoutSnapshot === layoutKey && !popupOpen) {
         return;
     }
+    mapToolbarLayoutSnapshot = layoutKey;
+    syncMapToolbarSheetUi(container);
+}
 
-    if (!gpsTrackingEnabled) {
-        gpsTrackingEnabled = true;
-        startLocationWatch({ active: false });
-        setGpsTrackingUi({ tracking: true, fetching: false });
+function scheduleMapToolbarViewportSync(container) {
+    if (mapToolbarViewportTimer) clearTimeout(mapToolbarViewportTimer);
+    mapToolbarViewportTimer = setTimeout(() => {
+        mapToolbarViewportTimer = null;
+        handleMapToolbarViewportChange(container);
+    }, 160);
+}
+
+function getMapBottomPanel(container) {
+    const root = container || mapViewContainer;
+    return root?.querySelector?.('.map-bottom-panel') || document.querySelector('.map-bottom-panel');
+}
+
+function syncMapToolbarSheetUi(container) {
+    const panel = getMapBottomPanel(container);
+    const handle = panel?.querySelector('#mapToolbarSheetHandle');
+    if (!panel) return;
+
+    const sheetActive = isMapToolbarSheetActive();
+    const expanded = sheetActive ? mapToolbarExpanded : true;
+
+    panel.classList.toggle('is-sheet-active', sheetActive);
+    panel.classList.toggle('is-collapsed', sheetActive && !expanded);
+    document.body.classList.toggle('map-toolbar-collapsed', sheetActive && !expanded);
+
+    if (handle) {
+        handle.hidden = !sheetActive;
+        handle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        const label = expanded ? t('map.toolbarCollapse') : t('map.toolbarExpand');
+        handle.setAttribute('aria-label', label);
+        const chevron = handle.querySelector('.map-toolbar-sheet-chevron');
+        if (chevron) chevron.textContent = expanded ? '▼' : '▲';
     }
 
-    const latLng = [stored.lat, stored.lng];
-    currentMapCenter = latLng;
-    updateRadiusCircle(leafletMap, latLng, currentRadiusKm);
-    updateGpsPin(leafletMap, latLng);
-    enableGpsFollowMode();
-    followUserOnMap(latLng, { fly: true });
-    refreshMapMarkers({ fitBounds: false, sync: true });
+    if (sheetActive && leafletMap) {
+        requestAnimationFrame(() => safeInvalidateSize(false));
+    }
+}
+
+function setMapToolbarExpanded(expanded, { persist = true } = {}) {
+    mapToolbarExpanded = !!expanded;
+    if (persist) {
+        mapToolbarLayoutSnapshot = null;
+    }
+    syncMapToolbarSheetUi();
+    if (persist && isMapToolbarSheetActive()) {
+        schedulePersistMapPrefs();
+    }
+}
+
+function toggleMapToolbarSheet() {
+    if (!isMapToolbarSheetActive()) return;
+    mapToolbarLayoutSnapshot = null;
+    setMapToolbarExpanded(!mapToolbarExpanded);
+}
+
+function collapseMapToolbarForPopup() {
+    if (!shouldAutoCollapseToolbarForPopup()) return;
+    if (mapToolbarExpandedBeforePopup === null) {
+        mapToolbarExpandedBeforePopup = mapToolbarExpanded;
+    }
+    if (mapToolbarExpanded) {
+        setMapToolbarExpanded(false, { persist: false });
+    } else {
+        syncMapToolbarSheetUi();
+    }
+}
+
+function restoreMapToolbarAfterPopup() {
+    if (!isMapToolbarSheetActive()) {
+        mapToolbarExpandedBeforePopup = null;
+        mapToolbarLayoutSnapshot = null;
+        return;
+    }
+    const wasExpanded = mapToolbarExpandedBeforePopup;
+    mapToolbarExpandedBeforePopup = null;
+    mapToolbarLayoutSnapshot = null;
+    if (wasExpanded === true) {
+        setMapToolbarExpanded(true, { persist: false });
+    }
+}
+
+function bindMapToolbarSheet(container) {
+    if (mapToolbarSheetCleanup) {
+        mapToolbarSheetCleanup();
+        mapToolbarSheetCleanup = null;
+    }
+
+    const panel = getMapBottomPanel(container);
+    const handle = panel?.querySelector('#mapToolbarSheetHandle');
+    if (!handle) return;
+
+    const onHandleClick = (event) => {
+        event.preventDefault();
+        toggleMapToolbarSheet();
+    };
+    handle.addEventListener('click', onHandleClick);
+
+    const onViewportChange = () => scheduleMapToolbarViewportSync(container);
+    window.addEventListener('resize', onViewportChange, { passive: true });
+    window.addEventListener('orientationchange', onViewportChange, { passive: true });
+    const visualViewport = window.visualViewport;
+    if (visualViewport) {
+        visualViewport.addEventListener('resize', onViewportChange, { passive: true });
+        visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
+    }
+
+    if (!mapToolbarSheetMq && typeof window !== 'undefined' && window.matchMedia) {
+        mapToolbarSheetMq = window.matchMedia(MAP_TOOLBAR_SHEET_MQ);
+        mapToolbarSheetMqHandler = () => scheduleMapToolbarViewportSync(container);
+        if (mapToolbarSheetMq.addEventListener) {
+            mapToolbarSheetMq.addEventListener('change', mapToolbarSheetMqHandler);
+        } else {
+            mapToolbarSheetMq.addListener(mapToolbarSheetMqHandler);
+        }
+    }
+
+    mapToolbarLayoutSnapshot = null;
+    handleMapToolbarViewportChange(container);
+
+    mapToolbarSheetCleanup = () => {
+        handle.removeEventListener('click', onHandleClick);
+        window.removeEventListener('resize', onViewportChange);
+        window.removeEventListener('orientationchange', onViewportChange);
+        if (visualViewport) {
+            visualViewport.removeEventListener('resize', onViewportChange);
+            visualViewport.removeEventListener('scroll', onViewportChange);
+        }
+        if (mapToolbarViewportTimer) {
+            clearTimeout(mapToolbarViewportTimer);
+            mapToolbarViewportTimer = null;
+        }
+        if (mapToolbarSheetMq && mapToolbarSheetMqHandler) {
+            if (mapToolbarSheetMq.removeEventListener) {
+                mapToolbarSheetMq.removeEventListener('change', mapToolbarSheetMqHandler);
+            } else {
+                mapToolbarSheetMq.removeListener(mapToolbarSheetMqHandler);
+            }
+            mapToolbarSheetMq = null;
+            mapToolbarSheetMqHandler = null;
+        }
+        mapToolbarLayoutSnapshot = null;
+        document.body.classList.remove('map-toolbar-collapsed');
+    };
 }
 
 function bindGpsFollowInteractions(map) {
@@ -1012,7 +1328,13 @@ function refreshProducerList(producers = getVisibleProducers()) {
     }
 
     if (sortedProducers.length === 0) {
-        const emptyMsg = lastDataEmptyArea ? t('map.noDataInArea') : t('search.noResults');
+        const hasOsmData = getProducers().some(
+            (p) => p.source === 'osm' || p.source === 'govdata'
+        );
+        const areaEmpty = lastDataEmptyArea
+            || isProducersEmptyArea()
+            || (isProducersLoadSettled() && !hasOsmData);
+        const emptyMsg = areaEmpty ? t('map.noDataInArea') : t('search.noResults');
         list.innerHTML = `<li class="map-producer-list-empty">${emptyMsg}</li>`;
     } else if (!reorderProducerListDom(list, sortedProducers)) {
         list.innerHTML = sortedProducers.map((producer) => {
@@ -1455,10 +1777,20 @@ function getVisibleProducers() {
         lng: center[1]
     });
 
-    // Awaria OSM / pusty promień: pokaż najbliższe markery z rejestru zamiast pustej mapy
-    if (inRadius.length === 0 && pool.length > 0 && !activeSearchQuery.trim()) {
-        const nearest = limitVisibleProducers(pool);
-        if (nearest.length) return nearest;
+    // Awaria OSM: pokaż najbliższe markery tylko gdy mamy cache/live OSM, nie ręczny fallback
+    if (
+        inRadius.length === 0
+        && pool.length > 0
+        && !activeSearchQuery.trim()
+        && !lastDataEmptyArea
+        && !isProducersEmptyArea()
+        && isProducersLoadSettled()
+    ) {
+        const hasLiveOsm = pool.some((p) => p.source === 'osm' || p.source === 'govdata');
+        if (hasLiveOsm) {
+            const nearest = limitVisibleProducers(pool.filter((p) => p.source === 'osm' || p.source === 'govdata'));
+            if (nearest.length) return nearest;
+        }
     }
 
     return inRadius;
@@ -1560,6 +1892,7 @@ function finishPopupClosedState() {
     popupOpeningGuardUntil = 0;
     pinnedPopupProducerId = null;
     document.body.classList.remove('map-popup-open');
+    restoreMapToolbarAfterPopup();
     if (popupRecoveryTimer) {
         clearTimeout(popupRecoveryTimer);
         popupRecoveryTimer = null;
@@ -1862,6 +2195,11 @@ function destroyLeafletMap() {
         mapControlsDragCleanup();
         mapControlsDragCleanup = null;
     }
+    if (mapToolbarSheetCleanup) {
+        mapToolbarSheetCleanup();
+        mapToolbarSheetCleanup = null;
+    }
+    mapToolbarExpandedBeforePopup = null;
 
     if (leafletMap) {
         try {
@@ -1920,6 +2258,7 @@ function refreshMapChromeLabels(container) {
     updateCategoryHeader(limitVisibleProducers(getVisibleProducers()).length);
     updateMapCategoryChips();
     updateRecenterButtonVisibility();
+    syncMapToolbarSheetUi(container);
 }
 
 /** Usuń stare okno Region (gdy mapa wznawiana ze starym DOM). */
@@ -1937,6 +2276,8 @@ function resumeExistingMap(container, { filterChange = false } = {}) {
     removeRegionControlDom(container);
     // Producer modal: init idempotent; kanoniczna jednorazowa rejestracja listenerów
     initProducerModal();
+
+    bindMapToolbarSheet(container);
 
     // Po pause() cleanup – przywróć przeciąganie kontrolek
     const bottomPanel = container.querySelector('.map-bottom-panel') || container;
@@ -2035,6 +2376,10 @@ export function renderMap(container, options = {}) {
             <div id="map" role="region" aria-label="${t('a11y.map')}"></div>
             ${buildMapSkeletonHtml()}
             <div class="map-bottom-panel">
+                <button type="button" id="mapToolbarSheetHandle" class="map-toolbar-sheet-handle" hidden aria-expanded="true" aria-controls="mapToolbarSheetBody">
+                    <span class="map-toolbar-sheet-chevron" aria-hidden="true">▼</span>
+                </button>
+                <div id="mapToolbarSheetBody" class="map-toolbar-sheet-body">
                 <div class="map-toolbar-unified" role="toolbar" aria-label="${escapeListLabel(t('a11y.map'))}">
                     <div class="map-toolbar-section map-toolbar-section--radius">
                         <div id="radiusControl" class="radius-control">
@@ -2088,6 +2433,7 @@ export function renderMap(container, options = {}) {
                         </button>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     `;
@@ -2129,6 +2475,7 @@ export function renderMap(container, options = {}) {
             popupOpeningGuardUntil = 0;
             suppressPopupReopen = false;
             document.body.classList.add('map-popup-open');
+            collapseMapToolbarForPopup();
             // GPS follow + autoPan nie mogą ruszać mapy przy otwartym popupie
             disableGpsFollowMode();
             try {
@@ -2236,6 +2583,7 @@ export function renderMap(container, options = {}) {
         bindPopupActions(container);
         bindRadiusControl(container);
         bindMapToolbar(container);
+        bindMapToolbarSheet(container);
         bindMapCategoryChips(container);
         bindProducerList(container);
         bindMapLegend(container);

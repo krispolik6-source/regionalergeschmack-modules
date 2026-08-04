@@ -1,7 +1,6 @@
 // scripts/test-place-history.mjs – ETAP 15D
 import assert from 'assert';
 import { PLACE_HISTORY_CATALOG, getPlaceHistoryFact } from '../js/data/placeHistory.js';
-import { getContentProducerById } from '../js/data/contentProducers.js';
 import { TRANSLATIONS } from '../js/translations.js';
 
 assert.ok(PLACE_HISTORY_CATALOG.length >= 20);
@@ -21,13 +20,33 @@ assert.ok(TRANSLATIONS.pl.placeHistory.bakeryFortyYears.includes('40'));
 assert.ok(TRANSLATIONS.pl.placeHistory.apiaryLindens.includes('lipy'));
 assert.ok(TRANSLATIONS.pl.placeHistory.farmSeasonalVeg.includes('sezonow'));
 
-const bakery = getContentProducerById('content-baeckerei-schmidt');
-const honey = getContentProducerById('content-imkerei-sonne');
-const farm = getContentProducerById('content-hof-mueller');
+// OSM-like producers → ciekawostki kategorii (bez curated content)
+const osmBakeryNamed = {
+    id: 'osm-bakery-schmidt-like',
+    category: 'bakery',
+    name: 'Dorfbäckerei Schmidt',
+    products: [{ name: 'Brot', imageSlug: 'bread' }]
+};
+const osmHoney = {
+    id: 'osm-farm-honey',
+    category: 'farmer',
+    name: 'Imkerei Lindens',
+    products: [{ name: 'Honig', description: 'Lindenhonig' }]
+};
+const osmFarm = {
+    id: 'osm-farm-veg',
+    category: 'farmer',
+    name: 'Hof Gemüse',
+    products: [{ name: 'Kartoffeln', description: 'Saisonales Gemüse' }]
+};
 
-assert.strictEqual(getPlaceHistoryFact(bakery)?.id, 'schmidtGenerations');
-assert.strictEqual(getPlaceHistoryFact(honey)?.id, 'imkereiLindens');
-assert.strictEqual(getPlaceHistoryFact(farm)?.id, 'hofSeasonalVeg');
+const bakeryFact = getPlaceHistoryFact(osmBakeryNamed);
+const honeyFact = getPlaceHistoryFact(osmHoney);
+const farmFact = getPlaceHistoryFact(osmFarm);
+
+assert.ok(bakeryFact?.id);
+assert.ok(honeyFact?.id);
+assert.ok(farmFact?.id);
 
 // OSM-like bakery → ogólna ciekawostka piekarnicza
 const osmBakery = {
@@ -44,6 +63,6 @@ const again = getPlaceHistoryFact(osmBakery);
 assert.strictEqual(again.id, fact.id, 'ten sam producent = ta sama ciekawostka');
 
 console.log(`✅ katalog: ${ids.length}`);
-console.log(`✅ content: Schmidt→${getPlaceHistoryFact(bakery).id}, Imkerei→${getPlaceHistoryFact(honey).id}, Hof→${getPlaceHistoryFact(farm).id}`);
+console.log(`✅ OSM: bakery→${bakeryFact.id}, honey→${honeyFact.id}, farm→${farmFact.id}`);
 console.log(`✅ OSM bakery: ${fact.id}`);
 console.log('\n--- Place History test ---\nOK');

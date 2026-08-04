@@ -42,7 +42,7 @@ assert(getPromotedProducerIds().includes('user-producer-demo'), 'ids list includ
 const panel = readFileSync(join(ROOT, 'js/views/producerPanel.js'), 'utf8');
 assert(panel.includes('producerHighlightBtn'), 'panel has highlight button id');
 assert(panel.includes('renderHighlightProfileCta'), 'panel renders highlight CTA');
-assert(panel.includes("startPayPalCheckout('producer')"), 'CTA starts PayPal producer checkout');
+assert(panel.includes('activateProfileHighlight'), 'CTA activates profile highlight');
 assert(panel.includes('highlightProfile'), 'uses highlightProfile i18n');
 
 const mapCore = readFileSync(join(ROOT, 'js/map/map.js'), 'utf8');

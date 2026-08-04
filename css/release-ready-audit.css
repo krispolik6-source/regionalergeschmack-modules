@@ -1,0 +1,341 @@
+/* ============================================================
+   Release Ready Audit — końcowa spójność wizualna (CSS only)
+   Home · Mapa · Producent · Kategorie · Premium · Legal
+   Ustawienia · Side Menu · Bottom Nav · Offline · PWA chrome
+   Light / Dark · Brand Book #2A3F28 · #C9A227 · #FFF8EE
+   ============================================================ */
+
+:root {
+    --rr-surface: #fffef8;
+    --rr-surface-dark: #1e2a20;
+    --rr-border: #e6efdf;
+    --rr-text: #2a3f28;
+    --rr-text-muted: rgba(42, 63, 40, 0.72);
+    --rr-gold: #c9a227;
+    --rr-radius-card: 18px;
+    --rr-radius-btn: 14px;
+    --rr-shadow:
+        0 2px 10px rgba(42, 63, 40, 0.08),
+        0 1px 3px rgba(42, 63, 40, 0.04);
+}
+
+/* ——— Legacy greens → Brand Book ——— */
+.contact-avatar,
+.home-card-status:not(.producer-open-status)::before,
+.switch input:checked + .slider {
+    background: #2a3f28 !important;
+    background-color: #2a3f28 !important;
+}
+
+.home-greeting-brand,
+.home-card-status,
+.home-card-status.is-open {
+    color: #2a3f28 !important;
+}
+
+.home-greeting-sub {
+    color: var(--rr-text-muted) !important;
+}
+
+.home-recipe-card--compact .home-recipe-chevron {
+    color: rgba(42, 63, 40, 0.45) !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .home-recipe-card--compact .home-recipe-chevron {
+    color: #e8c97a !important;
+}
+
+/* ——— Home ——— */
+.home-page--v1 .home-greeting-title,
+.home-page--v1 .section-title {
+    color: var(--rr-text) !important;
+}
+
+.home-page--v1 .home-greeting-sub,
+.home-page--v1 .section-desc {
+    color: var(--rr-text-muted) !important;
+}
+
+/* ——— Kategorie ——— */
+.home-page--v1 .home-categories .category-card--photo.category-card--tile {
+    border-color: var(--rr-border) !important;
+    box-shadow: var(--rr-shadow) !important;
+}
+
+/* ——— Mapa + offline ——— */
+[data-view-panel='map'],
+[data-view-panel="map"] {
+    color: inherit;
+}
+
+body.view-map-active .map-offline-banner,
+.map-offline-banner,
+.map-status {
+    background: var(--rr-surface) !important;
+    color: var(--rr-text) !important;
+    border: 1px solid var(--rr-border) !important;
+    border-radius: var(--rr-radius-btn) !important;
+    box-shadow: var(--rr-shadow) !important;
+}
+
+body.dark-mode .map-offline-banner,
+body.dark-mode .map-status {
+    background: var(--rr-surface-dark) !important;
+    color: #f7f3ea !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+/* ——— Producent (modal) ——— */
+.producer-modal-dialog,
+.producer-modal-content,
+.producer-modal-header,
+.producer-modal-body,
+.producer-modal-footer {
+    background: var(--rr-surface) !important;
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .producer-modal-dialog,
+body.dark-mode .producer-modal-content,
+body.dark-mode .producer-modal-header,
+body.dark-mode .producer-modal-body,
+body.dark-mode .producer-modal-footer {
+    background: var(--rr-surface-dark) !important;
+    color: #f7f3ea !important;
+}
+
+.producer-modal .producer-header-name,
+.producer-modal .producer-section-title {
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .producer-modal .producer-header-name,
+body.dark-mode .producer-modal .producer-section-title {
+    color: #f7f3ea !important;
+}
+
+/* ——— Premium ——— */
+.premium-page,
+.premium-hero,
+.premium-feature-list {
+    color: var(--rr-text);
+}
+
+.premium-feature-card,
+.premium-hero,
+.premium-cta-section {
+    background: var(--rr-surface) !important;
+    border: 1px solid var(--rr-border) !important;
+    border-radius: var(--rr-radius-card) !important;
+    box-shadow: var(--rr-shadow) !important;
+}
+
+.premium-hero h2,
+.premium-feature-card h3,
+.premium-page .section-title {
+    color: var(--rr-text) !important;
+}
+
+.premium-feature-card p,
+.premium-note {
+    color: var(--rr-text-muted) !important;
+}
+
+body.dark-mode .premium-feature-card,
+body.dark-mode .premium-hero,
+body.dark-mode .premium-cta-section {
+    background: var(--rr-surface-dark) !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .premium-hero h2,
+body.dark-mode .premium-feature-card h3 {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .premium-feature-card p,
+body.dark-mode .premium-note {
+    color: #d4e4b0 !important;
+}
+
+/* ——— Legal ——— */
+.legal-page,
+.legal-page-body,
+.legal-page-section {
+    color: var(--rr-text);
+    line-height: 1.55;
+}
+
+.legal-page-section-title {
+    color: var(--rr-text) !important;
+    font-weight: 700;
+}
+
+.legal-page-meta {
+    color: var(--rr-text-muted) !important;
+}
+
+body.dark-mode .legal-page,
+body.dark-mode .legal-page-body {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .legal-page-section-title {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .legal-page-meta {
+    color: #d4e4b0 !important;
+}
+
+.app-legal-footer {
+    background: var(--rr-surface) !important;
+    border-top-color: var(--rr-border) !important;
+}
+
+.app-legal-footer-link {
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .app-legal-footer-link {
+    color: #f7f3ea !important;
+}
+
+/* ——— Ustawienia / Profil ——— */
+.profile-page,
+.setting-item,
+.account-item,
+.profile-card {
+    color: var(--rr-text);
+}
+
+.setting-item,
+.account-item,
+.profile-card {
+    background: var(--rr-surface) !important;
+    border: 1px solid var(--rr-border) !important;
+    border-radius: var(--rr-radius-card) !important;
+    box-shadow: var(--rr-shadow) !important;
+}
+
+.setting-item .title,
+.account-item .title {
+    color: var(--rr-text) !important;
+}
+
+.setting-item .desc,
+.account-item .desc,
+.profile-meta {
+    color: var(--rr-text-muted) !important;
+}
+
+body.dark-mode .setting-item,
+body.dark-mode .account-item,
+body.dark-mode .profile-card {
+    background: var(--rr-surface-dark) !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+body.dark-mode .setting-item .title,
+body.dark-mode .account-item .title {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .setting-item .desc,
+body.dark-mode .account-item .desc {
+    color: #d4e4b0 !important;
+}
+
+/* ——— Side Menu ——— */
+.side-menu-panel {
+    background: #fff8ee !important;
+    border-right-color: var(--rr-border) !important;
+}
+
+.side-menu-item {
+    color: var(--rr-text) !important;
+    border-radius: 12px;
+}
+
+.side-menu-item:hover,
+.side-menu-item:focus-visible {
+    background: rgba(201, 162, 39, 0.1) !important;
+}
+
+.side-menu-section-label,
+.side-menu-title {
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .side-menu-panel {
+    background: #141810 !important;
+}
+
+body.dark-mode .side-menu-item {
+    color: #f7f3ea !important;
+}
+
+body.dark-mode .side-menu-item:hover,
+body.dark-mode .side-menu-item:focus-visible {
+    background: rgba(201, 162, 39, 0.14) !important;
+}
+
+/* ——— PWA install banner ——— */
+.pwa-install-banner {
+    background: var(--rr-surface) !important;
+    border: 1px solid var(--rr-border) !important;
+    border-radius: var(--rr-radius-card) !important;
+    color: var(--rr-text) !important;
+    box-shadow: var(--rr-shadow) !important;
+}
+
+body.dark-mode .pwa-install-banner {
+    background: var(--rr-surface-dark) !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+    color: #f7f3ea !important;
+}
+
+/* ——— Cookie consent ——— */
+.cookie-consent-banner {
+    background: var(--rr-surface) !important;
+    border-top: 1px solid var(--rr-border) !important;
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .cookie-consent-banner {
+    background: var(--rr-surface-dark) !important;
+    border-top-color: rgba(201, 162, 39, 0.18) !important;
+    color: #f7f3ea !important;
+}
+
+/* ——— Ulubione / Koszyk (listy) ——— */
+.favorite-item,
+.cart-item,
+.cart-summary {
+    background: var(--rr-surface) !important;
+    border: 1px solid var(--rr-border) !important;
+    border-radius: var(--rr-radius-card) !important;
+}
+
+body.dark-mode .favorite-item,
+body.dark-mode .cart-item,
+body.dark-mode .cart-summary {
+    background: var(--rr-surface-dark) !important;
+    border-color: rgba(201, 162, 39, 0.18) !important;
+}
+
+.favorite-item .title,
+.cart-item .title,
+.favorite-item .name,
+.cart-item .name {
+    color: var(--rr-text) !important;
+}
+
+body.dark-mode .favorite-item .title,
+body.dark-mode .cart-item .title,
+body.dark-mode .favorite-item .name,
+body.dark-mode .cart-item .name {
+    color: #f7f3ea !important;
+}

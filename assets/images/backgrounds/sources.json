@@ -18,6 +18,656 @@
   "assets": [
     {
       "format": "webp",
+      "out": "backgrounds/screen-home.webp",
+      "kb": 320,
+      "w": 1600,
+      "h": 1000,
+      "theme": "green rolling hills"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-home.jpg",
+      "kb": 133,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "green rolling hills"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_all.webp",
+      "kb": 80,
+      "w": 1200,
+      "h": 750,
+      "theme": "green cultivated fields panorama farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_all.jpg",
+      "kb": 39,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "green cultivated fields panorama farm"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_farmers.webp",
+      "kb": 98,
+      "w": 1200,
+      "h": 750,
+      "theme": "golden rapeseed fields farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_farmers.jpg",
+      "kb": 50,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "golden rapeseed fields farm"
+    },
+    {
+      "out": "backgrounds/category_bakeries.webp",
+      "jpg": "backgrounds/category_bakeries.jpg",
+      "theme": "wheat field village bakery barn warm sun",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_meat.webp",
+      "kb": 79,
+      "w": 1200,
+      "h": 750,
+      "theme": "cattle green pasture farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_meat.jpg",
+      "kb": 45,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "cattle green pasture farm"
+    },
+    {
+      "out": "backgrounds/category_restaurants.webp",
+      "jpg": "backgrounds/category_restaurants.jpg",
+      "theme": "farm field warm light rural dining atmosphere",
+      "skipped": "locked"
+    },
+    {
+      "out": "backgrounds/category_shops.webp",
+      "jpg": "backgrounds/category_shops.jpg",
+      "theme": "outdoor village farmers market trees sun",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_vending.webp",
+      "kb": 226,
+      "w": 1200,
+      "h": 750,
+      "theme": "outdoor farm produce stand"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_vending.jpg",
+      "kb": 101,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "outdoor farm produce stand"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/category_favorites.webp",
+      "kb": 226,
+      "w": 1200,
+      "h": 750,
+      "theme": "farm barn sunset warm light"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/category_favorites.jpg",
+      "kb": 84,
+      "w": 768,
+      "h": 480,
+      "ios9": true,
+      "theme": "farm barn sunset warm light"
+    },
+    {
+      "out": "backgrounds/category_fastFood.webp",
+      "jpg": "backgrounds/category_fastFood.jpg",
+      "theme": "outdoor village food stand meadow trees",
+      "skipped": "locked"
+    },
+    {
+      "out": "backgrounds/category_honey.webp",
+      "jpg": "backgrounds/category_honey.jpg",
+      "theme": "apiary beehives flower meadow warm sun",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-profile.webp",
+      "kb": 340,
+      "w": 1600,
+      "h": 1000,
+      "theme": "orchard trees sunlight"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-profile.jpg",
+      "kb": 142,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "orchard trees sunlight"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-premium.webp",
+      "kb": 132,
+      "w": 1600,
+      "h": 1000,
+      "theme": "golden rapeseed fields"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-premium.jpg",
+      "kb": 79,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "golden rapeseed fields"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-favorites.webp",
+      "kb": 147,
+      "w": 1600,
+      "h": 1000,
+      "theme": "meadow flowers warm light"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-favorites.jpg",
+      "kb": 67,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "meadow flowers warm light"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-cart.webp",
+      "kb": 217,
+      "w": 1600,
+      "h": 1000,
+      "theme": "garden vegetables"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-cart.jpg",
+      "kb": 112,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "garden vegetables"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-articles.webp",
+      "kb": 336,
+      "w": 1600,
+      "h": 1000,
+      "theme": "garden meadow orchard"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-articles.jpg",
+      "kb": 133,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "garden meadow orchard"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-settings.webp",
+      "kb": 356,
+      "w": 1600,
+      "h": 1000,
+      "theme": "forest clearing sunshine"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-settings.jpg",
+      "kb": 144,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "forest clearing sunshine"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-about.webp",
+      "kb": 178,
+      "w": 1600,
+      "h": 1000,
+      "theme": "panorama green hills"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-about.jpg",
+      "kb": 101,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "panorama green hills"
+    },
+    {
+      "format": "webp",
+      "out": "backgrounds/screen-help.webp",
+      "kb": 318,
+      "w": 1600,
+      "h": 1000,
+      "theme": "country road sunshine"
+    },
+    {
+      "format": "jpeg",
+      "out": "backgrounds/screen-help.jpg",
+      "kb": 109,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "country road sunshine"
+    },
+    {
+      "format": "webp",
+      "out": "hero/hero-background.webp",
+      "kb": 132,
+      "w": 1600,
+      "h": 1000,
+      "theme": "golden rapeseed fields rolling hills farm"
+    },
+    {
+      "format": "jpeg",
+      "out": "hero/hero-background.jpg",
+      "kb": 79,
+      "w": 1024,
+      "h": 640,
+      "ios9": true,
+      "theme": "golden rapeseed fields rolling hills farm"
+    },
+    {
+      "format": "webp",
+      "out": "products/bread.webp",
+      "kb": 178,
+      "w": 800,
+      "h": 600,
+      "theme": "rustic bread loaf"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/bread.jpg",
+      "kb": 58,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "rustic bread loaf"
+    },
+    {
+      "format": "webp",
+      "out": "products/strawberries.webp",
+      "kb": 133,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh strawberries"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/strawberries.jpg",
+      "kb": 56,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh strawberries"
+    },
+    {
+      "format": "webp",
+      "out": "products/cheese.webp",
+      "kb": 26,
+      "w": 800,
+      "h": 600,
+      "theme": "regional cheese"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/cheese.jpg",
+      "kb": 18,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "regional cheese"
+    },
+    {
+      "out": "products/steak.webp",
+      "jpg": "products/steak.jpg",
+      "theme": "grilled beef steak board",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/daily-dish.webp",
+      "jpg": "products/daily-dish.jpg",
+      "theme": "schnitzel daily lunch plate",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/vegetables.webp",
+      "jpg": "products/vegetables.jpg",
+      "theme": "raw mixed vegetables crate",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/lidl-regional.webp",
+      "jpg": "products/lidl-regional.jpg",
+      "theme": "outdoor farm market crates",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "products/burger.webp",
+      "kb": 52,
+      "w": 800,
+      "h": 600,
+      "theme": "beef burger"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/burger.jpg",
+      "kb": 26,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "beef burger"
+    },
+    {
+      "format": "webp",
+      "out": "products/salad.webp",
+      "kb": 78,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh salad bowl"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/salad.jpg",
+      "kb": 34,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh salad bowl"
+    },
+    {
+      "format": "webp",
+      "out": "products/soup.webp",
+      "kb": 88,
+      "w": 800,
+      "h": 600,
+      "theme": "homemade soup"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/soup.jpg",
+      "kb": 39,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "homemade soup"
+    },
+    {
+      "format": "webp",
+      "out": "products/potatoes.webp",
+      "kb": 56,
+      "w": 800,
+      "h": 600,
+      "theme": "raw potatoes close-up"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/potatoes.jpg",
+      "kb": 27,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "raw potatoes close-up"
+    },
+    {
+      "out": "products/apples.webp",
+      "jpg": "products/apples.jpg",
+      "theme": "pile of fresh red apples",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "products/carrots.webp",
+      "kb": 60,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh carrots"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/carrots.jpg",
+      "kb": 33,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh carrots"
+    },
+    {
+      "format": "webp",
+      "out": "products/eggs.webp",
+      "kb": 42,
+      "w": 800,
+      "h": 600,
+      "theme": "farm eggs"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/eggs.jpg",
+      "kb": 22,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "farm eggs"
+    },
+    {
+      "format": "webp",
+      "out": "products/croissant.webp",
+      "kb": 78,
+      "w": 800,
+      "h": 600,
+      "theme": "butter croissants"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/croissant.jpg",
+      "kb": 32,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "butter croissants"
+    },
+    {
+      "format": "webp",
+      "out": "products/cake.webp",
+      "kb": 80,
+      "w": 800,
+      "h": 600,
+      "theme": "yeast cake"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/cake.jpg",
+      "kb": 37,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "yeast cake"
+    },
+    {
+      "format": "webp",
+      "out": "products/rolls.webp",
+      "kb": 62,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh bread rolls brötchen"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/rolls.jpg",
+      "kb": 23,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh bread rolls brötchen"
+    },
+    {
+      "format": "webp",
+      "out": "products/sausage.webp",
+      "kb": 62,
+      "w": 800,
+      "h": 600,
+      "theme": "bratwurst sausage grill"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/sausage.jpg",
+      "kb": 32,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "bratwurst sausage grill"
+    },
+    {
+      "out": "products/pork.webp",
+      "jpg": "products/pork.jpg",
+      "theme": "roasted pork loin slices",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
+      "out": "products/milk.webp",
+      "kb": 36,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh milk bottle"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/milk.jpg",
+      "kb": 15,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh milk bottle"
+    },
+    {
+      "format": "webp",
+      "out": "products/coffee.webp",
+      "kb": 53,
+      "w": 800,
+      "h": 600,
+      "theme": "espresso coffee"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/coffee.jpg",
+      "kb": 31,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "espresso coffee"
+    },
+    {
+      "format": "webp",
+      "out": "products/chocolate.webp",
+      "kb": 71,
+      "w": 800,
+      "h": 600,
+      "theme": "dark chocolate bar pieces"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/chocolate.jpg",
+      "kb": 31,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "dark chocolate bar pieces"
+    },
+    {
+      "format": "webp",
+      "out": "products/juice.webp",
+      "kb": 23,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh orange juice"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/juice.jpg",
+      "kb": 15,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh orange juice"
+    },
+    {
+      "format": "webp",
+      "out": "products/honey.webp",
+      "kb": 51,
+      "w": 800,
+      "h": 600,
+      "theme": "jar of honey warm light"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/honey.jpg",
+      "kb": 25,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "jar of honey warm light"
+    },
+    {
+      "format": "webp",
+      "out": "products/yogurt.webp",
+      "kb": 37,
+      "w": 800,
+      "h": 600,
+      "theme": "natural yogurt bowl"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/yogurt.jpg",
+      "kb": 23,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "natural yogurt bowl"
+    },
+    {
+      "out": "products/pastries.webp",
+      "jpg": "products/pastries.jpg",
+      "theme": "sweet yeast bakery pastries",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
       "out": "products/onion.webp",
       "kb": 44,
       "w": 800,
@@ -52,6 +702,46 @@
     },
     {
       "format": "webp",
+      "out": "products/cucumber.webp",
+      "kb": 162,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh cucumbers"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/cucumber.jpg",
+      "kb": 49,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh cucumbers"
+    },
+    {
+      "format": "webp",
+      "out": "products/pear.webp",
+      "kb": 90,
+      "w": 800,
+      "h": 600,
+      "theme": "fresh pears"
+    },
+    {
+      "format": "jpeg",
+      "out": "products/pear.jpg",
+      "kb": 43,
+      "w": 512,
+      "h": 384,
+      "ios9": true,
+      "theme": "fresh pears"
+    },
+    {
+      "out": "products/plum.webp",
+      "jpg": "products/plum.jpg",
+      "theme": "fresh purple plums",
+      "skipped": "locked"
+    },
+    {
+      "format": "webp",
       "out": "products/asparagus.webp",
       "kb": 98,
       "w": 800,
@@ -69,88 +759,101 @@
     },
     {
       "format": "webp",
-      "out": "backgrounds/category_all.webp",
-      "kb": 80,
-      "w": 1200,
-      "h": 750,
-      "theme": "green cultivated fields panorama farm"
+      "out": "products/poultry.webp",
+      "kb": 117,
+      "w": 800,
+      "h": 600,
+      "theme": "raw chicken breast"
     },
     {
       "format": "jpeg",
-      "out": "backgrounds/category_all.jpg",
-      "kb": 39,
-      "w": 768,
-      "h": 480,
-      "ios9": true,
-      "theme": "green cultivated fields panorama farm"
-    },
-    {
-      "format": "webp",
-      "out": "backgrounds/category_meat.webp",
-      "kb": 79,
-      "w": 1200,
-      "h": 750,
-      "theme": "cattle green pasture farm"
-    },
-    {
-      "format": "jpeg",
-      "out": "backgrounds/category_meat.jpg",
+      "out": "products/poultry.jpg",
       "kb": 45,
-      "w": 768,
-      "h": 480,
+      "w": 512,
+      "h": 384,
       "ios9": true,
-      "theme": "cattle green pasture farm"
+      "theme": "raw chicken breast"
     },
     {
       "format": "webp",
-      "out": "backgrounds/category_shops.webp",
-      "kb": 163,
-      "w": 1200,
-      "h": 750,
-      "theme": "outdoor farmers market vegetables"
+      "out": "products/baguette.webp",
+      "kb": 96,
+      "w": 800,
+      "h": 600,
+      "theme": "long fresh baguette"
     },
     {
       "format": "jpeg",
-      "out": "backgrounds/category_shops.jpg",
-      "kb": 74,
-      "w": 768,
-      "h": 480,
+      "out": "products/baguette.jpg",
+      "kb": 41,
+      "w": 512,
+      "h": 384,
       "ios9": true,
-      "theme": "outdoor farmers market vegetables"
+      "theme": "long fresh baguette"
+    },
+    {
+      "out": "products/pretzel.webp",
+      "jpg": "products/pretzel.jpg",
+      "theme": "soft pretzel brezel salted",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/jam.webp",
+      "jpg": "products/jam.jpg",
+      "theme": "jar of homemade jam",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/preserves.webp",
+      "jpg": "products/preserves.jpg",
+      "theme": "preserved vegetables jars",
+      "skipped": "locked"
     },
     {
       "format": "webp",
-      "out": "backgrounds/category_favorites.webp",
-      "kb": 226,
-      "w": 1200,
-      "h": 750,
-      "theme": "farm barn sunset warm light"
+      "out": "products/breakfast.webp",
+      "kb": 57,
+      "w": 800,
+      "h": 600,
+      "theme": "farmers breakfast plate"
     },
     {
       "format": "jpeg",
-      "out": "backgrounds/category_favorites.jpg",
-      "kb": 84,
-      "w": 768,
-      "h": 480,
+      "out": "products/breakfast.jpg",
+      "kb": 31,
+      "w": 512,
+      "h": 384,
       "ios9": true,
-      "theme": "farm barn sunset warm light"
+      "theme": "farmers breakfast plate"
     },
     {
       "format": "webp",
-      "out": "backgrounds/category_restaurants.webp",
-      "kb": 209,
-      "w": 1200,
-      "h": 750,
-      "theme": "outdoor garden terrace dining warm light"
+      "out": "products/dessert.webp",
+      "kb": 29,
+      "w": 800,
+      "h": 600,
+      "theme": "dessert plate"
     },
     {
       "format": "jpeg",
-      "out": "backgrounds/category_restaurants.jpg",
-      "kb": 90,
-      "w": 768,
-      "h": 480,
+      "out": "products/dessert.jpg",
+      "kb": 18,
+      "w": 512,
+      "h": 384,
       "ios9": true,
-      "theme": "outdoor garden terrace dining warm light"
+      "theme": "dessert plate"
+    },
+    {
+      "out": "products/soft-drink.webp",
+      "jpg": "products/soft-drink.jpg",
+      "theme": "lemonade bottles soft drink garden",
+      "skipped": "locked"
+    },
+    {
+      "out": "products/butter.webp",
+      "jpg": "products/butter.jpg",
+      "theme": "farm butter block",
+      "skipped": "locked"
     }
   ]
 }

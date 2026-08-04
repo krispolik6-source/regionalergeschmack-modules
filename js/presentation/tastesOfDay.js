@@ -167,62 +167,7 @@ const PRODUCT_POOL = Object.freeze([
         distanceKm: p.distanceKm,
         icon: p.icon,
         isSampleImage: p.isSampleImage
-    })),
-    {
-        id: 'taste-soup',
-        producerId: 'content-gasthof-eifel',
-        producerName: 'Gasthof Eifelblick',
-        price: 6.5,
-        unit: '',
-        imageSlug: 'soup',
-        categoryKey: 'restaurants',
-        icon: '🍲',
-        isSampleImage: true
-    },
-    {
-        id: 'taste-strawberries',
-        producerId: 'content-hof-mueller',
-        producerName: 'Hof Müller',
-        price: 4.5,
-        unit: 'kg',
-        imageSlug: 'strawberries',
-        categoryKey: 'farmers',
-        icon: '🍓',
-        isSampleImage: true
-    },
-    {
-        id: 'taste-juice',
-        producerId: 'content-hof-mueller',
-        producerName: 'Hof Müller',
-        price: 3.2,
-        unit: '1 l',
-        imageSlug: 'juice',
-        categoryKey: 'farmers',
-        icon: '🧃',
-        isSampleImage: true
-    },
-    {
-        id: 'taste-vegetables',
-        producerId: 'content-hof-mueller',
-        producerName: 'Hof Müller',
-        price: 2.8,
-        unit: 'kg',
-        imageSlug: 'vegetables',
-        categoryKey: 'farmers',
-        icon: '🥬',
-        isSampleImage: true
-    },
-    {
-        id: 'taste-pastries',
-        producerId: 'content-baeckerei-schmidt',
-        producerName: 'Bäckerei Schmidt',
-        price: 2.4,
-        unit: '',
-        imageSlug: 'pastries',
-        categoryKey: 'bakeries',
-        icon: '🥐',
-        isSampleImage: true
-    }
+    }))
 ]);
 
 function slotKey(now = new Date()) {

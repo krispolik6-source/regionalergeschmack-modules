@@ -38,7 +38,7 @@ const CANONICAL_SURFACES = [
     { id: 'landing-header', file: 'landing.html', expect: /lp-brand-mark[^>]*logo-master\.svg/ },
     { id: 'landing-hero', file: 'landing.html', expect: /lp-hero-logo[^>]*logo-master\.svg/ },
     { id: 'brand-css-token', file: 'css/brand-identity-final.css', expect: /--brand-logo:[^;]*logo-master\.svg/ },
-    { id: 'splash-css', file: 'css/brand-identity-final.css', expect: /--brand-logo|splash/ },
+    { id: 'splash-css', file: 'css/brand-identity-final.css', expect: /\.rg-splash|rg-booting/ },
     { id: 'pwa-install-banner', file: 'css/brand-identity-final.css', expect: /pwa-install-banner::before/ },
     { id: 'google-play', file: 'assets/store/google-play/icon-512.png', expect: null, exists: true },
     { id: 'app-store', file: 'assets/store/app-store/icon-1024.png', expect: null, exists: true },

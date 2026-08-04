@@ -1,0 +1,138 @@
+{
+  "id": "release-checklist-v1.0",
+  "version": "1.0.0",
+  "generatedAt": "2026-08-03T19:22:12.243Z",
+  "verdict": "READY FOR PRODUCTION",
+  "blockers": [],
+  "summary": {
+    "ok": 17,
+    "warn": 3,
+    "blocker": 0
+  },
+  "items": [
+    {
+      "area": "Assety",
+      "check": "process-images: category_*.webp (10/10)",
+      "status": "ok",
+      "detail": "Wszystkie tła kategorii Home obecne"
+    },
+    {
+      "area": "Assety",
+      "check": "test-category-images.mjs",
+      "status": "ok",
+      "detail": "Mapowanie Home → pliki"
+    },
+    {
+      "area": "PWA",
+      "check": "manifest.json (name, icons, colors, standalone)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "PWA",
+      "check": "Service Worker (cache, skipWaiting, v30)",
+      "status": "ok",
+      "detail": "HTML ↔ SW zsynchronizowane v30"
+    },
+    {
+      "area": "Ikony",
+      "check": "favicon + launcher + PWA + Apple + maskable + master",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Brand",
+      "check": "splash-logo, og-share, notifications-icon",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Splash",
+      "check": "Premium splash (DOM + CSS + dismiss)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "PWA",
+      "check": "Instalacja (beforeinstallprompt + UI)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "PWA",
+      "check": "Offline (SW precache + navigate fallback)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "RC",
+      "check": "Release Candidate 22/22",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Build",
+      "check": "build:legacy (esbuild iOS9 bundle)",
+      "status": "ok",
+      "detail": "js/legacy/app.bundle.js OK"
+    },
+    {
+      "area": "Build",
+      "check": "npm run build (główny)",
+      "status": "warn",
+      "detail": "Static ES modules — brak bundlera; deploy = pliki statyczne"
+    },
+    {
+      "area": "JS",
+      "check": "Produkcja: 0 logów w konsoli (logger ETAP 40)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Assety",
+      "check": "asset-audit (0 nieużywanych)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Brand",
+      "check": "brand-protection PASS",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Ikony",
+      "check": "master-icon-audit 49/49",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "i18n",
+      "check": "36 języków × 1313 kluczy",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "JS",
+      "check": "predeploy-check (składnia + dane live)",
+      "status": "ok",
+      "detail": ""
+    },
+    {
+      "area": "Lighthouse",
+      "check": "Performance / A11y / SEO / PWA score",
+      "status": "warn",
+      "detail": "Wymaga manualnego Chrome DevTools"
+    },
+    {
+      "area": "Urządzenia",
+      "check": "Cold start Android / iOS / Samsung",
+      "status": "warn",
+      "detail": "Wymaga manualnego QA na urządzeniu"
+    }
+  ],
+  "fixesApplied": [
+    "npm run process-images — wygenerowano/odświeżono assety (locked SKIP zachowane)",
+    "scripts/test-category-images.mjs — strip ?v= z ścieżki pliku"
+  ]
+}

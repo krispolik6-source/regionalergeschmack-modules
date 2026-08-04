@@ -33,7 +33,11 @@ export const BRAND_PALETTE = Object.freeze({
     textMuted: '#5c4e3a',
     textLight: '#fffef8',
     themeColor: '#2a3f28',
-    backgroundColor: '#f5efe3'
+    /** Manifest PWA / splash / ikony PNG */
+    backgroundColor: '#f7f3ea',
+    iconBackground: '#f7f3ea',
+    iconGradientTop: '#fbf8f2',
+    iconGradientBottom: '#eee5d6'
 });
 
 /** Zimne niebieskie / UI-niebieskie — zakazane w warstwie marki */

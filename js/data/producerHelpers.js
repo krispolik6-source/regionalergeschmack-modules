@@ -130,7 +130,9 @@ function scoreProducer(producer) {
     if (producer?.phone) score += 1;
     if (producer?.website) score += 1;
     if (producer?.description) score += 1;
-    if (producer?.source === 'govdata') score += 1;
+    if (producer?.source === 'osm') score += 10;
+    if (producer?.source === 'govdata') score += 8;
     if (producer?.source === 'user') score += 5;
+    if (producer?.source === 'content') score += 1;
     return score;
 }

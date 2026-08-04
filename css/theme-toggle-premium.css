@@ -1,128 +1,87 @@
 /* ============================================================
-   ETAP 33F / 34B — Theme Toggle Premium + Mobile Polish
-   Tylko wygląd #darkModeToggleBtn. Bez zmiany layoutu nagłówka.
-   Brand: zieleń / złoto / krem · rozmiar = --ph-btn (jak inne ikony)
+   Theme Toggle Premium — okrągła ikona 🌞/🌙 (Home Premium)
+   Hit area 44×44 px · odstęp 8–12 px od języka · bez nakładania
+   Logika motywu bez zmian (emoji w DOM aktualizuje settings.js)
    ============================================================ */
 
 .main-header #darkModeToggleBtn.theme-toggle-premium,
 .main-header #darkModeToggleBtn {
     box-sizing: border-box !important;
-    /* ETAP 34B — ta sama szerokość/wysokość co pozostałe przyciski headera */
-    flex: 0 0 var(--ph-btn, 42px) !important;
-    width: var(--ph-btn, 42px) !important;
-    height: var(--ph-btn, 42px) !important;
-    min-width: var(--ph-btn, 42px) !important;
-    min-height: var(--ph-btn, 42px) !important;
-    max-width: var(--ph-btn, 42px) !important;
-    max-height: var(--ph-btn, 42px) !important;
-    padding: 0 !important;
+    position: relative !important;
+    flex: 0 0 44px !important;
+    flex-shrink: 0 !important;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
     margin: 0 !important;
+    margin-inline-start: var(--ph-theme-gap, 10px) !important;
+    padding: 0 !important;
+    border: none !important;
     border-radius: 50% !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    font-size: 1.35rem !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    text-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 14px !important;
-    line-height: 1 !important;
-    letter-spacing: 0 !important;
-    text-align: center !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55) !important;
-    color: var(--brand-cream, #f5efe3) !important;
-    background: rgba(0, 0, 0, 0.3) !important;
-    border: 1.5px solid rgba(201, 162, 39, 0.55) !important;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 254, 248, 0.12),
-        0 1px 3px rgba(0, 0, 0, 0.22) !important;
-    transform: none;
-    overflow: hidden !important;
-    white-space: nowrap !important;
-    text-overflow: clip !important;
+    overflow: visible !important;
+    align-self: center !important;
+    isolation: isolate;
+    z-index: 3;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+    animation: none !important;
     transition:
-        background 250ms ease,
-        border-color 250ms ease,
-        box-shadow 250ms ease,
-        transform 250ms ease,
-        color 250ms ease !important;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
+        transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.main-header #darkModeToggleBtn::after {
+    display: none !important;
+    content: none !important;
 }
 
 .main-header #darkModeToggleBtn:hover {
-    background: rgba(201, 162, 39, 0.38) !important;
-    border-color: var(--brand-gold, #c9a227) !important;
+    background: rgba(255, 254, 248, 0.14) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: scale(1.06);
 }
 
 .main-header #darkModeToggleBtn:active {
     transform: scale(0.94) !important;
+    transition-duration: 0.12s;
 }
 
 .main-header #darkModeToggleBtn:focus-visible {
     outline: 2px solid var(--brand-gold, #c9a227) !important;
-    outline-offset: 2px !important;
+    outline-offset: 2px;
 }
 
-/* Ikona = stan aktywnego motywu (treść ustawia settings.js) */
 body.dark-mode .main-header #darkModeToggleBtn {
-    background: rgba(28, 24, 18, 0.45) !important;
-    border-color: rgba(232, 201, 122, 0.65) !important;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65));
 }
 
-/* Nie wychodzi poza ekran / header-right — brak poziomego scrolla */
-.main-header .header-right {
-    min-width: 0;
-    max-width: 100%;
-    flex-shrink: 1;
-    overflow: visible;
-}
-
-.main-header .header-right #darkModeToggleBtn {
-    position: relative;
-    z-index: 1;
-    flex-shrink: 0 !important;
-}
-
-/* ——— Mobile: przycisk w headerze, bez overflow (≤480px) ——— */
 @media screen and (max-width: 480px) {
-    .main-header #darkModeToggleBtn.theme-toggle-premium,
     .main-header #darkModeToggleBtn {
-        width: var(--ph-btn, 35px) !important;
-        height: var(--ph-btn, 35px) !important;
-        min-width: var(--ph-btn, 35px) !important;
-        min-height: var(--ph-btn, 35px) !important;
-        max-width: var(--ph-btn, 35px) !important;
-        max-height: var(--ph-btn, 35px) !important;
-        flex: 0 0 var(--ph-btn, 35px) !important;
-        font-size: 13px !important;
-    }
-
-    .main-header .header-right {
-        gap: var(--ph-gap-actions, 4px) !important;
-        flex-shrink: 1 !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-        /* visible — overflow:hidden przycinało #languageDropdown pod przyciskiem */
-        overflow: visible;
-    }
-
-    .main-header .header-lang-wrap {
-        min-width: 0;
-        flex-shrink: 1;
-        max-width: 5.5rem;
-        overflow: visible;
-    }
-
-    .main-header #languageSwitcherBtn.header-lang,
-    .main-header .header-lang {
-        max-width: 5.5rem !important;
-        overflow: hidden;
+        margin-inline-start: 8px !important;
+        font-size: 1.28rem !important;
     }
 }
 
-/* 768+ desktop */
 @media screen and (min-width: 768px) {
     .main-header #darkModeToggleBtn {
-        width: var(--ph-btn, 44px) !important;
-        height: var(--ph-btn, 44px) !important;
-        font-size: 16px !important;
+        margin-inline-start: 12px !important;
+        font-size: 1.38rem !important;
     }
 }
 
@@ -131,6 +90,7 @@ body.dark-mode .main-header #darkModeToggleBtn {
         transition: none !important;
     }
 
+    .main-header #darkModeToggleBtn:hover,
     .main-header #darkModeToggleBtn:active {
         transform: none !important;
     }

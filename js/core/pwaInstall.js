@@ -65,7 +65,7 @@ function ensureInstallBanner() {
             <button type="button" id="pwaInstallBannerBtn" class="btn-primary pwa-install-banner-btn">
                 <span data-pwa-install-label></span>
             </button>
-            <button type="button" id="pwaInstallBannerDismiss" class="pwa-install-banner-dismiss" aria-label="">×</button>
+            <button type="button" id="pwaInstallBannerDismiss" class="pwa-install-banner-dismiss" aria-label="Schließen">×</button>
         </div>
     `;
     document.body.appendChild(banner);

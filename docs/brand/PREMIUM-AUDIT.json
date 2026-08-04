@@ -1,44 +1,44 @@
 {
   "id": "premium-audit-28e",
   "title": "Regionaler Geschmack Premium Audit",
-  "generatedAt": "2026-07-21T17:32:41.813Z",
-  "day": "2026-07-21",
+  "generatedAt": "2026-08-03T18:59:45.553Z",
+  "day": "2026-08-03",
   "policy": {
     "architectureUnchanged": true,
     "storeEventBusUntouched": true,
     "autofixScope": "presentation / a11y / brand / leak cleanup"
   },
-  "overall": 93,
+  "overall": 89,
   "scores": {
-    "UX": 90,
-    "UI": 94,
-    "Brand": 93,
+    "UX": 89,
+    "UI": 90,
+    "Brand": 90,
     "Mobile": 94,
-    "Performance": 97,
+    "Performance": 83,
     "PWA": 99,
     "Accessibility": 98,
-    "Code Quality": 84,
-    "Launch Readiness": 92
+    "Code Quality": 67,
+    "Launch Readiness": 90
   },
   "sources": {
-    "health": 98,
-    "guardianQuality": 5.4,
+    "health": 94,
+    "guardianQuality": 2.4,
     "emotionReturn": 89,
-    "livingBrand": 95,
+    "livingBrand": 93,
     "productDirector": 92,
-    "dailyAppScore": 95,
+    "dailyAppScore": 92,
     "qualityLoopHealth": 98,
-    "logoAudit": true,
-    "headerAudit": true,
+    "logoAudit": false,
+    "headerAudit": false,
     "mobilePremium": true,
     "virtualUser": "awaiting-browser-run"
   },
   "counts": {
     "critical": 0,
-    "high": 0,
-    "medium": 4,
-    "cosmeticOrFixed": 10,
-    "totalFindings": 14
+    "high": 4,
+    "medium": 5,
+    "cosmeticOrFixed": 9,
+    "totalFindings": 19
   },
   "findings": [
     {
@@ -98,18 +98,53 @@
       "fixed": true
     },
     {
-      "severity": "cosmetic",
+      "severity": "medium",
       "area": "UI",
-      "title": "premium-final.css zaimportowany",
+      "title": "Brak premium-final.css",
       "detail": "css/style.css",
-      "fixed": true
+      "fixed": false
     },
     {
       "severity": "cosmetic",
-      "area": "Guardian",
-      "title": "Naprawione: setInterval bez clearInterval: js/core/premiumService.js",
-      "detail": "js/core/premiumService.js",
+      "area": "PWA",
+      "title": "18 ikon manifest obecnych",
+      "detail": "manifest.json",
       "fixed": true
+    },
+    {
+      "severity": "high",
+      "area": "PWA",
+      "title": "Brak CACHE_VERSION w sw.js",
+      "detail": "sw.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Brand",
+      "title": "Logo audit nie OK",
+      "detail": "docs/brand/LOGO-AUDIT.md",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Guardian",
+      "title": "check-translations zakończony błędem",
+      "detail": "js/translations.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Guardian",
+      "title": "Duży łączny JS: 1863 KB",
+      "detail": "js/translations.js",
+      "fixed": false
+    },
+    {
+      "severity": "low",
+      "area": "Health",
+      "title": "Podejrzenie nieużywanego kodu: 16 plików",
+      "detail": "js/core/dynamicTranslateEngine.js, js/intelligence/livingRegionAi.js, js/intelligence/producerTrustAudit.js, js/intelligence/productDirectorAi.js, js/intelligence/productIntelligenceDaily.js, js/intelligence/regionalBrain.js",
+      "fixed": false
     },
     {
       "severity": "medium",

@@ -1,7 +1,7 @@
 // js/presentation/producerTrust.js – badge wiarygodności, udogodnienia, zdjęcie producenta
 
 import { t } from '../core/i18n.js';
-import { getCategoryImage, getCategoryImageJpeg } from './categoryImages.js?v=6';
+import { getCategoryImage, getCategoryImageJpeg } from './categoryImages.js?v=8';
 import { normalizeProducerCategory } from '../data/producerHelpers.js';
 import { resolveProducerMood } from './producerMood.js';
 

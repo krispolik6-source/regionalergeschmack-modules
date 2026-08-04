@@ -74,11 +74,15 @@ assert(profile.includes('profileAmbientNature'), 'settings toggle');
 
 const home = readFileSync(join(ROOT, 'js/views/home.js'), 'utf8');
 assert(home.includes('homeAmbientNatureBtn'), 'home ambient toggle');
+assert(home.includes('home-ambient-control'), 'home ambient control wrapper');
+assert(home.includes('home-ambient-status'), 'home ambient status label');
+assert(home.includes('HOME_AMBIENT_SPEAKER_SVG'), 'home speaker SVG icon');
 assert(home.includes('setAmbientNatureEnabled'), 'home uses ambient API');
 assert(home.includes('syncHomeAmbientToggle'), 'home ambient UI sync');
 assert(home.includes('AMBIENT_UNAVAILABLE'), 'home listens for ambient failure');
 assert(home.includes('userInitiated'), 'home passes user gesture flag');
-assert(home.includes('🎵') && home.includes('🔇'), 'home icons off/on');
+assert(home.includes('ambientNatureStatusOn'), 'home status on i18n key');
+assert(home.includes('ambientNatureStatusOff'), 'home status off i18n key');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-climate-ambient.js'), 'utf8');
 assert(i18n.includes('Odgłosy natury'), 'PL label');
@@ -88,6 +92,10 @@ assert(i18n.includes('Brak połączenia z siecią'), 'PL offline toast');
 assert(i18n.includes('Keine Netzwerkverbindung'), 'DE offline toast');
 assert(i18n.includes('ambientNaturePlay'), 'home play aria');
 assert(i18n.includes('ambientNatureMute'), 'home mute aria');
+assert(i18n.includes('ambientNatureStatusOn'), 'home status on label');
+assert(i18n.includes('ambientNatureStatusOff'), 'home status off label');
+assert(i18n.includes('Dźwięk włączony'), 'PL status on text');
+assert(i18n.includes('Dźwięk wyłączony'), 'PL status off text');
 
 if (failed) {
     console.error(`\n${failed} failure(s)`);

@@ -10,6 +10,7 @@
 | Plik | Opis |
 |------|------|
 | `/assets/icons/logo-master.svg` | **Ikona aplikacji (master)** |
+| `/assets/icons/logo-icon.svg` | Glyph do PNG (generator — lekko pogrubione kłosy) |
 | `logo-on-light.svg` / `.png` | Ta sama ikona na jasnym |
 | `logo-on-dark.svg` / `.png` | Ta sama ikona na ciemnym |
 | `logo-mark.svg` / `.png` | Kłosy bez tła (nakładka) |
@@ -30,5 +31,6 @@ npm run generate-icons
 
 ## Paleta
 
-Zieleń `#2a3f28` · Złoto `#c9a227` · Pszenica `#e8c97a` · Miód `#d4a84b` · Krem `#f5efe3`  
-**Nigdy zimny niebieski.**
+Zieleń `#2a3f28` · Złoto `#c9a227` · Pszenica `#e8c97a` · Miód `#d4a84b`  
+**Tło ikon (PWA/manifest/splash):** `#f7f3ea` · gradient `#fbf8f2` → `#eee5d6`  
+**Krem UI:** `#f5efe3` · **Nigdy zimny niebieski.**

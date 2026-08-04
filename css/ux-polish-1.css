@@ -35,8 +35,7 @@ body {
 .main-header .header-lang,
 .main-header #menuBtn,
 .main-header #languageSwitcherBtn,
-.main-header #headerPremiumBtn,
-.main-header #darkModeToggleBtn {
+.main-header #headerPremiumBtn {
     box-sizing: border-box !important;
     height: var(--ph-btn, 42px) !important;
     min-height: var(--ph-btn, 42px) !important;
@@ -45,8 +44,7 @@ body {
 }
 
 .main-header #menuBtn,
-.main-header #headerPremiumBtn,
-.main-header #darkModeToggleBtn {
+.main-header #headerPremiumBtn {
     width: var(--ph-btn, 42px) !important;
     min-width: var(--ph-btn, 42px) !important;
     max-width: var(--ph-btn, 42px) !important;
@@ -70,13 +68,9 @@ body {
 }
 
 @media screen and (max-width: 359px) {
-    .main-header .header-right {
-        gap: 3px !important;
-    }
-
     .main-header .header-lang,
     .main-header #languageSwitcherBtn {
-        max-width: 3.2rem !important;
+        max-width: 100% !important;
     }
 }
 
@@ -330,12 +324,12 @@ body.dark-mode .rg-adsense-placeholder-text {
 }
 
 body.dark-mode .pwa-install-banner {
-    color: #1c1812 !important;
+    color: var(--dm-text, #f5f5f2) !important;
 }
 
 body.dark-mode .pwa-install-banner .pwa-install-banner-dismiss,
 body.dark-mode .pwa-install-banner-dismiss {
-    color: #1c1812 !important;
+    color: var(--dm-text-muted, #d4e4b0) !important;
 }
 
 body.dark-mode .home-product-card--compact .home-product-name,

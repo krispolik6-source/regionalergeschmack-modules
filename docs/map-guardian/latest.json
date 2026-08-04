@@ -1,7 +1,7 @@
 {
   "id": "etap-42-map-guardian",
   "verdict": "PASS",
-  "generatedAt": "2026-08-01T05:05:16.338Z",
+  "generatedAt": "2026-08-04T17:43:21.650Z",
   "policy": {
     "restartMapOnly": true,
     "noFullReload": true,

@@ -1,7 +1,7 @@
 {
   "id": "logo-audit-28a",
   "title": "Logo Audit — ETAP 28A",
-  "generatedAt": "2026-08-01T05:05:15.120Z",
+  "generatedAt": "2026-08-04T17:43:20.479Z",
   "policy": {
     "singleLogo": true,
     "master": "assets/icons/logo-master.svg",
@@ -17,7 +17,7 @@
     "found": 29,
     "replaced": 7,
     "missing": 0,
-    "foreignLogoFiles": 1,
+    "foreignLogoFiles": 5,
     "ok": false
   },
   "found": [
@@ -235,6 +235,10 @@
   ],
   "missing": [],
   "foreignLogoFiles": [
+    "assets/icons/favicon-16.png",
+    "assets/icons/favicon-32.png",
+    "assets/icons/logo-icon.svg",
+    "assets/icons/maskable-192.png",
     "assets/icons/monochrome-512.png"
   ],
   "notes": [

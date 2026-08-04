@@ -1,9 +1,9 @@
 {
   "id": "brand-protection-29c",
   "title": "Brand Protection AI — ETAP 29C",
-  "generatedAt": "2026-08-01T05:05:15.205Z",
-  "day": "2026-08-01",
-  "status": "WARNING",
+  "generatedAt": "2026-08-04T18:19:46.030Z",
+  "day": "2026-08-04",
+  "status": "PASS",
   "policy": {
     "autoApply": false,
     "autoFix": false,
@@ -14,11 +14,11 @@
     "role": "brand-protection-ai"
   },
   "summary": {
-    "filesScanned": 54,
-    "findings": 6,
+    "filesScanned": 64,
+    "findings": 0,
     "fail": 0,
-    "warning": 6,
-    "ok": false
+    "warning": 0,
+    "ok": true
   },
   "categories": {
     "logo": {
@@ -51,7 +51,7 @@
     },
     "radius": {
       "fail": 0,
-      "warning": 5
+      "warning": 0
     },
     "gradients": {
       "fail": 0,
@@ -59,95 +59,9 @@
     },
     "animations": {
       "fail": 0,
-      "warning": 1
+      "warning": 0
     }
   },
-  "findings": [
-    {
-      "id": "radius-pill-brand",
-      "severity": "warning",
-      "category": "radius",
-      "file": "css/final-ux-premium.css",
-      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "id": "radius-pill-brand",
-      "severity": "warning",
-      "category": "radius",
-      "file": "css/landing.css",
-      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "id": "anim-glow",
-      "severity": "warning",
-      "category": "animations",
-      "file": "css/living-region-experience.css",
-      "detail": "Animacja podejrzana o glow/neon: lre-warm-glow",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "id": "radius-pill-brand",
-      "severity": "warning",
-      "category": "radius",
-      "file": "css/polish.css",
-      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "id": "radius-pill-brand",
-      "severity": "warning",
-      "category": "radius",
-      "file": "css/style.css",
-      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "id": "radius-pill-brand",
-      "severity": "warning",
-      "category": "radius",
-      "file": "css/theme-toggle-premium.css",
-      "detail": "Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    }
-  ],
-  "violations": [
-    {
-      "file": "css/final-ux-premium.css",
-      "rule": "radius-pill-brand",
-      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "file": "css/landing.css",
-      "rule": "radius-pill-brand",
-      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "file": "css/living-region-experience.css",
-      "rule": "anim-glow",
-      "detail": "[warning] animations: Animacja podejrzana o glow/neon: lre-warm-glow",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "file": "css/polish.css",
-      "rule": "radius-pill-brand",
-      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "file": "css/style.css",
-      "rule": "radius-pill-brand",
-      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    },
-    {
-      "file": "css/theme-toggle-premium.css",
-      "rule": "radius-pill-brand",
-      "detail": "[warning] radius: Ekstremalny radius (pill) w kontekście brand/hero",
-      "message": "⚠️ Zmiana narusza Brand Book – wymaga akceptacji właściciela."
-    }
-  ]
+  "findings": [],
+  "violations": []
 }

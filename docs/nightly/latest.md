@@ -1,18 +1,18 @@
-Raport nocny – Regionaler Smak 2026-07-21
+Raport nocny – Regionaler Smak 2026-08-03
 
 Odbiorca: krispolik6@gmail.com
 Harmonogram: codziennie 03:03 (Europe/Berlin)
-Wygenerowano: 2026-07-21T20:35:01.730Z
+Wygenerowano: 2026-08-03T19:05:58.833Z
 
 ========== HEALTH ==========
-Overall: 96%
-CLI: OK (178ms)
-  performance: 99%
+Overall: 94%
+CLI: OK (375ms)
+  performance: 85%
   ux: 85%
   accessibility: 100%
-  memory: 99%
+  memory: 84%
   dataQuality: 100%
-  translation: 84%
+  translation: 100%
   mobile: 100%
   pwa: 100%
 
@@ -20,45 +20,50 @@ Błędy / findings (wysokie):
 • brak
 
 ========== SELF-HEAL ==========
-CLI: OK (37ms)
+CLI: OK (39ms)
 Naprawy / OK:
 • index.html bez ??
 • ikona menu ☰ OK
 • mapowanie sklepów → category_shops
 • mood: sklep nie dziedziczy pasieki
 • moduł selfHealing.js obecny
-• modal photo 160px
 • initSelfHealing w app.js
 Problemy pozostałe:
-• brak
+• modal photo token: 200px
 
 ========== GUARDIAN ==========
-CLI: OK (4587ms)
+CLI: OK (6019ms)
 Status: —
-Findings: 23
+Findings: 29
 Ostrzeżenia:
 • Możliwy race async→DOM: js/core/pwaInstall.js
 • Możliwy race async→DOM: js/core/sideMenu.js
 • Możliwy race async→DOM: js/diagnostics/developerDashboard.js
 • Możliwy race async→DOM: js/diagnostics/developerVaultPanel.js
 • Możliwy race async→DOM: js/diagnostics/healthDevPanel.js
+• Możliwy race async→DOM: js/diagnostics/memoryCleaner.js
 • Możliwy race async→DOM: js/diagnostics/realUserSimulation.js
+• Możliwy race async→DOM: js/diagnostics/selfHealing.js
+• Możliwy race async→DOM: js/presentation/climateAtmosphere.js
 • Wykryto min-height < 40px (cele dotykowe)
-• Mało dynamicznych import()
+• Duży plik JS: js/translations-home-remaining-locales.js (462 KB)
 Błędy:
-• check-translations zakończony błędem
-• Duży łączny JS: 1863 KB
+• setInterval bez clearInterval: js/diagnostics/mapGuardian.js
+• setInterval bez clearInterval: js/diagnostics/selfHealing.js
+• setInterval bez clearInterval: js/diagnostics/uiGuardian.js
+• setInterval bez clearInterval: js/presentation/learningEngine.js
+• Duży łączny JS: 4050 KB
 
 ========== PERFORMANCE ==========
-Health performance: 99%
-Wynik: 99% (OK)
+Health performance: 85%
+Wynik: 85% (OK)
 Guardian performance:
-• Duży łączny JS: 1863 KB
+• Duży łączny JS: 4050 KB
+• Duży plik JS: js/translations-home-remaining-locales.js (462 KB)
 • Leaflet ładowany z shella
 • Legacy bundle: 644 KB
-• Mało dynamicznych import()
 
 ========== WYSYŁKA ==========
-SMTP: SMTP not configured (SMTP_HOST / SMTP_USER / SMTP_PASS / SMTP_FROM)
+SMTP: pominięto (--no-send)
 
 Polityka: autoFix=false · Brand Lock · bez Store/EventBus/API/GPS/Leaflet

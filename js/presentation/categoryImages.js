@@ -1,8 +1,9 @@
 // Mapowanie kategorii Home / producent → tematyczne zdjęcie tła
 
 const BASE = '/assets/images/backgrounds';
+const PROD = '/assets/images/products';
 /** Cache-bust po odświeżeniu zdjęć przykładowych kategorii. */
-const V = 'v=9';
+const V = 'v=25';
 
 /**
  * Klucze: ID kafelka Home (farmers, bakeries…) oraz aliasy producenta (farmer, bakery…).
@@ -10,24 +11,25 @@ const V = 'v=9';
  */
 export const CATEGORY_IMAGES = Object.freeze({
     all: `${BASE}/category_all.webp?${V}`,
-    farmers: `${BASE}/category_farmers.webp?${V}`,
-    farmer: `${BASE}/category_farmers.webp?${V}`,
+    farmers: `${BASE}/category_all.webp?${V}`,
+    farmer: `${BASE}/category_all.webp?${V}`,
     honey: `${BASE}/category_honey.webp?${V}`,
+    // Piekarnie — dedykowane tło kategorii
     bakeries: `${BASE}/category_bakeries.webp?${V}`,
     bakery: `${BASE}/category_bakeries.webp?${V}`,
-    meat: `${BASE}/category_meat.webp?${V}`,
-    // Sklepy / Hofladen – category_shops (nie category_honey)
+    meat: `${PROD}/steak.webp?${V}`,
+    // Sklepy — dedykowane tło kategorii
     shops: `${BASE}/category_shops.webp?${V}`,
     shop: `${BASE}/category_shops.webp?${V}`,
     laden: `${BASE}/category_shops.webp?${V}`,
     supermarket: `${BASE}/category_shops.webp?${V}`,
-    restaurants: `${BASE}/category_restaurants.webp?${V}`,
-    restaurant: `${BASE}/category_restaurants.webp?${V}`,
+    restaurants: `${PROD}/daily-dish.webp?${V}`,
+    restaurant: `${PROD}/daily-dish.webp?${V}`,
     fastFood: `${BASE}/category_fastFood.webp?${V}`,
     fast_food: `${BASE}/category_fastFood.webp?${V}`,
     fastfood: `${BASE}/category_fastFood.webp?${V}`,
     vending: `${BASE}/category_vending.webp?${V}`,
-    favorites: `${BASE}/category_favorites.webp?${V}`
+    favorites: `${PROD}/vegetables.webp?${V}`
 });
 
 /**

@@ -1,31 +1,31 @@
 {
   "id": "etap-44-release-validator",
   "title": "ETAP 44 — Release Validator",
-  "generatedAt": "2026-08-01T05:05:16.820Z",
-  "fast": false,
+  "generatedAt": "2026-08-04T17:43:22.130Z",
+  "fast": true,
   "verbose": false,
   "summary": {
-    "score": 90,
-    "criticalFails": 1,
-    "highFails": 1,
-    "passed": 28,
-    "failed": 2,
+    "score": 70,
+    "criticalFails": 3,
+    "highFails": 2,
+    "passed": 23,
+    "failed": 5,
     "skipped": 0,
-    "total": 30,
+    "total": 28,
     "categories": {
       "audits": {
         "pass": 1,
-        "fail": 1,
+        "fail": 0,
         "skip": 0
       },
       "tests": {
-        "pass": 6,
-        "fail": 0,
+        "pass": 5,
+        "fail": 1,
         "skip": 0
       },
       "translations": {
-        "pass": 3,
-        "fail": 0,
+        "pass": 1,
+        "fail": 2,
         "skip": 0
       },
       "icons": {
@@ -39,13 +39,13 @@
         "skip": 0
       },
       "responsive": {
-        "pass": 3,
+        "pass": 2,
         "fail": 0,
         "skip": 0
       },
       "accessibility": {
-        "pass": 1,
-        "fail": 0,
+        "pass": 0,
+        "fail": 1,
         "skip": 0
       },
       "performance": {
@@ -61,11 +61,11 @@
     }
   },
   "ready": false,
-  "reason": "1 krytyczny błąd",
+  "reason": "3 krytyczne błędy · Release Score 70/100 (< 90)",
   "board": {
-    "releaseScore": 90,
+    "releaseScore": 70,
     "readyForProduction": "NO",
-    "reason": "1 krytyczny błąd"
+    "reason": "3 krytyczne błędy · Release Score 70/100 (< 90)"
   },
   "results": [
     {
@@ -76,8 +76,8 @@
       "weight": 8,
       "status": "pass",
       "exit": 0,
-      "ms": 7842,
-      "detail": "✅ OK: 242 | ⚠️  Ostrzeżenia: 0 | ❌ Błędy: 0 | Audyt statyczny: PASS"
+      "ms": 7695,
+      "detail": "✅ OK: 254 | ⚠️  Ostrzeżenia: 0 | ❌ Błędy: 0 | Audyt statyczny: PASS"
     },
     {
       "id": "functional",
@@ -87,7 +87,7 @@
       "weight": 8,
       "status": "pass",
       "exit": 0,
-      "ms": 7536,
+      "ms": 22855,
       "detail": "✅ Profil: panele klienta i producenta | ℹ️  Serwer nie działa – pominięto testy HTTP | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0"
     },
     {
@@ -98,7 +98,7 @@
       "weight": 5,
       "status": "pass",
       "exit": 0,
-      "ms": 34,
+      "ms": 35,
       "detail": "OK   share copy has link | OK   share copy has brand | Link: https://admirable-cascaron-c76940.netlify.app | Premiere checklist OK"
     },
     {
@@ -107,21 +107,10 @@
       "label": "Release Candidate path",
       "critical": true,
       "weight": 6,
-      "status": "pass",
-      "exit": 0,
-      "ms": 5714,
-      "detail": "✅ child-pwa —  | --- PWA test --- | OK | ✅ child-landing —  | --- Landing test --- | OK | ✅ child-device-lab — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md | Wrote: docs\\final\\RELEASE-CANDIDATE.md"
-    },
-    {
-      "id": "predeploy",
-      "category": "audits",
-      "label": "Predeploy (OSM/offline smoke)",
-      "critical": true,
-      "weight": 6,
       "status": "fail",
-      "exit": null,
-      "ms": 120013,
-      "detail": "✅ GovData: 0 rekordów (0 = normalne poza NRW) | [OSM] 504/timeout – losowa kolejność luster Overpass | [OSM] Retry 2/7 → https://overpass.osm.rambler.ru/cgi/interpreter | [OSM] Retry 3/7 → https://overpass.openstreetmap.fr/api/interpreter"
+      "exit": 1,
+      "ms": 6096,
+      "detail": "✅ child-pwa —  | --- PWA test --- | OK | ✅ child-landing —  | --- Landing test --- | OK | ✅ child-device-lab — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md | Wrote: docs\\final\\RELEASE-CANDIDATE.md"
     },
     {
       "id": "translations",
@@ -129,10 +118,10 @@
       "label": "Translations keys",
       "critical": true,
       "weight": 7,
-      "status": "pass",
-      "exit": 0,
-      "ms": 95,
-      "detail": "✅ th: komplet (1310 kluczy) | ✅ hi: komplet (1310 kluczy) | --- Wymagane klucze testowe --- | ✅ Wszystkie języki mają wymagane klucze testowe."
+      "status": "fail",
+      "exit": 1,
+      "ms": 89,
+      "detail": "   - legal.impressumS2Body |    - legal.impressumS3Title |    - legal.impressumS3Body | --- Wymagane klucze testowe ---"
     },
     {
       "id": "search-i18n",
@@ -140,10 +129,10 @@
       "label": "Search i18n",
       "critical": false,
       "weight": 3,
-      "status": "pass",
-      "exit": 0,
-      "ms": 62003,
-      "detail": "✅ ru: placeholder=\"Искать продукты, рестораны, магазины или…\", searching=\"Поиск...\" | ✅ tr: placeholder=\"Ürün, restoran, mağaza veya üretici ara.…\", searching=\"Aranıyor...\" | === Podsumowanie === | ✅ Wszystkie testy wyszukiwarki PASS"
+      "status": "fail",
+      "exit": null,
+      "ms": 90016,
+      "detail": "✅ [DE UI] \"bäckerei\" → producenci: 706, wyniki: 5793 | ✅ [DE UI] \"bread\" → producenci: 706, wyniki: 5793 | ✅ [DE UI] \"bakery\" → producenci: 706, wyniki: 5793 | ✅ [DE UI] \"chleb\" → producenci: 706, wyniki: 5793"
     },
     {
       "id": "landing",
@@ -165,7 +154,7 @@
       "status": "pass",
       "exit": 0,
       "ms": 73,
-      "detail": "[Master Icon Audit] PASS · 49/49 | Usages: 68 · stale: 0 | Wrote: docs\\brand\\MASTER-ICON-AUDIT.md"
+      "detail": "[Master Icon Audit] PASS · 49/49 | Usages: 90 · stale: 0 | Wrote: docs\\brand\\MASTER-ICON-AUDIT.md"
     },
     {
       "id": "logo-audit",
@@ -175,7 +164,7 @@
       "weight": 3,
       "status": "fail",
       "exit": 1,
-      "ms": 41,
+      "ms": 39,
       "detail": "[Logo Audit] ATTENTION | found 29 · replaced 7 · missing 0 | Wrote: docs\\brand\\LOGO-AUDIT.md"
     },
     {
@@ -197,8 +186,8 @@
       "weight": 3,
       "status": "pass",
       "exit": 0,
-      "ms": 73,
-      "detail": "Referencje: 180 | Pliki assets: 263 | Nieużywane (poza sources.json): 0"
+      "ms": 83,
+      "detail": "Referencje: 175 | Pliki assets: 232 | Nieużywane (poza sources.json): 0"
     },
     {
       "id": "pwa",
@@ -208,7 +197,7 @@
       "weight": 8,
       "status": "pass",
       "exit": 0,
-      "ms": 33,
+      "ms": 31,
       "detail": "✅ pwaInstall.js: wywołanie prompt() | ✅ pwaInstall.js: beforeinstallprompt | --- PWA test --- | OK"
     },
     {
@@ -219,8 +208,8 @@
       "weight": 2,
       "status": "pass",
       "exit": 0,
-      "ms": 85,
-      "detail": "✅ parseOfferKey działa | ✅ Wykrywanie nowych ofert działa | --- Push notifications test --- | OK"
+      "ms": 82,
+      "detail": "✅ Minimal snapshot mniejszy o ~64% (555 B → 202 B) | ✅ Minimal snapshot bez keys[] (tylko hashe producentów) | --- Push notifications test --- | OK"
     },
     {
       "id": "browser",
@@ -241,7 +230,7 @@
       "weight": 4,
       "status": "pass",
       "exit": 0,
-      "ms": 35,
+      "ms": 34,
       "detail": "✅ Home CATEGORY_IDS kanoniczna ósemka | ✅ quick filters bez duplikatów kategorii | --- Responsive check --- | OK"
     },
     {
@@ -252,19 +241,8 @@
       "weight": 5,
       "status": "pass",
       "exit": 0,
-      "ms": 52,
+      "ms": 53,
       "detail": "[Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md"
-    },
-    {
-      "id": "mobile-premium",
-      "category": "responsive",
-      "label": "Mobile Premium audit",
-      "critical": false,
-      "weight": 3,
-      "status": "pass",
-      "exit": 0,
-      "ms": 35,
-      "detail": "[Mobile Premium] PASS · 22/22 | Wrote: docs\\brand\\RESPONSIVE-PREMIUM-REPORT.md"
     },
     {
       "id": "accessibility",
@@ -272,10 +250,10 @@
       "label": "Accessibility",
       "critical": true,
       "weight": 5,
-      "status": "pass",
-      "exit": 0,
+      "status": "fail",
+      "exit": 1,
       "ms": 33,
-      "detail": "✅ touch target = --ph-btn (header) | ✅ 🌞 dzienny / 🌙 nocny w applyDarkMode | --- Accessibility check --- | OK"
+      "detail": "✅ 🌞 dzienny / 🌙 nocny w applyDarkMode | ❌ focus-visible styl | ❌ touch target = --ph-btn (header) | 2 failed"
     },
     {
       "id": "health",
@@ -286,7 +264,7 @@
       "status": "pass",
       "exit": 0,
       "ms": 359,
-      "detail": "Findings: 2 | Wrote: docs\\health\\latest.json | Wrote: docs\\health\\latest.md | Policy: read-only · autoFix=false"
+      "detail": "Findings: 3 | Wrote: docs\\health\\latest.json | Wrote: docs\\health\\latest.md | Policy: read-only · autoFix=false"
     },
     {
       "id": "production-polish",
@@ -296,7 +274,7 @@
       "weight": 3,
       "status": "pass",
       "exit": 0,
-      "ms": 36,
+      "ms": 33,
       "detail": "[Production Polish] Overall 90/100 · fail 0 · warn 2 | Wrote: docs\\premium\\PRODUCTION-POLISH.md"
     },
     {
@@ -307,7 +285,7 @@
       "weight": 3,
       "status": "pass",
       "exit": 0,
-      "ms": 36,
+      "ms": 33,
       "detail": "✅ logger isolated | ✅ report md | Production Logging smoke OK | Wrote: docs/logging/PRODUCTION-LOGGING.md"
     },
     {
@@ -318,7 +296,7 @@
       "weight": 3,
       "status": "pass",
       "exit": 0,
-      "ms": 99,
+      "ms": 95,
       "detail": "✅ syntax js/diagnostics/consoleGuardian.js | ✅ syntax js/core/logger.js | ✅ report written | Console Guardian smoke OK"
     },
     {
@@ -340,7 +318,7 @@
       "weight": 4,
       "status": "pass",
       "exit": 0,
-      "ms": 131,
+      "ms": 124,
       "detail": "✅ syntax js/views/map.js | ✅ syntax js/map/map.js | ✅ report | Map Guardian smoke OK"
     },
     {
@@ -351,7 +329,7 @@
       "weight": 2,
       "status": "pass",
       "exit": 0,
-      "ms": 65,
+      "ms": 66,
       "detail": "✅ vault card | ✅ syntax | ✅ report | Memory Cleaner smoke OK"
     },
     {
@@ -362,7 +340,7 @@
       "weight": 2,
       "status": "pass",
       "exit": 0,
-      "ms": 124,
+      "ms": 127,
       "detail": "✅ syntax js/diagnostics/selfHealing.js | ✅ syntax js/views/map.js | ✅ syntax js/controllers/navigation.js | ETAP 39 self-heal checks passed."
     },
     {
@@ -373,7 +351,7 @@
       "weight": 3,
       "status": "pass",
       "exit": 0,
-      "ms": 178,
+      "ms": 175,
       "detail": "✅ Logowanie nowym hasłem | ✅ Opinie powiązane z userId | --- Auth test --- | OK: 15 | Błędy: 0"
     },
     {
@@ -384,7 +362,7 @@
       "weight": 2,
       "status": "pass",
       "exit": 0,
-      "ms": 36,
+      "ms": 33,
       "detail": "✅ soft-drink.webp | ✅ lidl-regional.webp | --- Product images test --- | OK"
     },
     {
@@ -395,7 +373,7 @@
       "weight": 2,
       "status": "pass",
       "exit": 0,
-      "ms": 73,
+      "ms": 75,
       "detail": "✅ addReview zapisuje imageUrl | ✅ getReviews zwraca imageUrl | --- Reviews image test --- | OK"
     }
   ],

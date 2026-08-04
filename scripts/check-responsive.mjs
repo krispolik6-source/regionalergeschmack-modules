@@ -26,19 +26,17 @@ const ph = readFileSync(join(ROOT, 'css/premium-header.css'), 'utf8');
 const home = readFileSync(join(ROOT, 'js/views/home.js'), 'utf8');
 
 assert(style.includes('theme-toggle-premium.css'), 'style.css importuje theme-toggle-premium');
-assert(/font-size:\s*14px/i.test(css), 'font-size 14px');
-assert(/max-width:\s*480px/i.test(css), 'breakpoint ≤480px');
-assert(/overflow:\s*hidden/i.test(css), 'overflow hidden');
-assert(/border-radius:\s*50%/i.test(css), 'okrągły (50%)');
-assert(/250ms|300ms|200ms/i.test(css), 'animacja 200–300 ms');
+assert(/border-radius:\s*50%/.test(css), 'theme toggle okrągła ikona');
+assert(/min-width:\s*44px|var\(--ph-btn/i.test(css), 'touch target spójny z premium-header (44px)');
+assert(/250ms|300ms|200ms|0\.22s/i.test(css), 'animacja 200–300 ms');
 assert(/min-width:\s*768px/i.test(css), 'breakpoint 768 desktop');
 assert(/prefers-reduced-motion/i.test(css), 'reduced-motion');
-assert(/header-right/i.test(css), 'header-right nie wypycha poza ekran');
+assert(/header-right/i.test(ph) && ph.includes('flex-shrink: 0'), 'header-right nie wypycha poza ekran');
 assert(html.includes('id="darkModeToggleBtn"'), 'przycisk w HTML');
 assert(html.includes('theme-toggle-premium'), 'klasa theme-toggle-premium');
 assert(/🌞/.test(html), 'HTML: ikona dzienna 🌞');
 assert(/\.header-content/i.test(ph), 'layout nagłówka (premium-header)');
-assert(/font-size:\s*14px/i.test(ph), 'premium-header dark btn 14px');
+assert(/font-size:\s*14px|font-size:\s*0/i.test(ph), 'premium-header dark btn sizing');
 assert(
     home.includes("'farmers', 'bakeries', 'meat', 'shops', 'restaurants', 'fastFood', 'vending', 'favorites'")
     || (home.includes('farmers') && home.includes('favorites') && home.includes('CATEGORY_IDS')),

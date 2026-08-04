@@ -63,7 +63,7 @@ function injectStyles() {
         .setting-item { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md) var(--space-lg); }
         .setting-label { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); width: 100%; font-weight: 500; cursor: pointer; }
         .setting-item select { min-height: 40px; padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); color: var(--color-text); }
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
+        .switch { position: relative; display: inline-flex; align-items: center; width: 50px; height: 44px; min-height: 44px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; inset: 0; background: var(--color-border); border-radius: 34px; cursor: pointer; transition: 0.2s; }
         .slider::before { content: ''; position: absolute; height: 20px; width: 20px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: 0.2s; }
@@ -104,7 +104,7 @@ function injectStyles() {
         .account-inline-form { flex-direction: row; align-items: flex-end; flex-wrap: wrap; }
         .account-remove-btn { margin-top: 4px; }
         .btn-secondary { min-height: 44px; padding: 10px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); color: var(--color-text); font: inherit; font-weight: 600; cursor: pointer; }
-        .btn-remove-inline { min-height: 36px; padding: 6px 10px; font-size: 0.85rem; color: var(--color-error, #b42318); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
+        .btn-remove-inline { min-height: 44px; min-width: 44px; padding: 8px 12px; font-size: 0.85rem; color: var(--color-error, #b42318); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
         .profile-install-btn { width: 100%; }
         .profile-install-hint { margin: 8px 0 0; text-align: center; }
         @media (max-width: 600px) { .profile-auth-paths { grid-template-columns: 1fr; } .account-grid-2 { grid-template-columns: 1fr; } }

@@ -1,0 +1,296 @@
+/* ============================================================
+   Animation Audit — CSS only · język ruchu Home Premium
+   Dozwolone: fade · hover · active · focus
+   Usunięte: pulse · blink · drift · breathe · bounce · float
+   ============================================================ */
+
+:root {
+    --motion-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --motion-duration: 0.28s;
+    --motion-tap-duration: 0.14s;
+    --motion-lift: -2px;
+    --motion-tap-scale: 0.985;
+}
+
+@keyframes motion-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ——— Wyłącz: infinite / ambient / dekoracyjne ——— */
+#climateAtmosphere,
+#climateAtmosphere *,
+.climate-atmosphere,
+.climate-rays,
+.climate-grass,
+.climate-meadow,
+.climate-motif,
+.climate-layer,
+.ln-clouds,
+.ln-wheat,
+.ln-leaves,
+.ln-snow,
+.ln-layer,
+.ln-ambient,
+.ln-particles,
+.home-region-soul,
+.home-region-soul::before,
+.home-region-soul::after,
+.home-return-magic,
+.home-return-magic::before,
+.home-return-magic::after,
+.home-living-region,
+.home-nature-calendar,
+.home-region-story,
+.home-smart-today-reason,
+.producer-photo-frame,
+.home-product-card,
+.home-venue-card,
+.home-recipe-card,
+.home-recipe-card--compact,
+.home-seasonal-card,
+.home-live-region-item,
+.home-living-region-item,
+.home-tastes-of-day-item,
+.home-ambient-wash,
+.home-ambient-glow,
+.rg-ad-banner::before,
+.rg-ad-banner::after {
+    animation: none !important;
+}
+
+body:not(.view-map-active)::before,
+body:not(.view-map-active)::after,
+#climateAtmosphere,
+#climateAtmosphere * {
+    transform: none !important;
+}
+
+/* Wyłącz card-rise / view-slide (zostaje fade) */
+.home-page .home-product-card,
+.home-page .home-venue-card,
+.home-page .home-recipe-card,
+.home-page .home-seasonal-card,
+.home-page .home-live-region-item,
+.home-page .category-card,
+.home-nature-calendar,
+.home-region-story,
+.home-smart-today-reason {
+    animation: none !important;
+}
+
+/* ——— Dozwolone: jednorazowy fade ——— */
+@media (prefers-reduced-motion: no-preference) {
+    .home-page--v1.home-page--v2 {
+        animation: motion-fade-in var(--motion-duration) ease both !important;
+    }
+
+    [data-view-panel].active:not([hidden]) {
+        animation: motion-fade-in var(--motion-duration) ease both !important;
+    }
+
+    body.view-map-active [data-view-panel='map'].active:not([hidden]) {
+        animation: motion-fade-in var(--motion-duration) ease both !important;
+    }
+
+    .side-menu.is-open .side-menu-body {
+        animation: motion-fade-in var(--motion-duration) ease both !important;
+    }
+
+    .leaflet-marker-icon.marker-animate-in,
+    .marker-fade-in,
+    .leaflet-marker-icon[class*='fade'] {
+        animation: motion-fade-in 0.2s ease-out forwards !important;
+    }
+
+    .rg-splash.is-entering .rg-splash__logo-wrap {
+        animation: motion-fade-in 0.38s ease forwards !important;
+        transform: none !important;
+    }
+
+    .producer-modal:not([hidden]) .producer-modal-dialog {
+        animation: motion-fade-in var(--motion-duration) ease both;
+    }
+}
+
+/* Side menu: fade zamiast slide (bez float/drift) */
+.side-menu-panel {
+    transform: none !important;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity var(--motion-duration) var(--motion-ease),
+        visibility var(--motion-duration) var(--motion-ease) !important;
+    pointer-events: none;
+}
+
+.side-menu.is-open .side-menu-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ——— Hover · active · focus — Home Premium ——— */
+button,
+.btn,
+[role='button'],
+a.btn,
+.header-icon,
+.header-btn,
+.header-lang,
+.theme-toggle,
+#darkModeToggleBtn,
+#menuBtn,
+.home-search-submit,
+.home-all-categories-btn,
+.home-quick-chip,
+.home-thematic-chip,
+.home-product-btn,
+.home-product-card,
+.home-venue-card,
+.home-recipe-card,
+.home-recipe-card--compact,
+.home-seasonal-card,
+.category-card,
+.home-live-region-item,
+.home-living-region-item,
+.home-tastes-of-day-item,
+.home-premium-cta,
+.home-region-soul-btn,
+.favorite-item,
+.cart-item,
+.setting-item,
+.side-menu-item,
+.map-bottom-btn,
+.map-recenter-btn,
+.map-legend-btn,
+.map-list-toggle,
+.map-producer-list-btn,
+.producer-modal-back,
+.producer-modal .btn-primary,
+.producer-modal .btn-secondary,
+.producer-modal .product-actions-toggle,
+.producer-modal-close,
+.premium-cta-section button,
+.cookie-consent-btn,
+.app-legal-footer-link,
+.language-option {
+    transition-property: transform, box-shadow, border-color, background-color, color, opacity !important;
+    transition-duration: var(--motion-duration) !important;
+    transition-timing-function: var(--motion-ease) !important;
+}
+
+/* Hover: lift −2px (bez bounce / float / scale-up) */
+.category-card:hover,
+.home-product-card:hover,
+.home-venue-card:hover,
+.home-recipe-card:hover,
+.home-recipe-card--compact:hover,
+.home-seasonal-card:hover,
+.home-live-region-item:hover,
+.home-living-region-item:hover,
+.home-tastes-of-day-item:hover,
+.home-premium-cta:hover,
+.favorite-item:hover,
+.cart-item:hover,
+.home-page--v1 .home-product-card--compact:hover,
+.home-page--v1 .home-venue-card:hover,
+.home-page--v1 .home-recipe-card--compact:hover,
+.landscapes .category-card:hover,
+.home-categories .category-card:hover {
+    transform: translateY(var(--motion-lift)) !important;
+}
+
+.home-page--v1 .home-search-submit:hover,
+.home-page--v1 .home-all-categories-btn:hover,
+.home-page--v1 .home-quick-chip:hover,
+.home-page--v1 .home-thematic-chip:hover,
+.home-page--v1 .home-product-btn:hover,
+.home-page--v1 .btn-location:hover,
+.home-page--v1 .btn-nearby:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+body.view-map-active .map-bottom-btn:hover,
+body.view-map-active .map-recenter-btn:hover,
+body.view-map-active .map-legend-btn:hover,
+body.view-map-active .map-list-toggle:hover,
+.producer-modal .btn-primary:hover,
+.producer-modal .btn-secondary:hover,
+.producer-modal .product-actions-toggle:hover,
+.producer-modal-back:hover {
+    transform: translateY(var(--motion-lift)) !important;
+}
+
+/* Active: tap scale (bez bounce) */
+.category-card:active,
+.home-product-card:active,
+.home-venue-card:active,
+.home-recipe-card:active,
+.home-recipe-card--compact:active,
+.home-seasonal-card:active,
+.home-live-region-item:active,
+.home-living-region-item:active,
+.home-quick-chip:active,
+.home-thematic-chip:active,
+.home-search-submit:active,
+.home-all-categories-btn:active,
+.btn-primary:active,
+.btn-secondary:active,
+.header-icon:active,
+.theme-toggle:active,
+#darkModeToggleBtn:active,
+body.view-map-active .map-bottom-btn:active,
+body.view-map-active .map-recenter-btn:active,
+body.view-map-active .map-legend-btn:active,
+body.view-map-active .map-list-toggle:active,
+.producer-modal .btn-primary:active,
+.producer-modal .btn-secondary:active,
+.producer-modal-back:active,
+.bottom-nav .nav-item:active {
+    transform: translateY(0) scale(var(--motion-tap-scale)) !important;
+    transition-duration: var(--motion-tap-duration) !important;
+}
+
+/* Wyłącz bounce / float / pulse na hover (legacy warstwy) — header chrome: css/premium-header.css */
+.theme-toggle:hover,
+#darkModeToggleBtn:hover,
+.home-region-soul-btn:hover .home-region-soul-icon,
+.taste-diary-star:hover span,
+.taste-diary-star span {
+    transform: none !important;
+}
+
+.landscapes .category-card:hover,
+.home-categories .category-card:hover {
+    /* lift już ustawiony wyżej — bez scale(1.03) */
+}
+
+/* Focus: bez animacji transform (outline w accessibility-audit) */
+:focus-visible {
+    transition: outline-color var(--motion-tap-duration) ease !important;
+}
+
+/* ——— Reduced motion ——— */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .side-menu-panel {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .side-menu:not(.is-open) .side-menu-panel {
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+}

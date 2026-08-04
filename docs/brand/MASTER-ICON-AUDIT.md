@@ -1,6 +1,6 @@
 # MASTER ICON AUDIT — ETAP 28F
 
-Wygenerowano: 2026-08-01T05:05:15.079Z
+Wygenerowano: 2026-08-04T17:43:20.439Z
 
 **Werdykt:** ✅ PASS · 49/49
 
@@ -8,15 +8,15 @@ Wygenerowano: 2026-08-01T05:05:15.079Z
 
 - Plik: `assets/icons/logo-master.svg`
 - Motyw: **dwa złote kłosy pochylone w prawo**
-- Cache-bust: `?v=29`
-- SW: `rg-pwa-v29` · image cache: `rg-runtime-images-v29` (network-first dla ikon)
+- Cache-bust: `?v=30`
+- SW: `rg-pwa-v30` · image cache: `rg-runtime-images-v30` (network-first dla ikon)
 - Hash: `668be70eec6ce347`
 
 ## Krytyczna naprawa 28F
 
 - Stary `rg-runtime-images-v1` trzymał ikony **cache-first** → launcher widział starą grafikę mimo PASS 28A
 - Teraz: ikony/manifest = **network-first**, purge wszystkich `rg-pwa-*` + `rg-runtime-images-*` przy activate
-- Precache / cache-bust z `?v=29`
+- Precache / cache-bust z `?v=30`
 
 ## Wymagane PNG (z logo-master)
 
@@ -44,22 +44,22 @@ Wygenerowano: 2026-08-01T05:05:15.079Z
 
 ## Powierzchnie użycia
 
-- ✓ **manifest-192** — manifest.json · /icon-192\.png\?v=29/
-- ✓ **manifest-512** — manifest.json · /icon-512\.png\?v=29/
-- ✓ **manifest-maskable** — manifest.json · /maskable-512\.png\?v=29/
-- ✓ **manifest-monochrome** — manifest.json · /monochrome-512\.png\?v=29/
-- ✓ **manifest-apple** — manifest.json · /apple-touch-icon\.png\?v=29/
-- ✓ **index-favicon** — index.html · /favicon\.ico\?v=29/
-- ✓ **index-logo-master** — index.html · /logo-master\.svg\?v=29/
-- ✓ **index-icon-192** — index.html · /icon-192\.png\?v=29/
-- ✓ **index-apple** — index.html · /apple-touch-icon\.png\?v=29/
-- ✓ **index-manifest** — index.html · /manifest\.json\?v=29/
-- ✓ **index-og** — index.html · /og-share\.png\?v=29/
-- ✓ **landing-logo** — landing.html · /logo-master\.svg\?v=29/
-- ✓ **landing-icon-192** — landing.html · /icon-192\.png\?v=29/
-- ✓ **home-brand** — js/views/home.js · /logo-master\.svg\?v=29/
-- ✓ **push-icon** — js/core/pushNotifications.js · /icon-192\.png\?v=29/
-- ✓ **brand-css** — css/brand-identity-final.css · /logo-master\.svg\?v=29/
+- ✓ **manifest-192** — manifest.json · /icon-192\.png\?v=30/
+- ✓ **manifest-512** — manifest.json · /icon-512\.png\?v=30/
+- ✓ **manifest-maskable** — manifest.json · /maskable-512\.png\?v=30/
+- ✓ **manifest-monochrome** — manifest.json · /monochrome-512\.png\?v=30/
+- ✓ **manifest-apple** — manifest.json · /apple-touch-icon\.png\?v=30/
+- ✓ **index-favicon** — index.html · /favicon\.ico\?v=30/
+- ✓ **index-logo-master** — index.html · /logo-master\.svg\?v=30/
+- ✓ **index-icon-192** — index.html · /icon-192\.png\?v=30/
+- ✓ **index-apple** — index.html · /apple-touch-icon\.png\?v=30/
+- ✓ **index-manifest** — index.html · /manifest\.json\?v=30/
+- ✓ **index-og** — index.html · /og-share\.png\?v=30/
+- ✓ **landing-logo** — landing.html · /logo-master\.svg\?v=30/
+- ✓ **landing-icon-192** — landing.html · /icon-192\.png\?v=30/
+- ✓ **home-brand** — js/views/home.js · /logo-master\.svg\?v=30/
+- ✓ **push-icon** — js/core/pushNotifications.js · /icon-192\.png\?v=30/
+- ✓ **brand-css** — css/brand-identity-final.css · /logo-master\.svg\?v=30/
 - ✓ **sw-cache** — sw.js · /CACHE_VERSION\s*=\s*`rg-pwa-v\$\{PWA_VERSION\}`|rg-pwa-v\$\{PWA_VERSION\}/
 - ✓ **sw-image-cache** — sw.js · /IMAGE_CACHE\s*=\s*`rg-runtime-images-v\$\{PWA_VERSION\}`|rg-runtime-images-v\$\{PWA_VERSION\}/
 - ✓ **sw-network-first-icons** — sw.js · /isAppIconPath|network-first/
@@ -75,63 +75,78 @@ Wygenerowano: 2026-08-01T05:05:15.079Z
 
 ### `assets/brand/README.md`
 - `/assets/icons/logo-master.svg`
+- `/assets/icons/logo-icon.svg`
 
 ### `css/brand-identity-final.css`
-- `/assets/icons/logo-master.svg?v=29`
+- `/assets/icons/logo-master.svg?v=30`
+- `/assets/icons/icon-192.png?v=30`
+- `/assets/brand/splash-logo.png?v=30`
 
 ### `index.html`
-- `/assets/icons/icon-144.png?v=29`
-- `/assets/brand/og-share.png?v=29`
-- `/assets/icons/favicon.ico?v=29`
-- `/assets/icons/logo-master.svg?v=29`
-- `/assets/icons/icon-192.png?v=29`
-- `/assets/icons/apple-touch-icon.png?v=29`
-- `/assets/icons/icon-180.png?v=29`
+- `/assets/icons/icon-144.png?v=30`
+- `/assets/brand/og-share.png?v=30`
+- `/assets/icons/logo-master.svg?v=30`
+- `/assets/icons/favicon.ico?v=30`
+- `/assets/icons/favicon-16.png?v=30`
+- `/assets/icons/favicon-32.png?v=30`
+- `/assets/icons/icon-192.png?v=30`
+- `/assets/icons/apple-touch-icon.png?v=30`
+- `/assets/icons/icon-180.png?v=30`
 
 ### `js/core/pushNotifications.js`
-- `/assets/icons/icon-192.png?v=29`
+- `/assets/icons/icon-192.png?v=30`
 
 ### `js/diagnostics/livingBrandBook.js`
 - `/assets/icons/logo-master.svg`
 
 ### `js/diagnostics/selfHealing.js`
-- `/assets/icons/logo-master.svg?v=29`
+- `/assets/icons/logo-master.svg?v=30`
 
 ### `js/legacy/app.bundle.js`
-- `/assets/icons/icon-192.png`
+- `/assets/icons/logo-master.svg`
+- `/assets/icons/logo-master.svg?v=30`
+- `/assets/icons/icon-192.png?v=30`
 
 ### `js/views/home.js`
-- `/assets/icons/logo-master.svg?v=29`
+- `/assets/icons/logo-master.svg?v=30`
 
 ### `js/views/premium.js`
-- `/assets/icons/logo-master.svg?v=29`
+- `/assets/icons/logo-master.svg?v=30`
 
 ### `landing.html`
-- `/assets/brand/og-share.png?v=29`
-- `/assets/icons/favicon.ico?v=29`
-- `/assets/icons/logo-master.svg?v=29`
-- `/assets/icons/icon-192.png?v=29`
-- `/assets/icons/apple-touch-icon.png?v=29`
+- `/assets/brand/og-share.png?v=30`
+- `/assets/icons/favicon.ico?v=30`
+- `/assets/icons/favicon-16.png?v=30`
+- `/assets/icons/favicon-32.png?v=30`
+- `/assets/icons/logo-master.svg?v=30`
+- `/assets/icons/icon-192.png?v=30`
+- `/assets/icons/apple-touch-icon.png?v=30`
 
 ### `manifest.json`
-- `/assets/icons/icon-48.png?v=29`
-- `/assets/icons/icon-72.png?v=29`
-- `/assets/icons/icon-96.png?v=29`
-- `/assets/icons/icon-128.png?v=29`
-- `/assets/icons/icon-144.png?v=29`
-- `/assets/icons/icon-152.png?v=29`
-- `/assets/icons/icon-192.png?v=29`
-- `/assets/icons/icon-256.png?v=29`
-- `/assets/icons/icon-384.png?v=29`
-- `/assets/icons/icon-512.png?v=29`
-- `/assets/icons/icon-1024.png?v=29`
-- `/assets/icons/maskable-512.png?v=29`
-- `/assets/icons/monochrome-512.png?v=29`
-- `/assets/icons/apple-touch-icon.png?v=29`
+- `/assets/icons/favicon-16.png?v=30`
+- `/assets/icons/favicon-32.png?v=30`
+- `/assets/icons/icon-48.png?v=30`
+- `/assets/icons/icon-72.png?v=30`
+- `/assets/icons/icon-96.png?v=30`
+- `/assets/icons/icon-128.png?v=30`
+- `/assets/icons/icon-144.png?v=30`
+- `/assets/icons/icon-152.png?v=30`
+- `/assets/icons/icon-180.png?v=30`
+- `/assets/icons/icon-192.png?v=30`
+- `/assets/icons/icon-256.png?v=30`
+- `/assets/icons/icon-384.png?v=30`
+- `/assets/icons/icon-512.png?v=30`
+- `/assets/icons/icon-1024.png?v=30`
+- `/assets/icons/maskable-192.png?v=30`
+- `/assets/icons/maskable-512.png?v=30`
+- `/assets/icons/monochrome-512.png?v=30`
+- `/assets/icons/apple-touch-icon.png?v=30`
 
 ### `sw.js`
 - `/assets/icons/icon-192.png`
 - `/assets/icons/favicon.ico`
+- `/assets/icons/favicon-16.png`
+- `/assets/icons/favicon-32.png`
 - `/assets/icons/logo-master.svg`
 - `/assets/icons/apple-touch-icon.png`
 - `/assets/icons/icon-48.png`
@@ -145,6 +160,7 @@ Wygenerowano: 2026-08-01T05:05:15.079Z
 - `/assets/icons/icon-384.png`
 - `/assets/icons/icon-512.png`
 - `/assets/icons/icon-1024.png`
+- `/assets/icons/maskable-192.png`
 - `/assets/icons/maskable-512.png`
 - `/assets/icons/monochrome-512.png`
 - `/assets/brand/og-share.png`
@@ -174,22 +190,22 @@ Wygenerowano: 2026-08-01T05:05:15.079Z
 - ✓ png-monochrome-512.png — assets/icons/monochrome-512.png
 - ✓ png-favicon.ico — assets/icons/favicon.ico
 - ✓ no-stale-v21-icons — OK
-- ✓ manifest-192 — manifest.json · /icon-192\.png\?v=29/
-- ✓ manifest-512 — manifest.json · /icon-512\.png\?v=29/
-- ✓ manifest-maskable — manifest.json · /maskable-512\.png\?v=29/
-- ✓ manifest-monochrome — manifest.json · /monochrome-512\.png\?v=29/
-- ✓ manifest-apple — manifest.json · /apple-touch-icon\.png\?v=29/
-- ✓ index-favicon — index.html · /favicon\.ico\?v=29/
-- ✓ index-logo-master — index.html · /logo-master\.svg\?v=29/
-- ✓ index-icon-192 — index.html · /icon-192\.png\?v=29/
-- ✓ index-apple — index.html · /apple-touch-icon\.png\?v=29/
-- ✓ index-manifest — index.html · /manifest\.json\?v=29/
-- ✓ index-og — index.html · /og-share\.png\?v=29/
-- ✓ landing-logo — landing.html · /logo-master\.svg\?v=29/
-- ✓ landing-icon-192 — landing.html · /icon-192\.png\?v=29/
-- ✓ home-brand — js/views/home.js · /logo-master\.svg\?v=29/
-- ✓ push-icon — js/core/pushNotifications.js · /icon-192\.png\?v=29/
-- ✓ brand-css — css/brand-identity-final.css · /logo-master\.svg\?v=29/
+- ✓ manifest-192 — manifest.json · /icon-192\.png\?v=30/
+- ✓ manifest-512 — manifest.json · /icon-512\.png\?v=30/
+- ✓ manifest-maskable — manifest.json · /maskable-512\.png\?v=30/
+- ✓ manifest-monochrome — manifest.json · /monochrome-512\.png\?v=30/
+- ✓ manifest-apple — manifest.json · /apple-touch-icon\.png\?v=30/
+- ✓ index-favicon — index.html · /favicon\.ico\?v=30/
+- ✓ index-logo-master — index.html · /logo-master\.svg\?v=30/
+- ✓ index-icon-192 — index.html · /icon-192\.png\?v=30/
+- ✓ index-apple — index.html · /apple-touch-icon\.png\?v=30/
+- ✓ index-manifest — index.html · /manifest\.json\?v=30/
+- ✓ index-og — index.html · /og-share\.png\?v=30/
+- ✓ landing-logo — landing.html · /logo-master\.svg\?v=30/
+- ✓ landing-icon-192 — landing.html · /icon-192\.png\?v=30/
+- ✓ home-brand — js/views/home.js · /logo-master\.svg\?v=30/
+- ✓ push-icon — js/core/pushNotifications.js · /icon-192\.png\?v=30/
+- ✓ brand-css — css/brand-identity-final.css · /logo-master\.svg\?v=30/
 - ✓ sw-cache — sw.js · /CACHE_VERSION\s*=\s*`rg-pwa-v\$\{PWA_VERSION\}`|rg-pwa-v\$\{PWA_VERSION\}/
 - ✓ sw-image-cache — sw.js · /IMAGE_CACHE\s*=\s*`rg-runtime-images-v\$\{PWA_VERSION\}`|rg-runtime-images-v\$\{PWA_VERSION\}/
 - ✓ sw-network-first-icons — sw.js · /isAppIconPath|network-first/

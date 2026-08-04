@@ -1,8 +1,8 @@
 {
   "id": "etap-38-release-candidate",
   "title": "ETAP 38 — Release Candidate",
-  "generatedAt": "2026-08-01T05:05:41.595Z",
-  "verdict": "PASS",
+  "generatedAt": "2026-08-04T17:41:50.228Z",
+  "verdict": "FAIL",
   "persona": "Pierwszy użytkownik · install → reinstall",
   "policy": {
     "notAuditOnly": true,
@@ -15,8 +15,8 @@
   },
   "summary": {
     "stepsTotal": 22,
-    "stepsPassed": 22,
-    "stepsFailed": 0,
+    "stepsPassed": 21,
+    "stepsFailed": 1,
     "personaSteps": 14,
     "personaPassed": 14
   },
@@ -56,7 +56,7 @@
       "label": "GPS / lokalizacja",
       "status": "pass",
       "detail": "watch + clearWatch + events",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "search",
@@ -77,7 +77,7 @@
       "label": "Producent (modal)",
       "status": "pass",
       "detail": "producer modal open/close",
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "favorites",
@@ -118,7 +118,7 @@
       "id": "update",
       "label": "Aktualizacja (PWA version)",
       "status": "pass",
-      "detail": "PWA_VERSION=29 synced + skipWaiting",
+      "detail": "PWA_VERSION=30 synced + skipWaiting",
       "ms": 0
     },
     {
@@ -166,8 +166,8 @@
     {
       "id": "child-i18n",
       "label": "Child: translations",
-      "status": "pass",
-      "detail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.",
+      "status": "fail",
+      "detail": "   - legal.impressumS3Body |  | --- Wymagane klucze testowe ---",
       "ms": 0
     },
     {
@@ -201,9 +201,9 @@
     },
     {
       "name": "check-translations",
-      "status": "pass",
-      "exit": 0,
-      "tail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe."
+      "status": "fail",
+      "exit": 1,
+      "tail": "   - legal.impressumS3Body |  | --- Wymagane klucze testowe ---"
     },
     {
       "name": "test-pwa",

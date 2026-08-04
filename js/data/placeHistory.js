@@ -17,15 +17,6 @@ import { normalizeCategoryIconKey } from '../presentation/categoryIcons.js';
  * @type {readonly PlaceHistoryFact[]}
  */
 export const PLACE_HISTORY_CATALOG = Object.freeze([
-    // Curated content producers
-    { id: 'schmidtGenerations', contentIds: ['content-baeckerei-schmidt'] },
-    { id: 'imkereiLindens', contentIds: ['content-imkerei-sonne'] },
-    { id: 'hofSeasonalVeg', contentIds: ['content-hof-mueller'] },
-    { id: 'molkereiSameDay', contentIds: ['content-molkerei-rhein'] },
-    { id: 'metzgereiCraft', contentIds: ['content-metzgerei-berg'] },
-    { id: 'gasthofView', contentIds: ['content-gasthof-eifel'] },
-    { id: 'imbissRegional', contentIds: ['content-imbiss-markt'] },
-
     // Bakeries
     { id: 'bakeryFortyYears', categories: ['bakery'], keywords: /brot|bread|chleb|sauerteig|pieczyw/i },
     { id: 'bakeryDawnOven', categories: ['bakery'] },

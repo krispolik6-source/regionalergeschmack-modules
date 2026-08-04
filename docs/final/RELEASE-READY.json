@@ -1,0 +1,361 @@
+{
+  "id": "release-ready-audit",
+  "title": "Release Ready — Końcowy Audyt Aplikacji",
+  "generatedAt": "2026-08-04T18:19:46.832Z",
+  "policy": {
+    "cssOnlyFixes": true,
+    "unchanged": [
+      "JS",
+      "HTML",
+      "Store",
+      "EventBus",
+      "GPS",
+      "Map logic",
+      "Translations",
+      "Architecture"
+    ]
+  },
+  "verdict": {
+    "releaseReady": true,
+    "label": "PASS",
+    "checksPassed": 28,
+    "checksTotal": 28
+  },
+  "areas": [
+    {
+      "id": "home",
+      "label": "Home",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "map",
+      "label": "Mapa",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "producer",
+      "label": "Profil producenta",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "categories",
+      "label": "Kategorie",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "premium",
+      "label": "Premium",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "legal",
+      "label": "Legal",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "settings",
+      "label": "Ustawienia",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "side-menu",
+      "label": "Side Menu",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "bottom-nav",
+      "label": "Bottom Navigation",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "offline",
+      "label": "Offline",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "pwa",
+      "label": "PWA",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "dark-mode",
+      "label": "Dark Mode",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "light-mode",
+      "label": "Light Mode",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "responsive",
+      "label": "Responsive",
+      "status": "pass",
+      "css": true,
+      "subAudit": "pass"
+    },
+    {
+      "id": "accessibility",
+      "label": "Accessibility",
+      "status": "pass",
+      "css": true,
+      "subAudit": "pass"
+    },
+    {
+      "id": "performance",
+      "label": "Performance",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    },
+    {
+      "id": "brand-book",
+      "label": "Brand Book",
+      "status": "pass",
+      "css": true,
+      "subAudit": null
+    }
+  ],
+  "subAudits": [
+    {
+      "id": "mobile-premium",
+      "ok": true,
+      "exit": 0,
+      "detail": "Wrote: docs\\brand\\RESPONSIVE-PREMIUM-REPORT.md · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "accessibility",
+      "ok": true,
+      "exit": 0,
+      "detail": "Wrote: docs\\brand\\ACCESSIBILITY-AUDIT-REPORT.md · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "animation",
+      "ok": true,
+      "exit": 0,
+      "detail": "Wrote: docs\\brand\\ANIMATION-AUDIT-REPORT.md · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "css-performance",
+      "ok": true,
+      "exit": 0,
+      "detail": "Wrote: docs\\brand\\CSS-PERFORMANCE-AUDIT-REPORT.md · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "brand-protection",
+      "ok": true,
+      "exit": 0,
+      "detail": "Brand Protection smoke test OK · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "pwa",
+      "ok": true,
+      "exit": 0,
+      "detail": "OK · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "responsive",
+      "ok": true,
+      "exit": 0,
+      "detail": "OK · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "release-cleanup",
+      "ok": true,
+      "exit": 0,
+      "detail": " · RESULT PASS"
+    },
+    {
+      "id": "brand-colors",
+      "ok": true,
+      "exit": 0,
+      "detail": " · RESULT PASS"
+    },
+    {
+      "id": "check-accessibility-theme",
+      "ok": true,
+      "exit": 0,
+      "detail": "OK · npm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    }
+  ],
+  "auditStack": [
+    "css/mobile-premium-audit.css",
+    "css/accessibility-audit.css",
+    "css/animation-audit.css",
+    "css/css-performance-audit.css",
+    "css/release-ready-audit.css"
+  ],
+  "checks": [
+    {
+      "id": "file-release-ready",
+      "ok": true,
+      "detail": "css/release-ready-audit.css istnieje"
+    },
+    {
+      "id": "imported-release-ready",
+      "ok": true,
+      "detail": "import w brand-colors-cleanup"
+    },
+    {
+      "id": "audit-stack-complete",
+      "ok": true,
+      "detail": "pełny stack audit CSS"
+    },
+    {
+      "id": "theme-focus-visible",
+      "ok": true,
+      "detail": "theme toggle focus-visible"
+    },
+    {
+      "id": "theme-touch-ph-btn",
+      "ok": true,
+      "detail": "theme toggle touch ≥44px"
+    },
+    {
+      "id": "area-home",
+      "ok": true,
+      "detail": "Home: style coverage"
+    },
+    {
+      "id": "area-map",
+      "ok": true,
+      "detail": "Mapa: style coverage"
+    },
+    {
+      "id": "area-producer",
+      "ok": true,
+      "detail": "Profil producenta: style coverage"
+    },
+    {
+      "id": "area-categories",
+      "ok": true,
+      "detail": "Kategorie: style coverage"
+    },
+    {
+      "id": "area-premium",
+      "ok": true,
+      "detail": "Premium: style coverage"
+    },
+    {
+      "id": "area-legal",
+      "ok": true,
+      "detail": "Legal: style coverage"
+    },
+    {
+      "id": "area-settings",
+      "ok": true,
+      "detail": "Ustawienia: style coverage"
+    },
+    {
+      "id": "area-side-menu",
+      "ok": true,
+      "detail": "Side Menu: style coverage"
+    },
+    {
+      "id": "area-bottom-nav",
+      "ok": true,
+      "detail": "Bottom Navigation: style coverage"
+    },
+    {
+      "id": "area-offline",
+      "ok": true,
+      "detail": "Offline: style coverage"
+    },
+    {
+      "id": "area-pwa",
+      "ok": true,
+      "detail": "PWA: style coverage"
+    },
+    {
+      "id": "area-dark-mode",
+      "ok": true,
+      "detail": "Dark Mode: style coverage"
+    },
+    {
+      "id": "area-light-mode",
+      "ok": true,
+      "detail": "Light Mode: style coverage"
+    },
+    {
+      "id": "sub-mobile-premium",
+      "ok": true,
+      "detail": "mobile-premium: PASS"
+    },
+    {
+      "id": "sub-accessibility",
+      "ok": true,
+      "detail": "accessibility: PASS"
+    },
+    {
+      "id": "sub-animation",
+      "ok": true,
+      "detail": "animation: PASS"
+    },
+    {
+      "id": "sub-css-performance",
+      "ok": true,
+      "detail": "css-performance: PASS"
+    },
+    {
+      "id": "sub-brand-protection",
+      "ok": true,
+      "detail": "brand-protection: PASS"
+    },
+    {
+      "id": "sub-pwa",
+      "ok": true,
+      "detail": "pwa: PASS"
+    },
+    {
+      "id": "sub-responsive",
+      "ok": true,
+      "detail": "responsive: PASS"
+    },
+    {
+      "id": "sub-release-cleanup",
+      "ok": true,
+      "detail": "release-cleanup: PASS"
+    },
+    {
+      "id": "sub-brand-colors",
+      "ok": true,
+      "detail": "brand-colors: PASS"
+    },
+    {
+      "id": "sub-check-accessibility-theme",
+      "ok": true,
+      "detail": "check-accessibility-theme: PASS"
+    }
+  ],
+  "notes": [
+    "Warstwa release-ready-audit.css: spójność wizualna wszystkich ekranów (Brand Book)",
+    "Stack audit ładowany przez brand-colors-cleanup.css?v=6 (ostatnia kaskada)",
+    "Release Validator (ETAP 44) może nadal raportować błędy poza CSS (np. klucze tłumaczeń) — poza zakresem tego audytu"
+  ]
+}

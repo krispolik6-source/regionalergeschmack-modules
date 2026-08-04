@@ -1,6 +1,6 @@
 # Logo Audit — ETAP 28A
 
-Wygenerowano: 2026-08-01T05:05:15.120Z
+Wygenerowano: 2026-08-04T17:43:20.479Z
 
 ## Zasada
 
@@ -54,6 +54,10 @@ Master SHA (16): `668be70eec6ce347`
 
 ## ✗ Miejsca których nie udało się znaleźć / problemy
 
+- **foreign-file** — `assets/icons/favicon-16.png` · nie na liście kanonicznych pochodnych
+- **foreign-file** — `assets/icons/favicon-32.png` · nie na liście kanonicznych pochodnych
+- **foreign-file** — `assets/icons/logo-icon.svg` · nie na liście kanonicznych pochodnych
+- **foreign-file** — `assets/icons/maskable-192.png` · nie na liście kanonicznych pochodnych
 - **foreign-file** — `assets/icons/monochrome-512.png` · nie na liście kanonicznych pochodnych
 
 ## Notatki

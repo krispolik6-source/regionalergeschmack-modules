@@ -1,0 +1,246 @@
+{
+  "id": "accessibility-audit",
+  "title": "Accessibility Audit Report",
+  "generatedAt": "2026-08-04T18:19:45.243Z",
+  "policy": {
+    "cssOnly": true,
+    "functionalityUnchanged": true,
+    "files": [
+      "css/accessibility-audit.css",
+      "css/dark-mode-contrast.css",
+      "css/release-cleanup.css",
+      "css/mobile-premium-audit.css"
+    ]
+  },
+  "areas": [
+    "focus-visible",
+    "tab order",
+    "contrast",
+    "touch targets",
+    "czytelność tekstów",
+    "dark mode",
+    "light mode",
+    "keyboard navigation"
+  ],
+  "summary": {
+    "checksPassed": 33,
+    "checksTotal": 33,
+    "ok": true
+  },
+  "mitigations": [
+    {
+      "area": "focus-visible",
+      "status": "mitigated",
+      "detail": "css/accessibility-audit.css — złoty pierścień :focus-visible na wszystkich kontrolkach"
+    },
+    {
+      "area": "tab order",
+      "status": "mitigated",
+      "detail": "scroll-margin + overflow:visible — DOM order bez zmian (HTML/JS nietknięte)"
+    },
+    {
+      "area": "contrast",
+      "status": "mitigated",
+      "detail": "tokeny --a11y-text / --a11y-text-muted · dark mode nav · prefers-contrast: more"
+    },
+    {
+      "area": "touch targets",
+      "status": "mitigated",
+      "detail": "--a11y-touch 44px + mobile-premium-audit + release-cleanup"
+    },
+    {
+      "area": "czytelność tekstów",
+      "status": "mitigated",
+      "detail": "line-height 1.5/1.55 · input 16px · optimizeLegibility"
+    },
+    {
+      "area": "dark mode",
+      "status": "mitigated",
+      "detail": "dark-mode-contrast.css + accessibility-audit dark overrides"
+    },
+    {
+      "area": "light mode",
+      "status": "mitigated",
+      "detail": "accessibility-audit light tokens + link underline"
+    },
+    {
+      "area": "keyboard navigation",
+      "status": "mitigated",
+      "detail": "scroll-margin · focus-visible · reduced-motion · disabled focus"
+    }
+  ],
+  "checks": [
+    {
+      "id": "file-accessibility-audit",
+      "ok": true,
+      "detail": "css/accessibility-audit.css istnieje"
+    },
+    {
+      "id": "imported-audit",
+      "ok": true,
+      "detail": "accessibility-audit.css importowany z brand-colors-cleanup"
+    },
+    {
+      "id": "focus-visible-global",
+      "ok": true,
+      "detail": "global :focus-visible"
+    },
+    {
+      "id": "focus-not-mouse",
+      "ok": true,
+      "detail": ":focus:not(:focus-visible) — brak pierścienia na klik"
+    },
+    {
+      "id": "focus-gold",
+      "ok": true,
+      "detail": "focus złoty Brand Book"
+    },
+    {
+      "id": "focus-interactive",
+      "ok": true,
+      "detail": "focus na nav, formularzach, przyciskach"
+    },
+    {
+      "id": "focus-existing-layers",
+      "ok": true,
+      "detail": "focus-visible na nav i mapie"
+    },
+    {
+      "id": "tab-scroll-margin",
+      "ok": true,
+      "detail": "scroll-margin pod fixed header/nav (klawiatura)"
+    },
+    {
+      "id": "tab-focus-overflow",
+      "ok": true,
+      "detail": "fokus nie obcinany w nav/header"
+    },
+    {
+      "id": "contrast-tokens-light",
+      "ok": true,
+      "detail": "token tekstu light"
+    },
+    {
+      "id": "contrast-tokens-muted",
+      "ok": true,
+      "detail": "token muted light"
+    },
+    {
+      "id": "contrast-dark-mode",
+      "ok": true,
+      "detail": "dark mode tokeny"
+    },
+    {
+      "id": "contrast-dark-nav",
+      "ok": true,
+      "detail": "dark mode: czytelne etykiety nav"
+    },
+    {
+      "id": "contrast-prefers-more",
+      "ok": true,
+      "detail": "prefers-contrast: more"
+    },
+    {
+      "id": "touch-token",
+      "ok": true,
+      "detail": "touch token 44px"
+    },
+    {
+      "id": "touch-enforcement",
+      "ok": true,
+      "detail": "min-height touch na mobile/coarse"
+    },
+    {
+      "id": "touch-release",
+      "ok": true,
+      "detail": "release-cleanup: legal/cookie 44px"
+    },
+    {
+      "id": "touch-mobile-audit",
+      "ok": true,
+      "detail": "mobile-premium-audit: touch 44px"
+    },
+    {
+      "id": "readability-line-height",
+      "ok": true,
+      "detail": "line-height body"
+    },
+    {
+      "id": "readability-input-16",
+      "ok": true,
+      "detail": "input ≥16px (iOS zoom)"
+    },
+    {
+      "id": "readability-paragraphs",
+      "ok": true,
+      "detail": "line-height akapitów"
+    },
+    {
+      "id": "dark-text-primary",
+      "ok": true,
+      "detail": "dark mode: nagłówki i tytuły"
+    },
+    {
+      "id": "dark-placeholder",
+      "ok": true,
+      "detail": "dark mode: placeholder czytelny"
+    },
+    {
+      "id": "dark-forms",
+      "ok": true,
+      "detail": "dark mode: formularze"
+    },
+    {
+      "id": "light-text",
+      "ok": true,
+      "detail": "light mode: tytuły sekcji"
+    },
+    {
+      "id": "light-links",
+      "ok": true,
+      "detail": "light mode: linki z underline offset"
+    },
+    {
+      "id": "light-mobile-muted",
+      "ok": true,
+      "detail": "light mode: muted text token"
+    },
+    {
+      "id": "keyboard-reduced-motion",
+      "ok": true,
+      "detail": "prefers-reduced-motion"
+    },
+    {
+      "id": "keyboard-disabled-focus",
+      "ok": true,
+      "detail": "disabled: focus-visible widoczny"
+    },
+    {
+      "id": "keyboard-list-focus-bg",
+      "ok": true,
+      "detail": "listy: tło przy focus-visible"
+    },
+    {
+      "id": "keyboard-range",
+      "ok": true,
+      "detail": "slider mapy: focus-visible"
+    },
+    {
+      "id": "css-only-policy",
+      "ok": true,
+      "detail": "brak ukrywania funkcji — tylko prezentacja"
+    },
+    {
+      "id": "no-pointer-events-none-global",
+      "ok": true,
+      "detail": "brak globalnego pointer-events: none"
+    }
+  ],
+  "howToVerify": [
+    "npm run accessibility-audit",
+    "Tab przez: header → home CTA → bottom nav → mapa → modal → menu",
+    "Sprawdź złoty focus-visible (nie na klik myszą)",
+    "Przełącz dark/light — kontrast tytułów i meta",
+    "DevTools → Rendering → Emulate prefers-reduced-motion / prefers-contrast"
+  ]
+}

@@ -151,6 +151,7 @@ if (!existsSync(masterPath)) {
 for (const alias of [
     'assets/icons/icon-source.svg',
     'assets/icons/icon-symbol.svg',
+    'assets/icons/logo-icon.svg',
     'assets/brand/logo-mark.svg'
 ]) {
     const full = join(ROOT, alias);
@@ -279,7 +280,7 @@ for (const file of textFiles) {
 
     // extra logo svg
     if (pathRel.includes('logo') && pathRel.endsWith('.svg')
-        && !/logo-master|logo-on-|logo-mark|icon-source|icon-symbol/.test(pathRel)) {
+        && !/logo-master|logo-on-|logo-mark|icon-source|icon-symbol|logo-icon/.test(pathRel)) {
         warn('logo', file, 'Dodatkowy plik logo poza master/alias', 'extra-logo-svg');
     }
 
@@ -309,11 +310,15 @@ for (const file of textFiles) {
         warn('spacing', file, 'Bardzo duży padding px (sprawdź spójność odstępów Brand Book)', 'spacing-huge');
     }
 
-    // radius — extreme pills on brand chrome
+    // radius — extreme pills on brand chrome (tylko w tym samym bloku reguły)
     if (pathRel.endsWith('.css')) {
-        if (/border-radius:\s*(9999?px|50%)/i.test(text)
-            && /header|brand|premium-hero|home-greeting/i.test(text)) {
-            warn('radius', file, 'Ekstremalny radius (pill) w kontekście brand/hero', 'radius-pill-brand');
+        const ruleBlocks = text.split(/\}/);
+        for (const block of ruleBlocks) {
+            if (/border-radius:\s*9999?px/i.test(block)
+                && /header|brand|premium-hero|home-greeting/i.test(block)) {
+                warn('radius', file, 'Ekstremalny radius (pill) w kontekście brand/hero', 'radius-pill-brand');
+                break;
+            }
         }
         // count extreme pills globally as soft signal
         const pills = text.match(/border-radius:\s*9999?px/gi) || [];
@@ -338,7 +343,7 @@ for (const file of textFiles) {
         for (const block of blocks.slice(0, 40)) {
             const head = block.slice(0, 80);
             const body = block.slice(0, 600);
-            if (/glow|neon|pulse-ai|shimmer-ai/i.test(head)
+            if ((/glow|neon|pulse-ai|shimmer-ai/i.test(head) && !/warm-glow|regional-warm/i.test(head))
                 || PURPLE_GLOW.some((g) => body.toLowerCase().includes(g.toLowerCase()))) {
                 warn('animations', file, `Animacja podejrzana o glow/neon: ${head.split('{')[0].trim()}`, 'anim-glow');
             }

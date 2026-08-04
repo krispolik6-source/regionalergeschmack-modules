@@ -1,0 +1,655 @@
+/* ============================================================
+   Producer Modal — Premium Polish (CSS only, spójność z Home v1)
+   Tokeny · ciepłe tła · bez glass/navy · Brand Book
+   ============================================================ */
+
+.producer-modal {
+    --pm-card-radius: 18px;
+    --pm-btn-radius: 14px;
+    --pm-img-radius: 12px;
+    --pm-border: #e6efdf;
+    --pm-border-hover: #dce8d4;
+    --pm-surface: #fff;
+    --pm-surface-warm: linear-gradient(
+        165deg,
+        rgba(255, 254, 248, 0.98) 0%,
+        rgba(247, 243, 234, 0.97) 46%,
+        rgba(243, 247, 242, 0.95) 100%
+    );
+    --pm-text: #2a3f28;
+    --pm-text-muted: rgba(42, 63, 40, 0.72);
+    --pm-card-shadow:
+        0 2px 10px rgba(42, 63, 40, 0.08),
+        0 1px 3px rgba(42, 63, 40, 0.04);
+    --pm-card-shadow-hover:
+        0 6px 18px rgba(42, 63, 40, 0.12),
+        0 2px 6px rgba(42, 63, 40, 0.06);
+    --pm-btn-shadow:
+        0 2px 10px rgba(42, 63, 40, 0.08),
+        0 1px 3px rgba(42, 63, 40, 0.04);
+    --pm-btn-shadow-hover:
+        0 6px 18px rgba(42, 63, 40, 0.12),
+        0 2px 6px rgba(42, 63, 40, 0.06);
+    --pm-btn-shadow-active:
+        0 2px 8px rgba(42, 63, 40, 0.1),
+        0 1px 3px rgba(42, 63, 40, 0.05);
+    --pm-btn-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --pm-btn-duration: 0.28s;
+    --pm-focus: var(--brand-gold, #c9a227);
+    font-family: var(--font-sans, 'Source Sans 3', sans-serif);
+    color: var(--pm-text);
+}
+
+/* ——— Shell ——— */
+.producer-modal-dialog,
+.producer-modal-content,
+.producer-modal-body {
+    background: var(--pm-surface-warm) !important;
+    color: var(--pm-text);
+}
+
+.producer-modal-backdrop {
+    background: rgba(20, 24, 16, 0.52);
+}
+
+/* Wyłącz landscapes wash (stary styl zdjęcia w tle nagłówka) */
+.producer-modal-header::before,
+.producer-modal-header::after {
+    display: none !important;
+    content: none !important;
+}
+
+.producer-modal-toolbar,
+.producer-modal-header,
+.producer-modal-footer {
+    background: var(--pm-surface) !important;
+    border-color: var(--pm-border) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+.producer-modal-toolbar {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.72),
+        0 2px 10px rgba(42, 63, 40, 0.05);
+}
+
+.producer-modal-header {
+    overflow: visible;
+}
+
+.producer-modal-header--compact {
+    background: var(--pm-surface) !important;
+    color: var(--pm-text) !important;
+}
+
+.producer-modal-footer {
+    box-shadow:
+        0 -4px 16px rgba(42, 63, 40, 0.06),
+        0 -1px 4px rgba(42, 63, 40, 0.04);
+}
+
+/* ——— Przyciski (jak Home Premium) ——— */
+.producer-modal-back,
+.producer-modal-close,
+.producer-modal .btn-primary,
+.producer-modal .btn-secondary,
+.producer-modal .product-actions-toggle,
+.producer-modal .taste-diary-open-btn,
+.producer-modal .producer-location-nav {
+    font-family: var(--font-sans, 'Source Sans 3', sans-serif) !important;
+    font-weight: 600 !important;
+    border-radius: var(--pm-btn-radius) !important;
+    box-shadow: var(--pm-btn-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    cursor: pointer;
+    transition:
+        transform var(--pm-btn-duration) var(--pm-btn-ease),
+        box-shadow var(--pm-btn-duration) var(--pm-btn-ease),
+        border-color var(--pm-btn-duration) var(--pm-btn-ease),
+        background-color var(--pm-btn-duration) var(--pm-btn-ease),
+        color var(--pm-btn-duration) var(--pm-btn-ease) !important;
+}
+
+.producer-modal-back {
+    color: var(--pm-text) !important;
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+    border-radius: var(--pm-btn-radius) !important;
+    padding: 8px 12px !important;
+}
+
+.producer-modal-close,
+.producer-modal .btn-primary {
+    color: #fff !important;
+    background: var(--color-primary, #2a3f28) !important;
+    border: 1px solid rgba(42, 63, 40, 0.2) !important;
+}
+
+.producer-modal-close {
+    width: 100%;
+    padding: 11px 20px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+.producer-modal .btn-secondary,
+.producer-modal .product-actions-toggle,
+.producer-modal .taste-diary-open-btn {
+    color: var(--pm-text) !important;
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+}
+
+.producer-modal .producer-location-nav {
+    color: var(--pm-text) !important;
+    background: var(--pm-surface) !important;
+    border-top: 1px solid var(--pm-border) !important;
+    text-decoration: none;
+}
+
+.producer-modal-back:hover,
+.producer-modal-back:focus-visible,
+.producer-modal-close:hover,
+.producer-modal-close:focus-visible,
+.producer-modal .btn-primary:hover,
+.producer-modal .btn-primary:focus-visible,
+.producer-modal .btn-secondary:hover,
+.producer-modal .btn-secondary:focus-visible,
+.producer-modal .product-actions-toggle:hover,
+.producer-modal .product-actions-toggle:focus-visible,
+.producer-modal .taste-diary-open-btn:hover,
+.producer-modal .taste-diary-open-btn:focus-visible,
+.producer-modal .producer-location-nav:hover,
+.producer-modal .producer-location-nav:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--pm-btn-shadow-hover) !important;
+    border-color: var(--pm-border-hover) !important;
+}
+
+.producer-modal-close:hover,
+.producer-modal-close:focus-visible,
+.producer-modal .btn-primary:hover,
+.producer-modal .btn-primary:focus-visible {
+    border-color: rgba(42, 63, 40, 0.35) !important;
+}
+
+.producer-modal-back:focus-visible,
+.producer-modal-close:focus-visible,
+.producer-modal .btn-primary:focus-visible,
+.producer-modal .btn-secondary:focus-visible,
+.producer-modal .product-actions-toggle:focus-visible,
+.producer-modal .taste-diary-open-btn:focus-visible,
+.producer-modal .producer-location-nav:focus-visible,
+.producer-modal .producer-story-toggle:focus-visible,
+.producer-modal .product-actions-item:focus-visible,
+.producer-modal .producer-contact-item:focus-visible {
+    outline: 2px solid var(--pm-focus) !important;
+    outline-offset: 2px;
+}
+
+.producer-modal-back:active,
+.producer-modal-close:active,
+.producer-modal .btn-primary:active,
+.producer-modal .btn-secondary:active,
+.producer-modal .product-actions-toggle:active,
+.producer-modal .taste-diary-open-btn:active {
+    transform: translateY(0) scale(0.985) !important;
+    box-shadow: var(--pm-btn-shadow-active) !important;
+    transition-duration: 0.14s !important;
+}
+
+/* ——— Nagłówek · foto · typografia ——— */
+.producer-modal-header--compact .producer-photo-frame,
+.producer-modal-header .producer-photo-frame {
+    border-radius: var(--pm-card-radius) !important;
+    border: 1px solid var(--pm-border) !important;
+    box-shadow: var(--pm-card-shadow) !important;
+    overflow: hidden;
+}
+
+.producer-modal-header--compact .producer-photo-frame {
+    border-radius: var(--pm-card-radius) !important;
+}
+
+.producer-modal-photo-caption {
+    border-radius: 0 0 var(--pm-card-radius) var(--pm-card-radius);
+    background: linear-gradient(180deg, transparent 0%, rgba(20, 24, 16, 0.78) 100%);
+}
+
+.producer-modal-photo-title {
+    color: #fffaf2;
+    font-family: var(--font-serif, 'Literata', Georgia, serif);
+}
+
+.producer-modal-meta-line,
+.producer-modal-chip {
+    color: var(--pm-text-muted);
+}
+
+.producer-modal-chip-type,
+.producer-modal-chip-rating {
+    color: #c9a227;
+}
+
+.producer-modal-chip-status .producer-open-status.is-open {
+    color: #2d5030;
+}
+
+.producer-modal-chip-status .producer-open-status.is-closed {
+    color: #8b4040;
+}
+
+.producer-modal-promo--compact {
+    color: #9a3a28;
+}
+
+.producer-header-name,
+.producer-modal-header h2,
+.producer-modal .producer-section-title {
+    color: var(--pm-text) !important;
+    font-family: var(--font-serif, 'Literata', Georgia, serif);
+}
+
+.producer-header-meta,
+.producer-header-address,
+.producer-header-distance,
+.producer-rating-value,
+.producer-product-desc,
+.producer-review-date,
+.producer-reviews-empty,
+.producer-modal-empty,
+.producer-modal-empty-hint,
+.producer-review-field-hint {
+    color: var(--pm-text-muted) !important;
+}
+
+.producer-header-type {
+    color: #2a3f28;
+    font-weight: 600;
+}
+
+.producer-stars {
+    color: #c9a227;
+}
+
+.producer-product-name,
+.producer-product-price,
+.producer-review-comment {
+    color: var(--pm-text);
+}
+
+.producer-product-price {
+    color: var(--color-primary, #2a3f28);
+}
+
+.producer-story-text,
+.producer-modal .producer-story-text {
+    color: var(--pm-text-muted) !important;
+    line-height: 1.5;
+}
+
+.producer-story--collapsible .producer-story-toggle {
+    color: var(--color-primary, #2a3f28);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Header card (legacy / non-compact) — jedna karta jak Home */
+.producer-modal .producer-header-card {
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+    border-radius: var(--pm-card-radius) !important;
+    box-shadow: var(--pm-card-shadow) !important;
+    padding: 12px 14px 12px 16px !important;
+}
+
+/* ——— Karty · sekcje ——— */
+.producer-product-card,
+.producer-review-card,
+.producer-contact-item,
+.producer-amenity-chip,
+.producer-modal .producer-smart-offer,
+.producer-modal .producer-report-section,
+.producer-modal .taste-diary-block {
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+    border-radius: var(--pm-card-radius) !important;
+    box-shadow: var(--pm-card-shadow) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+.producer-product-card {
+    padding: 10px 12px !important;
+    border-radius: var(--pm-card-radius) !important;
+}
+
+.producer-product-card:hover {
+    border-color: var(--pm-border-hover) !important;
+    box-shadow: var(--pm-card-shadow-hover) !important;
+}
+
+.producer-product-image {
+    background: #f3f7f2 !important;
+    border-radius: var(--pm-img-radius) !important;
+    border: 1px solid var(--pm-border);
+}
+
+.producer-review-card {
+    padding: 10px 14px !important;
+    border-radius: var(--pm-card-radius) !important;
+}
+
+.producer-review-image,
+.client-review-image {
+    border-radius: var(--pm-img-radius) !important;
+    border-color: var(--pm-border) !important;
+    background: #f3f7f2;
+}
+
+.producer-contact-section,
+.producer-reviews-section,
+.producer-location-section {
+    border-top-color: var(--pm-border) !important;
+}
+
+.producer-contact-item {
+    min-height: 44px;
+    padding: 8px 12px !important;
+    color: var(--pm-text) !important;
+    text-decoration: none;
+}
+
+.producer-contact-item:hover,
+.producer-contact-item:focus-visible {
+    opacity: 1;
+    background: #fff !important;
+    border-color: var(--pm-border-hover) !important;
+    box-shadow: var(--pm-card-shadow-hover) !important;
+}
+
+.producer-amenity-chip {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pm-text);
+}
+
+.producer-modal .producer-smart-offer,
+.producer-modal .producer-report-section {
+    padding: 10px 12px !important;
+}
+
+.producer-modal .taste-diary-block {
+    padding: 12px 14px !important;
+    margin-bottom: 12px;
+}
+
+.producer-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.producer-location-preview {
+    border-radius: var(--pm-card-radius) !important;
+    border-color: var(--pm-border) !important;
+    overflow: hidden;
+    box-shadow: var(--pm-card-shadow);
+}
+
+.producer-location-map {
+    background: #f3f7f2 !important;
+}
+
+/* Product actions dropdown */
+.producer-modal .product-actions-toggle {
+    min-height: 36px;
+    padding: 6px 12px !important;
+    font-size: 12px;
+}
+
+.producer-modal .product-actions-dropdown.is-open .product-actions-toggle {
+    border-color: var(--color-primary, #2a3f28) !important;
+    background: rgba(42, 63, 40, 0.06) !important;
+}
+
+.producer-modal .product-actions-menu {
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+    border-radius: var(--pm-img-radius) !important;
+    box-shadow: var(--pm-card-shadow-hover) !important;
+}
+
+.producer-modal .product-actions-item:hover,
+.producer-modal .product-actions-item:focus-visible {
+    background: rgba(42, 63, 40, 0.08) !important;
+}
+
+/* Formularze */
+.producer-modal .producer-review-field input,
+.producer-modal .producer-review-field select,
+.producer-modal .producer-review-field textarea,
+.producer-modal .taste-diary-field input[type='text'],
+.producer-modal .taste-diary-field textarea,
+.producer-modal .taste-diary-field input[type='file'] {
+    background: var(--pm-surface) !important;
+    border: 1px solid var(--pm-border) !important;
+    border-radius: var(--pm-img-radius) !important;
+    color: var(--pm-text) !important;
+}
+
+.producer-modal .producer-review-field input:focus-visible,
+.producer-modal .producer-review-field select:focus-visible,
+.producer-modal .producer-review-field textarea:focus-visible,
+.producer-modal .taste-diary-field input:focus-visible,
+.producer-modal .taste-diary-field textarea:focus-visible {
+    outline: 2px solid var(--pm-focus) !important;
+    outline-offset: 2px;
+    border-color: var(--pm-border-hover) !important;
+}
+
+.producer-modal .taste-diary-star:has(input:focus-visible) span {
+    outline: 2px solid var(--pm-focus) !important;
+    outline-offset: 2px;
+}
+
+/* Trust badges — ciepłe tony zamiast niebieskiego */
+.producer-modal .producer-trust-badge--community {
+    background: rgba(243, 247, 242, 0.95) !important;
+    border: 1px solid var(--pm-border);
+    color: var(--pm-text);
+}
+
+.producer-modal .producer-trust-badge--verified {
+    background: rgba(232, 245, 234, 0.95) !important;
+    border: 1px solid var(--pm-border);
+}
+
+.producer-modal .producer-trust-badge--pending {
+    background: rgba(255, 248, 230, 0.95) !important;
+    border: 1px solid rgba(201, 162, 39, 0.25);
+}
+
+/* ——— Dark mode (Brand Book unified) ——— */
+body.dark-mode .producer-modal {
+    --pm-border: rgba(201, 162, 39, 0.18);
+    --pm-border-hover: rgba(201, 162, 39, 0.28);
+    --pm-surface: var(--dm-surface, #1e2a20);
+    --pm-surface-warm: linear-gradient(
+        165deg,
+        rgba(30, 42, 32, 0.94) 0%,
+        rgba(32, 42, 32, 0.96) 52%,
+        rgba(28, 38, 28, 0.98) 100%
+    );
+    --pm-text: var(--dm-text, #f5f5f2);
+    --pm-text-muted: var(--dm-text-muted, #d4e4b0);
+    --pm-card-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.22),
+        0 1px 4px rgba(0, 0, 0, 0.14);
+    --pm-card-shadow-hover:
+        0 6px 18px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.18);
+    --pm-btn-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.22),
+        0 1px 4px rgba(0, 0, 0, 0.14);
+    --pm-btn-shadow-hover:
+        0 6px 18px rgba(0, 0, 0, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.18);
+    --pm-btn-shadow-active:
+        0 2px 8px rgba(0, 0, 0, 0.22),
+        0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-mode .producer-modal-dialog,
+body.dark-mode .producer-modal-content,
+body.dark-mode .producer-modal-body {
+    background: var(--pm-surface-warm) !important;
+    color: var(--pm-text) !important;
+}
+
+body.dark-mode .producer-modal-toolbar,
+body.dark-mode .producer-modal-header,
+body.dark-mode .producer-modal-footer,
+body.dark-mode .producer-modal-header--compact {
+    background: var(--pm-surface) !important;
+    border-color: var(--pm-border) !important;
+}
+
+body.dark-mode .producer-modal-toolbar {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+body.dark-mode .producer-modal-footer {
+    box-shadow:
+        0 -4px 16px rgba(0, 0, 0, 0.22),
+        0 -1px 4px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-mode .producer-modal-back,
+body.dark-mode .producer-modal .btn-secondary,
+body.dark-mode .producer-modal .product-actions-toggle,
+body.dark-mode .producer-modal .taste-diary-open-btn {
+    color: var(--pm-text-muted) !important;
+    background: rgba(30, 42, 32, 0.94) !important;
+    border-color: var(--pm-border) !important;
+}
+
+body.dark-mode .producer-modal-close,
+body.dark-mode .producer-modal .btn-primary {
+    color: #fff !important;
+    background: var(--dm-green, #2a3f28) !important;
+    border-color: rgba(201, 162, 39, 0.28) !important;
+}
+
+body.dark-mode .producer-header-name,
+body.dark-mode .producer-modal-header h2,
+body.dark-mode .producer-modal .producer-section-title,
+body.dark-mode .producer-product-name,
+body.dark-mode .producer-review-comment {
+    color: var(--pm-text) !important;
+}
+
+body.dark-mode .producer-story-text,
+body.dark-mode .producer-modal .producer-story-text {
+    color: var(--pm-text-muted) !important;
+}
+
+body.dark-mode .producer-modal-meta-line,
+body.dark-mode .producer-modal-header--compact .producer-modal-chip {
+    color: rgba(245, 245, 242, 0.88) !important;
+}
+
+body.dark-mode .producer-modal-chip-type,
+body.dark-mode .producer-modal-chip-rating {
+    color: var(--dm-gold, #c9a227) !important;
+}
+
+body.dark-mode .producer-product-card,
+body.dark-mode .producer-review-card,
+body.dark-mode .producer-contact-item,
+body.dark-mode .producer-amenity-chip,
+body.dark-mode .producer-modal .producer-smart-offer,
+body.dark-mode .producer-modal .producer-report-section,
+body.dark-mode .producer-modal .taste-diary-block,
+body.dark-mode .producer-modal .producer-header-card {
+    background: var(--dm-surface-elevated, #243528) !important;
+    border-color: var(--pm-border) !important;
+    color: var(--pm-text) !important;
+}
+
+body.dark-mode .producer-product-image,
+body.dark-mode .producer-location-map {
+    background: var(--dm-bg, #141810) !important;
+    border-color: var(--pm-border);
+}
+
+body.dark-mode .producer-product-price,
+body.dark-mode .producer-modal .producer-contact-item {
+    color: var(--dm-gold, #c9a227) !important;
+}
+
+body.dark-mode .producer-header-type {
+    color: #9fd4a0 !important;
+}
+
+body.dark-mode .producer-modal .product-actions-menu {
+    background: var(--dm-surface-elevated, #243528) !important;
+    border-color: var(--pm-border) !important;
+}
+
+body.dark-mode .producer-modal .product-actions-item {
+    color: var(--pm-text) !important;
+}
+
+body.dark-mode .producer-modal .product-actions-item:hover,
+body.dark-mode .producer-modal .product-actions-item:focus-visible {
+    background: rgba(42, 63, 40, 0.45) !important;
+}
+
+body.dark-mode .producer-modal .producer-review-field input,
+body.dark-mode .producer-modal .producer-review-field select,
+body.dark-mode .producer-modal .producer-review-field textarea,
+body.dark-mode .producer-modal .taste-diary-field input[type='text'],
+body.dark-mode .producer-modal .taste-diary-field textarea,
+body.dark-mode .producer-modal .taste-diary-field input[type='file'] {
+    background: var(--dm-bg, #141810) !important;
+    border-color: var(--pm-border) !important;
+    color: var(--pm-text) !important;
+}
+
+body.dark-mode .producer-modal .producer-trust-badge--community {
+    background: rgba(36, 53, 40, 0.92) !important;
+    border-color: var(--pm-border);
+    color: var(--pm-text-muted);
+}
+
+/* Character cards — ciepłe tony Brand Book zamiast pastelowych */
+body.dark-mode .producer-modal[data-character] .producer-header-card {
+    background: var(--dm-surface-elevated, #243528) !important;
+    border-color: var(--pm-border) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .producer-modal-back,
+    .producer-modal-close,
+    .producer-modal .btn-primary,
+    .producer-modal .btn-secondary,
+    .producer-product-card {
+        transition: none !important;
+    }
+
+    .producer-modal-back:hover,
+    .producer-modal-close:hover,
+    .producer-modal .btn-primary:hover,
+    .producer-modal .btn-secondary:hover,
+    .producer-product-card:hover {
+        transform: none !important;
+    }
+}

@@ -3,12 +3,17 @@
    Tylko CSS prezentacja · Brand: zieleń / złoto / krem
    ============================================================ */
 
-/* Home – szybki przełącznik ambient obok powitania */
+/* ============================================================
+   Home – Premium Audio Button (dźwięki natury)
+   Tylko CSS · Brand: #2A3F28 · złoto · krem
+   ============================================================ */
+
 .home-greeting-title-row {
     display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: nowrap;
     margin: 0 0 6px;
 }
 
@@ -18,41 +23,255 @@
     min-width: 0;
 }
 
-.home-ambient-toggle {
+.home-ambient-control {
     flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: min(100%, 168px);
+}
+
+.home-ambient-toggle {
+    --ambient-dur: 0.24s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
     margin: 0;
     padding: 0;
-    border: 0;
-    border-radius: 12px;
-    background: rgba(42, 63, 40, 0.06);
-    color: inherit;
-    font-size: 1.25rem;
-    line-height: 1;
+    border: 1px solid rgba(42, 63, 40, 0.1);
+    border-radius: 16px;
+    background: #ececea;
+    color: #525a50;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.15s ease;
+    box-shadow:
+        0 1px 3px rgba(42, 63, 40, 0.06),
+        0 2px 6px rgba(42, 63, 40, 0.05);
+    transition:
+        background var(--ambient-dur) ease,
+        color var(--ambient-dur) ease,
+        border-color var(--ambient-dur) ease,
+        box-shadow var(--ambient-dur) ease,
+        transform 0.18s ease;
 }
 
-.home-ambient-toggle:hover {
-    background: rgba(201, 162, 39, 0.18);
+.home-ambient-toggle-icon {
+    display: block;
+    flex-shrink: 0;
+    transition:
+        color var(--ambient-dur) ease,
+        opacity var(--ambient-dur) ease,
+        transform var(--ambient-dur) ease;
+}
+
+/* Wyłączony — głośnik widoczny, fale ukryte */
+.home-ambient-toggle.is-off {
+    background: #ececea;
+    color: #525a50;
+    border-color: rgba(42, 63, 40, 0.08);
+    box-shadow:
+        0 1px 3px rgba(42, 63, 40, 0.06),
+        0 2px 6px rgba(42, 63, 40, 0.05);
+}
+
+.home-ambient-toggle.is-off .home-ambient-toggle-icon path {
+    opacity: 0;
+    transform: scale(0.88);
+}
+
+.home-ambient-toggle.is-off:hover {
+    background: #e4e6e2;
+    color: #434a42;
+    border-color: rgba(42, 63, 40, 0.12);
+    box-shadow: 0 2px 8px rgba(42, 63, 40, 0.1);
+}
+
+.home-ambient-toggle:active {
+    transform: scale(0.96);
 }
 
 .home-ambient-toggle:focus-visible {
     outline: 2px solid var(--brand-gold, #c9a227);
-    outline-offset: 2px;
+    outline-offset: 3px;
 }
 
-.home-ambient-toggle[aria-pressed='true'] {
-    background: rgba(42, 63, 40, 0.12);
+/* Włączony — zieleń marki, biała ikona, fale, złota poświata */
+.home-ambient-toggle.is-on {
+    background: #2a3f28;
+    color: #fff;
+    border-color: rgba(201, 162, 39, 0.34);
+    box-shadow:
+        0 0 0 1px rgba(201, 162, 39, 0.22),
+        0 0 18px rgba(201, 162, 39, 0.26),
+        0 4px 14px rgba(42, 63, 40, 0.22);
+}
+
+.home-ambient-toggle.is-on .home-ambient-toggle-icon,
+.home-ambient-toggle.is-on .home-ambient-toggle-icon polygon,
+.home-ambient-toggle.is-on .home-ambient-toggle-icon path {
+    color: #fff;
+    stroke: #fff;
+}
+
+.home-ambient-toggle.is-on .home-ambient-toggle-icon path {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.home-ambient-toggle.is-on:hover {
+    border-color: rgba(201, 162, 39, 0.42);
+    box-shadow:
+        0 0 0 1px rgba(201, 162, 39, 0.3),
+        0 0 22px rgba(201, 162, 39, 0.32),
+        0 6px 16px rgba(42, 63, 40, 0.24);
+}
+
+.home-ambient-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 0;
+    padding: 7px 13px;
+    border: 1px solid #e0e3de;
+    border-radius: 999px;
+    background: #ececea;
+    color: #5a6470;
+    font-family: var(--font-sans, 'Source Sans 3', sans-serif);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(42, 63, 40, 0.05);
+    transition:
+        background 0.24s ease,
+        border-color 0.24s ease,
+        color 0.24s ease,
+        box-shadow 0.24s ease;
+}
+
+.home-ambient-status-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9aa394;
+    transition:
+        background 0.24s ease,
+        box-shadow 0.24s ease,
+        transform 0.24s ease;
+}
+
+.home-ambient-status.is-on {
+    border-color: #e6efdf;
+    background: #f3f7f2;
+    color: #2a3f28;
+    box-shadow: 0 1px 4px rgba(42, 63, 40, 0.08);
+}
+
+.home-ambient-status.is-on .home-ambient-status-dot {
+    background: #2a3f28;
+    box-shadow:
+        0 0 0 2px rgba(42, 63, 40, 0.14),
+        0 0 6px rgba(42, 63, 40, 0.18);
+}
+
+.home-ambient-status.is-off {
+    border-color: #e0e3de;
+    background: #ececea;
+    color: #5a6470;
+    box-shadow: 0 1px 3px rgba(42, 63, 40, 0.05);
+}
+
+.home-ambient-status.is-off .home-ambient-status-dot {
+    background: #9aa394;
+    box-shadow: none;
+}
+
+body.dark-mode .home-ambient-toggle.is-off {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(212, 228, 176, 0.72);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+body.dark-mode .home-ambient-toggle.is-off:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(212, 228, 176, 0.88);
+}
+
+body.dark-mode .home-ambient-toggle.is-on {
+    background: #2a3f28;
+    border-color: rgba(201, 162, 39, 0.38);
+    box-shadow:
+        0 0 0 1px rgba(201, 162, 39, 0.26),
+        0 0 20px rgba(201, 162, 39, 0.3),
+        0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+body.dark-mode .home-ambient-status.is-on {
+    background: rgba(42, 63, 40, 0.55);
+    border-color: rgba(201, 162, 39, 0.22);
+    color: #d4e4b0;
+}
+
+body.dark-mode .home-ambient-status.is-off {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(212, 228, 176, 0.62);
+}
+
+body.dark-mode .home-ambient-status.is-off .home-ambient-status-dot {
+    background: #7a8474;
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .home-ambient-toggle,
+    .home-ambient-toggle-icon,
+    .home-ambient-toggle-icon path,
+    .home-ambient-status,
+    .home-ambient-status-dot {
+        transition: none !important;
+    }
+
+    .home-ambient-toggle:active {
+        transform: none;
+    }
+
+    .home-ambient-toggle.is-off .home-ambient-toggle-icon path {
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .home-greeting-title-row {
+        gap: 8px;
+    }
+
+    .home-ambient-control {
+        gap: 6px;
+        max-width: min(100%, 132px);
+    }
+
     .home-ambient-toggle {
-        transition: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+    }
+
+    .home-ambient-toggle-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .home-ambient-status {
+        padding: 5px 10px;
+        font-size: 12px;
+        max-width: 100%;
+        white-space: normal;
     }
 }
 

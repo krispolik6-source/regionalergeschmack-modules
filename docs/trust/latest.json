@@ -1,9 +1,9 @@
 {
-  "id": "producer-trust-2026-07-22",
+  "id": "producer-trust-2026-08-03",
   "title": "Producer Trust Audit — Trust Score",
   "etapa": "33C",
-  "generatedAt": "2026-07-22T19:25:05.479Z",
-  "day": "2026-07-22",
+  "generatedAt": "2026-08-03T19:07:09.156Z",
+  "day": "2026-08-03",
   "reason": "cli-trust",
   "policy": {
     "autoApply": false,

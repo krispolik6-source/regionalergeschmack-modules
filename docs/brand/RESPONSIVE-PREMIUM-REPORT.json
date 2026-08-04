@@ -1,20 +1,25 @@
 {
-  "id": "responsive-premium-28c",
-  "title": "Responsive Premium Report — ETAP 28C",
-  "generatedAt": "2026-08-01T05:05:15.576Z",
+  "id": "mobile-premium-audit",
+  "title": "Mobile Premium Audit — Responsive Premium Report",
+  "generatedAt": "2026-08-04T18:19:45.015Z",
   "policy": {
     "cssOnly": true,
     "architectureUnchanged": true,
-    "file": "css/mobile-premium.css"
+    "files": [
+      "css/mobile-premium.css",
+      "css/mobile-premium-audit.css"
+    ]
   },
   "viewports": [
     320,
     360,
+    375,
     390,
     412,
     430,
-    768,
-    1024
+    480,
+    600,
+    768
   ],
   "screens": [
     "Home",
@@ -28,120 +33,108 @@
   ],
   "summary": {
     "screens": 8,
-    "viewports": 7,
-    "cells": 56,
-    "checksPassed": 22,
-    "checksTotal": 22,
+    "viewports": 9,
+    "cells": 72,
+    "checksPassed": 34,
+    "checksTotal": 34,
     "ok": true
   },
   "issueTypesCovered": [
-    "ucięte napisy",
-    "za małe kontrasty",
-    "przepełnienia",
-    "nakładanie elementów",
-    "za małe odstępy",
-    "zbyt duże przyciski",
-    "zbyt małe przyciski",
-    "problemy landscape"
+    "ucięte teksty",
+    "nakładające się elementy",
+    "za małe przyciski",
+    "touch target poniżej 44px",
+    "scroll poziomy",
+    "złe marginesy",
+    "nierówne odstępy",
+    "przyciski wystające poza ekran"
   ],
   "detectedAndMitigated": [
     {
-      "type": "ucięte napisy",
+      "type": "ucięte teksty",
       "status": "mitigated",
-      "where": "Home, listy, modal, menu"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "za małe kontrasty",
+      "type": "nakładające się elementy",
       "status": "mitigated",
-      "where": "tytuły i meta na kremie"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "przepełnienia",
+      "type": "za małe przyciski",
       "status": "mitigated",
-      "where": "Home, listy, modal, menu"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "nakładanie elementów",
+      "type": "touch target poniżej 44px",
       "status": "mitigated",
-      "where": "Home, listy, modal, menu"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "za małe odstępy",
+      "type": "scroll poziomy",
       "status": "mitigated",
-      "where": "Home, listy, modal, menu"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "zbyt duże przyciski",
+      "type": "złe marginesy",
       "status": "mitigated",
-      "where": "bottom-nav, CTA, modal, map"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "zbyt małe przyciski",
+      "type": "nierówne odstępy",
       "status": "mitigated",
-      "where": "bottom-nav, CTA, modal, map"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     },
     {
-      "type": "problemy landscape",
+      "type": "przyciski wystające poza ekran",
       "status": "mitigated",
-      "where": "Mapa / Home / Menu w landscape"
+      "where": "CSS mobile-premium.css + mobile-premium-audit.css"
     }
   ],
   "fixes": [
     {
       "area": "global",
-      "fix": "overflow-x: clip na html/body/#app — anty-przepełnienie poziome"
-    },
-    {
-      "area": "contrast",
-      "fix": "Ciemniejszy atrament / muted na kremie (#1c1812 / #4a3f32)"
-    },
-    {
-      "area": "text",
-      "fix": "line-clamp + ellipsis na tytułach Home, Producent, Ulubione, Koszyk, Menu"
+      "fix": "overflow-x: clip — brak scrollu poziomego na html/body/#app"
     },
     {
       "area": "touch",
-      "fix": "min-height 44px na nav, CTA, listach, modal, map buttons; limit max 52px"
+      "fix": "min-height/min-width 44px na przyciskach, nav, map, modal, listach (audit layer)"
     },
     {
-      "area": "nav",
-      "fix": "Etykiety bottom-nav: clamp font + ellipsis (320→1024)"
+      "area": "gutter",
+      "fix": "--mpa-gutter per viewport 320→768; sync --app-gutter"
+    },
+    {
+      "area": "spacing",
+      "fix": "--mpa-gap spójne odstępy kart, sekcji, toolbar mapy"
+    },
+    {
+      "area": "text",
+      "fix": "overflow-wrap + line-clamp 2 na tytułach; ellipsis nav-label"
     },
     {
       "area": "home",
-      "fix": "Premium CTA clamp tekstu; kategorie min-height; ukrycie strzałki na 320"
+      "fix": "search/actions 44px; grid 2 kolumny; karuzele scroll wewnętrzny"
     },
     {
       "area": "map",
-      "fix": "Kontrolki min 44px; safe-area; landscape kompresja"
+      "fix": "toolbar flex-wrap; przyciski bez wystawania; settings close 44px"
     },
     {
       "area": "producer",
-      "fix": "Nagłówek 2 linie; footer kolumna na 320; body gutter"
-    },
-    {
-      "area": "favorites-cart",
-      "fix": "Karty gap/padding; tytuły clamp; empty-state padding"
-    },
-    {
-      "area": "premium",
-      "fix": "Feature cards min-width 0; CTA full-width mobile / max-width tablet+"
-    },
-    {
-      "area": "profile",
-      "fix": "Setting/account min 44px; label ellipsis"
+      "fix": "footer wrap/kolumna 320px; padding gutter"
     },
     {
       "area": "menu",
-      "fix": "Panel max 88vw; itemy 44px; title ellipsis"
+      "fix": "pola formularza min 44px; panel max vw"
+    },
+    {
+      "area": "legal-cookie",
+      "fix": "linki 44px; cookie actions wrap"
     },
     {
       "area": "landscape",
-      "fix": "@media max-height 480px + tablet landscape — mniejsze nav/ikony, ciaśniejsze sekcje"
-    },
-    {
-      "area": "stacking",
-      "fix": "Z-index: header < nav < menu < modal < dropdown"
+      "fix": "touch 44px zachowany; mniejsze gap/etykiety nav"
     }
   ],
   "matrix": [
@@ -155,11 +148,16 @@
           "residualNotes": [
             {
               "type": "spacing",
-              "note": "Home 320: ukryta strzałka Premium (miejsce na tekst)"
+              "note": "Home 320: ukryta strzałka Premium"
             }
           ]
         },
         "360": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "375": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -179,12 +177,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -201,11 +204,16 @@
           "residualNotes": [
             {
               "type": "landscape",
-              "note": "Mapa w landscape: kontrolki kompresowane (CSS max-height 480px)"
+              "note": "Mapa landscape: toolbar wrap + touch 44px"
             }
           ]
         },
         "360": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "375": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -225,12 +233,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -251,6 +264,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -266,12 +284,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -292,6 +315,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -307,12 +335,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -333,6 +366,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -348,12 +386,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -374,6 +417,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -389,12 +437,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -415,6 +468,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -430,12 +488,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -456,6 +519,11 @@
           "fixesApplied": true,
           "residualNotes": []
         },
+        "375": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
         "390": {
           "status": "pass",
           "fixesApplied": true,
@@ -471,12 +539,17 @@
           "fixesApplied": true,
           "residualNotes": []
         },
-        "768": {
+        "480": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
         },
-        "1024": {
+        "600": {
+          "status": "pass",
+          "fixesApplied": true,
+          "residualNotes": []
+        },
+        "768": {
           "status": "pass",
           "fixesApplied": true,
           "residualNotes": []
@@ -491,34 +564,44 @@
       "detail": "css/mobile-premium.css istnieje"
     },
     {
-      "id": "imported",
+      "id": "file-mobile-premium-audit",
+      "ok": true,
+      "detail": "css/mobile-premium-audit.css istnieje"
+    },
+    {
+      "id": "imported-audit",
+      "ok": true,
+      "detail": "mobile-premium-audit.css importowany z brand-colors-cleanup"
+    },
+    {
+      "id": "imported-mobile",
       "ok": true,
       "detail": "@import mobile-premium.css"
     },
     {
       "id": "overflow-x-clip",
       "ok": true,
-      "detail": "global overflow-x"
+      "detail": "global overflow-x clip (audit)"
     },
     {
       "id": "touch-min",
       "ok": true,
-      "detail": "min touch 44px"
+      "detail": "min touch 44px (audit)"
     },
     {
-      "id": "contrast-safe",
+      "id": "touch-enforcement",
       "ok": true,
-      "detail": "kontrast tokeny"
+      "detail": "touch enforcement na mobile"
+    },
+    {
+      "id": "text-safe",
+      "ok": true,
+      "detail": "anty-ucięcie tekstu"
     },
     {
       "id": "landscape-block",
       "ok": true,
-      "detail": "reguły landscape"
-    },
-    {
-      "id": "z-index-stack",
-      "ok": true,
-      "detail": "warstwy z-index"
+      "detail": "reguły landscape (audit)"
     },
     {
       "id": "bp-320",
@@ -529,6 +612,11 @@
       "id": "bp-360",
       "ok": true,
       "detail": "CSS zakres dla 360px"
+    },
+    {
+      "id": "bp-375",
+      "ok": true,
+      "detail": "CSS zakres dla 375px"
     },
     {
       "id": "bp-390",
@@ -546,14 +634,19 @@
       "detail": "CSS zakres dla 430px"
     },
     {
+      "id": "bp-480",
+      "ok": true,
+      "detail": "CSS zakres dla 480px"
+    },
+    {
+      "id": "bp-600",
+      "ok": true,
+      "detail": "CSS zakres dla 600px"
+    },
+    {
       "id": "bp-768",
       "ok": true,
       "detail": "CSS zakres dla 768px"
-    },
-    {
-      "id": "bp-1024",
-      "ok": true,
-      "detail": "CSS zakres dla 1024px"
     },
     {
       "id": "screen-home",
@@ -594,11 +687,52 @@
       "id": "screen-menu",
       "ok": true,
       "detail": "Menu: selektory obecne w CSS Premium/mobile"
+    },
+    {
+      "id": "issue-ucięte-teksty",
+      "ok": true,
+      "detail": "Mitigacja: ucięte teksty"
+    },
+    {
+      "id": "issue-nakładające-się-elementy",
+      "ok": true,
+      "detail": "Mitigacja: nakładające się elementy"
+    },
+    {
+      "id": "issue-za-małe-przyciski",
+      "ok": true,
+      "detail": "Mitigacja: za małe przyciski"
+    },
+    {
+      "id": "issue-touch-target-poniżej-44px",
+      "ok": true,
+      "detail": "Mitigacja: touch target poniżej 44px"
+    },
+    {
+      "id": "issue-scroll-poziomy",
+      "ok": true,
+      "detail": "Mitigacja: scroll poziomy"
+    },
+    {
+      "id": "issue-złe-marginesy",
+      "ok": true,
+      "detail": "Mitigacja: złe marginesy"
+    },
+    {
+      "id": "issue-nierówne-odstępy",
+      "ok": true,
+      "detail": "Mitigacja: nierówne odstępy"
+    },
+    {
+      "id": "issue-przyciski-wystające-poza-ekran",
+      "ok": true,
+      "detail": "Mitigacja: przyciski wystające poza ekran"
     }
   ],
   "howToVerify": [
+    "npm run mobile-premium-audit",
     "npm start → DevTools device toolbar",
     "Przejdź: Home → Mapa → Producent → Ulubione → Koszyk → Premium → Profil → Menu",
-    "Dla każdego: 320, 360, 390, 412, 430, 768, 1024 + landscape telefon"
+    "Dla każdego: 320, 360, 375, 390, 412, 430, 480, 600, 768 + landscape"
   ]
 }

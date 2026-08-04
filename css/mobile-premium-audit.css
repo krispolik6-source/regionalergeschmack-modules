@@ -1,0 +1,518 @@
+/* ============================================================
+   Mobile Premium Audit — warstwa końcowa (cascade po brand-colors)
+   Viewporty: 320 · 360 · 375 · 390 · 412 · 430 · 480 · 600 · 768
+   Tylko CSS — touch ≥44px, anty-scroll poziomy, odstępy, tekst
+   ============================================================ */
+
+:root {
+    --mpa-touch: 44px;
+    --mpa-gutter: clamp(10px, 3.2vw, 20px);
+    --mpa-gap: clamp(12px, 2.8vw, 18px);
+}
+
+/* ——— Anty scroll poziomy ——— */
+html,
+body {
+    overflow-x: clip;
+    max-width: 100vw;
+}
+
+#app,
+[data-view-panel],
+.main-header-inner,
+.bottom-nav-inner,
+.map-toolbar-unified,
+.map-bottom-panel,
+.producer-modal,
+.side-menu-panel,
+.app-legal-footer-nav,
+.cookie-consent-inner {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* ——— Mobile / tablet (≤768) ——— */
+@media screen and (max-width: 768px) {
+    :root {
+        --app-gutter: var(--mpa-gutter);
+        --mp-gutter: var(--mpa-gutter);
+        --mp-stack-gap: var(--mpa-gap);
+        --mp-touch-min: var(--mpa-touch);
+    }
+
+    #app {
+        padding-left: max(var(--mpa-gutter), env(safe-area-inset-left, 0px)) !important;
+        padding-right: max(var(--mpa-gutter), env(safe-area-inset-right, 0px)) !important;
+        padding-top: var(--mpa-gutter) !important;
+        overflow-x: clip;
+    }
+
+    body.view-map-active #app {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Touch targets ≥44px (nadpisuje final-ux / map-premium / style responsive) */
+    button,
+    .btn,
+    [role='button'],
+    a.btn,
+    .bottom-nav .nav-item,
+    .header-icon,
+    .header-lang,
+    .header-btn,
+    .theme-toggle,
+    .home-search-submit,
+    .home-search--lg .home-search-submit,
+    .home-page--v1 .home-search-submit,
+    .home-page--v2 .home-actions button,
+    .home-actions .btn-location,
+    .home-actions .btn-nearby,
+    .home-all-categories-btn,
+    .home-quick-chip,
+    .home-thematic-chip,
+    .home-page--v1 .home-product-card--compact .home-product-btn,
+    .home-product-btn,
+    .map-bottom-btn,
+    .map-recenter-btn,
+    .map-legend-btn,
+    .map-list-toggle,
+    .map-toolbar-unified .map-bottom-btn,
+    .map-toolbar-unified .map-recenter-btn,
+    .map-producer-list-btn,
+    .map-settings-close,
+    .product-actions-toggle,
+    .producer-modal .product-actions-toggle,
+    .producer-modal-back,
+    .producer-modal-footer .btn-primary,
+    .producer-modal-footer .btn-secondary,
+    .producer-reserve-btn,
+    .taste-diary-delete,
+    .taste-diary-open-btn,
+    .favorite-item .btn-remove,
+    .cart-item .qty-btn,
+    .cart-item .btn-remove,
+    .setting-item,
+    .account-item,
+    .side-menu-item,
+    .side-menu-close,
+    .side-menu-back,
+    .cookie-consent-btn,
+    .app-legal-footer-link,
+    .legal-page-back,
+    .premium-cta-section button,
+    .premium-cta-section .btn,
+    .switch,
+    .map-offline-banner button {
+        min-height: var(--mpa-touch) !important;
+    }
+
+    .header-icon,
+    .header-lang,
+    .header-btn,
+    .theme-toggle,
+    .map-settings-close,
+    .side-menu-close,
+    .side-menu-back,
+    .bottom-nav .nav-item,
+    .cart-item .qty-btn,
+    .favorite-item .btn-remove,
+    .taste-diary-delete {
+        min-width: var(--mpa-touch) !important;
+    }
+
+    .bottom-nav .nav-item {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 4px 2px;
+        gap: 2px;
+    }
+
+    .bottom-nav .nav-label {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: clamp(0.5625rem, 2.6vw, 0.7rem);
+        line-height: 1.35;
+    }
+
+    /* Tekst — anty ucięcie bez scrollu poziomego */
+    .section-title,
+    .home-greeting-title,
+    .home-greeting-sub,
+    .view-hero h2,
+    .premium-hero h2,
+    .producer-header-name,
+    .producer-product-name,
+    .favorite-item .title,
+    .favorite-item .name,
+    .cart-item .title,
+    .cart-item .name,
+    .map-producer-list-btn,
+    .map-category-title,
+    .legal-page-section-title,
+    .legal-page-body,
+    .premium-feature-card p,
+    .rg-ad-title,
+    .rg-ad-text,
+    .empty-state h2,
+    .empty-state h3,
+    .empty-state p {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        min-width: 0;
+    }
+
+    .section-title,
+    .home-greeting-title,
+    .producer-header-name,
+    .favorite-item .title,
+    .cart-item .title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Home — search + akcje */
+    .home-search--lg {
+        gap: var(--mpa-gap);
+        flex-wrap: nowrap;
+        min-width: 0;
+    }
+
+    .home-search--lg .home-search-field {
+        min-height: var(--mpa-touch) !important;
+        max-height: none !important;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .home-search--lg .home-search-input {
+        min-height: 28px !important;
+        font-size: 16px !important;
+    }
+
+    .home-search-submit,
+    .home-search--lg .home-search-submit {
+        flex-shrink: 0;
+        min-width: 3.75rem !important;
+        max-height: none !important;
+        white-space: nowrap;
+    }
+
+    .home-page--v2 .home-actions,
+    .home-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--mpa-gap);
+        width: 100%;
+    }
+
+    .home-page--v2 .home-actions button,
+    .home-actions .btn-location,
+    .home-actions .btn-nearby {
+        max-height: none !important;
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Karuzele — scroll wewnętrzny, bez wypychania layoutu */
+    .home-carousel,
+    .home-quick-filters-row,
+    .categories-grid {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .home-carousel {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        padding-bottom: 4px;
+    }
+
+    .home-quick-filters-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: var(--mpa-gap);
+        padding-inline: var(--mpa-gutter);
+        margin-inline: calc(-1 * var(--mpa-gutter));
+    }
+
+    /* Mapa — toolbar bez wystawania */
+    .map-bottom-panel,
+    .map-toolbar-sheet-body,
+    .map-toolbar-unified {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    .map-toolbar-unified {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--mpa-gap);
+        padding: 10px var(--mpa-gutter) calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .map-toolbar-section {
+        min-width: 0;
+        flex-wrap: wrap;
+        gap: var(--mpa-gap);
+    }
+
+    .map-toolbar-section--radius {
+        flex: 1 1 100%;
+    }
+
+    .map-toolbar-section--actions,
+    .map-toolbar-section--extra {
+        flex: 1 1 auto;
+        justify-content: flex-start;
+    }
+
+    .map-toolbar-unified .map-bottom-btn,
+    .map-toolbar-unified .map-recenter-btn,
+    .map-toolbar-unified .map-legend-btn,
+    .map-toolbar-unified .map-list-toggle {
+        flex: 0 1 auto;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .map-settings-close {
+        width: var(--mpa-touch) !important;
+        height: var(--mpa-touch) !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Producent — footer kolumna na wąskich */
+    .producer-modal-footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--mpa-gap);
+        padding-inline: var(--mpa-gutter) !important;
+    }
+
+    .producer-modal-footer .btn-primary,
+    .producer-modal-footer .btn-secondary,
+    .producer-reserve-btn {
+        flex: 1 1 calc(50% - var(--mpa-gap));
+        min-width: min(100%, 9rem);
+    }
+
+    /* Menu / formularze */
+    .side-menu-field input,
+    .side-menu-field select,
+    .side-menu-field textarea {
+        min-height: var(--mpa-touch);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Legal + cookie — bez nakładania na nav */
+    .app-legal-footer-nav {
+        gap: 0.25rem 0.5rem;
+        padding-inline: var(--mpa-gutter);
+    }
+
+    .cookie-consent-banner {
+        padding-inline: var(--mpa-gutter);
+    }
+
+    .cookie-consent-actions {
+        flex-wrap: wrap;
+        gap: var(--mpa-gap);
+    }
+
+    .cookie-consent-btn {
+        flex: 1 1 auto;
+        min-width: min(100%, 8rem);
+    }
+
+    /* Listy — równe odstępy */
+    .favorite-item,
+    .cart-item,
+    .setting-item,
+    .account-item,
+    .premium-feature-card,
+    .map-producer-list-btn {
+        gap: var(--mpa-gap);
+        padding-inline: max(12px, var(--mpa-gutter));
+    }
+
+    .home-page,
+    .premium-page,
+    .favorites-page,
+    .cart-page,
+    .profile-page {
+        gap: var(--mpa-gap);
+    }
+}
+
+/* ——— Viewport matrix ——— */
+
+/* 320 */
+@media screen and (max-width: 359px) {
+    :root {
+        --mpa-gutter: 10px;
+        --mpa-gap: 12px;
+    }
+
+    .home-premium-arrow {
+        display: none;
+    }
+
+    .producer-modal-footer {
+        flex-direction: column;
+    }
+
+    .producer-modal-footer .btn-primary,
+    .producer-modal-footer .btn-secondary,
+    .producer-reserve-btn {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .map-toolbar-unified .map-bottom-btn,
+    .map-toolbar-unified .map-recenter-btn {
+        flex: 1 1 calc(50% - var(--mpa-gap));
+        min-width: 0;
+    }
+
+    .side-menu-panel {
+        width: min(92vw, 300px);
+    }
+}
+
+/* 360 */
+@media screen and (min-width: 360px) and (max-width: 374px) {
+    :root {
+        --mpa-gutter: 12px;
+        --mpa-gap: 14px;
+    }
+}
+
+/* 375 (iPhone SE / standard) */
+@media screen and (min-width: 375px) and (max-width: 389px) {
+    :root {
+        --mpa-gutter: 12px;
+        --mpa-gap: 14px;
+    }
+
+    .bottom-nav .nav-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* 390 */
+@media screen and (min-width: 390px) and (max-width: 411px) {
+    :root {
+        --mpa-gutter: 14px;
+        --mpa-gap: 15px;
+    }
+}
+
+/* 412 */
+@media screen and (min-width: 412px) and (max-width: 429px) {
+    :root {
+        --mpa-gutter: 14px;
+        --mpa-gap: 16px;
+    }
+}
+
+/* 430 */
+@media screen and (min-width: 430px) and (max-width: 479px) {
+    :root {
+        --mpa-gutter: 16px;
+        --mpa-gap: 16px;
+    }
+
+    .bottom-nav .nav-icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* 480 */
+@media screen and (min-width: 480px) and (max-width: 599px) {
+    :root {
+        --mpa-gutter: 18px;
+        --mpa-gap: 16px;
+    }
+
+    .premium-cta-section button,
+    .premium-cta-section .btn {
+        max-width: 24rem;
+        margin-inline: auto;
+    }
+
+    .side-menu-panel {
+        width: min(360px, 72vw);
+    }
+}
+
+/* 600 */
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    :root {
+        --mpa-gutter: 20px;
+        --mpa-gap: 18px;
+    }
+
+    .categories-grid {
+        gap: var(--mpa-gap);
+    }
+
+    .home-page--v2 .home-actions {
+        grid-template-columns: 1fr 1fr;
+        max-width: 28rem;
+    }
+}
+
+/* 768 tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --mpa-gutter: 20px;
+        --mpa-gap: 18px;
+    }
+
+    .side-menu-panel {
+        width: min(360px, 40vw);
+    }
+
+    .map-bottom-btn {
+        min-height: var(--mpa-touch) !important;
+    }
+}
+
+/* Landscape — kompresja bez łamania touch */
+@media screen and (max-height: 480px) and (orientation: landscape) and (max-width: 768px) {
+    :root {
+        --mpa-gap: 10px;
+    }
+
+    .bottom-nav .nav-label {
+        font-size: 0.52rem;
+    }
+
+    .map-bottom-btn,
+    .map-recenter-btn {
+        min-height: var(--mpa-touch) !important;
+    }
+
+    .home-greeting {
+        padding-block: 4px;
+    }
+}

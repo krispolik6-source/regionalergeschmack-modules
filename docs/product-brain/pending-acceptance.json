@@ -1,6 +1,6 @@
 {
-  "day": "2026-07-21",
-  "generatedAt": "2026-07-21T18:16:27.287Z",
+  "day": "2026-08-03",
+  "generatedAt": "2026-08-03T19:06:34.997Z",
   "policy": {
     "autoApply": false,
     "requiresOwnerAcceptance": true,
@@ -42,18 +42,18 @@
       "rank": 2
     },
     {
-      "id": "mobile-home-density",
-      "title": "Na telefonie: jedna dominująca akcja nad fold — reszta niżej",
-      "lens": "mobile",
-      "why": "Telefon = główny kontekst użycia w regionie",
-      "impact": "high",
-      "risk": "low",
-      "effort": "2–3 h",
-      "expectedEffect": "Home czytelny w słońcu i w ruchu",
-      "priority": 22,
+      "id": "perf-startup-weight",
+      "title": "Przytnij koszt startu: mniej pracy JS na pierwszym ekranie",
+      "lens": "performance",
+      "why": "Performance 85%",
+      "impact": "medium",
+      "risk": "medium",
+      "effort": "3–6 h (profilowanie, defer prezentacji)",
+      "expectedEffect": "Szybsze pierwsze wrażenie, mniej porzuceń",
+      "priority": 26,
       "sources": [
         "health",
-        "emotion"
+        "guardian"
       ],
       "status": "pending_acceptance",
       "rank": 3

@@ -1,6 +1,6 @@
 # Header Audit — ETAP 28B Premium Header
 
-Wygenerowano: 2026-08-02T08:02:47.125Z
+Wygenerowano: 2026-08-04T18:00:54.076Z
 
 **Werdykt:** ⚠ FAIL · 25/26
 

@@ -1,18 +1,18 @@
 # Brand Consistency 100%
 
-Wygenerowano: 2026-07-21T17:54:59.131Z
+Wygenerowano: 2026-08-04T18:17:24.609Z
 
-## Ocena: **94 / 100**
+## Ocena: **92 / 100**
 
 ## Oceny cząstkowe
 
 | Obszar | Wynik |
 |--------|------:|
-| logo | 100 |
+| logo | 95 |
 | kolory | 100 |
 | fonty | 100 |
-| ikony | 100 |
-| PWA | 100 |
+| ikony | 90 |
+| PWA | 90 |
 | fotografie | 95 |
 | cienie | 80 |
 | radius | 90 |
@@ -24,12 +24,14 @@ Wygenerowano: 2026-07-21T17:54:59.131Z
 | bottom navigation | 92 |
 | menu | 92 |
 | Premium | 90 |
-| landing | 94 |
+| landing | 75 |
 | Play Store | 95 |
 | App Store | 95 |
 
 ## Findings
 
+- **[medium]** (logo) index bez ?v=23
+- **[medium]** (PWA) SW nie na v23 — sw.js
 - **[medium]** (cienie) Bardzo dużo deklaracji box-shadow — css/
 
 ## Źródło prawdy

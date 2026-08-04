@@ -15,7 +15,7 @@ const homeIds = ['farmers', 'bakeries', 'meat', 'shops', 'restaurants', 'fastFoo
 for (const id of homeIds) {
     const url = getCategoryImage(id);
     ok(Boolean(url), `map ${id}`);
-    const file = String(url).replace(/^\//, '');
+    const file = String(url).replace(/^\//, '').split('?')[0];
     ok(fs.existsSync(file), `file ${id} → ${file}`);
 }
 

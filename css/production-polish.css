@@ -524,11 +524,12 @@ body.dark-mode .radius-control {
 @media screen and (max-width: 430px) {
     .main-header .header-icon,
     .main-header .header-lang,
-    .main-header #headerPremiumBtn,
-    .bottom-nav .nav-item {
+    .main-header #headerPremiumBtn {
         min-width: 40px;
         min-height: 40px;
     }
+
+    /* bottom-nav touch 44×44 — css/home-v1.css (--nav-touch-min) */
 
     .home-page--v2,
     .home-hub,
