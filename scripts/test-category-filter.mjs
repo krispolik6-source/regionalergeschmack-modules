@@ -66,12 +66,16 @@ const osm = fs.readFileSync(new URL('../js/data/osmService.js', import.meta.url)
 ok(
     osm.includes("value: 'fast_food'")
     && osm.includes('fast_food|')
-    && osm.includes('rg_osm_overpass_cache_v5')
+    && osm.includes('rg_osm_overpass_cache_v6')
+    && osm.includes("value: 'cafe'")
+    && osm.includes("value: 'marketplace'")
+    && osm.includes("value: 'brewery'")
+    && osm.includes("'wine'")
     && osm.includes("value: 'farm'")
     && osm.includes("category: 'farmer'")
     && osm.includes('beekeeper')
     && osm.includes("amenity === 'fast_food'"),
-    'osmService farm→farmer + beekeeper + cache v5'
+    'osmService DE tags (cafe, marketplace, brewery, wine) + cache v6'
 );
 
 const map = fs.readFileSync(new URL('../js/views/map.js', import.meta.url), 'utf8');
@@ -105,7 +109,7 @@ const home = fs.readFileSync(new URL('../js/views/home.js', import.meta.url), 'u
 ok(home.includes("'fastFood'") && home.includes('data-carousel="fastFood"'), 'home CATEGORY_IDS + section');
 
 const ds = fs.readFileSync(new URL('../js/data/dataService.js', import.meta.url), 'utf8');
-ok(ds.includes('rg_producers_data_v7') && ds.includes('osmService.js?v=9'), 'producers cache v7 + osm import');
+ok(ds.includes('rg_producers_data_v7') && ds.includes('osmService.js?v=10'), 'producers cache v7 + osm import');
 
 const content = fs.readFileSync(new URL('../js/data/contentProducers.js', import.meta.url), 'utf8');
 ok(content.includes("category: 'fast_food'") && content.includes('content-imbiss-markt'), 'content seed Fast Food');

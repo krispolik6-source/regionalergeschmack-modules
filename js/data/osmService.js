@@ -61,11 +61,12 @@ function planOverpassEndpoints(failedStatus) {
     return [primary, ...mirrors].filter(Boolean);
 }
 
-const OSM_CACHE_KEY = 'rg_osm_overpass_cache_v5';
+const OSM_CACHE_KEY = 'rg_osm_overpass_cache_v6';
 const LEGACY_OSM_CACHE_KEYS = Object.freeze([
     'rg_osm_overpass_cache_v2',
     'rg_osm_overpass_cache_v3',
-    'rg_osm_overpass_cache_v4'
+    'rg_osm_overpass_cache_v4',
+    'rg_osm_overpass_cache_v5'
 ]);
 const OSM_CACHE_TTL_MS = Number(CONFIG.cacheTTL) || 24 * 60 * 60 * 1000;
 let inflightOsmRequests = new Map();
@@ -138,9 +139,14 @@ export function abortInflightOsmRequests() {
 const OSM_CATEGORY_RULES = [
     { key: 'shop', value: 'bakery', category: 'bakery' },
     { key: 'shop', value: 'butcher', category: 'meat' },
+    { key: 'craft', value: 'butcher', category: 'meat' },
+    { key: 'shop', value: 'wine', category: 'shop' },
+    { key: 'craft', value: 'brewery', category: 'shop' },
     // fast_food przed restaurant – nigdy nie mieszać z restauracjami
     { key: 'amenity', value: 'fast_food', category: 'fast_food' },
     { key: 'amenity', value: 'restaurant', category: 'restaurant' },
+    { key: 'amenity', value: 'cafe', category: 'restaurant' },
+    { key: 'amenity', value: 'marketplace', category: 'shop' },
     // Rolnicy / Hofläden (Home: farmers → farmer)
     { key: 'shop', value: 'farm', category: 'farmer' },
     { key: 'shop', value: 'honey', category: 'farmer' },
@@ -152,6 +158,7 @@ const OSM_CATEGORY_RULES = [
 const OSM_SHOP_VALUES = Object.freeze([
     'supermarket',
     'convenience',
+    'wine',
     'general',
     'greengrocer',
     'deli',
@@ -161,10 +168,13 @@ const OSM_SHOP_VALUES = Object.freeze([
     'department_store'
 ]);
 
-/** Wzorzec tagów shop w jednym zapytaniu Overpass (mniej obciążenia API) */
-const OSM_SHOP_TAG_REGEX = '^(bakery|butcher|farm|honey|supermarket|convenience|general|greengrocer|deli|kiosk|variety_store|country_store|department_store)$';
-const OSM_AMENITY_TAG_REGEX = '^(restaurant|fast_food|vending_machine)$';
-const OSM_CRAFT_TAG_REGEX = '^(beekeeper)$';
+/** Wzorzec tagów w jednym zapytaniu Overpass (mniej obciążenia API) */
+const OSM_SHOP_TAG_REGEX = '^(bakery|butcher|farm|honey|wine|supermarket|convenience|general|greengrocer|deli|kiosk|variety_store|country_store|department_store)$';
+const OSM_AMENITY_TAG_REGEX = '^(restaurant|fast_food|vending_machine|cafe|marketplace)$';
+const OSM_CRAFT_TAG_REGEX = '^(beekeeper|butcher|brewery)$';
+
+/** Brak sztucznego limitu wyników po stronie klienta – Overpass zwraca wszystkie obiekty w promieniu. */
+export const OVERPASS_RESULT_LIMIT = null;
 
 function buildOverpassQuery(lat, lng, radiusM) {
     const around = `around:${radiusM},${lat},${lng}`;
@@ -226,6 +236,30 @@ function resolveProducerName(tags, element) {
         const cuisine = String(tags.cuisine || '').trim().replace(/_/g, ' ');
         if (cuisine) return `Imbiss (${cuisine})`;
         return `Imbiss #${element.id}`;
+    }
+
+    if (tags.amenity === 'cafe') {
+        const street = String(tags['addr:street'] || '').trim();
+        if (street) return `Café ${street}`;
+        return `Café #${element.id}`;
+    }
+
+    if (tags.amenity === 'marketplace') {
+        const street = String(tags['addr:street'] || '').trim();
+        if (street) return `Marktplatz ${street}`;
+        return `Marktplatz #${element.id}`;
+    }
+
+    if (tags.craft === 'brewery') {
+        const street = String(tags['addr:street'] || '').trim();
+        if (street) return `Brauerei ${street}`;
+        return `Brauerei #${element.id}`;
+    }
+
+    if (tags.craft === 'butcher') {
+        const street = String(tags['addr:street'] || '').trim();
+        if (street) return `Metzgerei ${street}`;
+        return `Metzgerei #${element.id}`;
     }
 
     // Nienazwane Hofläden / farm shops / imkerie
@@ -432,7 +466,8 @@ function writeOsmCache(lat, lng, radiusM, producers) {
 }
 
 async function requestOverpass(endpoint, query, signal) {
-    // POST – mniejsza szansa na ucięcie długiego URL / limity proxy
+    // POST – mniejsza szansa na ucięcie długiego URL / limity proxy.
+    // Brak slice() na wynikach – wszystkie elementy z Overpass trafiają do aplikacji.
     const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
