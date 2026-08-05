@@ -1,7 +1,7 @@
 {
   "id": "release-ready-audit",
   "title": "Release Ready — Końcowy Audyt Aplikacji",
-  "generatedAt": "2026-08-04T18:19:46.832Z",
+  "generatedAt": "2026-08-05T17:26:39.575Z",
   "policy": {
     "cssOnlyFixes": true,
     "unchanged": [

@@ -1,7 +1,7 @@
 {
   "id": "accessibility-audit",
   "title": "Accessibility Audit Report",
-  "generatedAt": "2026-08-04T18:19:45.243Z",
+  "generatedAt": "2026-08-05T17:26:38.035Z",
   "policy": {
     "cssOnly": true,
     "functionalityUnchanged": true,

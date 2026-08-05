@@ -180,14 +180,22 @@ try {
     if (normalizeProducerCategory('farmers') === 'farmer') ok('Dane: farmers → farmer');
     else fail('Dane: normalize farmers');
 
+    if (Array.isArray(CONTENT_PRODUCERS) && CONTENT_PRODUCERS.length === 0) {
+        ok('Dane: CONTENT_PRODUCERS pusta (tryb produkcyjny bez seed)');
+    } else {
+        fail(`Dane: CONTENT_PRODUCERS powinna być pusta, jest ${CONTENT_PRODUCERS.length}`);
+    }
+
     const farmers = filterProducersByCategory(CONTENT_PRODUCERS, 'farmers');
-    if (farmers.length >= 2) ok(`Dane: content farmers = ${farmers.length}`);
-    else fail('Dane: za mało farmers w content');
+    if (farmers.length === 0) ok('Dane: filter farmers na pustej tablicy = 0');
+    else fail(`Dane: oczekiwano 0 farmers, jest ${farmers.length}`);
 
     const counts = countProducersByHomeCategory(CONTENT_PRODUCERS);
-    if (counts.farmers >= 1 && counts.fastFood >= 1) {
-        ok(`Dane: liczniki seed farmers=${counts.farmers} fastFood=${counts.fastFood}`);
-    } else fail('Dane: liczniki seed niekompletne');
+    if (counts.all === 0 && counts.farmers === 0 && counts.fastFood === 0) {
+        ok('Dane: liczniki kategorii = 0 (brak seed demo)');
+    } else {
+        fail(`Dane: liczniki seed niezerowe – ${JSON.stringify(counts)}`);
+    }
 } catch (e) {
     fail(`Dane: import failed – ${e.message}`);
 }

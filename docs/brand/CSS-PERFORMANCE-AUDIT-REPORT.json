@@ -1,7 +1,7 @@
 {
   "id": "css-performance-audit",
   "title": "CSS Performance Audit Report",
-  "generatedAt": "2026-08-04T18:19:45.752Z",
+  "generatedAt": "2026-08-05T17:26:45.682Z",
   "policy": {
     "cssOnly": true,
     "appearanceUnchanged": true,

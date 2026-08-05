@@ -31,7 +31,7 @@ import { getLastPosition } from '../core/userLocation.js';
 import { openProducerModal, initProducerModal } from './producerModal.js?v=7';
 import { addFavorite, removeFavorite, isFavorite, refreshFavoritesBadge, getFavoritesCount } from './favorites.js';
 import { addToCart, refreshCartBadge } from './cart.js';
-import { searchGlobalResults, buildSearchResultCardHtml, formatSearchNoResults } from '../presentation/searchFilter.js?v=4';
+import { searchGlobalResults, buildSearchResultCardHtml, formatSearchNoResults, SEARCH_RESULTS_LIMIT, limitSearchDisplayItems, formatSearchResultsOverflow } from '../presentation/searchFilter.js?v=4';
 import { isPremiumActive, isProducerPromoted } from '../core/premiumService.js';
 import { CONFIG } from '../config.js';
 import { formatDistanceLabel, formatEtaLabels } from '../presentation/geoFormat.js';
@@ -1362,6 +1362,7 @@ function renderHomeSearchResults(container, query) {
     }
 
     const { items } = searchGlobalResults(getMapAreaPool(getProducers()), trimmed, t);
+    const { items: displayedItems, total, overflow } = limitSearchDisplayItems(items, SEARCH_RESULTS_LIMIT);
 
     if (items.length === 0) {
         resultsEl.hidden = false;
@@ -1380,11 +1381,13 @@ function renderHomeSearchResults(container, query) {
     }
 
     resultsEl.hidden = false;
+    const overflowNote = formatSearchResultsOverflow(overflow, t);
     resultsEl.innerHTML = `
-        <p class="home-search-results-label">${t('search.resultsCount').replace('{count}', String(items.length))}</p>
+        <p class="home-search-results-label">${t('search.resultsCount').replace('{count}', String(total))}</p>
         <div class="home-search-results-list" role="list">
-            ${items.map((item) => buildSearchResultCardHtml(item, t, formatCurrency)).join('')}
+            ${displayedItems.map((item) => buildSearchResultCardHtml(item, t, formatCurrency)).join('')}
         </div>
+        ${overflowNote ? `<p class="home-search-results-overflow">${escapeHtml(overflowNote)}</p>` : ''}
     `;
 }
 

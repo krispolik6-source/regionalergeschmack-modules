@@ -16,6 +16,34 @@ import { getProducerById } from '../data/dataService.js';
 import { getProducerStory } from '../data/producerStories.js';
 import { sortProducersByDistance } from './smartRecommend.js';
 
+/** Maks. liczba wyników wyszukiwania wyświetlanych w UI (Home / lista). */
+export const SEARCH_RESULTS_LIMIT = 20;
+
+/**
+ * Ogranicza listę wyników do wyświetlenia (silnik wyszukiwania bez zmian).
+ * @param {readonly object[]} items
+ * @param {number} [limit]
+ * @returns {{ items: object[], total: number, overflow: number }}
+ */
+export function limitSearchDisplayItems(items, limit = SEARCH_RESULTS_LIMIT) {
+    const total = items.length;
+    if (total <= limit) {
+        return { items: [...items], total, overflow: 0 };
+    }
+    return { items: items.slice(0, limit), total, overflow: total - limit };
+}
+
+/**
+ * Komunikat o dodatkowych trafieniach na mapie (np. „+12 Karte”).
+ * @param {number} overflow
+ * @param {(key: string) => string} t
+ */
+export function formatSearchResultsOverflow(overflow, t = (k) => k) {
+    if (!overflow || overflow <= 0) return '';
+    const mapLabel = t('nav.map');
+    return `+${overflow} ${mapLabel}`;
+}
+
 /**
  * @param {readonly object[]} producers
  * @param {string} query
@@ -277,5 +305,8 @@ export default {
     filterProducersBySearch,
     searchProducts,
     searchGlobalResults,
-    buildSearchResultCardHtml
+    buildSearchResultCardHtml,
+    SEARCH_RESULTS_LIMIT,
+    limitSearchDisplayItems,
+    formatSearchResultsOverflow
 };

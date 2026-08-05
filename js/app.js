@@ -119,6 +119,33 @@ function openProducerDeepLinkIfPresent() {
     }
 }
 
+const HEADER_SCROLL_AWAY_THRESHOLD_PX = 50;
+
+function initPremiumScrollAwayHeader() {
+    const header = document.getElementById('mainHeader');
+    if (!header?.classList.contains('header-premium')) return;
+
+    let ticking = false;
+
+    const syncHeaderVisibility = () => {
+        const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+        header.classList.toggle('header-premium--hidden', scrollY > HEADER_SCROLL_AWAY_THRESHOLD_PX);
+        ticking = false;
+    };
+
+    window.addEventListener(
+        'scroll',
+        () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(syncHeaderVisibility);
+        },
+        { passive: true }
+    );
+
+    syncHeaderVisibility();
+}
+
 function bindShellEvents() {
     eventBus.on(EVENTS.VIEW_CHANGED, (payload) => {
         const view = payload?.view;
@@ -243,6 +270,7 @@ async function bootstrap() {
     bindSearch();
     bindLocationAndNearby();
     bindShellEvents();
+    initPremiumScrollAwayHeader();
     openProducerDeepLinkIfPresent();
     refreshFavoritesBadge();
     refreshCartBadge();

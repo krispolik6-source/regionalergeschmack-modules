@@ -783,7 +783,29 @@ html.dark-mode .header-left h1 {
     -webkit-text-fill-color: #fffef8;
 }
 
+/* ——— Scroll-away (premium): chowa nagłówek przy przewijaniu w dół ——— */
+.main-header.header-premium {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.main-header.header-premium.header-premium--hidden {
+    transform: translateY(-100%);
+    margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top)));
+    pointer-events: none;
+}
+
+body:has(.main-header.header-premium) {
+    padding-top: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
+    .main-header.header-premium {
+        transition: none;
+    }
+
     .main-header .header-icon,
     .main-header .header-lang,
     .main-header #menuBtn,
