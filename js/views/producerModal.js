@@ -1497,6 +1497,10 @@ export function openProducerModal(producerId, hint = null) {
     }
 }
 
+export function resetProducerModalOpeningState() {
+    isOpening = false;
+}
+
 export function closeProducerModal({ force = false } = {}) {
     isOpening = false;
     const modal = document.getElementById('producerModal');
@@ -1590,4 +1594,4 @@ export function initProducerModal() {
     document.addEventListener('keydown', handleModalKeydown);
 }
 
-export default { openProducerModal, closeProducerModal, initProducerModal, isProducerModalOpen };
+export default { openProducerModal, closeProducerModal, initProducerModal, isProducerModalOpen, resetProducerModalOpeningState };

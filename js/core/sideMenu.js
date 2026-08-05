@@ -17,6 +17,7 @@ import {
     removeTasteDiaryEntry
 } from './tasteDiary.js';
 import { openDeveloperVault } from '../diagnostics/developerVaultPanel.js';
+import { renderSystemHealthPanel } from '../presentation/systemHealthReport.js';
 
 const INTERNAL_MENU_ACTIONS = new Set(['feedback', 'test-guide', 'share-app', 'dev-vault']);
 
@@ -82,7 +83,8 @@ const VIEWS = {
     feedback: 'feedback',
     'test-guide': 'test-guide',
     'share-app': 'share-app',
-    'taste-diary': 'taste-diary'
+    'taste-diary': 'taste-diary',
+    'system-health': 'system-health'
 };
 
 const VIEW_MENU_KEYS = {
@@ -101,7 +103,8 @@ const VIEW_MENU_KEYS = {
     [VIEWS.feedback]: 'feedback',
     [VIEWS['test-guide']]: 'testGuide',
     [VIEWS['share-app']]: 'shareApp',
-    [VIEWS['taste-diary']]: 'tasteDiary'
+    [VIEWS['taste-diary']]: 'tasteDiary',
+    [VIEWS['system-health']]: 'systemHealth'
 };
 
 const ACTION_MENU_KEYS = {
@@ -127,7 +130,8 @@ const ACTION_MENU_KEYS = {
     'test-guide': 'testGuide',
     'share-app': 'shareApp',
     'taste-diary': 'tasteDiary',
-    'dev-vault': 'devVault'
+    'dev-vault': 'devVault',
+    'system-health': 'systemHealth'
 };
 
 const NAV_ACTIONS = new Set(['home', 'map', 'favorites', 'cart', 'premium']);
@@ -159,6 +163,11 @@ function legalLabel(key) {
 function helpLabel(key) {
     const text = t(`help.${key}`);
     return text === `help.${key}` ? key : text;
+}
+
+function systemHealthLabel(key) {
+    const text = t(`systemHealth.${key}`);
+    return text === `systemHealth.${key}` ? key : text;
 }
 
 function applyI18nNodes(root, attrName, resolve) {
@@ -447,9 +456,18 @@ function refreshSideMenuI18n() {
 
     const titleText = root.querySelector('#sideMenuTitleText') || root.querySelector('#sideMenuTitle');
     if (titleText) {
-        const viewKey = VIEW_MENU_KEYS[currentViewId] || 'title';
-        titleText.textContent = menuLabel(viewKey);
+        if (currentViewId === VIEWS['system-health']) {
+            titleText.textContent = systemHealthLabel('title');
+        } else {
+            const viewKey = VIEW_MENU_KEYS[currentViewId] || 'title';
+            titleText.textContent = menuLabel(viewKey);
+        }
     }
+
+    root.querySelectorAll('[data-i18n-system-health]').forEach((el) => {
+        const key = el.dataset.i18nSystemHealth;
+        if (key) el.textContent = systemHealthLabel(key);
+    });
 
     root.querySelectorAll('[data-i18n-about]').forEach((el) => {
         const key = el.dataset.i18nAbout;
@@ -596,6 +614,9 @@ function showView(viewId) {
     if (viewId === VIEWS.feedback) prepareFeedbackForm();
     if (viewId === VIEWS['share-app']) prepareSharePanel();
     if (viewId === VIEWS['taste-diary']) renderTasteDiaryPanel();
+    if (viewId === VIEWS['system-health']) {
+        renderSystemHealthPanel(document.getElementById('systemHealthPanelRoot'));
+    }
 }
 
 function openSideMenu() {
@@ -675,6 +696,7 @@ function handleAction(action) {
         case 'test-guide':
         case 'share-app':
         case 'taste-diary':
+        case 'system-health':
             showView(VIEWS[action] || VIEWS.main);
             break;
         case 'dev-vault':

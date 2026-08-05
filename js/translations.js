@@ -4,6 +4,7 @@
 import { ASIAN_LANG_OPTIONS, ASIAN_TRANSLATIONS, ASIAN_CATALOG } from './translations-asian.js';
 import { MENU_I18N } from './translations-menu.js';
 import { ABOUT_I18N } from './translations-about.js';
+import { SYSTEM_HEALTH_I18N } from './translations-system-health.js';
 import { SEARCH_I18N } from './translations-search.js';
 import { TESTING_I18N } from './translations-testing.js';
 import { MK } from './translations-mk.js';
@@ -1521,6 +1522,17 @@ for (const code of Object.keys(built)) {
 for (const [code, aboutPage] of Object.entries(ABOUT_I18N)) {
     if (built[code]) {
         built[code] = deepMerge(built[code], { aboutPage });
+    }
+}
+for (const [code, systemHealth] of Object.entries(SYSTEM_HEALTH_I18N)) {
+    if (built[code]) {
+        built[code] = deepMerge(built[code], { systemHealth });
+    }
+}
+const systemHealthEn = SYSTEM_HEALTH_I18N.en;
+for (const code of Object.keys(built)) {
+    if (!built[code].systemHealth && systemHealthEn) {
+        built[code] = deepMerge(built[code], { systemHealth: systemHealthEn });
     }
 }
 for (const [code, search] of Object.entries(SEARCH_I18N)) {

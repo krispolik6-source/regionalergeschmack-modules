@@ -49,6 +49,7 @@ import { initHealthMonitor } from './diagnostics/healthMonitor.js';
 import { initHealthDevPanel } from './diagnostics/healthDevPanel.js';
 import { initDeveloperVault } from './diagnostics/developerVaultPanel.js';
 import { initSelfHealing } from './diagnostics/selfHealing.js';
+import { initSelfHealingLogger } from './core/selfHealingLogger.js';
 import { initUiGuardian } from './diagnostics/uiGuardian.js';
 import { initMapGuardian } from './diagnostics/mapGuardian.js';
 import { initMemoryCleaner } from './diagnostics/memoryCleaner.js';
@@ -264,6 +265,8 @@ async function bootstrap() {
     initHealthMonitor();
     // Panel deweloperski (☰) – Dev/Health ukryte w głównym UI, dostęp po haśle
     initDeveloperVault();
+    // Self-Healing Logger — krytyczne błędy · retention · propozycje AI (pending_acceptance)
+    initSelfHealingLogger();
     // Self-Healing – drobne naprawy DOM (zdjęcia / ikony / układ modalu)
     initSelfHealing();
     // ETAP 41 – UI Guardian (kontrast / overflow / 44px / safe-area / popup)

@@ -60,6 +60,7 @@ import {
     setAmbientNatureEnabled
 } from '../presentation/climateAtmosphere.js';
 import { getRecentlyViewedIds, trackSearchQuery } from '../core/userHistory.js';
+import { scheduleSelfHealingMaintenance } from '../core/selfHealingLogger.js';
 import { getProducerOpenStatus } from '../data/openingHours.js';
 import { getProducerTrustLevel } from '../presentation/producerTrust.js';
 import {
@@ -1164,6 +1165,8 @@ export const renderHome = (container) => {
         console.warn('Home: brak kontenera');
         return;
     }
+
+    scheduleSelfHealingMaintenance();
 
     destroyHome();
 

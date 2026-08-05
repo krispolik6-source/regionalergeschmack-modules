@@ -45,3 +45,42 @@ Implementacja: `passesValueNotFeatureTest()` w `policy.js`.
 | `productIntelligenceDaily.js` | 33D |
 | `livingRegionAi.js` | 33E |
 | `policy.js` | wspólna baza |
+
+---
+
+## Self-Healing System (2026-08)
+
+**Kod:** `js/core/selfHealingLogger.js` · `js/core/selfHealingFixer.js` · `js/diagnostics/selfHealing.js`  
+**Inicjalizacja:** `initSelfHealingLogger()` w `js/app.js` (bootstrap)
+
+### Zakres
+
+| Warstwa | Plik | Co robi |
+|---------|------|---------|
+| Logger krytycznych błędów | `selfHealingLogger.js` | Tylko UI freeze, QuotaExceeded, krytyczne API (Overpass itd.) — bez szumu assetów |
+| Retention 30 dni | `selfHealingLogger.js` | `cleanupOldReports()` — `selfHealingLog`, `healingReport`, markdown `logs/system_health_[DATA].md` |
+| Raport sesji | `healingReport` (localStorage) | Statusy: **FIXED** ✅ · **SUGGESTION** 🟡 · **FAILED** 🔴 |
+| Bezpieczne mitigacje | `selfHealingFixer.js` | Whitelist runtime (modal, quota-trim, retry fetch) — **bez eval**, bez zmian HTML |
+| AI asystent | `selfHealingLogger.js` | Propozycje ze statusem `pending_acceptance` — **nigdy auto-wdrażanie kodu z sieci** |
+| UI (dyskretny) | ☰ → Über die App → Systemstatus | Lista wpisów raportu — bez wrażenia chatbota AI |
+
+### Polityka (zgodna z tym dokumentem)
+
+- `autoApply: false` · `autoFix: false` · `usesEval: false`
+- `mutatesHtml: false` · `mutatesUserData: false`
+- Opcjonalne OpenAI: tylko gdy właściciel włączy `rg_self_heal_ai_config` w localStorage
+- Debug (dev): `window.__RG_SELF_HEALING_LOG__`
+
+### Klucze localStorage
+
+| Klucz | Opis | Limit |
+|-------|------|-------|
+| `selfHealingLog` | Surowe błędy krytyczne | ~1 MB |
+| `healingReport` | Kolorowy raport sesji | 200 wpisów |
+| `logs/system_health_YYYY-MM-DD.md` | Dzienne podsumowanie markdown | retention 30 dni |
+
+### Test
+
+```bash
+node scripts/test-self-healing-logger.mjs
+```
