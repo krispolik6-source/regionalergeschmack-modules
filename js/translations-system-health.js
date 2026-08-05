@@ -28,7 +28,8 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         devExpand: 'Details einblenden',
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
-        sourceMarkdown: 'system_health.md'
+        sourceMarkdown: 'system_health.md',
+        devFixSuggestion: 'Reparaturvorschlag'
     },
     en: {
         title: 'System status',
@@ -56,7 +57,8 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         devExpand: 'Show details',
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
-        sourceMarkdown: 'system_health.md'
+        sourceMarkdown: 'system_health.md',
+        devFixSuggestion: 'Fix suggestion'
     },
     pl: {
         title: 'Status systemu',
@@ -84,6 +86,7 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         devExpand: 'Pokaż szczegóły',
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
-        sourceMarkdown: 'system_health.md'
+        sourceMarkdown: 'system_health.md',
+        devFixSuggestion: 'Sugestia naprawy'
     }
 });

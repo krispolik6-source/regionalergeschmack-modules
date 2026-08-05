@@ -445,8 +445,66 @@ body.dark-mode .main-header .language-dropdown .language-option {
    Responsive – wymagane szerokości
    ============================================================ */
 
-/* ETAP 31: telefon — tytuł zawsze czytelny (2 linie, bez ucięcia „…”) */
+/* ============================================================
+   Mobile grid — Menu | Brand (center) | Actions
+   ============================================================ */
+
 @media screen and (max-width: 429px) {
+    .main-header .header-content {
+        display: grid !important;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center !important;
+        justify-content: unset !important;
+        gap: 4px !important;
+    }
+
+    .main-header .header-left {
+        display: contents !important;
+    }
+
+    .main-header #menuBtn {
+        grid-column: 1;
+        justify-self: start;
+    }
+
+    .main-header .header-brand {
+        grid-column: 2;
+        justify-self: center;
+        max-width: 60%;
+        min-width: 0;
+        flex: none !important;
+        text-align: center;
+        justify-content: center !important;
+    }
+
+    .main-header .header-right {
+        grid-column: 3;
+        justify-self: end;
+        flex: none !important;
+    }
+
+    .header-brand h1,
+    .header-left h1,
+    .main-header .header-brand h1,
+    .main-header .header-left h1 {
+        white-space: nowrap !important;
+        display: block !important;
+        -webkit-line-clamp: unset !important;
+        line-clamp: unset !important;
+        -webkit-box-orient: unset !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        hyphens: none;
+        word-break: normal;
+        overflow-wrap: normal;
+    }
+}
+
+/* ETAP 31: telefon — tytuł zawsze czytelny (2 linie na szerszych mobile) */
+@media screen and (min-width: 430px) and (max-width: 767px) {
     .header-brand h1,
     .header-left h1,
     .main-header .header-brand h1,
@@ -510,6 +568,16 @@ body.dark-mode .main-header .language-dropdown .language-option {
     .header-content {
         padding: 0 8px !important;
         gap: 10px !important;
+    }
+
+    .header-brand h1,
+    .header-left h1,
+    .main-header .header-brand h1,
+    .main-header .header-left h1 {
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 }
 

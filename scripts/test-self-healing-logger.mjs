@@ -29,7 +29,8 @@ const {
 
 const {
     resolveSafeMitigationId,
-    listSafeMitigations
+    listSafeMitigations,
+    generateFixSuggestion
 } = await import('../js/core/selfHealingFixer.js');
 
 let pass = 0;
@@ -59,6 +60,21 @@ ok('overpass is critical url', isCriticalNetworkUrl('https://overpass-api.de/api
 ok('mitigation quota', resolveSafeMitigationId(new DOMException('x', 'QuotaExceededError')) === 'quota-trim');
 ok('mitigation modal', resolveSafeMitigationId(new Error('openProducerModal freeze'), { area: 'producerModal' }) === 'modal-reset-opening');
 ok('safe mitigations list', listSafeMitigations().length >= 4);
+
+const modalFix = generateFixSuggestion({
+    message: 'openProducerModal freeze',
+    stack: 'Error: freeze\n    at openProducerModal (js/views/producerModal.js:142:10)',
+    context: { area: 'producerModal' }
+});
+ok('fixSuggestion modal file', modalFix?.file === 'producerModal.js');
+ok('fixSuggestion modal description PL', /Modal producenta/.test(modalFix?.description || ''));
+ok('fixSuggestion modal code', /resetProducerModalOpeningState/.test(modalFix?.suggestedCode || ''));
+
+ok('fixSuggestion null when fixed', generateFixSuggestion({
+    message: 'fixed',
+    type: 'error-fixed',
+    mitigation: { applied: true }
+}) === null);
 
 localStorage.setItem(SELF_HEALING_LOG_KEY, JSON.stringify({
     version: 1,

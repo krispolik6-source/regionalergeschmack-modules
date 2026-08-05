@@ -10,7 +10,7 @@
  */
 
 import { byteLen, safeLocalStorageSetItem } from './safeStorage.js';
-import { applySafeMitigation, resolveSafeMitigationId } from './selfHealingFixer.js';
+import { applySafeMitigation, resolveSafeMitigationId, generateFixSuggestion } from './selfHealingFixer.js';
 import { INTELLIGENCE_POLICY } from '../intelligence/policy.js';
 
 /** Klucz localStorage (selfHealingLog) */
@@ -227,21 +227,25 @@ export function resolveHealingComponent(context = {}, fallback = 'runtime') {
 
 /**
  * Dodaje wpis do healingReport.
- * @param {{ status: HealingStatus, component: string, description: string, timestamp?: string, relatedLogId?: string }} entry
+ * @param {{ status: HealingStatus, component: string, description: string, timestamp?: string, relatedLogId?: string, aiProposal?: object|null }} entry
  */
 export function addHealingReportEntry(entry) {
     const status = HEALING_STATUS[entry?.status] ? entry.status : HEALING_STATUS.FAILED;
     const report = getHealingReport();
-    report.entries.push({
+    const row = {
         id: `hr-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
         status,
         component: truncate(entry.component || 'runtime', 120),
         description: truncate(entry.description || '', 500),
         timestamp: entry.timestamp || nowIso(),
         relatedLogId: entry.relatedLogId || null
-    });
+    };
+    if (entry.aiProposal && status !== HEALING_STATUS.FIXED) {
+        row.aiProposal = entry.aiProposal;
+    }
+    report.entries.push(row);
     persistHealingReportNow(report);
-    return report.entries[report.entries.length - 1].id;
+    return row.id;
 }
 
 /**
@@ -275,22 +279,34 @@ function recordHealingOutcome(logEntry, mitigationId, mitResult) {
         return;
     }
 
+    const reportAiProposal = logEntry.aiProposal && (logEntry.aiProposal.fixSuggestion || logEntry.aiProposal.suggestion)
+        ? logEntry.aiProposal
+        : null;
+
     if (mitigationId && mitResult && !mitResult.ok) {
         addHealingReportEntry({
             status: HEALING_STATUS.FAILED,
             component,
-            description: mitResult.detail || `Mitigacja nie powiodła się: ${mitigationId}`,
-            relatedLogId: logEntry.id
+            description: logEntry.aiProposal?.fixSuggestion?.description
+                || mitResult.detail
+                || `Mitigacja nie powiodła się: ${mitigationId}`,
+            relatedLogId: logEntry.id,
+            aiProposal: reportAiProposal
         });
         return;
     }
 
-    if (logEntry.aiProposal?.suggestion) {
+    if (logEntry.aiProposal?.fixSuggestion?.description || logEntry.aiProposal?.suggestion) {
         addHealingReportEntry({
             status: HEALING_STATUS.SUGGESTION,
             component,
-            description: truncate(logEntry.aiProposal.suggestion, 480),
-            relatedLogId: logEntry.id
+            description: truncate(
+                logEntry.aiProposal.fixSuggestion?.description
+                || logEntry.aiProposal.suggestion,
+                480
+            ),
+            relatedLogId: logEntry.id,
+            aiProposal: reportAiProposal
         });
         return;
     }
@@ -299,7 +315,8 @@ function recordHealingOutcome(logEntry, mitigationId, mitResult) {
         status: HEALING_STATUS.FAILED,
         component,
         description: logEntry.message || 'Krytyczny błąd — wymaga ręcznej weryfikacji',
-        relatedLogId: logEntry.id
+        relatedLogId: logEntry.id,
+        aiProposal: reportAiProposal
     });
 }
 
@@ -479,6 +496,7 @@ function reportEntryToUnified(reportEntry, logById) {
     const related = reportEntry.relatedLogId
         ? logById.get(String(reportEntry.relatedLogId))
         : null;
+    const aiProposal = reportEntry.aiProposal || related?.aiProposal || null;
     return {
         id: `report-${reportEntry.id}`,
         source: 'healingReport',
@@ -491,7 +509,7 @@ function reportEntryToUnified(reportEntry, logById) {
         stack: related?.stack || '',
         context: related?.context || null,
         mitigation: related?.mitigation || null,
-        aiProposal: related?.aiProposal || null
+        aiProposal
     };
 }
 
@@ -802,6 +820,15 @@ export function scheduleSelfHealingMaintenance() {
     }
 }
 
+function attachFixSuggestionToProposal(proposal, errorLog) {
+    if (!proposal || !errorLog) return proposal;
+    const fixSuggestion = generateFixSuggestion(errorLog);
+    if (fixSuggestion) {
+        proposal.fixSuggestion = fixSuggestion;
+    }
+    return proposal;
+}
+
 function buildHeuristicAiProposal(error, context) {
     const parts = errorToParts(error);
     const mitigationId = resolveSafeMitigationId(error, context);
@@ -921,10 +948,22 @@ async function processCriticalEntry(entry) {
         }
     }
 
-    try {
-        entry.aiProposal = await requestAiFixProposal(entry);
-    } catch {
-        entry.aiProposal = buildHeuristicAiProposal(entry, entry.context || {});
+    const wasFixed = mitResult?.ok === true;
+
+    if (!wasFixed) {
+        try {
+            entry.aiProposal = attachFixSuggestionToProposal(
+                await requestAiFixProposal(entry),
+                entry
+            );
+        } catch {
+            entry.aiProposal = attachFixSuggestionToProposal(
+                buildHeuristicAiProposal(entry, entry.context || {}),
+                entry
+            );
+        }
+    } else {
+        entry.aiProposal = null;
     }
 
     recordHealingOutcome(entry, mitigationId, mitResult);

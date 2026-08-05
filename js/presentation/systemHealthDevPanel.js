@@ -85,6 +85,7 @@ function ensureStyles() {
 .rg-sh-detail dt { font-weight: 700; color: #4a3f32; }
 .rg-sh-detail dd { margin: 0 0 8px; word-break: break-word; }
 .rg-sh-detail pre { margin: 8px 0 0; padding: 8px 10px; background: rgba(0,0,0,.04); border-radius: 8px; overflow: auto; max-height: 180px; font-size: .74rem; white-space: pre-wrap; }
+.rg-sh-fix-code { background: rgba(42,63,40,.08) !important; border: 1px solid rgba(42,63,40,.14); font-family: ui-monospace, 'Cascadia Code', monospace; }
 .rg-sh-empty { padding: 16px; text-align: center; color: #5c5348; font-size: .9rem; }
 .rg-sh-dev-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 `;
@@ -110,6 +111,16 @@ function buildDetailHtml(entry) {
         parts.push(`<dt>mitigation</dt><dd><pre>${escapeHtml(JSON.stringify(entry.mitigation, null, 2))}</pre></dd>`);
     }
     if (entry.aiProposal) {
+        const fix = entry.aiProposal.fixSuggestion;
+        if (fix) {
+            parts.push(`<dt>${escapeHtml(th('devFixSuggestion', 'Sugestia naprawy'))}</dt><dd>`);
+            parts.push(`<p><strong>${escapeHtml(fix.file)}</strong>${fix.line != null ? `:${escapeHtml(String(fix.line))}` : ''}</p>`);
+            parts.push(`<p>${escapeHtml(fix.description)}</p>`);
+            if (fix.suggestedCode) {
+                parts.push(`<pre class="rg-sh-fix-code">${escapeHtml(fix.suggestedCode)}</pre>`);
+            }
+            parts.push('</dd>');
+        }
         parts.push(`<dt>aiProposal</dt><dd><pre>${escapeHtml(JSON.stringify(entry.aiProposal, null, 2))}</pre></dd>`);
     }
     if (entry.context) {
