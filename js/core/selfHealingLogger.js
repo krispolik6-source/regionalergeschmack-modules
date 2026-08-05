@@ -800,6 +800,49 @@ export function cleanupOldReports() {
 }
 
 /**
+ * Usuwa pojedynczy wpis ze strumienia System Health (healingReport / log / markdown).
+ * @param {object} entry — wpis z buildUnifiedSystemHealth()
+ * @returns {boolean}
+ */
+export function removeUnifiedHealthEntry(entry) {
+    if (!entry) return false;
+    let removed = false;
+
+    if (entry.source === 'healingReport' || String(entry.id || '').startsWith('report-')) {
+        const report = getHealingReport();
+        const rawId = String(entry.id || '').replace(/^report-/, '');
+        const before = (report.entries || []).length;
+        report.entries = (report.entries || []).filter((e) => String(e.id) !== rawId);
+        if ((report.entries || []).length < before) {
+            schedulePersistHealingReport(report);
+            removed = true;
+        }
+    }
+
+    if (entry.source === 'selfHealingLog' || String(entry.id || '').startsWith('log-')) {
+        const log = readLogRaw();
+        const rawId = entry.relatedLogId || String(entry.id || '').replace(/^log-/, '');
+        const before = (log.entries || []).length;
+        log.entries = (log.entries || []).filter((e) => String(e.id) !== String(rawId));
+        if ((log.entries || []).length < before) {
+            schedulePersistLog(log);
+            removed = true;
+        }
+    }
+
+    if (entry.source === 'markdown' && entry.markdownKey) {
+        try {
+            localStorage.removeItem(entry.markdownKey);
+            removed = true;
+        } catch {
+            /* ignore */
+        }
+    }
+
+    return removed;
+}
+
+/**
  * Raz dziennie — przy starcie lub wejściu na Home.
  */
 export function scheduleSelfHealingMaintenance() {

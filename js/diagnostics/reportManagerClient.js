@@ -228,3 +228,238 @@ export async function refreshReportsIndex() {
 export function catalogEntry(key) {
     return REPORT_CATALOG.find((c) => c.key === key) || null;
 }
+
+export const REPORT_RETENTION_DAYS = 30;
+export const REPORT_RETENTION_MS = REPORT_RETENTION_DAYS * 24 * 60 * 60 * 1000;
+
+const MODULE_CATEGORY_LABELS = {
+    'guardian-future': 'Guardian',
+    dream: 'Dream',
+    'product-brain': 'Product Brain',
+    health: 'Health',
+    'brand-protection': 'Brand',
+    'self-reflection': 'Reflect',
+    intelligence: 'Regional Brain',
+    'living-region': 'Living Region',
+    'product-intelligence': 'Product Intel',
+    trust: 'Trust',
+    'living-brand': 'Brand',
+    'regional-intelligence': 'Intelligence',
+    'real-users': 'Real Users',
+    'self-healing': 'System',
+    status: 'Status',
+    dashboard: 'Dashboard'
+};
+
+/** Moduły docs/ objęte katalogiem raportów w panelu. */
+export function getCatalogModuleIds() {
+    return [...new Set(
+        REPORT_CATALOG.map((c) => {
+            const m = c.md.match(/^\/docs\/([^/]+)\//);
+            return m?.[1] || null;
+        }).filter(Boolean)
+    )];
+}
+
+export function getReportTimestamp(entry) {
+    if (!entry) return 0;
+    if (entry.mtime) {
+        const t = Date.parse(entry.mtime);
+        if (Number.isFinite(t)) return t;
+    }
+    if (entry.generatedAt) {
+        const t = Date.parse(entry.generatedAt);
+        if (Number.isFinite(t)) return t;
+    }
+    const name = String(entry.name || entry.rel || '');
+    const day = name.match(/(\d{4}-\d{2}-\d{2})/);
+    if (day) {
+        const t = Date.parse(`${day[1]}T12:00:00Z`);
+        if (Number.isFinite(t)) return t;
+    }
+    return 0;
+}
+
+export function isExpiredReport(entry, now = Date.now()) {
+    const ts = getReportTimestamp(entry);
+    if (!ts) return false;
+    return now - ts > REPORT_RETENTION_MS;
+}
+
+export function getReportCategoryLabel(entry) {
+    if (entry?.kind === 'system' || entry?.categoryLabel === '[System]') {
+        return '[System]';
+    }
+    const mod = String(entry?.module || '').trim();
+    const mapped = MODULE_CATEGORY_LABELS[mod];
+    if (mapped) return `[${mapped}]`;
+    const cat = REPORT_CATALOG.find((c) => entry?.rel?.includes(c.md.replace(/^\//, '').split('/').slice(0, 2).join('/')));
+    if (cat) {
+        const short = cat.title.split('/')[0].trim();
+        return `[${short}]`;
+    }
+    if (mod) {
+        const pretty = mod.split('-').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+        return `[${pretty}]`;
+    }
+    return '[Report]';
+}
+
+export function formatSystemStreamEntry(entry) {
+    if (!entry) return '';
+    const lines = [
+        `# System Health`,
+        '',
+        `- **Status:** ${entry.status || '—'}`,
+        `- **Timestamp:** ${entry.timestamp || '—'}`,
+        `- **Component:** ${entry.component || '—'}`,
+        `- **Source:** ${entry.source || '—'}`,
+        `- **Description:** ${entry.description || '—'}`
+    ];
+    if (entry.message) lines.push('', entry.message);
+    if (entry.stack) lines.push('', '```', entry.stack, '```');
+    if (entry.aiProposal?.fixSuggestion) {
+        const fix = entry.aiProposal.fixSuggestion;
+        lines.push('', `**Sugestia:** ${fix.description || '—'}`, `\`${fix.file || ''}\``);
+    }
+    return lines.join('\n');
+}
+
+export async function deleteStreamEntry(entry) {
+    if (!entry) return { ok: false };
+    if (entry.kind === 'system') {
+        try {
+            const { removeUnifiedHealthEntry } = await import('../core/selfHealingLogger.js');
+            const ok = removeUnifiedHealthEntry(entry.systemEntry || entry);
+            return { ok };
+        } catch {
+            return { ok: false };
+        }
+    }
+    const rel = String(entry.rel || '').replace(/^\//, '');
+    if (!rel) return { ok: false };
+    return deleteReportPath(rel, { allowLatest: true });
+}
+
+export async function copyStreamEntry(entry) {
+    if (!entry) return false;
+    if (entry.kind === 'system') {
+        const text = formatSystemStreamEntry(entry.systemEntry || entry);
+        try {
+            if (navigator.clipboard?.writeText) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+            }
+            showToast('Raport skopiowany');
+            return true;
+        } catch {
+            showToast('Nie udało się skopiować', 'error');
+            return false;
+        }
+    }
+    return copyReportToClipboard(entry.rel || entry);
+}
+
+function dedupeReportEntries(entries) {
+    const map = new Map();
+    for (const entry of entries) {
+        const stem = String(entry.name || '').replace(/\.(md|json)$/i, '') || 'report';
+        const key = `${entry.module || 'unknown'}/${stem}`;
+        const existing = map.get(key);
+        if (!existing) {
+            map.set(key, entry);
+            continue;
+        }
+        if (/\.md$/i.test(entry.name) && !/\.md$/i.test(existing.name)) {
+            map.set(key, entry);
+        }
+    }
+    return [...map.values()];
+}
+
+/**
+ * Automatyczne usuwanie raportów starszych niż 30 dni (docs/ + localStorage).
+ * Wywoływane przy otwarciu zakładki Raporty.
+ */
+export async function purgeExpiredReports() {
+    let docsDeleted = 0;
+
+    try {
+        const { cleanupOldReports } = await import('../core/selfHealingLogger.js');
+        cleanupOldReports();
+    } catch {
+        /* ignore */
+    }
+
+    const online = await isReportApiOnline();
+    if (online) {
+        const r = await cleanupReports('older-30');
+        if (r.ok) {
+            docsDeleted = Number(r.data?.deletedCount ?? r.data?.deleted?.length ?? 0);
+        }
+    }
+
+    return { docsDeleted };
+}
+
+/**
+ * Jeden strumień raportów — wszystkie kategorie, najnowsze pierwsze.
+ */
+export async function loadUnifiedReportStream() {
+    await purgeExpiredReports();
+
+    const index = await loadReportsIndex();
+    const now = Date.now();
+
+    let docEntries = (index.reports || []).filter((entry) => {
+        if (!entry?.rel?.startsWith('docs/')) return false;
+        if (!/\.(md|json)$/i.test(String(entry.name || entry.rel))) return false;
+        return !isExpiredReport(entry, now);
+    });
+
+    docEntries = dedupeReportEntries(docEntries);
+
+    let systemEntries = [];
+    try {
+        const { buildUnifiedSystemHealth } = await import('../core/selfHealingLogger.js');
+        const unified = buildUnifiedSystemHealth();
+        systemEntries = (unified.entries || [])
+            .filter((entry) => {
+                const ts = Date.parse(String(entry.timestamp || ''));
+                if (!Number.isFinite(ts)) return true;
+                return now - ts <= REPORT_RETENTION_MS;
+            })
+            .map((entry) => ({
+                kind: 'system',
+                streamId: String(entry.id || `system-${entry.timestamp}-${entry.component}`),
+                categoryLabel: '[System]',
+                name: `${entry.component || 'runtime'} · ${entry.status || '—'}`,
+                title: `${entry.component || 'runtime'} · ${entry.status || '—'}`,
+                rel: null,
+                systemEntry: entry,
+                mtime: entry.timestamp,
+                sortTs: Date.parse(String(entry.timestamp || '')) || 0
+            }));
+    } catch {
+        systemEntries = [];
+    }
+
+    const docStream = docEntries.map((entry) => ({
+        ...entry,
+        kind: 'doc',
+        streamId: `doc-${entry.rel}`,
+        categoryLabel: getReportCategoryLabel(entry),
+        sortTs: getReportTimestamp(entry)
+    }));
+
+    const merged = [...docStream, ...systemEntries];
+    merged.sort((a, b) => (b.sortTs || 0) - (a.sortTs || 0));
+
+    return merged;
+}
