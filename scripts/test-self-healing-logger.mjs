@@ -23,7 +23,8 @@ const {
     generateSessionSummaryMarkdown,
     persistSessionSummaryMarkdown,
     getHealingReport,
-    getLatestSystemHealthMarkdown
+    getLatestSystemHealthMarkdown,
+    buildUnifiedSystemHealth
 } = await import('../js/core/selfHealingLogger.js');
 
 const {
@@ -93,6 +94,26 @@ ok('markdown summary', md.includes('System Health') && md.includes('FIXED'));
 const key = persistSessionSummaryMarkdown();
 ok('markdown persisted', Boolean(key));
 ok('markdown readable', getLatestSystemHealthMarkdown().includes('|'));
+
+localStorage.setItem(SELF_HEALING_LOG_KEY, JSON.stringify({
+    version: 2,
+    entries: [{
+        id: 'orphan-log',
+        at: new Date().toISOString(),
+        type: 'error',
+        name: 'Error',
+        message: 'Orphan critical for unified test',
+        stack: 'Error: test\\n    at unified.test.js:1:1',
+        context: { source: 'test' }
+    }]
+}));
+const unified = buildUnifiedSystemHealth();
+ok('unified health object', unified && Array.isArray(unified.entries));
+ok('unified includes report', unified.entries.some((e) => e.source === 'healingReport'));
+ok('unified includes orphan log', unified.entries.some((e) => e.source === 'selfHealingLog'));
+ok('unified sorted newest first', unified.entries.length < 2
+    || Date.parse(unified.entries[0].timestamp) >= Date.parse(unified.entries[1].timestamp));
+localStorage.removeItem(SELF_HEALING_LOG_KEY);
 
 localStorage.removeItem(HEALING_REPORT_KEY);
 if (key) localStorage.removeItem(key);

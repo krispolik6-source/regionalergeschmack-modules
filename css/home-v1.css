@@ -1405,7 +1405,7 @@ body.dark-mode .bottom-nav .nav-item.active .nav-label {
     gap: 10px;
 }
 
-.home-page--v1 .home-section-head .section-title,
+.home-page--v1 .home-section-head:not(.home-section-head--photo) .section-title,
 .home-page--v1 .home-smart-today-head .section-title,
 .home-page--v1 .home-live-region-head .section-title {
     color: #2a3f28 !important;
@@ -1414,6 +1414,21 @@ body.dark-mode .bottom-nav .nav-item.active .nav-label {
     font-size: 1.05rem !important;
     line-height: 1.25 !important;
     letter-spacing: -0.01em;
+}
+
+/* Banery ze zdjęciem (Najbliżej / Polecane) — biały tytuł na ciemnoniebieskim tle */
+.home-page--v1 .home-section-head--photo .section-title,
+.home-page--v1 .home-recommended .home-section-head--photo .section-title,
+.home-page--v1 .home-foryou .home-section-head--photo .section-title {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.home-page--v1 .home-section-head--photo .home-see-all,
+.home-page--v1 .home-recommended .home-section-head--photo .home-see-all,
+.home-page--v1 .home-foryou .home-section-head--photo .home-see-all {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .home-page--v1 .home-see-all {
@@ -1457,11 +1472,21 @@ body.dark-mode .home-page--v1 .home-greeting-sub {
     color: rgba(212, 228, 176, 0.82) !important;
 }
 
-body.dark-mode .home-page--v1 .home-section-head .section-title,
+body.dark-mode .home-page--v1 .home-section-head:not(.home-section-head--photo) .section-title,
 body.dark-mode .home-page--v1 .home-smart-today-head .section-title,
 body.dark-mode .home-page--v1 .home-live-region-head .section-title,
 body.dark-mode .home-page--v1 .home-see-all {
     color: #d4e4b0 !important;
+}
+
+body.dark-mode .home-page--v1 .home-section-head--photo .section-title,
+body.dark-mode .home-page--v1 .home-recommended .home-section-head--photo .section-title,
+body.dark-mode .home-page--v1 .home-foryou .home-section-head--photo .section-title,
+body.dark-mode .home-page--v1 .home-section-head--photo .home-see-all,
+body.dark-mode .home-page--v1 .home-recommended .home-section-head--photo .home-see-all,
+body.dark-mode .home-page--v1 .home-foryou .home-section-head--photo .home-see-all {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 body.dark-mode .home-page--v1 .home-living-region-label,

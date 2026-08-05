@@ -26,6 +26,7 @@ import {
     isReportApiOnline
 } from './reportManagerClient.js';
 import { renderMemoryCleanerCard } from './memoryCleaner.js';
+import { renderSystemHealthDevPanel } from '../presentation/systemHealthDevPanel.js';
 import {
     buildDevStatusBoardView,
     DEV_STATUS_BOARD_CSS
@@ -632,6 +633,12 @@ async function renderSection(body, section, metrics) {
         return;
     }
 
+    if (section === 'system-health') {
+        body.innerHTML = '<div data-sh-dev-root></div>';
+        renderSystemHealthDevPanel(body.querySelector('[data-sh-dev-root]'));
+        return;
+    }
+
     if (section === 'tools') {
         body.innerHTML = `
           <div class="rg-dcc-section">
@@ -646,6 +653,13 @@ async function renderSection(body, section, metrics) {
                 </div>
               </div>
               <div class="rg-dcc-tile">
+                <h4>System Health</h4>
+                <p>Scalone logi self-healing (healingReport · selfHealingLog · markdown).</p>
+                <div class="rg-dv-actions" style="margin-top:10px">
+                  <button type="button" class="rg-dv-primary" data-dv-open-system-health>System Health</button>
+                </div>
+              </div>
+              <div class="rg-dcc-tile">
                 <h4>Health Panel</h4>
                 <p>${label('devVault.healthTitle', 'Zdrowie aplikacji')}</p>
                 <div class="rg-dv-actions" style="margin-top:10px">
@@ -657,6 +671,10 @@ async function renderSection(body, section, metrics) {
             <p style="margin-top:12px;color:#4a3f32;font-size:.85rem">Konsola: __RG_HEALTH__, __RG_DASHBOARD__, __RG_DAILY__, __RG_DEV_VAULT__</p>
           </div>
         `;
+        body.querySelector('[data-dv-open-system-health]')?.addEventListener('click', () => {
+            const tabBtn = document.querySelector(`#${ROOT_ID} [data-dv-tab="system-health"]`);
+            tabBtn?.click();
+        });
         body.querySelector('[data-dv-open-dev]')?.addEventListener('click', () => {
             closeVaultUi();
             try {
@@ -798,6 +816,7 @@ async function showHub() {
           <button type="button" data-dv-tab="dashboard">Dashboard</button>
           <button type="button" data-dv-tab="reports">Raporty</button>
           <button type="button" data-dv-tab="tools">Narzędzia</button>
+          <button type="button" data-dv-tab="system-health">System Health</button>
           <button type="button" data-dv-tab="intelligence">Inteligencja</button>
           <button type="button" data-dv-tab="maintenance">Utrzymanie</button>
           <button type="button" data-dv-tab="info">Informacje</button>

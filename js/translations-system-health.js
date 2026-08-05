@@ -15,7 +15,20 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         colComponent: 'Komponente',
         colDescription: 'Beschreibung',
         colTime: 'Zeit',
-        counts: '{fixed} behoben · {suggestion} Hinweise · {failed} offen'
+        counts: '{fixed} behoben · {suggestion} Hinweise · {failed} offen',
+        devTitle: 'System Health',
+        devLead: 'Vereinte Logs: healingReport · selfHealingLog · logs/system_health_*.md — nur Entwickler.',
+        devLocked: 'Nur nach PIN-Freigabe im Developer Vault.',
+        devRefresh: 'Aktualisieren',
+        devUpdated: 'Aktualisiert',
+        devTotal: 'Gesamt',
+        devTimestamp: 'Zeitstempel',
+        devSource: 'Quelle',
+        devSources: 'healingReport {report} · Log {log} · Markdown {md}',
+        devExpand: 'Details einblenden',
+        sourceReport: 'healingReport',
+        sourceLog: 'selfHealingLog',
+        sourceMarkdown: 'system_health.md'
     },
     en: {
         title: 'System status',
@@ -30,7 +43,20 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         colComponent: 'Component',
         colDescription: 'Description',
         colTime: 'Time',
-        counts: '{fixed} fixed · {suggestion} hints · {failed} open'
+        counts: '{fixed} fixed · {suggestion} hints · {failed} open',
+        devTitle: 'System Health',
+        devLead: 'Unified logs: healingReport · selfHealingLog · logs/system_health_*.md — developer only.',
+        devLocked: 'Available only after unlocking the Developer Vault (PIN).',
+        devRefresh: 'Refresh',
+        devUpdated: 'Updated',
+        devTotal: 'Total',
+        devTimestamp: 'Timestamp',
+        devSource: 'Source',
+        devSources: 'healingReport {report} · log {log} · markdown {md}',
+        devExpand: 'Show details',
+        sourceReport: 'healingReport',
+        sourceLog: 'selfHealingLog',
+        sourceMarkdown: 'system_health.md'
     },
     pl: {
         title: 'Status systemu',
@@ -45,6 +71,19 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         colComponent: 'Komponent',
         colDescription: 'Opis',
         colTime: 'Czas',
-        counts: '{fixed} napraw · {suggestion} sugestii · {failed} otwartych'
+        counts: '{fixed} napraw · {suggestion} sugestii · {failed} otwartych',
+        devTitle: 'System Health',
+        devLead: 'Scalone logi: healingReport · selfHealingLog · logs/system_health_*.md — tylko deweloper.',
+        devLocked: 'Dostęp tylko po odblokowaniu panelu deweloperskiego (PIN).',
+        devRefresh: 'Odśwież',
+        devUpdated: 'Zaktualizowano',
+        devTotal: 'Łącznie',
+        devTimestamp: 'Znacznik czasu',
+        devSource: 'Źródło',
+        devSources: 'healingReport {report} · log {log} · markdown {md}',
+        devExpand: 'Pokaż szczegóły',
+        sourceReport: 'healingReport',
+        sourceLog: 'selfHealingLog',
+        sourceMarkdown: 'system_health.md'
     }
 });

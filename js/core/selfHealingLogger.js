@@ -387,6 +387,203 @@ export function getLatestSystemHealthMarkdown(date = dayStamp()) {
     }
 }
 
+/**
+ * Indeks zapisanych plików logs/system_health_*.md (localStorage).
+ * @returns {Array<{ key: string, date: string, generatedAt: string }>}
+ */
+export function getSystemHealthMarkdownIndex() {
+    try {
+        const raw = localStorage.getItem(HEALTH_LOG_INDEX_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list.filter((row) => row?.key) : [];
+    } catch {
+        return [];
+    }
+}
+
+/**
+ * @param {string} markdown
+ * @param {string} markdownKey
+ * @returns {object[]}
+ */
+function parseMarkdownHealthRows(markdown, markdownKey) {
+    if (!markdown) return [];
+    const statusFromToken = {
+        '✅ FIXED': HEALING_STATUS.FIXED,
+        '🟡 SUGGESTION': HEALING_STATUS.SUGGESTION,
+        '🔴 FAILED': HEALING_STATUS.FAILED
+    };
+    const rows = [];
+    const lineRe = /^\|\s*(✅ FIXED|🟡 SUGGESTION|🔴 FAILED)\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|/;
+
+    for (const line of String(markdown).split('\n')) {
+        const match = line.match(lineRe);
+        if (!match) continue;
+        const status = statusFromToken[match[1]] || HEALING_STATUS.FAILED;
+        const component = match[2].trim();
+        const description = match[3].trim();
+        const timeRaw = match[4].trim();
+        const timestamp = timeRaw.includes('T')
+            ? timeRaw
+            : `${timeRaw.replace(' ', 'T')}:00.000Z`;
+
+        rows.push({
+            id: `md-${markdownKey}-${rows.length}-${component}`,
+            source: 'markdown',
+            status,
+            component,
+            description,
+            timestamp,
+            markdownKey
+        });
+    }
+    return rows;
+}
+
+function dedupeKey(entry) {
+    const ts = String(entry.timestamp || '').slice(0, 16);
+    const comp = String(entry.component || '').slice(0, 80);
+    const desc = String(entry.description || '').slice(0, 80);
+    return `${ts}|${comp}|${desc}`;
+}
+
+function resolveLogEntryStatus(logEntry) {
+    if (logEntry?.mitigation?.applied || logEntry?.type === 'error-fixed') {
+        return HEALING_STATUS.FIXED;
+    }
+    if (logEntry?.aiProposal) {
+        return HEALING_STATUS.SUGGESTION;
+    }
+    return HEALING_STATUS.FAILED;
+}
+
+function logEntryToUnified(logEntry) {
+    const component = resolveHealingComponent(logEntry.context || {}, logEntry.name || 'runtime');
+    return {
+        id: `log-${logEntry.id}`,
+        source: 'selfHealingLog',
+        status: resolveLogEntryStatus(logEntry),
+        component,
+        description: truncate(logEntry.message || logEntry.name || 'Krytyczny błąd', 500),
+        timestamp: logEntry.at || nowIso(),
+        relatedLogId: logEntry.id,
+        message: logEntry.message || '',
+        stack: logEntry.stack || '',
+        context: logEntry.context || null,
+        mitigation: logEntry.mitigation || null,
+        aiProposal: logEntry.aiProposal || null
+    };
+}
+
+function reportEntryToUnified(reportEntry, logById) {
+    const related = reportEntry.relatedLogId
+        ? logById.get(String(reportEntry.relatedLogId))
+        : null;
+    return {
+        id: `report-${reportEntry.id}`,
+        source: 'healingReport',
+        status: HEALING_STATUS[reportEntry.status] ? reportEntry.status : HEALING_STATUS.FAILED,
+        component: reportEntry.component || 'runtime',
+        description: reportEntry.description || '',
+        timestamp: reportEntry.timestamp || nowIso(),
+        relatedLogId: reportEntry.relatedLogId || null,
+        message: related?.message || '',
+        stack: related?.stack || '',
+        context: related?.context || null,
+        mitigation: related?.mitigation || null,
+        aiProposal: related?.aiProposal || null
+    };
+}
+
+/**
+ * Scentralizowany obiekt System Health — healingReport + selfHealingLog + markdown archive.
+ * @returns {{
+ *   generatedAt: string,
+ *   sessionId: string,
+ *   sessionStartedAt: string,
+ *   counts: { total: number, fixed: number, suggestion: number, failed: number },
+ *   sources: { healingReport: number, selfHealingLog: number, markdown: number },
+ *   entries: object[]
+ * }}
+ */
+export function buildUnifiedSystemHealth() {
+    const report = getHealingReport();
+    const log = getSelfHealingLog();
+    const logEntries = Array.isArray(log.entries) ? log.entries : [];
+    const logById = new Map(logEntries.map((e) => [String(e.id), e]));
+    const referencedLogIds = new Set(
+        (report.entries || [])
+            .map((e) => e.relatedLogId)
+            .filter(Boolean)
+            .map(String)
+    );
+
+    const unified = [];
+    const seen = new Set();
+
+    for (const entry of report.entries || []) {
+        const row = reportEntryToUnified(entry, logById);
+        const key = dedupeKey(row);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        unified.push(row);
+    }
+
+    for (const logEntry of logEntries) {
+        if (referencedLogIds.has(String(logEntry.id))) continue;
+        const row = logEntryToUnified(logEntry);
+        const key = dedupeKey(row);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        unified.push(row);
+    }
+
+    const mdIndex = getSystemHealthMarkdownIndex();
+    for (const row of mdIndex) {
+        let markdown = '';
+        try {
+            markdown = localStorage.getItem(row.key) || '';
+        } catch {
+            markdown = '';
+        }
+        if (!markdown) continue;
+        for (const mdRow of parseMarkdownHealthRows(markdown, row.key)) {
+            const key = dedupeKey(mdRow);
+            if (seen.has(key)) continue;
+            seen.add(key);
+            unified.push(mdRow);
+        }
+    }
+
+    unified.sort((a, b) => {
+        const ta = Date.parse(String(a.timestamp || '')) || 0;
+        const tb = Date.parse(String(b.timestamp || '')) || 0;
+        return tb - ta;
+    });
+
+    const counts = {
+        total: unified.length,
+        fixed: unified.filter((e) => e.status === HEALING_STATUS.FIXED).length,
+        suggestion: unified.filter((e) => e.status === HEALING_STATUS.SUGGESTION).length,
+        failed: unified.filter((e) => e.status === HEALING_STATUS.FAILED).length
+    };
+
+    const sources = {
+        healingReport: unified.filter((e) => e.source === 'healingReport').length,
+        selfHealingLog: unified.filter((e) => e.source === 'selfHealingLog').length,
+        markdown: unified.filter((e) => e.source === 'markdown').length
+    };
+
+    return {
+        generatedAt: nowIso(),
+        sessionId: report.sessionId,
+        sessionStartedAt: report.sessionStartedAt,
+        counts,
+        sources,
+        entries: unified
+    };
+}
+
 function cleanupOldMarkdownLogs(cutoffMs) {
     try {
         const raw = localStorage.getItem(HEALTH_LOG_INDEX_KEY);
@@ -857,6 +1054,7 @@ export function initSelfHealingLogger() {
         policy: SELF_HEALING_LOGGER_POLICY,
         log: getSelfHealingLog,
         report: getHealingReport,
+        unified: buildUnifiedSystemHealth,
         logCriticalError,
         addHealingReportEntry,
         logHealingSuggestion,
@@ -886,6 +1084,8 @@ export default {
     generateSessionSummaryMarkdown,
     persistSessionSummaryMarkdown,
     getLatestSystemHealthMarkdown,
+    getSystemHealthMarkdownIndex,
+    buildUnifiedSystemHealth,
     getSelfHealingLog,
     isCriticalError,
     isCriticalNetworkUrl,
