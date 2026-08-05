@@ -76,8 +76,12 @@ let openDetailProducer = null;
 const MODAL_CLOSE_GUARD_MS = 800;
 /** Jawna flaga – niezależna od DOM (popupclose / race z hidden) */
 let isModalOpen = false;
+/** Blokuje podwójne kliknięcie „Szczegóły” podczas otwierania modala */
+let isOpening = false;
 
 const MODAL_MAP_ZOOM = 14;
+/** Limit kart produktów w jednym renderze – ochrona przed freeze na mobile */
+const MODAL_PRODUCTS_RENDER_LIMIT = 24;
 const MODAL_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const STORY_PREVIEW_CHARS = 160;
 
@@ -763,12 +767,24 @@ function buildPromotionsHtml(producer) {
     return buildPromotionsFlyerHtml(producer, { compact: false });
 }
 
+function sliceProductsForModalRender(products) {
+    if (!Array.isArray(products) || products.length <= MODAL_PRODUCTS_RENDER_LIMIT) {
+        return { visible: products || [], hiddenCount: 0 };
+    }
+    return {
+        visible: products.slice(0, MODAL_PRODUCTS_RENDER_LIMIT),
+        hiddenCount: products.length - MODAL_PRODUCTS_RENDER_LIMIT
+    };
+}
+
 function buildProductsHtml(producer) {
     // Preferuj produkty już na obiekcie (po enrich) – unikaj pustej listy przy soft-match / fallback
     const fromObject = Array.isArray(producer?.products) ? producer.products : [];
-    const products = fromObject.length ? fromObject : getProducerProducts(producer.id);
+    const allProducts = fromObject.length ? fromObject : getProducerProducts(producer.id);
+    const totalCount = allProducts.length;
+    const { visible: products, hiddenCount } = sliceProductsForModalRender(allProducts);
 
-    if (!products.length) {
+    if (!totalCount) {
         return `
             <section class="producer-products-section">
                 <h3 class="producer-section-title">${t('producer.productsTitle')}</h3>
@@ -814,13 +830,34 @@ function buildProductsHtml(producer) {
         `;
     }
 
+    const moreHint = hiddenCount > 0
+        ? `<p class="producer-modal-empty producer-products-more-hint" role="status">+${hiddenCount}</p>`
+        : '';
+
     return `
         <section class="producer-products-section">
             <h3 class="producer-section-title">${t('producer.productsTitle')}
-                <span class="producer-products-count">(${products.length})</span>
+                <span class="producer-products-count">(${totalCount})</span>
             </h3>
             ${listHtml}
+            ${moreHint}
         </section>
+    `;
+}
+
+function buildModalLoadingShell() {
+    return `
+        <div class="producer-modal-toolbar">
+            <button type="button" class="producer-modal-back" data-close-modal aria-label="${t('btn.back')}">
+                ← ${t('btn.back')}
+            </button>
+        </div>
+        <div class="producer-modal-body">
+            <p class="producer-modal-empty" role="status">${escapeHtml(t('msg.loading'))}</p>
+        </div>
+        <footer class="producer-modal-footer">
+            <button type="button" class="producer-modal-close" data-close-modal>${t('btn.close')}</button>
+        </footer>
     `;
 }
 
@@ -1345,108 +1382,123 @@ function showProducerUnavailable(producerId) {
  * @param {{ id?: string, name?: string, lat?: number, lng?: number, category?: string, address?: string, source?: string } | null} [hint]
  */
 export function openProducerModal(producerId, hint = null) {
+    if (isOpening) {
+        console.warn('[Modal] Ignoruję podwójne otwarcie');
+        return;
+    }
+    if (isModalOpen && openDetailProducer?.id === String(producerId ?? hint?.id ?? '').trim()) {
+        console.warn('[Modal] Modal już otwarty dla tego producenta');
+        return;
+    }
+
+    isOpening = true;
     const id = String(producerId ?? hint?.id ?? '').trim();
-    console.log('[Modal] Otwieranie:', id || producerId);
-
-    const found = resolveProducerForModal(id || producerId, hint);
-    if (!found) {
-        console.warn('[Modal] Nie znaleziono producenta:', id || producerId, hint);
-        showProducerUnavailable(id || producerId);
-        return;
-    }
-    console.log('[Modal] Znaleziono:', found.id, found.name);
-
-    let producer;
-    try {
-        producer = upsertProducer(
-            Array.isArray(found.products) && found.products.length
-                ? found
-                : enrichProducerWithProducts(found)
-        );
-    } catch (error) {
-        console.error('[Modal] enrich/upsert:', error);
-        producer = found;
-    }
 
     try {
-        trackProducerViewed(producer.id, {
-            name: producer.name,
-            category: producer.category || producer.type || ''
+        console.log('[Modal] Otwieranie:', id || producerId);
+
+        const found = resolveProducerForModal(id || producerId, hint);
+        if (!found) {
+            console.warn('[Modal] Nie znaleziono producenta:', id || producerId, hint);
+            showProducerUnavailable(id || producerId);
+            isOpening = false;
+            return;
+        }
+        console.log('[Modal] Znaleziono:', found.id, found.name);
+
+        ensureModal();
+        const modal = document.getElementById('producerModal');
+        const content = document.getElementById('producerModalContent');
+        if (!modal || !content) {
+            console.warn('[ProducerModal] Brak elementów #producerModal w DOM');
+            showToast(t('msg.producerUnavailable'));
+            isOpening = false;
+            return;
+        }
+
+        lastFocusedElement = document.activeElement;
+
+        // Natychmiast pokaż szkielet z przyciskiem Wstecz – użytkownik może wyjść nawet przy błędzie renderu
+        content.innerHTML = buildModalLoadingShell();
+        modalOpenedAtMs = Date.now();
+        setModalOpenState(modal, true);
+        document.body.classList.add('producer-modal-open');
+
+        window.requestAnimationFrame(() => {
+            try {
+                let producer;
+                try {
+                    producer = upsertProducer(
+                        Array.isArray(found.products) && found.products.length
+                            ? found
+                            : enrichProducerWithProducts(found)
+                    );
+                } catch (error) {
+                    console.error('[Modal] enrich/upsert:', error);
+                    producer = found;
+                }
+
+                try {
+                    trackProducerViewed(producer.id, {
+                        name: producer.name,
+                        category: producer.category || producer.type || ''
+                    });
+                } catch (_) {
+                    /* ignore */
+                }
+
+                content.innerHTML = renderModalContent(producer);
+                rebindModalForms(content, producer.id);
+                scheduleModalTranslations(content, producer);
+
+                applyProducerMoodToModal(modal, producer);
+
+                try {
+                    import('../diagnostics/selfHealing.js')
+                        .then((m) => {
+                            m.healCategoryPhotos?.(modal);
+                            m.healModalPhotoLayout?.(modal);
+                        })
+                        .catch(() => { /* self-heal optional */ });
+                } catch (_) {
+                    /* ignore */
+                }
+
+                openDetailProducer = {
+                    id: String(producer.id),
+                    category: String(producer.category || producer.type || '')
+                };
+                console.log('[Modal] Otwarty:', producer.id);
+
+                try {
+                    eventBus.emit(EVENTS.SHOW_DETAIL, {
+                        id: openDetailProducer.id,
+                        category: openDetailProducer.category
+                    });
+                } catch (_) {
+                    /* ignore */
+                }
+
+                window.setTimeout(() => {
+                    if (document.getElementById('producerModal')?.hidden) return;
+                    content.querySelector('.producer-modal-back')?.focus({ preventScroll: true });
+                }, MODAL_CLOSE_GUARD_MS + 50);
+            } catch (error) {
+                console.error('[ProducerModal] Błąd renderowania:', error);
+                showProducerUnavailable(id || producerId);
+            } finally {
+                isOpening = false;
+            }
         });
-    } catch (_) {
-        /* ignore */
-    }
-
-    ensureModal();
-    const modal = document.getElementById('producerModal');
-    const content = document.getElementById('producerModalContent');
-    if (!modal || !content) {
-        console.warn('[ProducerModal] Brak elementów #producerModal w DOM');
-        showToast(t('msg.producerUnavailable'));
-        return;
-    }
-
-    lastFocusedElement = document.activeElement;
-
-    try {
-        content.innerHTML = renderModalContent(producer);
-        rebindModalForms(content, producer.id);
-        scheduleModalTranslations(content, producer);
     } catch (error) {
-        console.error('[ProducerModal] Błąd renderowania:', error);
-        showToast(t('msg.producerUnavailable'));
-        return;
+        console.error('[ProducerModal] openProducerModal:', error);
+        isOpening = false;
+        showProducerUnavailable(id || String(producerId ?? ''));
     }
-
-    // ETAP 17 – charakter wizualny (CSS), bez zmiany struktury HTML
-    applyProducerMoodToModal(modal, producer);
-
-    // Self-Heal: zdjęcie kategorii + wysokość (bez zmiany kolorów marki)
-    try {
-        // Ten sam URL co app.js (plain) — jedna instancja modułu
-        import('../diagnostics/selfHealing.js')
-            .then((m) => {
-                m.healCategoryPhotos?.(modal);
-                m.healModalPhotoLayout?.(modal);
-            })
-            .catch(() => { /* self-heal optional */ });
-    } catch (_) {
-        /* ignore */
-    }
-
-    // Najpierw pokaż modal – mini-mapa nie może blokować otwarcia
-    modalOpenedAtMs = Date.now();
-    openDetailProducer = {
-        id: String(producer.id),
-        category: String(producer.category || producer.type || '')
-    };
-    setModalOpenState(modal, true);
-    document.body.classList.add('producer-modal-open');
-    console.log('[Modal] Otwarty:', producer.id);
-
-    try {
-        eventBus.emit(EVENTS.SHOW_DETAIL, {
-            id: openDetailProducer.id,
-            category: openDetailProducer.category
-        });
-    } catch (_) {
-        /* ignore */
-    }
-
-    try {
-        initLocationMiniMap(content);
-    } catch (error) {
-        console.warn('[Modal] Mini-mapa:', error);
-    }
-
-    // Fokus dopiero po guardzie against ghost-click na data-close-modal (przycisk Wstecz)
-    window.setTimeout(() => {
-        if (document.getElementById('producerModal')?.hidden) return;
-        content.querySelector('.producer-modal-back')?.focus({ preventScroll: true });
-    }, MODAL_CLOSE_GUARD_MS + 50);
 }
 
 export function closeProducerModal({ force = false } = {}) {
+    isOpening = false;
     const modal = document.getElementById('producerModal');
     if (!modal || (modal.hidden && !isModalOpen)) return;
 

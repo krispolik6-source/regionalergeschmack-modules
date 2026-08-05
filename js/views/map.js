@@ -2829,9 +2829,8 @@ function bindPopupActions(container) {
                 }
                 : null;
             try {
-                // Najpierw modal – flaga isModalOpen blokuje skutki uboczne popupclose
                 openProducerModal(producerId, hint);
-                isModalOpen = true;
+                syncModalOpenFlag();
                 // Zamknij popup dopiero po klatce – unikaj ghost-click na backdrop
                 window.setTimeout(() => {
                     if (!isProducerModalOpen()) return;
