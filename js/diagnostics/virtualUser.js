@@ -303,11 +303,11 @@ async function runAllScenarios(obs) {
         eventBus.emit(EVENTS.SEARCH_PRODUCTS, { query: 'brot', navigate: true });
         await sleep(500);
         navigateTo('home', { force: true });
-        const input = document.getElementById('homeSearchInput');
+        const input = document.getElementById('headerSearchInput') || document.getElementById('homeSearchInput');
         if (input) {
             input.value = 'käse';
             input.dispatchEvent(new Event('input', { bubbles: true }));
-            document.getElementById('homeSearchForm')?.dispatchEvent(
+            document.getElementById('headerSearchForm')?.dispatchEvent(
                 new Event('submit', { bubbles: true, cancelable: true })
             );
         }

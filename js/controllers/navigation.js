@@ -3,6 +3,7 @@ import { t } from '../core/i18n.js';
 import { eventBus } from '../core/eventBus.js';
 import { EVENTS } from '../core/events.js';
 import { renderHome, destroyHome } from '../views/home.js?v=44';
+import { focusHeaderSearch } from '../core/headerShell.js';
 import { renderMap } from '../views/map.js?v=48';
 import { renderPremium } from '../views/premium.js';
 import { renderFavorites, refreshFavoritesBadge } from '../views/favorites.js';
@@ -93,12 +94,7 @@ function updateActiveNavItem(view) {
 }
 
 function focusHomeSearch() {
-    requestAnimationFrame(() => {
-        const input = document.querySelector('#view-home #homeSearchInput, .home-page #homeSearchInput');
-        if (!input) return;
-        input.focus();
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+    focusHeaderSearch();
 }
 
 function renderView(view, panel, options = {}) {

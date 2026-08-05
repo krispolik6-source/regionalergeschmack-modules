@@ -257,7 +257,7 @@ async function runPersonaJourney(persona, { live = true } = {}) {
     await runStep('search', async () => {
         eventBus.emit(EVENTS.SEARCH_PRODUCTS, { query: 'brot', navigate: true });
         await sleep(250);
-        const input = document.getElementById('homeSearchInput');
+        const input = document.getElementById('headerSearchInput') || document.getElementById('homeSearchInput');
         if (input) {
             input.value = persona.language === 'en' ? 'cheese' : 'käse';
             input.dispatchEvent(new Event('input', { bubbles: true }));

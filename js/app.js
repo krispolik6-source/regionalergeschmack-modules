@@ -32,6 +32,7 @@ import {
 } from './core/premiumService.js';
 import { refreshFavoritesBadge, adoptGuestFavoritesForCurrentUser } from './views/favorites.js';
 import { initShellSettings, updateLanguageButtonLabel, refreshShellAccessibility } from './core/settings.js';
+import { initHeaderShell, refreshHeaderShell } from './core/headerShell.js';
 import { syncDocumentMeta } from './core/documentMeta.js';
 import { initSideMenu } from './core/sideMenu.js';
 import { t } from './core/i18n.js';
@@ -122,28 +123,7 @@ function openProducerDeepLinkIfPresent() {
 const HEADER_SCROLL_AWAY_THRESHOLD_PX = 50;
 
 function initPremiumScrollAwayHeader() {
-    const header = document.getElementById('mainHeader');
-    if (!header?.classList.contains('header-premium')) return;
-
-    let ticking = false;
-
-    const syncHeaderVisibility = () => {
-        const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-        header.classList.toggle('header-premium--hidden', scrollY > HEADER_SCROLL_AWAY_THRESHOLD_PX);
-        ticking = false;
-    };
-
-    window.addEventListener(
-        'scroll',
-        () => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(syncHeaderVisibility);
-        },
-        { passive: true }
-    );
-
-    syncHeaderVisibility();
+    /* Scroll-away obsługiwany w js/core/headerShell.js (header-expandable). */
 }
 
 function bindShellEvents() {
@@ -160,6 +140,7 @@ function bindShellEvents() {
         updateNavLabels();
         updateLanguageButtonLabel();
         refreshShellAccessibility();
+        refreshHeaderShell();
         syncDocumentMeta();
         const current = getCurrentView();
         if (current) {
@@ -250,6 +231,7 @@ async function bootstrap() {
     if (!app) throw new Error('Brak kontenera #app');
 
     initShellSettings();
+    initHeaderShell();
     // AI Translation Engine — tło, bez UI (LibreTranslate → MyMemory; cache)
     initAiTranslationEngine();
     // Living Region Engine — wyłącznie dane dnia (bez UI / bez Home)

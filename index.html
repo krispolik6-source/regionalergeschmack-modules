@@ -69,7 +69,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@500;600;700;800&family=Literata:opsz,wght@7..72,600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@500;600;700;800&family=Literata:opsz,wght@7..72,600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/style.css?v=572">
     <link rel="stylesheet" href="/css/brand-colors-cleanup.css?v=8">
@@ -134,28 +134,59 @@
             });
         })();
     </script>
-    <header id="mainHeader" class="main-header header-premium">
+    <header id="mainHeader" class="main-header header-premium header-expandable">
         <div class="header-content">
-            <div class="header-left">
-                <button type="button" id="menuBtn" class="header-icon" aria-label="Menü" data-i18n-aria="a11y.menu">☰</button>
-                <div class="header-brand">
-                    <img class="header-brand-mark" src="/assets/icons/logo-master.svg?v=30" width="48" height="48" alt="" aria-hidden="true" title="Regionaler Geschmack">
-                    <h1>Regionaler Geschmack</h1>
-                </div>
+            <div class="header-brand-layer">
+                <svg class="header-brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
+                    <circle cx="16" cy="18" r="9" fill="none" stroke="#2a3f28" stroke-width="1.25"/>
+                    <circle cx="16" cy="18" r="6" fill="none" stroke="#c9a227" stroke-width="0.75" opacity="0.55"/>
+                    <path d="M8 6v10c0 1.1.9 2 2 2s2-.9 2-2V6" fill="none" stroke="#2a3f28" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M10 6v10" fill="none" stroke="#2a3f28" stroke-width="1.1" stroke-linecap="round"/>
+                    <path d="M24 6v11M25.5 6v11M27 6v8" fill="none" stroke="#2a3f28" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+                <h1>Regionaler Geschmack</h1>
             </div>
-            <div class="header-right">
-                <button type="button" id="headerPremiumBtn" class="header-icon header-premium-btn" aria-label="Premium" title="Premium" data-i18n-aria="nav.premium"><img class="header-premium-mark" src="/assets/icons/logo-master.svg?v=30" width="22" height="22" alt="" aria-hidden="true"></button>
-                <div class="header-lang-wrap">
-                    <button type="button" id="languageSwitcherBtn" class="header-lang" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria="a11y.chooseLanguage">
-                        <span id="languageSwitcherLabel">🇩🇪 Deutsch</span>
-                        <span class="header-lang-caret" aria-hidden="true">▾</span>
+            <div class="header-action-bar">
+                <button type="button" id="menuBtn" class="header-action-btn header-menu-btn" aria-label="Menü" data-i18n-aria="a11y.menu">
+                    <svg class="header-action-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                        <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <form class="header-search-form" id="headerSearchForm" role="search">
+                    <label class="header-search-field" for="headerSearchInput">
+                        <svg class="header-search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                            <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+                            <path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                        </svg>
+                        <input
+                            type="search"
+                            id="headerSearchInput"
+                            class="header-search-input"
+                            placeholder="Produkte, Restaurants, Läden suchen..."
+                            autocomplete="off"
+                            enterkeyhint="search"
+                        >
+                    </label>
+                </form>
+                <div class="header-action-group">
+                    <button type="button" id="headerNotificationsBtn" class="header-action-btn header-notifications-btn" aria-label="Benachrichtigungen" data-i18n-aria="profile.notifications">
+                        <span class="header-action-glyph" aria-hidden="true">🔔</span>
+                        <span class="header-notifications-dot" id="headerNotificationsDot" hidden aria-hidden="true"></span>
                     </button>
-                    <ul id="languageDropdown" class="language-dropdown" role="listbox" hidden></ul>
+                    <button type="button" id="headerProfileBtn" class="header-action-btn header-profile-btn" aria-label="Profil" data-i18n-aria="nav.profile">
+                        <span class="header-profile-avatar" id="headerProfileAvatar" aria-hidden="true">👤</span>
+                    </button>
+                    <button type="button" id="darkModeToggleBtn" class="header-action-btn header-theme-btn theme-toggle-premium" aria-label="Dunkelmodus" aria-pressed="false" data-i18n-aria="a11y.darkMode">🌞</button>
                 </div>
-                <button type="button" id="darkModeToggleBtn" class="theme-toggle-premium" aria-label="Dunkelmodus" aria-pressed="false" data-i18n-aria="a11y.darkMode">🌞</button>
             </div>
         </div>
     </header>
+
+    <div class="header-lang-wrap header-lang-wrap--legacy" hidden aria-hidden="true">
+        <button type="button" id="languageSwitcherBtn" class="header-lang" aria-haspopup="listbox" aria-expanded="false" tabindex="-1"></button>
+        <span id="languageSwitcherLabel"></span>
+        <ul id="languageDropdown" class="language-dropdown" role="listbox" hidden></ul>
+    </div>
 
     <main id="app"></main>
 

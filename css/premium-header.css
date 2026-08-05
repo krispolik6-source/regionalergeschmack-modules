@@ -446,47 +446,50 @@ body.dark-mode .main-header .language-dropdown .language-option {
    ============================================================ */
 
 /* ============================================================
-   Mobile grid — Menu | Brand (center) | Actions
+   Mobile flex — Menu + Brand (ellipsis) | Actions
    ============================================================ */
 
 @media screen and (max-width: 429px) {
     .main-header .header-content {
-        display: grid !important;
-        grid-template-columns: 1fr auto 1fr;
+        display: flex !important;
+        justify-content: space-between !important;
         align-items: center !important;
-        justify-content: unset !important;
-        gap: 4px !important;
+        gap: 6px !important;
     }
 
     .main-header .header-left {
-        display: contents !important;
-    }
-
-    .main-header #menuBtn {
-        grid-column: 1;
-        justify-self: start;
+        display: flex !important;
+        align-items: center !important;
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: var(--ph-gap-chrome, 8px) !important;
     }
 
     .main-header .header-brand {
-        grid-column: 2;
-        justify-self: center;
-        max-width: 60%;
+        flex-shrink: 1;
+        max-width: 100px;
         min-width: 0;
-        flex: none !important;
-        text-align: center;
-        justify-content: center !important;
+        flex: 0 1 auto !important;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .main-header .header-right {
-        grid-column: 3;
-        justify-self: end;
-        flex: none !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        flex: 0 0 auto !important;
+        gap: 4px !important;
     }
 
     .header-brand h1,
     .header-left h1,
     .main-header .header-brand h1,
     .main-header .header-left h1 {
+        font-size: 14px !important;
         white-space: nowrap !important;
         display: block !important;
         -webkit-line-clamp: unset !important;
@@ -496,7 +499,7 @@ body.dark-mode .main-header .language-dropdown .language-option {
         text-overflow: ellipsis !important;
         width: 100%;
         max-width: 100%;
-        text-align: center;
+        min-width: 0;
         hyphens: none;
         word-break: normal;
         overflow-wrap: normal;
@@ -574,7 +577,7 @@ body.dark-mode .main-header .language-dropdown .language-option {
     .header-left h1,
     .main-header .header-brand h1,
     .main-header .header-left h1 {
-        font-size: 12px !important;
+        font-size: 14px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -908,5 +911,339 @@ body:has(.main-header.header-premium) {
     .main-header .header-avatar-btn:active,
     .main-header .header-account-btn:active {
         transform: none !important;
+    }
+
+    .main-header.header-expandable {
+        transition: none;
+    }
+}
+
+/* ============================================================
+   Expandable App Bar — Brand Layer + Action Bar (search)
+   ============================================================ */
+
+.main-header.header-expandable {
+    --ph-brand-layer-h: 52px;
+    --ph-action-bar-h: 56px;
+    --ph-header-h: calc(var(--ph-brand-layer-h) + var(--ph-action-bar-h));
+    --header-height: var(--ph-header-h);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #faf7f2 !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: none !important;
+    border-radius: 0 0 16px 16px;
+    box-shadow:
+        0 4px 16px rgba(42, 63, 40, 0.08),
+        0 1px 0 rgba(201, 162, 39, 0.14) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.main-header.header-expandable.header-expandable--hidden,
+.main-header.header-expandable.header-premium--hidden {
+    transform: translateY(-100%);
+    margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top, 0px)));
+    pointer-events: none;
+}
+
+.main-header.header-expandable .header-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    height: auto !important;
+    min-height: var(--ph-header-h) !important;
+    padding: 0 !important;
+    gap: 0 !important;
+}
+
+/* ——— Warstwa A: logo + nazwa (poziomo, wyśrodkowane) ——— */
+.main-header.header-expandable .header-brand-layer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 16px 6px;
+    gap: 10px;
+    min-height: var(--ph-brand-layer-h);
+    box-sizing: border-box;
+}
+
+.main-header.header-expandable .header-brand-icon {
+    display: block;
+    width: 32px;
+    max-width: 32px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.main-header.header-expandable .header-brand-layer h1 {
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', 'Literata', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2a3f28;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: visible;
+    -webkit-text-fill-color: #2a3f28;
+    background: none;
+}
+
+/* ——— Warstwa B: Menu | Search | Akcje ——— */
+.main-header.header-expandable .header-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 12px 10px;
+    min-height: var(--ph-action-bar-h);
+    box-sizing: border-box;
+}
+
+.main-header.header-expandable .header-search-form {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+}
+
+.main-header.header-expandable .header-search-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    background: rgba(42, 63, 40, 0.06);
+    border: 1px solid rgba(42, 63, 40, 0.1);
+    border-radius: 999px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.main-header.header-expandable .header-search-field:focus-within {
+    background: #fff;
+    border-color: rgba(201, 162, 39, 0.45);
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.14);
+}
+
+.main-header.header-expandable .header-search-icon {
+    flex-shrink: 0;
+    color: #2a3f28;
+    opacity: 0.72;
+}
+
+.main-header.header-expandable .header-search-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #2a3f28;
+    outline: none;
+    padding: 8px 0;
+}
+
+.main-header.header-expandable .header-search-input::placeholder {
+    color: rgba(42, 63, 40, 0.52);
+}
+
+.main-header.header-expandable .header-action-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+.main-header.header-expandable .header-action-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #2a3f28;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.main-header.header-expandable .header-action-btn:hover,
+.main-header.header-expandable .header-action-btn:focus-visible {
+    opacity: 1;
+    background: rgba(42, 63, 40, 0.08);
+}
+
+.main-header.header-expandable .header-action-btn:active {
+    transform: scale(0.96);
+}
+
+.main-header.header-expandable .header-action-icon {
+    display: block;
+}
+
+.main-header.header-expandable .header-profile-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(42, 63, 40, 0.1);
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    color: #2a3f28;
+}
+
+.main-header.header-expandable .header-profile-avatar.is-logged-in {
+    background: linear-gradient(145deg, #c9a227 0%, #a88620 100%);
+    color: #fffef8;
+    font-size: 0.8125rem;
+}
+
+.main-header.header-expandable .header-notifications-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #c0392b;
+    border: 1.5px solid #faf7f2;
+    box-shadow: 0 0 0 1px rgba(192, 57, 43, 0.25);
+}
+
+.main-header.header-expandable .header-notifications-btn.has-unread {
+    opacity: 1;
+}
+
+/* ——— Dark mode ——— */
+body.dark-mode .main-header.header-expandable,
+html.dark-mode .main-header.header-expandable {
+    background: rgba(30, 46, 28, 0.97) !important;
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.28),
+        0 1px 0 rgba(201, 162, 39, 0.2) !important;
+}
+
+body.dark-mode .main-header.header-expandable .header-brand-layer h1,
+html.dark-mode .main-header.header-expandable .header-brand-layer h1 {
+    color: #fffef8 !important;
+    -webkit-text-fill-color: #fffef8 !important;
+}
+
+body.dark-mode .main-header.header-expandable .header-brand-icon circle,
+body.dark-mode .main-header.header-expandable .header-brand-icon path,
+html.dark-mode .main-header.header-expandable .header-brand-icon circle,
+html.dark-mode .main-header.header-expandable .header-brand-icon path {
+    stroke: #fffef8;
+}
+
+body.dark-mode .main-header.header-expandable .header-brand-icon circle:nth-of-type(2),
+html.dark-mode .main-header.header-expandable .header-brand-icon circle:nth-of-type(2) {
+    stroke: #c9a227;
+}
+
+body.dark-mode .main-header.header-expandable .header-search-field,
+html.dark-mode .main-header.header-expandable .header-search-field {
+    background: rgba(255, 254, 248, 0.08);
+    border-color: rgba(255, 254, 248, 0.12);
+}
+
+body.dark-mode .main-header.header-expandable .header-search-field:focus-within,
+html.dark-mode .main-header.header-expandable .header-search-field:focus-within {
+    background: rgba(255, 254, 248, 0.12);
+    border-color: rgba(201, 162, 39, 0.45);
+}
+
+body.dark-mode .main-header.header-expandable .header-search-input,
+body.dark-mode .main-header.header-expandable .header-search-icon,
+body.dark-mode .main-header.header-expandable .header-action-btn,
+html.dark-mode .main-header.header-expandable .header-search-input,
+html.dark-mode .main-header.header-expandable .header-search-icon,
+html.dark-mode .main-header.header-expandable .header-action-btn {
+    color: #fffef8 !important;
+}
+
+body.dark-mode .main-header.header-expandable .header-search-input::placeholder,
+html.dark-mode .main-header.header-expandable .header-search-input::placeholder {
+    color: rgba(255, 254, 248, 0.5);
+}
+
+body.dark-mode .main-header.header-expandable .header-profile-avatar,
+html.dark-mode .main-header.header-expandable .header-profile-avatar {
+    background: rgba(255, 254, 248, 0.12);
+    color: #fffef8;
+}
+
+body.dark-mode .main-header.header-expandable .header-notifications-dot,
+html.dark-mode .main-header.header-expandable .header-notifications-dot {
+    border-color: rgba(30, 46, 28, 0.95);
+}
+
+/* ——— Mobile ——— */
+@media screen and (max-width: 429px) {
+    .main-header.header-expandable {
+        --ph-brand-layer-h: 48px;
+        --ph-action-bar-h: 52px;
+    }
+
+    .main-header.header-expandable .header-brand-layer {
+        padding: 8px 12px 4px;
+        gap: 8px;
+    }
+
+    .main-header.header-expandable .header-brand-layer h1 {
+        font-size: clamp(17px, 4.8vw, 22px);
+        letter-spacing: 0.5px;
+    }
+
+    .main-header.header-expandable .header-action-bar {
+        padding: 4px 10px 8px;
+        gap: 6px;
+    }
+
+    .main-header.header-expandable .header-action-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        font-size: 1.05rem;
+    }
+
+    .main-header.header-expandable .header-search-input {
+        font-size: 0.8125rem;
+    }
+}
+
+@media screen and (max-width: 359px) {
+    .main-header.header-expandable .header-brand-layer h1 {
+        font-size: 16px;
+    }
+
+    .main-header.header-expandable .header-action-group {
+        gap: 0;
     }
 }

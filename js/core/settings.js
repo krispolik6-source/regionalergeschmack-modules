@@ -244,12 +244,22 @@ export function refreshShellAccessibility() {
     const menuBtn = document.getElementById('menuBtn');
     const langToggle = document.getElementById('languageSwitcherBtn');
     const premiumBtn = document.getElementById('headerPremiumBtn');
+    const notifBtn = document.getElementById('headerNotificationsBtn');
+    const profileBtn = document.getElementById('headerProfileBtn');
     const bottomNav = document.querySelector('.bottom-nav');
     if (menuBtn) menuBtn.setAttribute('aria-label', t('a11y.menu'));
     if (langToggle) langToggle.setAttribute('aria-label', t('a11y.chooseLanguage'));
     if (premiumBtn) {
         premiumBtn.setAttribute('aria-label', t('nav.premium'));
         premiumBtn.setAttribute('title', t('nav.premium'));
+    }
+    if (notifBtn) {
+        notifBtn.setAttribute('aria-label', t('profile.notifications'));
+        notifBtn.setAttribute('title', t('profile.notifications'));
+    }
+    if (profileBtn) {
+        profileBtn.setAttribute('aria-label', t('nav.profile'));
+        profileBtn.setAttribute('title', t('nav.profile'));
     }
     if (bottomNav) bottomNav.setAttribute('aria-label', t('shell.label'));
 

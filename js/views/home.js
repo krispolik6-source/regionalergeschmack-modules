@@ -1211,20 +1211,6 @@ export const renderHome = (container) => {
             </section>
 
             <section class="home-hub app-section" aria-label="${t('home.hubLabel')}">
-                <form class="home-search home-search--lg" id="homeSearchForm" role="search">
-                    <label class="home-search-field" for="homeSearchInput">
-                        <span class="home-search-icon" aria-hidden="true">🔍</span>
-                        <input
-                            type="search"
-                            id="homeSearchInput"
-                            class="home-search-input"
-                            placeholder="${t('home.searchPlaceholder')}"
-                            autocomplete="off"
-                            enterkeyhint="search"
-                        >
-                    </label>
-                    <button type="submit" class="home-search-submit">${escapeHtml(t('home.searchSubmit'))}</button>
-                </form>
                 <div id="homeSearchResults" class="home-search-results" hidden aria-live="polite"></div>
             </section>
 
@@ -1392,41 +1378,12 @@ function renderHomeSearchResults(container, query) {
 }
 
 function bindHomeSearch(container, signal) {
-    const searchForm = container.querySelector('#homeSearchForm');
-    const searchInput = container.querySelector('#homeSearchInput');
     if (homeSearchDebounceTimer) {
         clearTimeout(homeSearchDebounceTimer);
         homeSearchDebounceTimer = null;
     }
 
-    const runSearch = (query) => {
-        renderHomeSearchResults(container, query);
-    };
-
     const opts = signal ? { signal } : undefined;
-
-    searchInput?.addEventListener('input', () => {
-        const query = searchInput.value;
-        const resultsEl = container.querySelector('#homeSearchResults');
-        if (homeSearchDebounceTimer) clearTimeout(homeSearchDebounceTimer);
-        if (query.trim() && resultsEl) {
-            resultsEl.hidden = false;
-            resultsEl.innerHTML = `<p class="home-search-empty">${t('search.searching')}</p>`;
-        } else if (resultsEl) {
-            resultsEl.hidden = true;
-            resultsEl.innerHTML = '';
-            eventBus.emit(EVENTS.SEARCH_PRODUCTS, { query: '', navigate: false });
-        }
-        homeSearchDebounceTimer = setTimeout(() => runSearch(query), SEARCH_DEBOUNCE_MS);
-    }, opts);
-
-    searchForm?.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const query = searchInput?.value?.trim() || '';
-        runSearch(query);
-        trackSearchQuery(query);
-        eventBus.emit(EVENTS.SEARCH_PRODUCTS, { query });
-    }, opts);
 
     container.querySelector('#homeSearchResults')?.addEventListener('click', (event) => {
         const card = event.target.closest('[data-producer-id]');
@@ -1437,6 +1394,13 @@ function bindHomeSearch(container, signal) {
         event.stopPropagation();
         openProducerModal(producerId);
     }, opts);
+}
+
+/** Wyniki wyszukiwania z paska nagłówka (#headerSearchInput). */
+export function renderHeaderSearchResults(query) {
+    const container = document.getElementById('view-home');
+    if (!container) return;
+    renderHomeSearchResults(container, query);
 }
 
 function updateFavoriteButton(btn) {
@@ -1567,7 +1531,7 @@ function bindPlacesRefresh(container) {
         if (home) {
             refreshCategoryCounts(home);
             refreshVenueSections(home);
-            const input = home.querySelector('#homeSearchInput');
+            const input = document.getElementById('headerSearchInput');
             if (input?.value.trim()) {
                 renderHomeSearchResults(home.parentElement || container, input.value);
             }
@@ -1858,4 +1822,4 @@ function setupEvents(container) {
     bindLocationRefresh();
 }
 
-export default { renderHome, destroyHome };
+export default { renderHome, destroyHome, renderHeaderSearchResults };
