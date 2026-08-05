@@ -75,9 +75,14 @@ const vault = readFileSync(join(ROOT, 'js/diagnostics/developerVaultPanel.js'), 
 assert(vault.includes('showPasswordGate'), 'password gate');
 assert(vault.includes('Developer Control Center'), 'Control Center title');
 assert(vault.includes('loadUnifiedReportStream'), 'unified report stream');
-assert(vault.includes('renderUnifiedReportsSection'), 'unified reports section');
+assert(vault.includes('renderDeveloperDashboard'), 'developer dashboard view');
+assert(vault.includes('System Health'), 'system health section');
+assert(vault.includes('buildDevStatusBoard'), 'status metrics from devStatusBoard');
+assert(vault.includes('rg-dv-metrics-grid'), 'metric tiles grid');
 assert(vault.includes('Brak raportów do wyświetlenia.'), 'empty stream message');
 assert(vault.includes('rg-dv-report-tag'), 'category badge on entries');
+assert(vault.includes('rg-dv-status-badge'), 'status badge on entries');
+assert(vault.includes('getStreamStatusMeta'), 'stream status meta helper');
 assert(!vault.includes('data-dv-tab='), 'no tab navigation');
 assert(!vault.includes('loadControlCenterMetrics'), 'no legacy metrics dashboard');
 assert(!vault.includes('renderSection('), 'no tab sections');
@@ -87,9 +92,18 @@ assert(!vault.includes('autoApply: true'), 'no autoApply true');
 assert(!/AI Chat|openAiChat|chatbotUi/i.test(vault), 'no AI chat feature');
 assert(vault.includes('unlockDevVault'), 'keeps PIN unlock');
 assert(vault.includes('Kopiuj raport'), '34C copy report');
+assert(vault.includes('loadStreamEntryPreview'), 'report preview loader');
+assert(vault.includes('data-dv-preview'), 'report preview modal');
+assert(vault.includes('simpleMarkdownToHtml'), 'markdown preview formatting');
 assert(vault.includes('Usuń raport'), '34C delete report');
 assert(vault.includes('reportManagerClient'), '34C client import');
 assert(vault.includes('purgeExpiredReports') || vault.includes('loadUnifiedReportStream'), '30-day retention via stream load');
+
+const rm = readFileSync(join(ROOT, 'js/diagnostics/reportManagerClient.js'), 'utf8');
+assert(rm.includes('normalizeStreamStatus'), 'stream status normalization');
+assert(rm.includes('enrichStreamStatuses'), 'stream status enrichment');
+assert(rm.includes('STREAM_STATUS_META'), 'stream status meta map');
+assert(rm.includes('loadStreamEntryPreview'), 'stream entry preview loader');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');

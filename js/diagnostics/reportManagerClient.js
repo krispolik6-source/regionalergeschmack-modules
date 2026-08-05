@@ -153,6 +153,104 @@ export async function fetchReportFullText(entryOrPath) {
     return { ok: false, text: '', path: paths[0] || '' };
 }
 
+async function readLocalStorageReportFallback(entry) {
+    const mod = String(entry?.module || '').toLowerCase();
+
+    if (entry?.kind === 'system' || mod.includes('healing') || mod === 'self-healing') {
+        try {
+            const {
+                getLatestSystemHealthMarkdown,
+                getHealingReport
+            } = await import('../core/selfHealingLogger.js');
+            const md = getLatestSystemHealthMarkdown();
+            if (md) {
+                return {
+                    ok: true,
+                    text: md,
+                    format: 'markdown',
+                    title: 'System Health (localStorage)',
+                    path: 'localStorage:system_health_md'
+                };
+            }
+            const report = getHealingReport();
+            if (report?.entries?.length) {
+                return {
+                    ok: true,
+                    text: JSON.stringify(report, null, 2),
+                    format: 'json',
+                    title: 'healingReport',
+                    path: 'localStorage:healingReport'
+                };
+            }
+        } catch {
+            /* ignore */
+        }
+    }
+
+    if (mod === 'health') {
+        try {
+            const raw = localStorage.getItem('rg_app_health_report_v1');
+            if (raw) {
+                return {
+                    ok: true,
+                    text: JSON.stringify(JSON.parse(raw), null, 2),
+                    format: 'json',
+                    title: 'Health Monitor (localStorage)',
+                    path: 'localStorage:rg_app_health_report_v1'
+                };
+            }
+        } catch {
+            /* ignore */
+        }
+    }
+
+    return null;
+}
+
+/** Treść raportu do podglądu — fetch docs/ → API → localStorage. */
+export async function loadStreamEntryPreview(entry) {
+    if (!entry) {
+        return { ok: false, text: '', format: 'text', title: 'Raport', path: '' };
+    }
+
+    const title = entry.title || entry.name || entry.rel || 'Raport';
+
+    if (entry.kind === 'system') {
+        const text = formatSystemStreamEntry(entry.systemEntry || entry);
+        return {
+            ok: Boolean(text),
+            text,
+            format: 'markdown',
+            title,
+            path: 'system'
+        };
+    }
+
+    const fetched = await fetchReportFullText(entry.rel || entry);
+    if (fetched.ok && fetched.text) {
+        const path = fetched.path || entry.rel || '';
+        const format = /\.json$/i.test(String(path)) ? 'json' : 'markdown';
+        return {
+            ok: true,
+            text: fetched.text,
+            format,
+            title,
+            path
+        };
+    }
+
+    const local = await readLocalStorageReportFallback(entry);
+    if (local) return { ...local, title: local.title || title };
+
+    return {
+        ok: false,
+        text: '',
+        format: 'text',
+        title,
+        path: entry.rel || ''
+    };
+}
+
 export async function copyReportToClipboard(entryOrPath) {
     const r = await fetchReportFullText(entryOrPath);
     if (!r.ok) {
@@ -303,6 +401,131 @@ export function getReportCategoryLabel(entry) {
         return `[${pretty}]`;
     }
     return '[Report]';
+}
+
+export const STREAM_STATUS = {
+    FIXED: 'FIXED',
+    SUGGESTION: 'SUGGESTION',
+    FAILED: 'FAILED',
+    INFO: 'INFO'
+};
+
+export const STREAM_STATUS_META = {
+    FIXED: { label: 'FIXED', icon: '✅', badgeClass: 'rg-dv-status-badge--fixed' },
+    SUGGESTION: { label: 'SUGGESTION', icon: '🟡', badgeClass: 'rg-dv-status-badge--suggestion' },
+    FAILED: { label: 'FAILED', icon: '🔴', badgeClass: 'rg-dv-status-badge--failed' },
+    INFO: { label: 'INFO', icon: '📄', badgeClass: 'rg-dv-status-badge--info' }
+};
+
+/** @returns {'FIXED'|'SUGGESTION'|'FAILED'|'INFO'} */
+export function normalizeStreamStatus(raw) {
+    if (raw == null || raw === '') return STREAM_STATUS.INFO;
+    const s = String(raw).trim().toUpperCase();
+    if (s === 'FIXED' || s === 'PASS' || s === 'OK' || s === 'READY' || s === 'SUCCESS') {
+        return STREAM_STATUS.FIXED;
+    }
+    if (s.includes('SUGGEST') || s.includes('WARN') || s.includes('PENDING') || s.includes('ADVISORY')) {
+        return STREAM_STATUS.SUGGESTION;
+    }
+    if (s === 'FAILED' || s === 'FAIL' || s === 'ERROR' || s === 'CRITICAL' || s === 'NO') {
+        return STREAM_STATUS.FAILED;
+    }
+    if (s.includes('FAIL') || s.includes('ERROR') || s.includes('CRITICAL')) {
+        return STREAM_STATUS.FAILED;
+    }
+    if (s.includes('PASS') || s.includes('FIXED') || s.includes('READY') || s.includes('SUCCESS')) {
+        return STREAM_STATUS.FIXED;
+    }
+    if (s === 'INFO') return STREAM_STATUS.INFO;
+    return STREAM_STATUS.INFO;
+}
+
+export function getStreamStatusMeta(status) {
+    return STREAM_STATUS_META[normalizeStreamStatus(status)] || STREAM_STATUS_META.INFO;
+}
+
+function jsonRelForEntry(entry) {
+    const rel = String(entry?.rel || '').replace(/^\//, '');
+    if (/\.json$/i.test(rel)) return rel;
+    if (/\.md$/i.test(rel)) return rel.replace(/\.md$/i, '.json');
+    return rel.includes('.') ? rel : `${rel}.json`;
+}
+
+function inferStreamStatusFromJson(data) {
+    if (!data || typeof data !== 'object') return null;
+    const candidates = [
+        data.status,
+        data.verdict,
+        data.summary?.status,
+        data.result?.status
+    ];
+    for (const candidate of candidates) {
+        if (candidate != null && candidate !== '') {
+            return normalizeStreamStatus(candidate);
+        }
+    }
+    if (Number(data.summary?.fail) > 0) return STREAM_STATUS.FAILED;
+    if (Number(data.summary?.warning) > 0) return STREAM_STATUS.SUGGESTION;
+    if (Array.isArray(data.findings) && data.findings.length) {
+        const hasHigh = data.findings.some((f) => /fail|critical|high/i.test(String(f.severity || '')));
+        const hasWarn = data.findings.some((f) => /warn|medium/i.test(String(f.severity || '')));
+        if (hasHigh) return STREAM_STATUS.FAILED;
+        if (hasWarn) return STREAM_STATUS.SUGGESTION;
+    }
+    if (data.overall != null && Number(data.overall) >= 90) return STREAM_STATUS.FIXED;
+    if (data.overall != null && Number(data.overall) < 70) return STREAM_STATUS.FAILED;
+    if (data.overall != null && Number(data.overall) < 90) return STREAM_STATUS.SUGGESTION;
+    return null;
+}
+
+function inferStreamStatusFromName(name) {
+    const n = String(name || '').toLowerCase();
+    if (/fixed|pass|ready|success/.test(n)) return STREAM_STATUS.FIXED;
+    if (/suggest|warn|pending/.test(n)) return STREAM_STATUS.SUGGESTION;
+    if (/fail|error|critical/.test(n)) return STREAM_STATUS.FAILED;
+    return null;
+}
+
+async function fetchJsonForStatus(entry) {
+    const jsonRel = jsonRelForEntry(entry);
+    if (!jsonRel.startsWith('docs/')) return null;
+    try {
+        const res = await fetch(`/${jsonRel}`, { cache: 'no-store' });
+        if (!res.ok) return null;
+        return await res.json();
+    } catch {
+        return null;
+    }
+}
+
+async function resolveDocStreamStatus(entry) {
+    if (entry?.streamStatus) return normalizeStreamStatus(entry.streamStatus);
+    if (entry?.status != null && entry?.status !== '') {
+        return normalizeStreamStatus(entry.status);
+    }
+
+    const fromName = inferStreamStatusFromName(entry.name || entry.rel);
+    const data = await fetchJsonForStatus(entry);
+    const fromJson = inferStreamStatusFromJson(data);
+    if (fromJson) return fromJson;
+    if (fromName) return fromName;
+    return STREAM_STATUS.INFO;
+}
+
+async function enrichStreamStatuses(entries) {
+    return Promise.all((entries || []).map(async (entry) => {
+        if (entry.kind === 'system') {
+            const raw = entry.systemEntry?.status ?? entry.status;
+            return {
+                ...entry,
+                streamStatus: normalizeStreamStatus(raw)
+            };
+        }
+        return {
+            ...entry,
+            streamStatus: await resolveDocStreamStatus(entry)
+        };
+    }));
 }
 
 export function formatSystemStreamEntry(entry) {
@@ -461,5 +684,5 @@ export async function loadUnifiedReportStream() {
     const merged = [...docStream, ...systemEntries];
     merged.sort((a, b) => (b.sortTs || 0) - (a.sortTs || 0));
 
-    return merged;
+    return enrichStreamStatuses(merged);
 }

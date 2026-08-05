@@ -1,7 +1,7 @@
 /**
  * ETAP 34A / 34C — Developer Control Center (UI)
  * Panel wyłącznie dla właściciela (PIN).
- * Scentralizowany strumień raportów — wszystkie kategorie, auto-czyszczenie >30 dni.
+ * Scentralizowany pulpit: System Health (metryki) + strumień raportów.
  * Bez nowych silników · bez autoApply/autoFix · bez zmian Home/Map/app.js.
  */
 
@@ -15,10 +15,15 @@ import {
 import {
     copyStreamEntry,
     deleteStreamEntry,
-    formatSystemStreamEntry,
-    loadUnifiedReportStream,
-    fetchReportFullText
+    getStreamStatusMeta,
+    loadStreamEntryPreview,
+    loadUnifiedReportStream
 } from './reportManagerClient.js';
+import {
+    buildDevStatusBoard,
+    loadDevStatusBoardSources
+} from './devStatusBoard.js';
+import { runHealthCheck } from './healthMonitor.js';
 import { APP_NAME, APP_VERSION } from '../config.js';
 
 const ROOT_ID = 'rg-dev-vault-root';
@@ -51,18 +56,155 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-secondary{background:transparent;color:#2a3f28;border:1px solid rgba(42,63,40,.3)!important}
 #${ROOT_ID} .rg-dcc-section h3{margin:0 0 8px;font-family:Literata,Georgia,serif;font-size:1.1rem;color:#2a3f28}
 #${ROOT_ID} .rg-dcc-section p.lead{margin:0 0 12px;color:#4a3f32;font-size:.9rem;line-height:1.45}
+#${ROOT_ID} .rg-dv-metrics-grid{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(min-width:520px){#${ROOT_ID} .rg-dv-metrics-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:720px){#${ROOT_ID} .rg-dv-metrics-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+#${ROOT_ID} .rg-dv-metric{background:#fffef8;border:1px solid rgba(42,63,40,.14);border-radius:12px;padding:10px 10px 9px;min-height:68px}
+#${ROOT_ID} .rg-dv-metric-k{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:#4a3f32;font-weight:700;line-height:1.25}
+#${ROOT_ID} .rg-dv-metric-v{display:block;font-family:Literata,Georgia,serif;font-size:1.2rem;font-weight:700;margin-top:4px;color:#2a3f28;line-height:1.2}
+#${ROOT_ID} .rg-dv-metric--ok{border-color:rgba(42,99,40,.4);background:rgba(42,99,40,.1)}
+#${ROOT_ID} .rg-dv-metric--ok .rg-dv-metric-v{color:#1e5a24}
+#${ROOT_ID} .rg-dv-metric--warn{border-color:rgba(201,162,39,.5);background:rgba(201,162,39,.14)}
+#${ROOT_ID} .rg-dv-metric--warn .rg-dv-metric-v{color:#7a5a08}
+#${ROOT_ID} .rg-dv-metric--fail{border-color:rgba(180,60,60,.4);background:rgba(180,60,60,.1)}
+#${ROOT_ID} .rg-dv-metric--fail .rg-dv-metric-v{color:#8a2b2b}
+#${ROOT_ID} .rg-dv-metrics-divider{height:0;border:0;border-top:1px solid rgba(42,63,40,.14);margin:18px 0 14px}
 #${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
 #${ROOT_ID} .rg-dv-report-list li:last-child{border-bottom:0}
 #${ROOT_ID} .rg-dv-report-tag{flex:0 0 auto;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(42,63,40,.1);color:#2a3f28;white-space:nowrap;margin-top:2px;line-height:1.3}
+#${ROOT_ID} .rg-dv-report-ico{flex:0 0 auto;font-size:1.1rem;line-height:1.2;margin-top:2px}
+#${ROOT_ID} .rg-dv-report-title-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+#${ROOT_ID} .rg-dv-status-badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;line-height:1.35;letter-spacing:.02em}
+#${ROOT_ID} .rg-dv-status-badge--fixed{background:#2a7a38}
+#${ROOT_ID} .rg-dv-status-badge--suggestion{background:#c97a12}
+#${ROOT_ID} .rg-dv-status-badge--failed{background:#b83232}
+#${ROOT_ID} .rg-dv-status-badge--info{background:#6a6a6a}
 #${ROOT_ID} .rg-dv-report-empty{margin:16px 0;padding:20px 16px;text-align:center;background:rgba(255,255,255,.55);border:1px dashed rgba(42,63,40,.18);border-radius:12px;color:#4a3f32;font-size:.95rem}
 #${ROOT_ID} .rg-dcc-pre{white-space:pre-wrap;font-size:.85rem;line-height:1.45;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;border:1px solid rgba(42,63,40,.1);max-height:40vh;overflow:auto}
 #${ROOT_ID} .rg-dv-err{color:#8a2b2b;font-size:.9rem;margin:0 0 8px}
 #${ROOT_ID} .rg-dcc-btn-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 #${ROOT_ID} .rg-dcc-btn-row button{font-size:.82rem;padding:7px 10px}
 #${ROOT_ID} .rg-dcc-danger{background:transparent;color:#6b1d1d;border:1px solid rgba(140,40,40,.35)!important}
+#${ROOT_ID} .rg-dv-preview{position:absolute;inset:0;z-index:20;display:flex;align-items:stretch;justify-content:center;padding:12px;background:rgba(20,28,22,.55)}
+#${ROOT_ID} .rg-dv-preview[hidden]{display:none!important}
+#${ROOT_ID} .rg-dv-preview-panel{width:min(760px,100%);max-height:100%;display:flex;flex-direction:column;background:#fffef8;border:1px solid rgba(42,63,40,.2);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.28);overflow:hidden}
+#${ROOT_ID} .rg-dv-preview-head{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(42,63,40,.12);background:rgba(42,63,40,.06)}
+#${ROOT_ID} .rg-dv-preview-head h3{margin:0;font-family:Literata,Georgia,serif;font-size:1.05rem;color:#2a3f28;line-height:1.35}
+#${ROOT_ID} .rg-dv-preview-meta{margin:4px 0 0;font-size:.78rem;color:#4a3f32;word-break:break-all}
+#${ROOT_ID} .rg-dv-preview-body{flex:1 1 auto;overflow:auto;padding:14px 16px 18px;font-size:.9rem;line-height:1.5;color:#1c1812;-webkit-overflow-scrolling:touch}
+#${ROOT_ID} .rg-dv-md h2,#${ROOT_ID} .rg-dv-md h3,#${ROOT_ID} .rg-dv-md h4{margin:1em 0 .45em;font-family:Literata,Georgia,serif;color:#2a3f28;line-height:1.3}
+#${ROOT_ID} .rg-dv-md h2{font-size:1.15rem}
+#${ROOT_ID} .rg-dv-md h3{font-size:1.05rem}
+#${ROOT_ID} .rg-dv-md h4{font-size:.98rem}
+#${ROOT_ID} .rg-dv-md p{margin:0 0 .75em}
+#${ROOT_ID} .rg-dv-md ul{margin:0 0 .85em 1.1em;padding:0}
+#${ROOT_ID} .rg-dv-md li{margin:.25em 0}
+#${ROOT_ID} .rg-dv-md code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.84em;background:rgba(42,63,40,.08);padding:1px 5px;border-radius:4px}
+#${ROOT_ID} .rg-dv-md-pre,#${ROOT_ID} .rg-dv-preview-body pre{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.45;background:rgba(42,63,40,.06);border:1px solid rgba(42,63,40,.1);border-radius:10px;padding:12px;margin:0 0 12px;overflow:auto}
+#${ROOT_ID} .rg-dv-preview-loading{color:#4a3f32;font-style:italic}
+#${ROOT_ID} .rg-dv-preview-err{color:#8a2b2b}
+#${ROOT_ID} .rg-dcc-shell{position:relative}
 `;
     document.head.appendChild(style);
+}
+
+const METRIC_LABELS = {
+    Overall: 'OVERALL',
+    Health: 'HEALTH',
+    Performance: 'PERFORMANCE',
+    Brand: 'BRAND',
+    PWA: 'PWA',
+    Offline: 'OFFLINE',
+    GPS: 'GPS',
+    Mapa: 'MAPA',
+    UI: 'UI',
+    Accessibility: 'ACCESSIBILITY',
+    Security: 'SECURITY',
+    Console: 'CONSOLE',
+    Warnings: 'WARNINGS',
+    Reports: 'REPORTS',
+    Storage: 'STORAGE',
+    Release: 'RELEASE'
+};
+
+function formatMetricCell(row) {
+    if (row.value == null || row.value === '') return '—';
+    if (row.kind === 'text' || row.kind === 'release') return String(row.value);
+    if (row.kind === 'count') {
+        if (row.key === 'Console') {
+            const n = Number(row.value);
+            if (n === 1) return '1 błąd';
+            if (n > 1) return `${n} błędów`;
+            return '0';
+        }
+        return String(row.value);
+    }
+    if (row.unit === '%') return `${row.value}%`;
+    return `${row.value}${row.unit || ''}`;
+}
+
+function metricToneClass(row) {
+    if (row.kind === 'release') {
+        if (row.value === 'READY') return 'rg-dv-metric--ok';
+        if (row.value === 'NOT READY') return 'rg-dv-metric--fail';
+        return '';
+    }
+    if (row.kind === 'count') {
+        if (row.key === 'Console' || row.key === 'Warnings') {
+            return Number(row.value) > 0 ? 'rg-dv-metric--warn' : 'rg-dv-metric--ok';
+        }
+        return '';
+    }
+    if (row.kind === 'text') return '';
+    const n = Number(row.value);
+    if (!Number.isFinite(n)) return '';
+    if (n > 90) return 'rg-dv-metric--ok';
+    if (n >= 70) return 'rg-dv-metric--warn';
+    return 'rg-dv-metric--fail';
+}
+
+function computeOverallScore(rows) {
+    const nums = (rows || [])
+        .filter((r) => r.unit === '%' && r.value != null)
+        .map((r) => Number(r.value))
+        .filter((n) => Number.isFinite(n));
+    if (!nums.length) return null;
+    return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
+}
+
+function systemHealthTileHtml(row) {
+    const label = METRIC_LABELS[row.key] || String(row.key || '').toUpperCase();
+    const tone = metricToneClass(row);
+    return `
+      <div class="rg-dv-metric ${tone}">
+        <span class="rg-dv-metric-k">${escapeHtml(label)}</span>
+        <span class="rg-dv-metric-v">${escapeHtml(formatMetricCell(row))}</span>
+      </div>`;
+}
+
+function renderSystemHealthTilesHtml(board, streamCount) {
+    const rows = (board?.rows || []).map((row) => (
+        row.key === 'Reports' ? { ...row, value: streamCount ?? row.value } : row
+    ));
+    const overall = computeOverallScore(rows);
+    const overallRow = {
+        key: 'Overall',
+        value: overall,
+        unit: '%',
+        kind: 'score'
+    };
+    const tiles = [overallRow, ...rows].map((row) => systemHealthTileHtml(row)).join('');
+    return `
+      <section class="rg-dcc-section" aria-label="System Health">
+        <h3>System Health</h3>
+        <p class="lead">${label('devVault.statusHint', 'Kluczowe metryki aplikacji — tylko odczyt, bez auto-napraw.')}</p>
+        <div class="rg-dv-metrics-grid">${tiles}</div>
+        <div class="rg-dcc-btn-row" style="margin-top:12px">
+          <button type="button" class="rg-dv-secondary" data-dv-health-run>${label('devVault.healthRefresh', 'Odśwież Health')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-dashboard-refresh>Odśwież pulpit</button>
+        </div>
+      </section>`;
 }
 
 function unifiedReportRowHtml(entry) {
@@ -74,44 +216,209 @@ function unifiedReportRowHtml(entry) {
     const title = isSystem
         ? (entry.title || entry.name || 'System Health')
         : (entry.isLatest ? `${entry.name || 'latest'} · bieżący` : (entry.name || pathHint));
-    const streamId = escapeHtml(entry.streamId || pathHint);
+    const streamId = String(entry.streamId || pathHint);
+    const statusMeta = getStreamStatusMeta(entry.streamStatus);
     return `
       <li>
+        <span class="rg-dv-report-ico" aria-hidden="true">${statusMeta.icon}</span>
         <span class="rg-dv-report-tag" aria-label="Kategoria">${escapeHtml(entry.categoryLabel || '[Report]')}</span>
         <div style="flex:1;min-width:0">
-          <strong>${escapeHtml(title)}</strong>
+          <div class="rg-dv-report-title-row">
+            <strong>${escapeHtml(title)}</strong>
+            <span class="rg-dv-status-badge ${statusMeta.badgeClass}" aria-label="Status raportu">${escapeHtml(statusMeta.label)}</span>
+          </div>
           <p style="margin:4px 0 0;color:#4a3f32;font-size:.82rem">${escapeHtml(when)} · ${escapeHtml(pathHint)}</p>
           <div class="rg-dcc-btn-row">
-            <button type="button" class="rg-dv-secondary" data-dv-open-id="${streamId}">${label('devVault.openReport', 'Otwórz')}</button>
-            <button type="button" class="rg-dv-secondary" data-dv-copy-id="${streamId}">📋 Kopiuj raport</button>
-            <button type="button" class="rg-dcc-danger" data-dv-del-id="${streamId}">🗑 Usuń raport</button>
+            <button type="button" class="rg-dv-secondary" data-dv-open-id="${escapeHtml(streamId)}">${label('devVault.openReport', 'Otwórz')}</button>
+            <button type="button" class="rg-dv-secondary" data-dv-copy-id="${escapeHtml(streamId)}">📋 Kopiuj raport</button>
+            <button type="button" class="rg-dcc-danger" data-dv-del-id="${escapeHtml(streamId)}">🗑 Usuń raport</button>
           </div>
         </div>
       </li>`;
 }
 
-async function openReportByRel(detail, rel) {
-    if (!detail) return;
-    detail.textContent = label('devVault.loading', 'Ładowanie…');
-    const r = await fetchReportFullText(rel);
-    detail.textContent = r.ok
-        ? r.text
-        : label('devVault.reportMissing', 'Brak lokalnego raportu. Uruchom CLI, potem odśwież.');
+function simpleMarkdownToHtml(source) {
+    const lines = String(source ?? '').split('\n');
+    const out = [];
+    let inCode = false;
+    let codeBuf = [];
+    let listOpen = false;
+
+    const flushList = () => {
+        if (listOpen) {
+            out.push('</ul>');
+            listOpen = false;
+        }
+    };
+
+    const inlineFormat = (text) => escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.+?)__/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    for (const rawLine of lines) {
+        const line = rawLine ?? '';
+
+        if (line.trim().startsWith('```')) {
+            flushList();
+            if (inCode) {
+                out.push(`<pre class="rg-dv-md-pre"><code>${escapeHtml(codeBuf.join('\n'))}</code></pre>`);
+                codeBuf = [];
+                inCode = false;
+            } else {
+                inCode = true;
+            }
+            continue;
+        }
+
+        if (inCode) {
+            codeBuf.push(line);
+            continue;
+        }
+
+        if (!line.trim()) {
+            flushList();
+            continue;
+        }
+
+        if (/^#{1,4}\s+/.test(line)) {
+            flushList();
+            const level = line.match(/^#+/)[0].length;
+            const tag = level <= 2 ? 'h2' : level === 3 ? 'h3' : 'h4';
+            out.push(`<${tag}>${inlineFormat(line.replace(/^#{1,4}\s+/, ''))}</${tag}>`);
+            continue;
+        }
+
+        if (/^[-*]\s+/.test(line)) {
+            if (!listOpen) {
+                out.push('<ul>');
+                listOpen = true;
+            }
+            out.push(`<li>${inlineFormat(line.replace(/^[-*]\s+/, ''))}</li>`);
+            continue;
+        }
+
+        flushList();
+        out.push(`<p>${inlineFormat(line)}</p>`);
+    }
+
+    flushList();
+    if (inCode && codeBuf.length) {
+        out.push(`<pre class="rg-dv-md-pre"><code>${escapeHtml(codeBuf.join('\n'))}</code></pre>`);
+    }
+
+    return `<div class="rg-dv-md">${out.join('')}</div>`;
 }
 
-function bindUnifiedReportListActions(body, stream, { onMutated } = {}) {
-    const detail = body.querySelector('[data-dv-report-detail]');
-    const byId = new Map((stream || []).map((entry) => [entry.streamId, entry]));
+function formatJsonPreview(text) {
+    try {
+        return `<pre class="rg-dv-md-pre">${escapeHtml(JSON.stringify(JSON.parse(text), null, 2))}</pre>`;
+    } catch {
+        return `<pre class="rg-dv-md-pre">${escapeHtml(text)}</pre>`;
+    }
+}
+
+function formatPreviewHtml(text, format) {
+    if (format === 'json') return formatJsonPreview(text);
+    if (format === 'markdown') return simpleMarkdownToHtml(text);
+    return `<pre class="rg-dv-md-pre">${escapeHtml(text)}</pre>`;
+}
+
+function ensureReportPreview(root) {
+    let preview = root.querySelector('[data-dv-preview]');
+    if (preview) return preview;
+
+    preview = document.createElement('div');
+    preview.className = 'rg-dv-preview';
+    preview.dataset.dvPreview = '';
+    preview.hidden = true;
+    preview.innerHTML = `
+      <div class="rg-dv-preview-panel" role="dialog" aria-modal="true" aria-labelledby="rg-dv-preview-title">
+        <header class="rg-dv-preview-head">
+          <div style="min-width:0">
+            <h3 id="rg-dv-preview-title">${escapeHtml(label('devVault.previewTitle', 'Podgląd raportu'))}</h3>
+            <p class="rg-dv-preview-meta" data-dv-preview-meta></p>
+          </div>
+          <button type="button" class="rg-dv-secondary" data-dv-preview-close>${label('devVault.close', 'Zamknij')}</button>
+        </header>
+        <div class="rg-dv-preview-body" data-dv-preview-body></div>
+      </div>
+    `;
+
+    const shell = root.querySelector('.rg-dcc-shell');
+    (shell || root).appendChild(preview);
+
+    const close = () => closeReportPreview(root);
+    preview.querySelector('[data-dv-preview-close]')?.addEventListener('click', close);
+    preview.addEventListener('click', (e) => {
+        if (e.target === preview) close();
+    });
+    if (!preview.dataset.boundEscape) {
+        preview.dataset.boundEscape = '1';
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            const active = document.getElementById(ROOT_ID)?.querySelector('[data-dv-preview]:not([hidden])');
+            if (active) closeReportPreview(document.getElementById(ROOT_ID));
+        });
+    }
+
+    return preview;
+}
+
+function closeReportPreview(root) {
+    const preview = root?.querySelector?.('[data-dv-preview]')
+        || document.getElementById(ROOT_ID)?.querySelector('[data-dv-preview]');
+    if (!preview) return;
+    preview.hidden = true;
+    const body = preview.querySelector('[data-dv-preview-body]');
+    if (body) body.innerHTML = '';
+}
+
+async function openReportPreview(root, entry) {
+    if (!root || !entry) return;
+
+    const preview = ensureReportPreview(root);
+    const titleEl = preview.querySelector('#rg-dv-preview-title');
+    const metaEl = preview.querySelector('[data-dv-preview-meta]');
+    const bodyEl = preview.querySelector('[data-dv-preview-body]');
+
+    const displayTitle = entry.title || entry.name || entry.rel || label('devVault.previewTitle', 'Podgląd raportu');
+    if (titleEl) titleEl.textContent = displayTitle;
+    if (metaEl) {
+        metaEl.textContent = entry.kind === 'system'
+            ? `system · ${entry.systemEntry?.source || 'healing'}`
+            : String(entry.rel || '').replace(/^\//, '');
+    }
+    if (bodyEl) {
+        bodyEl.innerHTML = `<p class="rg-dv-preview-loading">${escapeHtml(label('devVault.loading', 'Ładowanie…'))}</p>`;
+    }
+
+    preview.hidden = false;
+    preview.querySelector('[data-dv-preview-close]')?.focus();
+
+    const result = await loadStreamEntryPreview(entry);
+    if (!bodyEl) return;
+
+    if (!result.ok || !result.text) {
+        bodyEl.innerHTML = `<p class="rg-dv-preview-err">${escapeHtml(label('devVault.reportMissing', 'Brak lokalnego raportu. Uruchom CLI, potem odśwież.'))}</p>`;
+        return;
+    }
+
+    bodyEl.innerHTML = formatPreviewHtml(result.text, result.format);
+}
+
+function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
+    const byId = new Map((stream || []).map((entry) => [String(entry.streamId), entry]));
 
     body.querySelectorAll('[data-dv-open-id]').forEach((btn) => {
         btn.addEventListener('click', () => {
             const entry = byId.get(btn.getAttribute('data-dv-open-id'));
-            if (!entry) return;
-            if (entry.kind === 'system') {
-                if (detail) detail.textContent = formatSystemStreamEntry(entry.systemEntry);
+            if (!entry) {
+                showToast('Nie znaleziono wpisu raportu', 'error');
                 return;
             }
-            void openReportByRel(detail, entry.rel);
+            void openReportPreview(root, entry);
         });
     });
 
@@ -133,7 +440,7 @@ function bindUnifiedReportListActions(body, stream, { onMutated } = {}) {
             if (r.offline) return;
             if (r.ok) {
                 showToast('Raport usunięty');
-                if (detail) detail.textContent = 'Raport usunięty.';
+                closeReportPreview(root);
                 onMutated?.();
             } else {
                 showToast(r.data?.reason || 'Nie usunięto', 'error');
@@ -142,32 +449,41 @@ function bindUnifiedReportListActions(body, stream, { onMutated } = {}) {
     });
 }
 
-async function renderUnifiedReportsSection(body) {
+async function renderDeveloperDashboard(body) {
     body.innerHTML = `<p class="lead">${label('devVault.loading', 'Ładowanie…')}</p>`;
 
-    const stream = await loadUnifiedReportStream();
+    const [sources, stream] = await Promise.all([
+        loadDevStatusBoardSources(),
+        loadUnifiedReportStream()
+    ]);
+    const board = buildDevStatusBoard(sources);
     const rows = stream.map((entry) => unifiedReportRowHtml(entry)).join('');
 
     body.innerHTML = `
+      ${renderSystemHealthTilesHtml(board, stream.length)}
+      <div class="rg-dv-metrics-divider" aria-hidden="true"></div>
       <div class="rg-dcc-section">
         <h3>Raporty</h3>
         <p class="lead">${label('devVault.reportsHint', 'Wszystkie kategorie w jednym strumieniu. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
         ${rows
             ? `<ul class="rg-dv-report-list">${rows}</ul>`
             : `<p class="rg-dv-report-empty" role="status">Brak raportów do wyświetlenia.</p>`}
-        <div class="rg-dcc-pre" data-dv-report-detail style="margin-top:12px"></div>
-        <div class="rg-dcc-btn-row" style="margin-top:12px">
-          <button type="button" class="rg-dv-secondary" data-dv-reports-refresh>Odśwież strumień</button>
-        </div>
       </div>
     `;
 
-    bindUnifiedReportListActions(body, stream, {
-        onMutated: () => { void renderUnifiedReportsSection(body); }
+    const root = document.getElementById(ROOT_ID);
+    bindUnifiedReportListActions(root, body, stream, {
+        onMutated: () => { void renderDeveloperDashboard(body); }
     });
 
-    body.querySelector('[data-dv-reports-refresh]')?.addEventListener('click', () => {
-        void renderUnifiedReportsSection(body);
+    const refresh = () => { void renderDeveloperDashboard(body); };
+    body.querySelector('[data-dv-dashboard-refresh]')?.addEventListener('click', refresh);
+    body.querySelector('[data-dv-health-run]')?.addEventListener('click', async () => {
+        try {
+            await runHealthCheck({ reason: 'dev-vault' });
+            showToast(label('devVault.healthRefresh', 'Odśwież Health'));
+        } catch { /* ignore */ }
+        refresh();
     });
 }
 
@@ -220,6 +536,7 @@ function ensureRoot() {
 function closeVaultUi() {
     const root = document.getElementById(ROOT_ID);
     if (!root) return;
+    closeReportPreview(root);
     root.classList.remove('open');
     root.hidden = true;
     root.innerHTML = '';
@@ -236,7 +553,7 @@ async function showHub() {
       <div class="rg-dcc-shell" role="document">
         <header class="rg-dcc-top">
           <h2>${escapeHtml(APP_NAME)}</h2>
-          <p class="rg-dcc-sub">Version ${escapeHtml(verShort)} · Panel deweloperski · Raporty</p>
+          <p class="rg-dcc-sub">Version ${escapeHtml(verShort)} · Panel deweloperski · Status &amp; Raporty</p>
         </header>
         <div class="rg-dcc-body" data-dv-body></div>
         <footer class="rg-dcc-foot">
@@ -255,7 +572,7 @@ async function showHub() {
         showToast(label('devVault.locked', 'Panel zablokowany'));
     });
 
-    await renderUnifiedReportsSection(body);
+    await renderDeveloperDashboard(body);
 }
 
 function showPasswordGate() {
