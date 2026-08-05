@@ -4,6 +4,7 @@
  */
 
 import { t } from '../core/i18n.js';
+import { showToast } from '../core/toast.js';
 import { isDevVaultUnlocked } from '../diagnostics/devVault.js';
 import {
     buildUnifiedSystemHealth,
@@ -88,12 +89,81 @@ function ensureStyles() {
 .rg-sh-fix-code { background: rgba(42,63,40,.08) !important; border: 1px solid rgba(42,63,40,.14); font-family: ui-monospace, 'Cascadia Code', monospace; }
 .rg-sh-empty { padding: 16px; text-align: center; color: #5c5348; font-size: .9rem; }
 .rg-sh-dev-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.rg-sh-detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+.rg-sh-copy-btn { border: 1px solid rgba(42,63,40,.28); background: #fffef8; color: #2a3f28; border-radius: 8px; padding: 6px 10px; font-size: .78rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+.rg-sh-copy-btn:hover { background: rgba(42,63,40,.06); }
+.rg-sh-copy-btn:focus-visible { outline: 2px solid #c9a227; outline-offset: 2px; }
 `;
     document.head.appendChild(style);
 }
 
-function buildDetailHtml(entry) {
+function formatReportForClipboard(entry) {
+    const meta = HEALING_STATUS_META[entry.status] || HEALING_STATUS_META.FAILED;
+    const lines = [
+        '# System Health — raport wpisu',
+        '',
+        `- **Status:** ${meta.emoji} ${entry.status} (${statusLabel(entry.status)})`,
+        `- **Timestamp:** ${entry.timestamp}`,
+        `- **Component:** \`${entry.component}\``,
+        `- **Source:** ${sourceLabel(entry.source)}`,
+        `- **Description:** ${entry.description || '—'}`
+    ];
+
+    if (entry.relatedLogId) lines.push(`- **relatedLogId:** \`${entry.relatedLogId}\``);
+    if (entry.markdownKey) lines.push(`- **markdown:** \`${entry.markdownKey}\``);
+    if (entry.message) {
+        lines.push('', '## Message', '', String(entry.message));
+    }
+    if (entry.mitigation) {
+        lines.push('', '## Mitigation', '', '```json', JSON.stringify(entry.mitigation, null, 2), '```');
+    }
+    if (entry.aiProposal?.fixSuggestion) {
+        const fix = entry.aiProposal.fixSuggestion;
+        lines.push('', '## Sugestia naprawy (fixSuggestion)', '');
+        lines.push(`- **Plik:** \`${fix.file}\`${fix.line != null ? `:${fix.line}` : ''}`);
+        lines.push(`- **Opis:** ${fix.description}`);
+        if (fix.suggestedCode) {
+            lines.push('', '```javascript', fix.suggestedCode, '```');
+        }
+    }
+    if (entry.aiProposal) {
+        lines.push('', '## aiProposal', '', '```json', JSON.stringify(entry.aiProposal, null, 2), '```');
+    }
+    if (entry.context) {
+        lines.push('', '## Context', '', '```json', JSON.stringify(entry.context, null, 2), '```');
+    }
+    if (entry.stack) {
+        lines.push('', '## Stack trace', '', '```', entry.stack, '```');
+    }
+
+    lines.push('', '_autoApply=false · advisory only · Regionaler Geschmack_');
+    return lines.join('\n');
+}
+
+async function copyTextToClipboard(text) {
+    if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return;
+    }
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+    } finally {
+        textarea.remove();
+    }
+}
+
+function buildDetailHtml(entry, index) {
     const parts = [];
+    parts.push(`<div class="rg-sh-detail-actions">`);
+    parts.push(`<button type="button" class="rg-sh-copy-btn" data-sh-copy="${index}" aria-label="${escapeHtml(th('devCopyReport', 'Kopiuj raport'))}">${escapeHtml(th('devCopyReport', '📋 Kopiuj raport'))}</button>`);
+    parts.push(`</div>`);
     parts.push(`<dl>`);
     parts.push(`<dt>${escapeHtml(th('colDescription', 'Description'))}</dt><dd>${escapeHtml(entry.description)}</dd>`);
     parts.push(`<dt>${escapeHtml(th('devTimestamp', 'Timestamp'))}</dt><dd><time datetime="${escapeHtml(entry.timestamp)}">${escapeHtml(formatDateTime(entry.timestamp))}</time></dd>`);
@@ -145,9 +215,26 @@ function buildRowHtml(entry, index) {
             <td class="rg-sh-source">${escapeHtml(sourceLabel(entry.source))}</td>
         </tr>
         <tr class="rg-sh-detail-row" id="${rowId}-detail" hidden>
-            <td colspan="5"><div class="rg-sh-detail">${buildDetailHtml(entry)}</div></td>
+            <td colspan="5"><div class="rg-sh-detail">${buildDetailHtml(entry, index)}</div></td>
         </tr>
     `;
+}
+
+function bindCopyButtons(root, entries) {
+    root.querySelectorAll('[data-sh-copy]').forEach((btn) => {
+        btn.addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const index = Number(btn.getAttribute('data-sh-copy'));
+            const entry = entries[index];
+            if (!entry) return;
+            try {
+                await copyTextToClipboard(formatReportForClipboard(entry));
+                showToast(th('devCopyToast', '📋 Raport skopiowany do schowka'));
+            } catch {
+                showToast(th('devCopyFailed', 'Nie udało się skopiować raportu'));
+            }
+        });
+    });
 }
 
 function bindRowToggles(root) {
@@ -239,6 +326,7 @@ export function renderSystemHealthDevPanel(root) {
         renderSystemHealthDevPanel(root);
     });
     bindRowToggles(root);
+    bindCopyButtons(root, entries);
     return true;
 }
 

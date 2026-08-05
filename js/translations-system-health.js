@@ -29,7 +29,10 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
         sourceMarkdown: 'system_health.md',
-        devFixSuggestion: 'Reparaturvorschlag'
+        devFixSuggestion: 'Reparaturvorschlag',
+        devCopyReport: '📋 Bericht kopieren',
+        devCopyToast: '📋 Bericht in Zwischenablage kopiert',
+        devCopyFailed: 'Bericht konnte nicht kopiert werden'
     },
     en: {
         title: 'System status',
@@ -58,7 +61,10 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
         sourceMarkdown: 'system_health.md',
-        devFixSuggestion: 'Fix suggestion'
+        devFixSuggestion: 'Fix suggestion',
+        devCopyReport: '📋 Copy report',
+        devCopyToast: '📋 Report copied to clipboard',
+        devCopyFailed: 'Could not copy report'
     },
     pl: {
         title: 'Status systemu',
@@ -87,6 +93,9 @@ export const SYSTEM_HEALTH_I18N = Object.freeze({
         sourceReport: 'healingReport',
         sourceLog: 'selfHealingLog',
         sourceMarkdown: 'system_health.md',
-        devFixSuggestion: 'Sugestia naprawy'
+        devFixSuggestion: 'Sugestia naprawy',
+        devCopyReport: '📋 Kopiuj raport',
+        devCopyToast: '📋 Raport skopiowany do schowka',
+        devCopyFailed: 'Nie udało się skopiować raportu'
     }
 });
