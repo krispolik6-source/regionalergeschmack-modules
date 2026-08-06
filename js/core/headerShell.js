@@ -144,9 +144,14 @@ export function focusHeaderSearch() {
     });
 }
 
+let headerScrollBound = false;
+let headerShellInitialized = false;
+
 export function initExpandableHeaderScroll() {
     const header = document.getElementById('mainHeader');
     if (!header?.classList.contains('header-expandable')) return;
+    if (headerScrollBound) return;
+    headerScrollBound = true;
 
     const hiddenClass = 'header-expandable--hidden';
     let ticking = false;
@@ -199,6 +204,9 @@ export function refreshHeaderShell() {
 }
 
 export function initHeaderShell() {
+    if (headerShellInitialized) return;
+    headerShellInitialized = true;
+
     bindHeaderSearch();
     bindHeaderProfile();
     bindHeaderNotifications();

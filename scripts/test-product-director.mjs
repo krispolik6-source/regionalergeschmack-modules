@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 import {
     buildProductDirectorBriefing,
     DIRECTOR_QUESTIONS,
@@ -55,8 +56,7 @@ const runtime = join(ROOT, 'js/diagnostics/productDirector.js');
 assert(existsSync(runtime), 'productDirector.js');
 assert(readFileSync(runtime, 'utf8').includes('__RG_DIRECTOR__'), 'console API');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initProductDirector'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'productDirector.initProductDirector', 'orchestrator lazy productDirector');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('Product Director') || panel.includes('director'), 'dev panel');

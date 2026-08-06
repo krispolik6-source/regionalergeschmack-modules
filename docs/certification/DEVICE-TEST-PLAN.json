@@ -1,0 +1,87 @@
+{
+  "title": "Regionaler Geschmack — Device Test Plan",
+  "version": "1.0",
+  "etap": "43-T1",
+  "generatedAt": "2026-08-06",
+  "status": "pending_acceptance",
+  "autoApply": false,
+  "policy": {
+    "noNewFeatures": true,
+    "realDeviceRequired": true,
+    "automatedTestsArePrerequisiteOnly": true
+  },
+  "environments": [
+    { "id": "prod", "label": "Produkcja", "url": "https://regionalergeschmack.netlify.app/", "priority": "P0" },
+    { "id": "lan", "label": "LAN dev", "url": "http://192.168.x.x:3456/", "priority": "P0", "note": "npm start · test PIN/diag" },
+    { "id": "localhost", "label": "Desktop dev", "url": "http://localhost:3456/", "priority": "P1" }
+  ],
+  "platforms": {
+    "iphone": {
+      "label": "iPhone",
+      "devices": ["iPhone SE", "iPhone 13/14", "iPhone 15 Pro Max"],
+      "browsers": ["Safari", "PWA standalone"],
+      "priority": "P0"
+    },
+    "android": {
+      "label": "Android",
+      "devices": ["Galaxy S24/A54", "Pixel 7/9"],
+      "browsers": ["Chrome", "Samsung Internet", "PWA standalone"],
+      "priority": "P0"
+    },
+    "desktop": {
+      "label": "Desktop",
+      "viewports": ["1280×720", "1920×1080", "2560×1440"],
+      "browsers": ["Chrome", "Edge", "Firefox"],
+      "priority": "P0"
+    },
+    "tablet": {
+      "label": "Tablet",
+      "devices": ["iPad 10.9", "Galaxy Tab / Android tablet"],
+      "browsers": ["Safari", "Chrome", "PWA optional"],
+      "priority": "P1"
+    }
+  },
+  "browserMatrix": [
+    { "browser": "Chrome", "android": "P0", "desktop": "P0", "tablet": "P0", "pwa": "P0", "notes": "Referencyjny Chromium · SW · install prompt" },
+    { "browser": "Safari", "iphone": "P0", "tablet": "P0", "pwa": "P0", "notes": "iOS · safe-area · SW limity · Add to Home Screen" },
+    { "browser": "Samsung Internet", "android": "P0", "pwa": "P1", "notes": "Galaxy default · test map/GPS/offline" },
+    { "browser": "Edge", "desktop": "P1", "android": "P2", "notes": "Chromium · desktop secondary" },
+    { "browser": "Firefox", "desktop": "P1", "android": "P2", "notes": "Gecko · SW OK · brak beforeinstallprompt" },
+    { "browser": "PWA standalone", "iphone": "P0", "android": "P0", "desktop": "P1", "notes": "display-mode standalone · ikony · offline · cold start" }
+  ],
+  "testSuites": [
+    { "id": "S01", "name": "Install & first launch", "priority": "P0", "platforms": ["all"] },
+    { "id": "S02", "name": "Core navigation (7 ekranów)", "priority": "P0", "platforms": ["all"] },
+    { "id": "S03", "name": "Mapa + GPS + offline", "priority": "P0", "platforms": ["iphone", "android", "tablet"] },
+    { "id": "S04", "name": "PWA lifecycle (install/update/reinstall)", "priority": "P0", "platforms": ["pwa", "chrome", "safari"] },
+    { "id": "S05", "name": "Ikony & manifest v30", "priority": "P0", "platforms": ["pwa", "all"] },
+    { "id": "S06", "name": "i18n & theme", "priority": "P0", "platforms": ["all"] },
+    { "id": "S07", "name": "Premium & persist next-day", "priority": "P1", "platforms": ["all"] },
+    { "id": "S08", "name": "Dev Vault & diagnostyka (PIN)", "priority": "P0", "platforms": ["iphone", "android", "desktop", "lan"] },
+    { "id": "S09", "name": "Produkcja bez kosztu diag", "priority": "P0", "platforms": ["prod", "pwa"] },
+    { "id": "S10", "name": "Runtime Error Feed mobile", "priority": "P1", "platforms": ["iphone", "android"] },
+    { "id": "S11", "name": "Bootstrap cold start", "priority": "P1", "platforms": ["pwa", "all"] },
+    { "id": "S12", "name": "Browser-specific quirks", "priority": "P1", "platforms": ["firefox", "edge", "samsung"] }
+  ],
+  "minimumCoverage": {
+    "beforeRelease": [
+      "iPhone Safari + iPhone PWA",
+      "Android Chrome + Android PWA",
+      "Android Samsung Internet (1 urządzenie Galaxy)",
+      "Desktop Chrome",
+      "Desktop Firefox OR Edge (1)",
+      "Tablet iPad Safari OR Android Chrome (1)",
+      "Produkcja PWA cold start (1 telefon)"
+    ],
+    "fullCertification": [
+      "Wszystkie kombinacje P0 w browserMatrix",
+      "LAN telefon dla Dev Vault",
+      "Prod bez ?dev=1 dla S09"
+    ]
+  },
+  "signOff": {
+    "file": "docs/certification/manual-device-results.json",
+    "template": "docs/certification/manual-device-results.template.json",
+    "certificationCommand": "npm run etap-43-certification"
+  }
+}

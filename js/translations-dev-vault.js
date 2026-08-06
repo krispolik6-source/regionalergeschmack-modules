@@ -33,7 +33,8 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportGuardian: 'Fehler und Code-Alerts',
             reportDream: 'Produktreflexion / Snapshots',
             reportBrain: 'Vorschläge für Fixes und Verbesserungen',
-            openReport: 'Öffnen'
+            openReport: 'Öffnen',
+            prodOnly: 'Nur lokal oder mit ?dev=1 verfügbar.'
         }
     },
     en: {
@@ -65,7 +66,8 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportGuardian: 'Errors and code alerts',
             reportDream: 'Product reflection / snapshots',
             reportBrain: 'Fix and improvement proposals',
-            openReport: 'Open'
+            openReport: 'Open',
+            prodOnly: 'Available locally or with ?dev=1 only.'
         }
     },
     pl: {
@@ -97,7 +99,8 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportGuardian: 'Błędy i alerty straży kodu',
             reportDream: 'Refleksja / snapy produktu',
             reportBrain: 'Propozycje napraw i usprawnień',
-            openReport: 'Otwórz'
+            openReport: 'Otwórz',
+            prodOnly: 'Dostępne tylko lokalnie lub z ?dev=1.'
         }
     }
 });

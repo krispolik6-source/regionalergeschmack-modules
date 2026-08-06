@@ -38,9 +38,22 @@ function isProductionHost() {
     }
 }
 
+/** RFC1918 — test na telefonie w LAN (np. 192.168.x.x:3456). Nie produkcja. */
+function isPrivateLanHost() {
+    try {
+        const h = String(location.hostname || '').toLowerCase();
+        if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(h)) return true;
+        if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(h)) return true;
+        if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(h)) return true;
+        return false;
+    } catch {
+        return false;
+    }
+}
+
 /**
  * Dev tools (Health / Advisor / …) wyłącznie:
- * localhost · 127.0.0.1 · (?dev=1 | rg_dev_mode) poza produkcją.
+ * localhost · 127.0.0.1 · LAN (RFC1918) · (?dev=1 | rg_dev_mode) poza produkcją.
  * Na produkcji: zawsze false.
  */
 export function isDevMode() {
@@ -48,6 +61,7 @@ export function isDevMode() {
         if (isProductionHost()) return false;
         const h = location.hostname;
         if (h === 'localhost' || h === '127.0.0.1') return true;
+        if (isPrivateLanHost()) return true;
         if (localStorage.getItem(DEV_FLAG) === '1') return true;
         const q = new URLSearchParams(location.search);
         if (q.get('dev') === '1') return true;
@@ -617,11 +631,13 @@ export function initHealthMonitor() {
         runHealthCheck({ reason: 'app-start' }).catch(() => {});
     }, 1800);
 
-    // Okresowy lekki check w tle (tylko obserwacja)
+    // Okresowy lekki check w tle (tylko obserwacja) — dev/LAN; produkcja: jednorazowy start
     if (healthTimer) clearInterval(healthTimer);
-    healthTimer = window.setInterval(() => {
-        runHealthCheck({ reason: 'interval' }).catch(() => {});
-    }, 5 * 60 * 1000);
+    if (isDevMode()) {
+        healthTimer = window.setInterval(() => {
+            runHealthCheck({ reason: 'interval' }).catch(() => {});
+        }, 5 * 60 * 1000);
+    }
 
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {

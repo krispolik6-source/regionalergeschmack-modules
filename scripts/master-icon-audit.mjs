@@ -15,22 +15,19 @@ import {
 import { join, dirname, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import {
+    PWA_VERSION,
+    PWA_CACHE_NAME,
+    PWA_IMAGE_CACHE_NAME
+} from '../js/core/pwaVersion.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'docs', 'brand');
 const MASTER = 'assets/icons/logo-master.svg';
 
-/** Sync cache-bust expectations with live SW (no hardcoded icon version). */
-function readPwaVersion() {
-    const sw = readFileSync(join(ROOT, 'sw.js'), 'utf8');
-    const m = sw.match(/const\s+PWA_VERSION\s*=\s*['"](\d+)['"]/);
-    if (!m) throw new Error('PWA_VERSION not found in sw.js');
-    return m[1];
-}
-
-const ICON_V = readPwaVersion();
-const SW_CACHE = `rg-pwa-v${ICON_V}`;
-const IMAGE_CACHE = `rg-runtime-images-v${ICON_V}`;
+const ICON_V = PWA_VERSION;
+const SW_CACHE = PWA_CACHE_NAME;
+const IMAGE_CACHE = PWA_IMAGE_CACHE_NAME;
 const vRe = (name) => new RegExp(`${name.replace(/\./g, '\\.')}\\?v=${ICON_V}`);
 
 const REQUIRED_PNG = [
@@ -57,12 +54,12 @@ const SURFACES = [
     { id: 'landing-logo', file: 'landing.html', re: vRe('logo-master.svg') },
     { id: 'landing-icon-192', file: 'landing.html', re: vRe('icon-192.png') },
     { id: 'home-brand', file: 'js/views/home.js', re: vRe('logo-master.svg') },
-    { id: 'push-icon', file: 'js/core/pushNotifications.js', re: vRe('icon-192.png') },
+    { id: 'push-icon', file: 'js/core/pushNotifications.js', re: /pwaAssetUrl\(['"]\/assets\/icons\/icon-192\.png['"]\)/ },
     { id: 'brand-css', file: 'css/brand-identity-final.css', re: vRe('logo-master.svg') },
-    // SW buduje nazwy cache z PWA_VERSION (literal `rg-pwa-v28` nie występuje w źródle)
-    { id: 'sw-cache', file: 'sw.js', re: /CACHE_VERSION\s*=\s*`rg-pwa-v\$\{PWA_VERSION\}`|rg-pwa-v\$\{PWA_VERSION\}/ },
-    { id: 'sw-image-cache', file: 'sw.js', re: /IMAGE_CACHE\s*=\s*`rg-runtime-images-v\$\{PWA_VERSION\}`|rg-runtime-images-v\$\{PWA_VERSION\}/ },
-    { id: 'sw-network-first-icons', file: 'sw.js', re: /isAppIconPath|network-first/ },
+    { id: 'sw-bridge', file: 'sw.js', re: /importScripts\(['"]\/js\/core\/pwaVersion\.global\.js['"]\)/ },
+    { id: 'sw-cache', file: 'sw.js', re: /CACHE_VERSION\s*=\s*PWA_CACHE_NAME/ },
+    { id: 'sw-image-cache', file: 'sw.js', re: /IMAGE_CACHE\s*=\s*PWA_IMAGE_CACHE_NAME/ },
+    { id: 'sw-network-first-icons', file: 'sw.js', re: /fetchPwaIconAsset|cache:\s*'no-store'/ },
     {
         id: 'sw-default-icon',
         file: 'sw.js',

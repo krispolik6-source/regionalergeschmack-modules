@@ -17,13 +17,14 @@ import { ensureNavigationHealed } from '../controllers/navigation.js';
 import { showToast } from '../core/toast.js';
 import { getSettings } from '../core/settings.js';
 import { t } from '../core/i18n.js';
+import { pwaAssetUrl } from '../core/pwaVersion.js';
 
 const LOG_KEY = 'rg_self_heal_log';
 const DAY_KEY = 'rg_self_heal_day';
 const SW_PROMPT_KEY = 'rg_self_heal_sw_prompt';
 const MAX_LOG = 80;
 const WATCHDOG_MS = 28000;
-const PLACEHOLDER_SRC = '/assets/icons/logo-master.svg?v=30';
+const PLACEHOLDER_SRC = pwaAssetUrl('/assets/icons/logo-master.svg');
 
 /** @type {{ at: string, area: string, action: string, detail?: string }[]} */
 let sessionFixes = [];

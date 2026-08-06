@@ -9,6 +9,7 @@ import { EVENTS } from './events.js';
 import { getSettings, saveSettings } from './settings.js';
 import { t } from './i18n.js';
 import { safeLocalStorageSetItem, byteLen, ensureLocalStorageHeadroom } from './safeStorage.js';
+import { pwaAssetUrl } from './pwaVersion.js';
 
 const SEASON_NOTIFY_KEY = 'rg_push_season_notified';
 const NEARBY_NOTIFY_KEY = 'rg_push_nearby_ids';
@@ -384,7 +385,7 @@ async function showNotification({ title, body, tag, url }) {
     if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         new Notification(title, {
             body,
-            icon: '/assets/icons/icon-192.png?v=30',
+            icon: pwaAssetUrl('/assets/icons/icon-192.png'),
             tag
         });
         return true;

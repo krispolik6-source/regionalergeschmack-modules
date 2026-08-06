@@ -244,7 +244,14 @@ function render(container) {
     }
 }
 
+let profileAmbientOff = null;
+
 function bindEvents(container) {
+    if (profileAmbientOff) {
+        profileAmbientOff();
+        profileAmbientOff = null;
+    }
+
     container.querySelectorAll('[data-login-type]').forEach((btn) => {
         btn.addEventListener('click', () => {
             const type = btn.dataset.loginType === 'producer'
@@ -289,7 +296,7 @@ function bindEvents(container) {
         setAmbientNatureEnabled(e.target.checked, { userInitiated: e.target.checked });
     });
 
-    eventBus.on(EVENTS.AMBIENT_UNAVAILABLE, () => {
+    profileAmbientOff = eventBus.on(EVENTS.AMBIENT_UNAVAILABLE, () => {
         const cb = container.querySelector('#profileAmbientNature');
         if (cb) cb.checked = false;
     });

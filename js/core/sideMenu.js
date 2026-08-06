@@ -9,7 +9,7 @@ import { APP_DOWNLOAD_URL, CONTACT_EMAIL, MENU_RELEASE_GATES } from '../config.j
 import { promptPwaInstall } from './pwaInstall.js';
 import { showToast } from './toast.js';
 import { setAppLanguage } from './settings.js';
-import { isLocalhost, isProductionHost } from './logger.js';
+import { isDevMode } from '../diagnostics/healthMonitor.js';
 import { getLanguageFlagSrc } from '../presentation/languageFlags.js';
 import {
     getTasteDiaryEntries,
@@ -19,19 +19,20 @@ import {
 import { openDeveloperVault } from '../diagnostics/developerVaultPanel.js';
 import { renderSystemHealthPanel } from '../presentation/systemHealthReport.js';
 
-const INTERNAL_MENU_ACTIONS = new Set(['feedback', 'test-guide', 'share-app', 'dev-vault']);
+const INTERNAL_MENU_ACTIONS = new Set(['feedback', 'test-guide', 'share-app']);
 
-/** Benutzertests + Deweloper: localhost / ?dev=1 / rg_dev_mode — nigdy na hostach produkcyjnych. */
+/** Benutzertests: localhost · LAN · ?dev=1 · rg_dev_mode (nie dotyczy panelu deweloperskiego). */
 function showInternalMenuSections() {
-    try {
-        if (isProductionHost()) return false;
-        if (isLocalhost()) return true;
-        if (localStorage.getItem('rg_dev_mode') === '1') return true;
-        if (new URLSearchParams(location.search).get('dev') === '1') return true;
-        return false;
-    } catch {
-        return false;
-    }
+    return isDevMode();
+}
+
+/** Panel deweloperski: zawsze widoczny w menu — dostęp wyłącznie przez PIN. */
+function applyDeveloperPanelMenuVisibility() {
+    const root = getRoot();
+    if (!root) return;
+    root.querySelectorAll('[data-menu-dev-panel]').forEach((el) => {
+        el.hidden = false;
+    });
 }
 
 function setMenuGateVisible(root, gate, enabled) {
@@ -54,6 +55,7 @@ function applyMenuVisibilityGates() {
     root.querySelectorAll('[data-menu-internal]').forEach((el) => {
         el.hidden = !showInternal;
     });
+    applyDeveloperPanelMenuVisibility();
 
     // Pusty kontener pobrań w „Empfehlungen” – ukryj, gdy brak obu linków
     root.querySelectorAll('.side-menu-downloads').forEach((box) => {

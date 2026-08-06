@@ -7,8 +7,7 @@
  */
 
 import { showToast } from '../core/toast.js';
-
-const PWA_CACHE_PREFIX_KEEP = ['rg-pwa-v28', 'rg-runtime-images-v28'];
+import { PWA_CACHE_PREFIX_KEEP } from '../core/pwaVersion.js';
 const LEARNING_IDB = 'rg_learning_engine';
 const LEARNING_STORE = 'signals';
 const LEARNING_KEEP = 80;
@@ -16,6 +15,7 @@ const LEARNING_KEEP = 80;
 /** Klucze LS — bezpieczne do usunięcia w całości. */
 const SAFE_LS_EXACT = new Set([
     'rg_console_guardian_v1',
+    'rg_runtime_error_feed_v1',
     'rg_ui_guardian_v1',
     'rg_map_guardian_v1',
     'rg_self_heal_log',
@@ -40,7 +40,7 @@ const SAFE_LS_PREFIXES = [
     'rg_health_',
     'rg_guardian_',
     'rg_virtual_',
-    'rg_real_user',
+    'rg_runtime_error',
     'rg_dream_',
     'rg_weekly_premium',
     'rg_daily_dev',

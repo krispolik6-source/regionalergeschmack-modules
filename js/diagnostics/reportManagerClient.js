@@ -1,10 +1,11 @@
 /**
  * ETAP 34C — klient Report Manager (Control Center)
- * Kopiowanie: fetch z /docs/...
+ * Kopiowanie: fetch z /docs/... (tylko dev vault + nie-produkcja)
  * Usuwanie / cleanup / stats: lokalne API 127.0.0.1:3457 (opcjonalne)
  */
 
 import { showToast } from '../core/toast.js';
+import { isDeveloperAccessGranted } from './devVault.js';
 
 export const REPORT_API_BASE = 'http://127.0.0.1:3457';
 
@@ -29,6 +30,33 @@ function shouldSkipApiProbe() {
     return apiOnlineCached === false && Date.now() < apiOfflineUntil;
 }
 
+/**
+ * Sieciowe odczyty docs/ — wyłącznie po odblokowaniu Dev Vault (PIN w sesji).
+ * Bez PIN: 0 requestów /docs/ (produkcja, localhost, LAN, PWA — jednakowo).
+ */
+export function canFetchDocsRuntime() {
+    try {
+        return isDeveloperAccessGranted();
+    } catch {
+        return false;
+    }
+}
+
+function offlineReportsIndex() {
+    return {
+        generatedAt: null,
+        stats: { reportCount: REPORT_CATALOG.length, docsHuman: '—', docsBytes: 0 },
+        reports: REPORT_CATALOG.map((c) => ({
+            rel: c.md.replace(/^\//, ''),
+            module: c.key,
+            name: 'latest.md',
+            isLatest: true
+        })),
+        offline: true,
+        docsBlocked: true
+    };
+}
+
 /** Katalog raportów w UI (klucz → ścieżki md/json). */
 export const REPORT_CATALOG = [
     { key: 'guardian', title: 'Guardian / Future', md: '/docs/guardian-future/latest.md', json: '/docs/guardian-future/latest.json', ico: '🛡' },
@@ -44,6 +72,8 @@ export const REPORT_CATALOG = [
 ];
 
 async function fetchText(url) {
+    if (!canFetchDocsRuntime()) return null;
+    if (!String(url || '').includes('/docs/')) return null;
     try {
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) return null;
@@ -90,6 +120,10 @@ export function resetReportApiProbe() {
 }
 
 export async function loadReportsIndex() {
+    if (!canFetchDocsRuntime()) {
+        return offlineReportsIndex();
+    }
+
     const live = await apiJson('/index');
     if (live.ok && Array.isArray(live.data?.reports)) return live.data;
 
@@ -98,17 +132,7 @@ export async function loadReportsIndex() {
         if (res.ok) return await res.json();
     } catch { /* ignore */ }
 
-    return {
-        generatedAt: null,
-        stats: { reportCount: REPORT_CATALOG.length, docsHuman: '—', docsBytes: 0 },
-        reports: REPORT_CATALOG.map((c) => ({
-            rel: c.md.replace(/^\//, ''),
-            module: c.key,
-            name: 'latest.md',
-            isLatest: true
-        })),
-        offline: true
-    };
+    return offlineReportsIndex();
 }
 
 export async function loadDocsStats() {
@@ -447,8 +471,8 @@ export function getStreamStatusMeta(status) {
 function jsonRelForEntry(entry) {
     const rel = String(entry?.rel || '').replace(/^\//, '');
     if (/\.json$/i.test(rel)) return rel;
-    if (/\.md$/i.test(rel)) return rel.replace(/\.md$/i, '.json');
-    return rel.includes('.') ? rel : `${rel}.json`;
+    // Nie wyprowadzaj .json z .md — większość raportów ma tylko markdown (zero 404 w konsoli).
+    return null;
 }
 
 function inferStreamStatusFromJson(data) {
@@ -487,8 +511,9 @@ function inferStreamStatusFromName(name) {
 }
 
 async function fetchJsonForStatus(entry) {
+    if (!canFetchDocsRuntime()) return null;
     const jsonRel = jsonRelForEntry(entry);
-    if (!jsonRel.startsWith('docs/')) return null;
+    if (!jsonRel || !jsonRel.startsWith('docs/')) return null;
     try {
         const res = await fetch(`/${jsonRel}`, { cache: 'no-store' });
         if (!res.ok) return null;
@@ -519,6 +544,14 @@ async function enrichStreamStatuses(entries) {
             return {
                 ...entry,
                 streamStatus: normalizeStreamStatus(raw)
+            };
+        }
+        if (!canFetchDocsRuntime()) {
+            const fromName = inferStreamStatusFromName(entry.name || entry.rel);
+            const fromMeta = entry.streamStatus || entry.status;
+            return {
+                ...entry,
+                streamStatus: normalizeStreamStatus(fromMeta || fromName || STREAM_STATUS.INFO)
             };
         }
         return {

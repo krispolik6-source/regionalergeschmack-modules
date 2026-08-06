@@ -29,8 +29,10 @@ for (const rel of runtimeFiles) {
 }
 
 const appJs = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(appJs.includes('initHealthMonitor'), 'app.js wywołuje initHealthMonitor');
-assert(appJs.includes('initHealthDevPanel'), 'app.js wywołuje initHealthDevPanel');
+const orch = readFileSync(join(ROOT, 'js/diagnostics/diagnosticsOrchestrator.js'), 'utf8');
+assert(appJs.includes('initDiagnosticsOrchestrator'), 'app.js używa orchestratora');
+assert(orch.includes('healthMonitor.initHealthMonitor'), 'orchestrator lazy-load healthMonitor');
+assert(orch.includes('healthDevPanel.initHealthDevPanel'), 'orchestrator lazy-load healthDevPanel');
 
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 assert(pkg.scripts?.health, 'npm script health');

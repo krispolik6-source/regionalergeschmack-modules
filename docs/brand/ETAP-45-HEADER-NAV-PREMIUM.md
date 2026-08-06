@@ -1,8 +1,8 @@
 # ETAP – Final Premium UI Polish (Header + Bottom Navigation)
 
-Wygenerowano: 2026-08-04T18:19:43.506Z
+Wygenerowano: 2026-08-05T19:31:23.285Z
 
-**Werdykt:** ✅ PASS · 64/64
+**Werdykt:** ⚠ FAIL · 62/64
 
 ## Cel
 
@@ -60,11 +60,11 @@ Wyłącznie poprawki wizualne (CSS + minimalny HTML). Rynek DE — spokojny, ele
 - ✓ theme-toggle-file — css/theme-toggle-premium.css istnieje
 - ✓ theme-toggle-circle — okrągła ikona 🌞/🌙
 - ✓ theme-toggle-44 — hit area 44×44 px
-- ✓ html-header-brand — HTML: .header-brand grupuje logo + tytuł
+- ✗ html-header-brand — HTML: .header-brand grupuje logo + tytuł
 - ✓ theme-toggle-gap-lang — odstęp 8–12 px od języka · toggle nie kurczy się
 - ✓ theme-toggle-no-overlap — header-right nie ściska toggle vs język
 - ✓ theme-toggle-emoji — emoji z DOM (bez maski SVG)
-- ✓ theme-toggle-no-header-icon — HTML: toggle bez klasy header-icon (minimalny HTML)
+- ✗ theme-toggle-no-header-icon — HTML: toggle bez klasy header-icon (minimalny HTML)
 - ✓ nav-home-surface — nav powierzchnia Home Premium
 - ✓ nav-icon-before — ikona w pigułce (::before)
 - ✓ nav-active-no-green-square — aktywna: kremowa pigułka + delikatna ramka (bez ciemnozielonego kwadratu)

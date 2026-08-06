@@ -15,6 +15,7 @@ import {
     resolveMailConfig,
     sendDeveloperMail
 } from './lib/developer-smtp.mjs';
+import { readDiagnosticsWiring } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'docs', 'self-heal');
@@ -102,9 +103,9 @@ async function main() {
     if (token === '160px') result.fixes.push('modal photo 160px');
     else result.issues.push(`modal photo token: ${token}`);
 
-    const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-    if (app.includes('initSelfHealing')) result.fixes.push('initSelfHealing w app.js');
-    else result.issues.push('brak initSelfHealing w app.js');
+    const { orch } = readDiagnosticsWiring(ROOT);
+    if (orch.includes('selfHealing.initSelfHealing')) result.fixes.push('selfHealing lazy w orchestratorze');
+    else result.issues.push('brak selfHealing w orchestratorze');
 
     mkdirSync(OUT_DIR, { recursive: true });
     const jsonPath = join(OUT_DIR, `self-heal-${day}.json`);

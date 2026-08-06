@@ -5,6 +5,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
 
@@ -77,8 +79,7 @@ const n = healCategoryPhotos(root);
 assert(n >= 1, 'heals shop honey → shops');
 assert(String(img._src || '').includes('category_shops'), 'src switched to shops');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initSelfHealing'), 'app inits self-heal');
+assertLazyDiagnosticsInit(assert, ROOT, 'selfHealing.initSelfHealing', 'orchestrator lazy selfHealing');
 
 const smtp = readFileSync(join(ROOT, 'scripts/lib/developer-smtp.mjs'), 'utf8');
 assert(smtp.includes('selfHealMailSubject'), 'mail subject helper');

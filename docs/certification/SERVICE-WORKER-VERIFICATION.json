@@ -1,0 +1,324 @@
+{
+  "etap": "45-D-T4",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 25,
+    "total": 25,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 4,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 4,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 4,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 2,
+    "total": 2,
+    "runs": [
+      {
+        "label": "test-pwa",
+        "ok": true,
+        "exit": 0,
+        "tail": "--- PWA test ---\nOK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      },
+      {
+        "label": "pwa-version-sync",
+        "ok": true,
+        "exit": 0,
+        "tail": "\nPWA version sync OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:31.623Z",
+  "pwaVersion": "30",
+  "cacheNames": {
+    "shell": "rg-pwa-v30",
+    "images": "rg-runtime-images-v30"
+  },
+  "areas": {
+    "install": [
+      {
+        "id": "SW01-install-handler",
+        "area": "install",
+        "label": "install event + waitUntil",
+        "status": "pass",
+        "detail": "sw.js: install listener · event.waitUntil",
+        "layer": "static"
+      },
+      {
+        "id": "SW01-install-precache",
+        "area": "install",
+        "label": "Precache shell (PRECACHE_URLS)",
+        "status": "pass",
+        "detail": "index.html · CSS · ikony · manifest w precache",
+        "layer": "static"
+      },
+      {
+        "id": "SW01-install-cache-open",
+        "area": "install",
+        "label": "Otwarcie CACHE_VERSION przy install",
+        "status": "pass",
+        "detail": "precache do rg-pwa-v30",
+        "layer": "static"
+      }
+    ],
+    "activate": [
+      {
+        "id": "SW02-activate-handler",
+        "area": "activate",
+        "label": "activate event + waitUntil",
+        "status": "pass",
+        "detail": "sw.js: activate listener",
+        "layer": "static"
+      },
+      {
+        "id": "SW02-activate-keys",
+        "area": "activate",
+        "label": "activate czyta caches.keys()",
+        "status": "pass",
+        "detail": "enumerate cache przed cleanup",
+        "layer": "static"
+      }
+    ],
+    "skipWaiting": [
+      {
+        "id": "SW03-skip-waiting",
+        "area": "skipWaiting",
+        "label": "skipWaiting po precache",
+        "status": "pass",
+        "detail": "install → addAll → skipWaiting (natychmiastowa aktywacja nowego SW)",
+        "layer": "static"
+      },
+      {
+        "id": "SW03-no-client-skip",
+        "area": "skipWaiting",
+        "label": "Klient nie wywołuje skipWaiting (selfHealing)",
+        "status": "pass",
+        "detail": "ETAP 39: prompt odświeżenia zamiast skipWaiting z klienta",
+        "layer": "static"
+      }
+    ],
+    "clients.claim": [
+      {
+        "id": "SW04-clients-claim",
+        "area": "clients.claim",
+        "label": "clients.claim po cleanup",
+        "status": "pass",
+        "detail": "activate → purge → clients.claim (kontrola od razu)",
+        "layer": "static"
+      }
+    ],
+    "cache cleanup": [
+      {
+        "id": "SW05-cleanup-purge",
+        "area": "cache cleanup",
+        "label": "Usuwa stare rg-pwa-* i rg-runtime-images-*",
+        "status": "pass",
+        "detail": "filter + delete · zachowuje CACHE_VERSION + IMAGE_CACHE",
+        "layer": "static"
+      },
+      {
+        "id": "SW05-cleanup-keep-current",
+        "area": "cache cleanup",
+        "label": "Nie usuwa bieżących cache",
+        "status": "pass",
+        "detail": "wyjątek dla bieżącej wersji",
+        "layer": "static"
+      },
+      {
+        "id": "SW05-memory-cleaner-sync",
+        "area": "cache cleanup",
+        "label": "Memory Cleaner — deleteStaleCaches",
+        "status": "pass",
+        "detail": "memoryCleaner.js · import z pwaVersion.js",
+        "layer": "static"
+      }
+    ],
+    "runtime cache": [
+      {
+        "id": "SW06-runtime-image-cache",
+        "area": "runtime cache",
+        "label": "IMAGE_CACHE dla obrazów runtime",
+        "status": "pass",
+        "detail": "rg-runtime-images-v30 · cache-first z network update",
+        "layer": "static"
+      },
+      {
+        "id": "SW06-runtime-code-cache",
+        "area": "runtime cache",
+        "label": "Runtime cache dla JS/CSS (network-first)",
+        "status": "pass",
+        "detail": "fetch → put CACHE_VERSION · offline caches.match",
+        "layer": "static"
+      },
+      {
+        "id": "SW06-runtime-nav-cache",
+        "area": "runtime cache",
+        "label": "Navigate — aktualizacja index.html w cache",
+        "status": "pass",
+        "detail": "network navigate → update cached shell",
+        "layer": "static"
+      },
+      {
+        "id": "SW06-safe-cache-put",
+        "area": "runtime cache",
+        "label": "safeCachePut — tylko 200 basic",
+        "status": "pass",
+        "detail": "bez cache 206 / opaque / error",
+        "layer": "static"
+      }
+    ],
+    "offline cache": [
+      {
+        "id": "SW07-offline-precache",
+        "area": "offline cache",
+        "label": "Precache offline shell",
+        "status": "pass",
+        "detail": "29 URL w precache",
+        "layer": "static"
+      },
+      {
+        "id": "SW07-offline-navigate-fallback",
+        "area": "offline cache",
+        "label": "Navigate offline → index.html",
+        "status": "pass",
+        "detail": "fetch fail → cached /index.html lub /",
+        "layer": "static"
+      },
+      {
+        "id": "SW07-offline-code-fallback",
+        "area": "offline cache",
+        "label": "JS/CSS offline → caches.match(request)",
+        "status": "pass",
+        "detail": "code assets offline fallback",
+        "layer": "static"
+      },
+      {
+        "id": "SW07-offline-icons",
+        "area": "offline cache",
+        "label": "Ikony offline — wersjonowany fallback",
+        "status": "pass",
+        "detail": "network-first · offline tylko ?v= bieżącej wersji",
+        "layer": "static"
+      },
+      {
+        "id": "SW07-offline-sync-bridge",
+        "area": "offline cache",
+        "label": "Background sync + offline queue flush",
+        "status": "pass",
+        "detail": "SW sync → postMessage · offlineSync.js online handler",
+        "layer": "static"
+      }
+    ],
+    "version sync": [
+      {
+        "id": "SW08-bridge-import",
+        "area": "version sync",
+        "label": "SW importScripts pwaVersion.global.js",
+        "status": "pass",
+        "detail": "brak lokalnej kopii PWA_VERSION w sw.js",
+        "layer": "static"
+      },
+      {
+        "id": "SW08-version-canonical",
+        "area": "version sync",
+        "label": "PWA_VERSION spójna (module = global = SW bridge)",
+        "status": "pass",
+        "detail": "PWA_VERSION=30 · pwaVersion.js = pwaVersion.global.js",
+        "layer": "static"
+      },
+      {
+        "id": "SW08-index-register",
+        "area": "version sync",
+        "label": "index.html rejestruje sw.js?v=",
+        "status": "pass",
+        "detail": "register('/sw.js?v=30')",
+        "layer": "static"
+      },
+      {
+        "id": "SW08-cache-names",
+        "area": "version sync",
+        "label": "Nazwy cache zsynchronizowane z PWA_VERSION",
+        "status": "pass",
+        "detail": "rg-pwa-v30 · rg-runtime-images-v30",
+        "layer": "static"
+      },
+      {
+        "id": "SW08-self-healing-version",
+        "area": "version sync",
+        "label": "selfHealing używa pwaAssetUrl",
+        "status": "pass",
+        "detail": "dynamiczny cache-bust w diagnostyce",
+        "layer": "static"
+      }
+    ]
+  },
+  "lifecycle": {
+    "install": "precache PRECACHE_URLS → skipWaiting",
+    "activate": "purge stale rg-* caches → clients.claim",
+    "fetch": "icons network-first · navigate/code network-first · images IMAGE_CACHE · default stale-while-revalidate"
+  },
+  "manual": [
+    {
+      "id": "M-sw-install",
+      "title": "Install + precache",
+      "device": "Chrome DevTools",
+      "steps": [
+        "Application → Service Workers → Update / Register",
+        "Cache Storage: pojawia się rg-pwa-v30 z index.html, CSS, ikonami",
+        "Status: activated · skipWaiting wykonany"
+      ],
+      "pass": "Precache w rg-pwa-v30 bez błędów addAll"
+    },
+    {
+      "id": "M-sw-update",
+      "title": "Update + cleanup starych cache",
+      "device": "Chrome / PWA",
+      "steps": [
+        "Bump PWA_VERSION → deploy",
+        "Nowy SW: installing → activated",
+        "Cache Storage: tylko rg-pwa-v30 + rg-runtime-images-v30",
+        "Stare rg-pwa-* / rg-runtime-images-* usunięte"
+      ],
+      "pass": "Activate purge · brak starych cache"
+    },
+    {
+      "id": "M-sw-offline",
+      "title": "Offline shell",
+      "device": "Telefon PWA",
+      "steps": [
+        "Odwiedź app online (precache)",
+        "Tryb samolotowy ON",
+        "Reload → Home/Map z cache · banner offline"
+      ],
+      "pass": "Aplikacja działa offline po precache"
+    },
+    {
+      "id": "M-sw-online",
+      "title": "Powrót online + runtime cache",
+      "device": "Chrome",
+      "steps": [
+        "Online → nawigacja odświeża index.html w cache",
+        "Obrazy runtime w rg-runtime-images-v30",
+        "Offline queue flush (offlineSync)"
+      ],
+      "pass": "Runtime cache aktualizuje się · sync działa"
+    }
+  ],
+  "autoApply": false
+}

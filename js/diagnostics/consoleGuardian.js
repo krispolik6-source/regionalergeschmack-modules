@@ -15,6 +15,7 @@ import {
     setConsoleCaptureHook
 } from '../core/logger.js';
 import { eventBus } from '../core/eventBus.js';
+import { initRuntimeErrorCollector } from './runtimeErrorCollector.js';
 import { EVENTS } from '../core/events.js';
 
 const STORE_KEY = 'rg_console_guardian_v1';
@@ -356,6 +357,7 @@ export function initConsoleGuardian() {
     bindLastActionTracking();
     bindGlobalHandlers();
     recordUserAction('boot', 'app-start', location.href);
+    initRuntimeErrorCollector();
 
     const productionSilent = !isLocalhost() && (isProductionHost() || !isLocalhost());
 

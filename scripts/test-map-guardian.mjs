@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -42,7 +43,7 @@ assert(map.includes('export function getMapHealthSnapshot'), 'getMapHealthSnapsh
 assert(map.includes('tilesEverLoaded'), 'tile load tracking');
 assert(mapCore.includes('getRegisteredMarkerCount'), 'marker count export');
 assert(mapCore.includes('hasMarkerClusterGroup'), 'cluster export');
-assert(app.includes('initMapGuardian'), 'app init');
+assertLazyDiagnosticsInit(assert, ROOT, 'mapGuardian.initMapGuardian', 'orchestrator lazy mapGuardian');
 assert(app.includes('map.js?v=48'), 'app map v48');
 
 for (const f of [

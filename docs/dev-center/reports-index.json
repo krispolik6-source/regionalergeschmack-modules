@@ -1,18 +1,594 @@
 {
-  "generatedAt": "2026-08-03T19:06:36.164Z",
+  "generatedAt": "2026-08-05T20:14:11.259Z",
   "policy": {
     "autoApply": false,
     "autoFix": false,
     "docsOnly": true
   },
   "stats": {
-    "docsBytes": 1868536,
-    "docsHuman": "1.78 MB",
-    "fileCount": 273,
-    "reportCount": 237,
+    "docsBytes": 2181586,
+    "docsHuman": "2.08 MB",
+    "fileCount": 297,
+    "reportCount": 261,
     "moduleCount": 49
   },
   "reports": [
+    {
+      "rel": "docs/final/RELEASE-CANDIDATE.md",
+      "module": "final",
+      "name": "RELEASE-CANDIDATE.md",
+      "bytes": 3260,
+      "human": "3.2 KB",
+      "mtime": "2026-08-05T20:03:07.638Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-CANDIDATE.json",
+      "module": "final",
+      "name": "RELEASE-CANDIDATE.json",
+      "bytes": 5830,
+      "human": "5.7 KB",
+      "mtime": "2026-08-05T20:03:07.638Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/real-users/2026-08-05.json",
+      "module": "real-users",
+      "name": "2026-08-05.json",
+      "bytes": 173839,
+      "human": "169.8 KB",
+      "mtime": "2026-08-05T19:57:15.665Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/real-users/2026-08-05.md",
+      "module": "real-users",
+      "name": "2026-08-05.md",
+      "bytes": 7189,
+      "human": "7.0 KB",
+      "mtime": "2026-08-05T19:57:15.665Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/real-users/latest.json",
+      "module": "real-users",
+      "name": "latest.json",
+      "bytes": 173839,
+      "human": "169.8 KB",
+      "mtime": "2026-08-05T19:57:15.663Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/real-users/latest.md",
+      "module": "real-users",
+      "name": "latest.md",
+      "bytes": 7189,
+      "human": "7.0 KB",
+      "mtime": "2026-08-05T19:57:15.663Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/console-guardian/latest.json",
+      "module": "console-guardian",
+      "name": "latest.json",
+      "bytes": 198,
+      "human": "198 B",
+      "mtime": "2026-08-05T19:57:04.637Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/console-guardian/latest.md",
+      "module": "console-guardian",
+      "name": "latest.md",
+      "bytes": 867,
+      "human": "867 B",
+      "mtime": "2026-08-05T19:57:04.637Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/memory-cleaner/latest.json",
+      "module": "memory-cleaner",
+      "name": "latest.json",
+      "bytes": 165,
+      "human": "165 B",
+      "mtime": "2026-08-05T19:51:26.987Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/memory-cleaner/latest.md",
+      "module": "memory-cleaner",
+      "name": "latest.md",
+      "bytes": 926,
+      "human": "926 B",
+      "mtime": "2026-08-05T19:51:26.987Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-05.json",
+      "module": "brand-protection",
+      "name": "2026-08-05.json",
+      "bytes": 1228,
+      "human": "1.2 KB",
+      "mtime": "2026-08-05T17:27:06.656Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-05.md",
+      "module": "brand-protection",
+      "name": "2026-08-05.md",
+      "bytes": 1316,
+      "human": "1.3 KB",
+      "mtime": "2026-08-05T17:27:06.656Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/latest.json",
+      "module": "brand-protection",
+      "name": "latest.json",
+      "bytes": 1228,
+      "human": "1.2 KB",
+      "mtime": "2026-08-05T17:27:06.656Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/brand-protection/latest.md",
+      "module": "brand-protection",
+      "name": "latest.md",
+      "bytes": 1316,
+      "human": "1.3 KB",
+      "mtime": "2026-08-05T17:27:06.656Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/final/RELEASE-READY.json",
+      "module": "final",
+      "name": "RELEASE-READY.json",
+      "bytes": 8617,
+      "human": "8.4 KB",
+      "mtime": "2026-08-05T17:26:39.575Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-READY.md",
+      "module": "final",
+      "name": "RELEASE-READY.md",
+      "bytes": 4658,
+      "human": "4.5 KB",
+      "mtime": "2026-08-05T17:26:39.575Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-04.json",
+      "module": "brand-protection",
+      "name": "2026-08-04.json",
+      "bytes": 1228,
+      "human": "1.2 KB",
+      "mtime": "2026-08-04T18:19:46.031Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-04.md",
+      "module": "brand-protection",
+      "name": "2026-08-04.md",
+      "bytes": 1316,
+      "human": "1.3 KB",
+      "mtime": "2026-08-04T18:19:46.031Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/release-validator-latest.json",
+      "module": "final",
+      "name": "release-validator-latest.json",
+      "bytes": 187,
+      "human": "187 B",
+      "mtime": "2026-08-04T17:43:22.131Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-VALIDATOR.json",
+      "module": "final",
+      "name": "RELEASE-VALIDATOR.json",
+      "bytes": 10972,
+      "human": "10.7 KB",
+      "mtime": "2026-08-04T17:43:22.131Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-VALIDATOR.md",
+      "module": "final",
+      "name": "RELEASE-VALIDATOR.md",
+      "bytes": 5375,
+      "human": "5.2 KB",
+      "mtime": "2026-08-04T17:43:22.131Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/map-guardian/latest.json",
+      "module": "map-guardian",
+      "name": "latest.json",
+      "bytes": 219,
+      "human": "219 B",
+      "mtime": "2026-08-04T17:43:21.650Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/map-guardian/latest.md",
+      "module": "map-guardian",
+      "name": "latest.md",
+      "bytes": 1073,
+      "human": "1.0 KB",
+      "mtime": "2026-08-04T17:43:21.650Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/ui-guardian/latest.json",
+      "module": "ui-guardian",
+      "name": "latest.json",
+      "bytes": 207,
+      "human": "207 B",
+      "mtime": "2026-08-04T17:43:21.526Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/ui-guardian/latest.md",
+      "module": "ui-guardian",
+      "name": "latest.md",
+      "bytes": 1082,
+      "human": "1.1 KB",
+      "mtime": "2026-08-04T17:43:21.526Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/logging/PRODUCTION-LOGGING.json",
+      "module": "logging",
+      "name": "PRODUCTION-LOGGING.json",
+      "bytes": 343,
+      "human": "343 B",
+      "mtime": "2026-08-04T17:43:21.366Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/logging/PRODUCTION-LOGGING.md",
+      "module": "logging",
+      "name": "PRODUCTION-LOGGING.md",
+      "bytes": 1482,
+      "human": "1.4 KB",
+      "mtime": "2026-08-04T17:43:21.366Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium/PRODUCTION-POLISH.json",
+      "module": "premium",
+      "name": "PRODUCTION-POLISH.json",
+      "bytes": 2226,
+      "human": "2.2 KB",
+      "mtime": "2026-08-04T17:43:21.331Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium/PRODUCTION-POLISH.md",
+      "module": "premium",
+      "name": "PRODUCTION-POLISH.md",
+      "bytes": 1710,
+      "human": "1.7 KB",
+      "mtime": "2026-08-04T17:43:21.331Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/health-2026-08-04T17-43-21-290Z.json",
+      "module": "health",
+      "name": "health-2026-08-04T17-43-21-290Z.json",
+      "bytes": 7114,
+      "human": "6.9 KB",
+      "mtime": "2026-08-04T17:43:21.291Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/health/latest.json",
+      "module": "health",
+      "name": "latest.json",
+      "bytes": 7114,
+      "human": "6.9 KB",
+      "mtime": "2026-08-04T17:43:21.291Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/health/latest.md",
+      "module": "health",
+      "name": "latest.md",
+      "bytes": 1085,
+      "human": "1.1 KB",
+      "mtime": "2026-08-04T17:43:21.291Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/regional-intelligence/2026-08-04.md",
+      "module": "regional-intelligence",
+      "name": "2026-08-04.md",
+      "bytes": 606,
+      "human": "606 B",
+      "mtime": "2026-08-04T16:37:51.531Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/regional-intelligence/2026-08-04.json",
+      "module": "regional-intelligence",
+      "name": "2026-08-04.json",
+      "bytes": 2262,
+      "human": "2.2 KB",
+      "mtime": "2026-08-04T16:37:51.530Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/regional-intelligence/latest.json",
+      "module": "regional-intelligence",
+      "name": "latest.json",
+      "bytes": 2262,
+      "human": "2.2 KB",
+      "mtime": "2026-08-04T16:37:51.530Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/regional-intelligence/latest.md",
+      "module": "regional-intelligence",
+      "name": "latest.md",
+      "bytes": 606,
+      "human": "606 B",
+      "mtime": "2026-08-04T16:37:51.530Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/premium/PREMIUM-POLISH-PASS-2026-08-03.md",
+      "module": "premium",
+      "name": "PREMIUM-POLISH-PASS-2026-08-03.md",
+      "bytes": 7369,
+      "human": "7.2 KB",
+      "mtime": "2026-08-04T15:56:51.195Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/IMAGE-ASSETS-RELEASE-v1.0.json",
+      "module": "final",
+      "name": "IMAGE-ASSETS-RELEASE-v1.0.json",
+      "bytes": 1801,
+      "human": "1.8 KB",
+      "mtime": "2026-08-04T15:56:51.158Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/IMAGE-ASSETS-RELEASE-v1.0.md",
+      "module": "final",
+      "name": "IMAGE-ASSETS-RELEASE-v1.0.md",
+      "bytes": 3682,
+      "human": "3.6 KB",
+      "mtime": "2026-08-04T15:56:51.147Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium/PREMIUM-POLISH-PASS-2026-08-03.json",
+      "module": "premium",
+      "name": "PREMIUM-POLISH-PASS-2026-08-03.json",
+      "bytes": 2401,
+      "human": "2.3 KB",
+      "mtime": "2026-08-04T15:56:51.147Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-CHECKLIST-v1.0.json",
+      "module": "final",
+      "name": "RELEASE-CHECKLIST-v1.0.json",
+      "bytes": 3291,
+      "human": "3.2 KB",
+      "mtime": "2026-08-03T19:22:12.243Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RELEASE-CHECKLIST-v1.0.md",
+      "module": "final",
+      "name": "RELEASE-CHECKLIST-v1.0.md",
+      "bytes": 2043,
+      "human": "2.0 KB",
+      "mtime": "2026-08-03T19:22:12.243Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-03.json",
+      "module": "brand-protection",
+      "name": "2026-08-03.json",
+      "bytes": 1228,
+      "human": "1.2 KB",
+      "mtime": "2026-08-03T19:21:33.993Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/brand-protection/2026-08-03.md",
+      "module": "brand-protection",
+      "name": "2026-08-03.md",
+      "bytes": 1316,
+      "human": "1.3 KB",
+      "mtime": "2026-08-03T19:21:33.993Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RC-1-AUDIT.json",
+      "module": "final",
+      "name": "RC-1-AUDIT.json",
+      "bytes": 4950,
+      "human": "4.8 KB",
+      "mtime": "2026-08-03T19:10:26.138Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/final/RC-1-AUDIT.md",
+      "module": "final",
+      "name": "RC-1-AUDIT.md",
+      "bytes": 3470,
+      "human": "3.4 KB",
+      "mtime": "2026-08-03T19:10:26.138Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/2026-W32.json",
+      "module": "premium-weekly",
+      "name": "2026-W32.json",
+      "bytes": 11349,
+      "human": "11.1 KB",
+      "mtime": "2026-08-03T19:07:09.690Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/2026-W32.md",
+      "module": "premium-weekly",
+      "name": "2026-W32.md",
+      "bytes": 6701,
+      "human": "6.5 KB",
+      "mtime": "2026-08-03T19:07:09.690Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/premium-weekly/latest.md",
+      "module": "premium-weekly",
+      "name": "latest.md",
+      "bytes": 6701,
+      "human": "6.5 KB",
+      "mtime": "2026-08-03T19:07:09.690Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/premium-weekly/latest.json",
+      "module": "premium-weekly",
+      "name": "latest.json",
+      "bytes": 11349,
+      "human": "11.1 KB",
+      "mtime": "2026-08-03T19:07:09.689Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/premium-weekly/latest.email.txt",
+      "module": "premium-weekly",
+      "name": "latest.email.txt",
+      "bytes": 3296,
+      "human": "3.2 KB",
+      "mtime": "2026-08-03T19:07:09.609Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/2026-08-03.json",
+      "module": "virtual-user",
+      "name": "2026-08-03.json",
+      "bytes": 1820,
+      "human": "1.8 KB",
+      "mtime": "2026-08-03T19:07:09.452Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/2026-08-03.md",
+      "module": "virtual-user",
+      "name": "2026-08-03.md",
+      "bytes": 897,
+      "human": "897 B",
+      "mtime": "2026-08-03T19:07:09.452Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/virtual-user/latest.json",
+      "module": "virtual-user",
+      "name": "latest.json",
+      "bytes": 1820,
+      "human": "1.8 KB",
+      "mtime": "2026-08-03T19:07:09.452Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/virtual-user/latest.md",
+      "module": "virtual-user",
+      "name": "latest.md",
+      "bytes": 897,
+      "human": "897 B",
+      "mtime": "2026-08-03T19:07:09.452Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/intelligence/user-profile.md",
+      "module": "intelligence",
+      "name": "user-profile.md",
+      "bytes": 1105,
+      "human": "1.1 KB",
+      "mtime": "2026-08-03T19:07:09.342Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/trust/2026-08-03.md",
+      "module": "trust",
+      "name": "2026-08-03.md",
+      "bytes": 4687,
+      "human": "4.6 KB",
+      "mtime": "2026-08-03T19:07:09.157Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/trust/latest.json",
+      "module": "trust",
+      "name": "latest.json",
+      "bytes": 10022,
+      "human": "9.8 KB",
+      "mtime": "2026-08-03T19:07:09.157Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/trust/latest.md",
+      "module": "trust",
+      "name": "latest.md",
+      "bytes": 4687,
+      "human": "4.6 KB",
+      "mtime": "2026-08-03T19:07:09.157Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/self-reflection/2026-08-03.md",
+      "module": "self-reflection",
+      "name": "2026-08-03.md",
+      "bytes": 2106,
+      "human": "2.1 KB",
+      "mtime": "2026-08-03T19:07:08.575Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-reflection/2026-08-03.json",
+      "module": "self-reflection",
+      "name": "2026-08-03.json",
+      "bytes": 3564,
+      "human": "3.5 KB",
+      "mtime": "2026-08-03T19:07:08.574Z",
+      "isLatest": false
+    },
+    {
+      "rel": "docs/self-reflection/latest.json",
+      "module": "self-reflection",
+      "name": "latest.json",
+      "bytes": 3564,
+      "human": "3.5 KB",
+      "mtime": "2026-08-03T19:07:08.574Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/self-reflection/latest.md",
+      "module": "self-reflection",
+      "name": "latest.md",
+      "bytes": 2106,
+      "human": "2.1 KB",
+      "mtime": "2026-08-03T19:07:08.574Z",
+      "isLatest": true
+    },
+    {
+      "rel": "docs/dev-center/reports-index.json",
+      "module": "dev-center",
+      "name": "reports-index.json",
+      "bytes": 57668,
+      "human": "56.3 KB",
+      "mtime": "2026-08-03T19:06:36.164Z",
+      "isLatest": false
+    },
     {
       "rel": "docs/regional-intelligence/2026-08-03.md",
       "module": "regional-intelligence",
@@ -32,24 +608,6 @@
       "isLatest": false
     },
     {
-      "rel": "docs/regional-intelligence/latest.json",
-      "module": "regional-intelligence",
-      "name": "latest.json",
-      "bytes": 2262,
-      "human": "2.2 KB",
-      "mtime": "2026-08-03T19:06:36.090Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/regional-intelligence/latest.md",
-      "module": "regional-intelligence",
-      "name": "latest.md",
-      "bytes": 606,
-      "human": "606 B",
-      "mtime": "2026-08-03T19:06:36.090Z",
-      "isLatest": true
-    },
-    {
       "rel": "docs/real-users/2026-08-03.json",
       "module": "real-users",
       "name": "2026-08-03.json",
@@ -66,24 +624,6 @@
       "human": "7.1 KB",
       "mtime": "2026-08-03T19:06:35.682Z",
       "isLatest": false
-    },
-    {
-      "rel": "docs/real-users/latest.json",
-      "module": "real-users",
-      "name": "latest.json",
-      "bytes": 153351,
-      "human": "149.8 KB",
-      "mtime": "2026-08-03T19:06:35.682Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/real-users/latest.md",
-      "module": "real-users",
-      "name": "latest.md",
-      "bytes": 7299,
-      "human": "7.1 KB",
-      "mtime": "2026-08-03T19:06:35.682Z",
-      "isLatest": true
     },
     {
       "rel": "docs/advisor/2026-08-03.json",
@@ -120,24 +660,6 @@
       "human": "1.9 KB",
       "mtime": "2026-08-03T19:06:35.405Z",
       "isLatest": true
-    },
-    {
-      "rel": "docs/logging/PRODUCTION-LOGGING.json",
-      "module": "logging",
-      "name": "PRODUCTION-LOGGING.json",
-      "bytes": 343,
-      "human": "343 B",
-      "mtime": "2026-08-03T19:06:35.337Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/logging/PRODUCTION-LOGGING.md",
-      "module": "logging",
-      "name": "PRODUCTION-LOGGING.md",
-      "bytes": 1482,
-      "human": "1.4 KB",
-      "mtime": "2026-08-03T19:06:35.337Z",
-      "isLatest": false
     },
     {
       "rel": "docs/product-intelligence/2026-08-03.md",
@@ -374,60 +896,6 @@
       "isLatest": false
     },
     {
-      "rel": "docs/health/latest.md",
-      "module": "health",
-      "name": "latest.md",
-      "bytes": 773,
-      "human": "773 B",
-      "mtime": "2026-08-03T19:05:52.748Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/health/latest.json",
-      "module": "health",
-      "name": "latest.json",
-      "bytes": 7089,
-      "human": "6.9 KB",
-      "mtime": "2026-08-03T19:05:52.748Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/memory-cleaner/latest.json",
-      "module": "memory-cleaner",
-      "name": "latest.json",
-      "bytes": 165,
-      "human": "165 B",
-      "mtime": "2026-08-03T19:05:51.967Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/memory-cleaner/latest.md",
-      "module": "memory-cleaner",
-      "name": "latest.md",
-      "bytes": 926,
-      "human": "926 B",
-      "mtime": "2026-08-03T19:05:51.967Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/map-guardian/latest.json",
-      "module": "map-guardian",
-      "name": "latest.json",
-      "bytes": 219,
-      "human": "219 B",
-      "mtime": "2026-08-03T19:05:51.864Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/map-guardian/latest.md",
-      "module": "map-guardian",
-      "name": "latest.md",
-      "bytes": 1073,
-      "human": "1.0 KB",
-      "mtime": "2026-08-03T19:05:51.864Z",
-      "isLatest": true
-    },
-    {
       "rel": "docs/living-region/2026-08-03.md",
       "module": "living-region",
       "name": "2026-08-03.md",
@@ -489,15 +957,6 @@
       "human": "2.9 KB",
       "mtime": "2026-08-03T19:05:51.078Z",
       "isLatest": true
-    },
-    {
-      "rel": "docs/intelligence/user-profile.md",
-      "module": "intelligence",
-      "name": "user-profile.md",
-      "bytes": 1094,
-      "human": "1.1 KB",
-      "mtime": "2026-08-03T19:05:50.265Z",
-      "isLatest": false
     },
     {
       "rel": "docs/intelligence/2026-08-03.json",
@@ -752,60 +1211,6 @@
       "isLatest": true
     },
     {
-      "rel": "docs/console-guardian/latest.json",
-      "module": "console-guardian",
-      "name": "latest.json",
-      "bytes": 198,
-      "human": "198 B",
-      "mtime": "2026-08-03T19:05:15.300Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/console-guardian/latest.md",
-      "module": "console-guardian",
-      "name": "latest.md",
-      "bytes": 867,
-      "human": "867 B",
-      "mtime": "2026-08-03T19:05:15.300Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/brand-protection/2026-08-03.json",
-      "module": "brand-protection",
-      "name": "2026-08-03.json",
-      "bytes": 1228,
-      "human": "1.2 KB",
-      "mtime": "2026-08-03T19:05:15.040Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/brand-protection/2026-08-03.md",
-      "module": "brand-protection",
-      "name": "2026-08-03.md",
-      "bytes": 1316,
-      "human": "1.3 KB",
-      "mtime": "2026-08-03T19:05:15.040Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/brand-protection/latest.json",
-      "module": "brand-protection",
-      "name": "latest.json",
-      "bytes": 1228,
-      "human": "1.2 KB",
-      "mtime": "2026-08-03T19:05:15.040Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/brand-protection/latest.md",
-      "module": "brand-protection",
-      "name": "latest.md",
-      "bytes": 1316,
-      "human": "1.3 KB",
-      "mtime": "2026-08-03T19:05:15.040Z",
-      "isLatest": true
-    },
-    {
       "rel": "docs/quality-loop/2026-08-03.md",
       "module": "quality-loop",
       "name": "2026-08-03.md",
@@ -858,78 +1263,6 @@
       "human": "6.9 KB",
       "mtime": "2026-08-03T18:59:45.426Z",
       "isLatest": false
-    },
-    {
-      "rel": "docs/final/RELEASE-CANDIDATE.json",
-      "module": "final",
-      "name": "RELEASE-CANDIDATE.json",
-      "bytes": 5830,
-      "human": "5.7 KB",
-      "mtime": "2026-08-03T18:57:21.147Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/final/RELEASE-CANDIDATE.md",
-      "module": "final",
-      "name": "RELEASE-CANDIDATE.md",
-      "bytes": 3260,
-      "human": "3.2 KB",
-      "mtime": "2026-08-03T18:57:21.147Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/premium/PREMIUM-POLISH-PASS-2026-08-03.json",
-      "module": "premium",
-      "name": "PREMIUM-POLISH-PASS-2026-08-03.json",
-      "bytes": 2401,
-      "human": "2.3 KB",
-      "mtime": "2026-08-03T18:56:34.324Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/premium/PREMIUM-POLISH-PASS-2026-08-03.md",
-      "module": "premium",
-      "name": "PREMIUM-POLISH-PASS-2026-08-03.md",
-      "bytes": 7369,
-      "human": "7.2 KB",
-      "mtime": "2026-08-03T18:56:31.811Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/premium/PRODUCTION-POLISH.json",
-      "module": "premium",
-      "name": "PRODUCTION-POLISH.json",
-      "bytes": 2226,
-      "human": "2.2 KB",
-      "mtime": "2026-08-03T18:56:20.300Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/premium/PRODUCTION-POLISH.md",
-      "module": "premium",
-      "name": "PRODUCTION-POLISH.md",
-      "bytes": 1710,
-      "human": "1.7 KB",
-      "mtime": "2026-08-03T18:56:20.300Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/ui-guardian/latest.json",
-      "module": "ui-guardian",
-      "name": "latest.json",
-      "bytes": 207,
-      "human": "207 B",
-      "mtime": "2026-08-03T18:52:44.137Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/ui-guardian/latest.md",
-      "module": "ui-guardian",
-      "name": "latest.md",
-      "bytes": 1082,
-      "human": "1.1 KB",
-      "mtime": "2026-08-03T18:52:44.137Z",
-      "isLatest": true
     },
     {
       "rel": "docs/health/health-2026-08-03T18-52-37-837Z.json",
@@ -1001,33 +1334,6 @@
       "bytes": 4777,
       "human": "4.7 KB",
       "mtime": "2026-08-02T07:42:27.101Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/final/RELEASE-VALIDATOR.md",
-      "module": "final",
-      "name": "RELEASE-VALIDATOR.md",
-      "bytes": 5350,
-      "human": "5.2 KB",
-      "mtime": "2026-08-01T05:05:16.821Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/final/release-validator-latest.json",
-      "module": "final",
-      "name": "release-validator-latest.json",
-      "bytes": 155,
-      "human": "155 B",
-      "mtime": "2026-08-01T05:05:16.820Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/final/RELEASE-VALIDATOR.json",
-      "module": "final",
-      "name": "RELEASE-VALIDATOR.json",
-      "bytes": 11748,
-      "human": "11.5 KB",
-      "mtime": "2026-08-01T05:05:16.820Z",
       "isLatest": false
     },
     {
@@ -1427,15 +1733,6 @@
       "isLatest": false
     },
     {
-      "rel": "docs/dev-center/reports-index.json",
-      "module": "dev-center",
-      "name": "reports-index.json",
-      "bytes": 41371,
-      "human": "40.4 KB",
-      "mtime": "2026-07-26T09:11:48.713Z",
-      "isLatest": false
-    },
-    {
       "rel": "docs/living-region/2026-07-26.md",
       "module": "living-region",
       "name": "2026-07-26.md",
@@ -1562,24 +1859,6 @@
       "isLatest": false
     },
     {
-      "rel": "docs/trust/latest.json",
-      "module": "trust",
-      "name": "latest.json",
-      "bytes": 10022,
-      "human": "9.8 KB",
-      "mtime": "2026-07-22T19:25:05.480Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/trust/latest.md",
-      "module": "trust",
-      "name": "latest.md",
-      "bytes": 4687,
-      "human": "4.6 KB",
-      "mtime": "2026-07-22T19:25:05.479Z",
-      "isLatest": true
-    },
-    {
       "rel": "docs/intelligence/2026-07-22.json",
       "module": "intelligence",
       "name": "2026-07-22.json",
@@ -1661,15 +1940,6 @@
       "isLatest": false
     },
     {
-      "rel": "docs/premium-weekly/latest.json",
-      "module": "premium-weekly",
-      "name": "latest.json",
-      "bytes": 1938,
-      "human": "1.9 KB",
-      "mtime": "2026-07-21T19:23:06.128Z",
-      "isLatest": true
-    },
-    {
       "rel": "docs/premium-weekly/2026-W30.json",
       "module": "premium-weekly",
       "name": "2026-W30.json",
@@ -1686,24 +1956,6 @@
       "human": "1.6 KB",
       "mtime": "2026-07-21T19:23:06.126Z",
       "isLatest": false
-    },
-    {
-      "rel": "docs/premium-weekly/latest.email.txt",
-      "module": "premium-weekly",
-      "name": "latest.email.txt",
-      "bytes": 1869,
-      "human": "1.8 KB",
-      "mtime": "2026-07-21T19:23:06.126Z",
-      "isLatest": false
-    },
-    {
-      "rel": "docs/premium-weekly/latest.md",
-      "module": "premium-weekly",
-      "name": "latest.md",
-      "bytes": 1671,
-      "human": "1.6 KB",
-      "mtime": "2026-07-21T19:23:06.126Z",
-      "isLatest": true
     },
     {
       "rel": "docs/brand-protection/2026-07-21.json",
@@ -1785,24 +2037,6 @@
       "human": "2.1 KB",
       "mtime": "2026-07-21T18:18:35.738Z",
       "isLatest": false
-    },
-    {
-      "rel": "docs/self-reflection/latest.json",
-      "module": "self-reflection",
-      "name": "latest.json",
-      "bytes": 3582,
-      "human": "3.5 KB",
-      "mtime": "2026-07-21T18:18:35.737Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/self-reflection/latest.md",
-      "module": "self-reflection",
-      "name": "latest.md",
-      "bytes": 2124,
-      "human": "2.1 KB",
-      "mtime": "2026-07-21T18:18:35.737Z",
-      "isLatest": true
     },
     {
       "rel": "docs/product-brain/2026-07-21.md",
@@ -2019,24 +2253,6 @@
       "human": "1.1 KB",
       "mtime": "2026-07-21T16:50:13.681Z",
       "isLatest": false
-    },
-    {
-      "rel": "docs/virtual-user/latest.json",
-      "module": "virtual-user",
-      "name": "latest.json",
-      "bytes": 2169,
-      "human": "2.1 KB",
-      "mtime": "2026-07-21T16:50:13.680Z",
-      "isLatest": true
-    },
-    {
-      "rel": "docs/virtual-user/latest.md",
-      "module": "virtual-user",
-      "name": "latest.md",
-      "bytes": 1129,
-      "human": "1.1 KB",
-      "mtime": "2026-07-21T16:50:13.680Z",
-      "isLatest": true
     },
     {
       "rel": "docs/health/health-2026-07-21T16-50-13-629Z.json",

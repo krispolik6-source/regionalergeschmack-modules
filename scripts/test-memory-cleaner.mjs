@@ -18,9 +18,13 @@ function assert(cond, msg) {
     }
 }
 
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
+import { readPwaVersionFromModule, readPwaVersionFromSw, readPwaCacheNamesFromGlobal } from './lib/read-pwa-version.mjs';
+import { PWA_CACHE_NAME, PWA_IMAGE_CACHE_NAME } from '../js/core/pwaVersion.js';
+
 const mc = readFileSync(join(ROOT, 'js/diagnostics/memoryCleaner.js'), 'utf8');
 const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-const vault = readFileSync(join(ROOT, 'js/diagnostics/developerVaultPanel.js'), 'utf8');
+const pwaVer = readPwaVersionFromModule(ROOT);
 
 assert(mc.includes('ETAP 43'), 'ETAP 43');
 assert(mc.includes('getStorageHealth'), 'getStorageHealth');
@@ -32,10 +36,14 @@ assert(mc.includes('regionalny_smak_settings') || mc.includes('regionalny_smak')
 assert(mc.includes('rg_console_guardian'), 'cleans console guardian');
 assert(mc.includes('indexedDB') || mc.includes('LEARNING_IDB'), 'IDB prune');
 assert(mc.includes('caches.delete') || mc.includes('deleteStaleCaches'), 'stale cache');
+assert(pwaVer, 'PWA_VERSION in pwaVersion.js');
+assert(readPwaVersionFromSw(ROOT) === pwaVer, 'sw.js bridge synced with pwaVersion.js');
+assert(mc.includes("from '../core/pwaVersion.js'"), 'memoryCleaner imports pwaVersion.js');
+assert(mc.includes('PWA_CACHE_PREFIX_KEEP'), 'memoryCleaner uses shared cache keep list');
 assert(mc.includes('safeOnly') || mc.includes('safeOnly: true'), 'policy');
 assert(!/fetch\(|sendBeacon/.test(mc.split('showToast')[0]), 'no network in core logic');
-assert(app.includes('initMemoryCleaner'), 'app init');
-assert(vault.includes('renderMemoryCleanerCard'), 'vault card');
+assertLazyDiagnosticsInit(assert, ROOT, 'memoryCleaner.initMemoryCleaner', 'orchestrator lazy memoryCleaner');
+assert(mc.includes('__RG_MEMORY__'), 'global API');
 
 const r = spawnSync(process.execPath, ['--check', 'js/diagnostics/memoryCleaner.js'], {
     cwd: ROOT,
@@ -70,7 +78,7 @@ Pokazuje **Storage Health** i jednym kliknięciem czyści **wyłącznie bezpiecz
 - Self-Heal log
 - learning events LS + nadmiar sygnałów IDB
 - historie improvement / dashboard / virtual user
-- **stare** cache PWA (nie \`rg-pwa-v28\` / \`rg-runtime-images-v28\`)
+- **stare** cache PWA (nie \`${PWA_CACHE_NAME}\` / \`${PWA_IMAGE_CACHE_NAME}\`)
 
 ## Chronione (nigdy)
 

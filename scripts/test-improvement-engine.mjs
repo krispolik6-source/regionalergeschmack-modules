@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -26,8 +27,7 @@ assert(src.includes('autoApply: false') || src.includes('autoApply:false'), 'aut
 assert(src.includes('autoModifyCode: false'), 'autoModifyCode false');
 assert(!/writeFileSync|fs\.write/.test(src), 'runtime nie zapisuje plików projektu');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initImprovementEngine'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'improvementEngine.initImprovementEngine', 'orchestrator lazy improvementEngine');
 
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 assert(pkg.scripts?.improve, 'npm run improve');

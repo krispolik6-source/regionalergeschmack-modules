@@ -1,0 +1,611 @@
+{
+  "generatedAt": "2026-08-06T21:21:37.143Z",
+  "etap": "45-C",
+  "certification": "CONDITIONAL",
+  "recommendation": "GOTOWA WARUNKOWO",
+  "recommendationEn": "CONDITIONAL",
+  "riskLevel": "ŚREDNI",
+  "mode": "live-only",
+  "policy": {
+    "liveRunOnly": true,
+    "noCachedPass": true,
+    "noFailOverride": true,
+    "noStaticPassReplacingFail": true,
+    "certifiedRequiresManual": "8/8",
+    "conditionalWithoutSignOff": true,
+    "ownerSignOffRequired": true
+  },
+  "summary": {
+    "automatedGates": {
+      "passed": 10,
+      "total": 10,
+      "failed": 0
+    },
+    "etap43Certification": "CONDITIONAL",
+    "zadania2to8": [
+      {
+        "zadanie": 2,
+        "file": "PWA-LIFECYCLE-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 10
+      },
+      {
+        "zadanie": 3,
+        "file": "ICONS-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 3
+      },
+      {
+        "zadanie": 4,
+        "file": "SERVICE-WORKER-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 4
+      },
+      {
+        "zadanie": 5,
+        "file": "DEV-PANEL-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 6
+      },
+      {
+        "zadanie": 6,
+        "file": "USER-JOURNEY-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 13
+      },
+      {
+        "zadanie": 7,
+        "file": "PERFORMANCE-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 10
+      },
+      {
+        "zadanie": 8,
+        "file": "RESILIENCE-VERIFICATION.json",
+        "verdict": "CONDITIONAL",
+        "staticVerdict": "STATIC VERIFIED",
+        "runtimeVerdict": "NOT VERIFIED",
+        "manualRequired": 8
+      }
+    ],
+    "manualDevice": {
+      "required": 8,
+      "passed": 0,
+      "failed": 0,
+      "pending": 8,
+      "signed": false,
+      "complete": false
+    },
+    "criticalIssues": 0,
+    "mediumIssues": 2,
+    "lowIssues": 1
+  },
+  "metrics": {
+    "bootstrapMs": 49.14,
+    "listenersAtBoot": 31,
+    "timersAtBoot": 0,
+    "observersAtBoot": 0,
+    "pwaVersion": "30"
+  },
+  "gates": [
+    {
+      "id": "Z2-pwa-lifecycle",
+      "label": "PWA Lifecycle (10 scenariuszy)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:pwa-lifecycle"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 941,
+      "source": "live",
+      "tail": "✅ Wyczyszczenie cache\n✅ Wyczyszczenie danych strony\n✅ Tryb offline\n✅ Powrót online\n\n[PWA Lifecycle] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/PWA-LIFECYCLE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z3-pwa-icons",
+      "label": "Ikony PWA (8 kategorii + anti-stale)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:pwa-icons"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 984,
+      "source": "live",
+      "tail": "✅ Offline fallback tylko wersjonowany URL · STATIC VERIFIED\n✅ Memory Cleaner chroni tylko bieżące cache · STATIC VERIFIED\n✅ HTTP Cache-Control must-revalidate · STATIC VERIFIED\n✅ Brak rg-runtime-images-v1 w runtime cache paths · STATIC VERIFIED\n\n[PWA Icons] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/ICONS-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z4-service-worker",
+      "label": "Service Worker (8 obszarów)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:service-worker"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 723,
+      "source": "live",
+      "tail": "✅ [version sync] PWA_VERSION spójna (module = global = SW bridge) · STATIC VERIFIED\n✅ [version sync] index.html rejestruje sw.js?v= · STATIC VERIFIED\n✅ [version sync] Nazwy cache zsynchronizowane z PWA_VERSION · STATIC VERIFIED\n✅ [version sync] selfHealing używa pwaAssetUrl · STATIC VERIFIED\n\n[Service Worker] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/SERVICE-WORKER-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z5-dev-panel",
+      "label": "Panel deweloperski (PIN + diag)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:dev-panel"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 1902,
+      "source": "live",
+      "tail": "✅ [feature:Diagnostics Orchestrator] Lazy load 19 modułów · STATIC VERIFIED\n✅ [feature:Diagnostics Orchestrator] Global API __RG_DIAGNOSTICS__ · STATIC VERIFIED\n✅ [feature:Diagnostics Orchestrator] Vault integracja po PIN · STATIC VERIFIED\n⏳ [feature:PIN] Runtime: PIN 1973 na urządzeniu/PWA · NOT VERIFIED\n\n[Dev Panel] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/DEV-PANEL-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z6-user-journey",
+      "label": "Pełny test użytkownika + persist",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:user-journey"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 583,
+      "source": "live",
+      "tail": "\n— Cross (Virtual User / RUS) —\n⏳ Virtual User: home-map-producer + favorites + language + restart · NOT VERIFIED\n⏳ Real User Simulation: open-app → map → producer → favorites → language · NOT VERIFIED\n\n[User Journey] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/USER-JOURNEY-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z7-performance",
+      "label": "Test wydajności",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:performance"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 1284,
+      "source": "live",
+      "tail": "⏳ Health Monitor render sample: NOT VERIFIED · NOT VERIFIED\n⏳ FPS podczas przewijania (Virtual User): NOT VERIFIED · NOT VERIFIED\n⏳ Pamięć — leak detection (Virtual User): NOT VERIFIED · NOT VERIFIED\n\n[Performance] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nBootstrap: 50.45 ms · listeners 31 · timers 0 · observers 0\nWrote: docs/certification/PERFORMANCE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "Z8-resilience",
+      "label": "Test odporności (7 scenariuszy)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:resilience"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 2172,
+      "source": "live",
+      "tail": "✅ Uszkodzony cache (4/4)\n✅ Brak manifestu (3/3)\n✅ Brak ikon (3/3)\n✅ Restart Service Workera (4/4)\n\n[Resilience] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/RESILIENCE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "etap-43",
+      "label": "ETAP 43 — certyfikacja auto (9 bramek)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:etap-43"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 111503,
+      "source": "live",
+      "tail": "→ Dev Vault PIN access… PASS\n→ Diagnostics lazy orchestrator… PASS\n→ Runtime Error Feed… PASS\n→ Bootstrap Before/After… PASS\n\n[ETAP 45-C] CONDITIONAL · auto 9/9 · manual 0/8 · signed: no\nWrote: docs/final/ETAP-43-RELEASE-CERTIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "release-candidate",
+      "label": "Release Candidate (22/22)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "release-candidate"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 34025,
+      "source": "live",
+      "tail": "✅ live-journey-wiring — ?realusers=1 / __RG_REAL_USERS__.run()\n✅ child-functional —  | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0\n✅ child-i18n — --- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.\n✅ child-pwa —  | --- PWA test --- | OK\n✅ child-landing —  | --- Landing test --- | OK\n✅ child-device-lab — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md\nWrote: docs\\final\\RELEASE-CANDIDATE.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    },
+    {
+      "id": "device-test-plan",
+      "label": "Device Test Plan (macierz S01–S12)",
+      "cmd": "npm",
+      "args": [
+        "run",
+        "check:device-test-plan"
+      ],
+      "status": "PASS",
+      "exit": 0,
+      "durationMs": 225,
+      "source": "live",
+      "tail": "✅ suite S08\n✅ suite S09\n✅ browserMatrix\n✅ minimumCoverage\n✅ sign-off template\n\nDEVICE TEST PLAN OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+    }
+  ],
+  "etap43": {
+    "generatedAt": "2026-08-06T21:21:02.876Z",
+    "day": "2026-08-06",
+    "etap": "45-C",
+    "role": "Real Device Validation & Release Certification",
+    "verdict": "CONDITIONAL",
+    "verdictLabel": "CONDITIONAL — auto PASS · manual 0/8 pending",
+    "autoApply": false,
+    "mode": "live-only",
+    "policy": {
+      "liveRunOnly": true,
+      "noCachedPass": true,
+      "noFailOverride": true,
+      "noStaticPassReplacingFail": true,
+      "certifiedRequiresManual": "8/8",
+      "conditionalWithoutSignOff": true,
+      "noNewFeatures": true,
+      "noRefactor": true,
+      "noUiChanges": true,
+      "ownerSignOffRequired": true
+    },
+    "automated": {
+      "passed": 9,
+      "total": 9,
+      "ok": true,
+      "gates": [
+        {
+          "id": "etap-42g",
+          "label": "ETAP 42G full suite",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:etap-42g"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "[ETAP 42G] 20/20 PASS\nWrote: docs/audit/ETAP-42G-SUITE.json\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\n(node:35420) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.\n(Use `node --trace-deprecation ...` to show where the warning was created)"
+        },
+        {
+          "id": "release-candidate",
+          "label": "Release Candidate 22/22",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "release-candidate"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ child-pwa —  | --- PWA test --- | OK\n✅ child-landing —  | --- Landing test --- | OK\n✅ child-device-lab — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\\audit\\ETAP-37-DEVICE-LAB.md\nWrote: docs\\final\\RELEASE-CANDIDATE.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "device-lab",
+          "label": "Device Lab matrix",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "device-lab-audit"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "> node scripts/device-lab-audit.mjs\n\n[Device Lab] PASS · 62/62 checks · 63 cells\nWrote: docs\\audit\\ETAP-37-DEVICE-LAB.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "pwa-version",
+          "label": "PWA version v30 sync",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:pwa-version"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ no stale v28/v29/v31 in runtime sources\n✅ no hardcoded rg-pwa-v* / rg-runtime-images-v* outside pwaVersion.js\n\nPWA version sync OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "icon-refresh",
+          "label": "Icon refresh v30",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:icon-refresh"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ asset: assets/brand/splash-logo.png\n✅ asset: assets/brand/notifications-icon.png\n\nICON REFRESH TEST OK (PWA v30)\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "dev-access",
+          "label": "Dev Vault PIN access",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:dev-access"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ vault CSS: fullscreen overlay + PIN card (mobile/PWA)\n✅ sideMenu: brak prodOnly toast dla dev-vault\n\nDEV ACCESS TEST OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "orchestrator",
+          "label": "Diagnostics lazy orchestrator",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:diagnostics-orchestrator"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ vault: dispatch + lazy load po PIN\n✅ vault: bez duplikatu init health/dashboard\n\nDIAGNOSTICS ORCHESTRATOR OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "error-feed",
+          "label": "Runtime Error Feed",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:runtime-error-feed"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ syntax js/diagnostics/runtimeErrorCollector.js\n✅ syntax js/diagnostics/runtimeErrorFeed.js\n\nRUNTIME ERROR FEED OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        },
+        {
+          "id": "bootstrap",
+          "label": "Bootstrap Before/After",
+          "cmd": "npm",
+          "args": [
+            "run",
+            "check:bootstrap"
+          ],
+          "ok": true,
+          "exitCode": 0,
+          "tail": "✅ report: bootstrapMs 49.14\n✅ report: before bootstrapMs 428.14\n\nBOOTSTRAP TEST OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+        }
+      ]
+    },
+    "manual": {
+      "total": 8,
+      "pass": 0,
+      "fail": 0,
+      "pending": 8,
+      "signed": false,
+      "complete": false,
+      "signedBy": null,
+      "signedAt": null,
+      "resultsPath": "docs/certification/manual-device-results.json",
+      "matrix": [
+        {
+          "id": "42A-pwa-version",
+          "etap": "42A",
+          "area": "PWA / SW / wersja",
+          "devices": [
+            "iPhone PWA",
+            "Android PWA",
+            "Desktop"
+          ],
+          "steps": [
+            "Zainstaluj PWA z produkcji lub LAN",
+            "DevTools → Application → Service Worker: scriptURL zawiera ?v=30",
+            "Po deploy nowej wersji: SW skipWaiting + odświeżenie bez rozjechanych cache v28/v29"
+          ],
+          "pass": "Jedna wersja PWA (30) w SW, manifest, ikonach, bundle",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "42B-icons",
+          "etap": "42B",
+          "area": "Ikony launcher / splash / favicon",
+          "devices": [
+            "iPhone",
+            "Android",
+            "Desktop"
+          ],
+          "steps": [
+            "Po update PWA: ikona na ekranie domowym pokazuje aktualny master (dwa kłosy)",
+            "Splash / favicon / maskable — bez starej ikony z cache",
+            "Powiadomienie push (jeśli włączone) — ikona ?v=30"
+          ],
+          "pass": "Ikony odświeżone po update bez odinstalowania",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "42C-dev-panel-phone",
+          "etap": "42C",
+          "area": "Panel deweloperski · PIN",
+          "devices": [
+            "iPhone Safari",
+            "iPhone PWA",
+            "Android Chrome",
+            "LAN telefon"
+          ],
+          "steps": [
+            "☰ → Panel deweloperski — widoczny bez localhost/desktop gate",
+            "PIN 1973 → Control Center otwarty fullscreen na telefonie",
+            "Zły PIN → bramka, brak narzędzi",
+            "Zablokuj → ponowne wejście wymaga PIN"
+          ],
+          "pass": "Ten sam mechanizm PIN na telefonie, LAN i PWA",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "42D-prod-boot",
+          "etap": "42D",
+          "area": "Diagnostyka lazy · produkcja",
+          "devices": [
+            "Produkcja PWA",
+            "Telefon bez ?dev=1"
+          ],
+          "steps": [
+            "Cold start produkcji (bez ?dev=1, bez rg_dev_mode)",
+            "Aplikacja startuje normalnie — mapa, koszyk, premium działają",
+            "Brak FAB Health/Dashboard na ekranie użytkownika",
+            "Dopiero PIN → lazy load diagnostyki"
+          ],
+          "pass": "Użytkownik nie płaci kosztu 18 modułów diag przy starcie",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "42E-error-feed-mobile",
+          "etap": "42E",
+          "area": "Runtime Error Feed",
+          "devices": [
+            "iPhone PWA",
+            "Android"
+          ],
+          "steps": [
+            "PIN → Runtime Error Feed",
+            "Lista kategorii scrolluje poziomo (mobile)",
+            "Dotknij wpis → stack / szczegóły",
+            "Odśwież · Kopiuj JSON · Zamknij — bez DevTools"
+          ],
+          "pass": "Feed czytelny i używalny na telefonie",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "42F-cold-start-feel",
+          "etap": "42F",
+          "area": "Bootstrap · cold start",
+          "devices": [
+            "iPhone PWA",
+            "Android PWA",
+            "Desktop"
+          ],
+          "steps": [
+            "Force-quit PWA → uruchom ponownie",
+            "Splash znika · Home/Map gotowe bez zawieszenia",
+            "Opcjonalnie: __RG_BOOTSTRAP__.report() po ?dev=1 — bootstrapMs ~50ms shell"
+          ],
+          "pass": "Subiektywnie szybszy cold start vs ETAP 41 (brak lag diagnostyki)",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "43-user-journey",
+          "etap": "43",
+          "area": "Ścieżka użytkownika (regresja)",
+          "devices": [
+            "Wszystkie"
+          ],
+          "steps": [
+            "Home → Mapa → producent → ulubione → koszyk",
+            "GPS / w pobliżu — mapa reaguje",
+            "Tryb offline → banner → powrót online",
+            "Zmiana języka · dark mode · powrót następnego dnia (persist)"
+          ],
+          "pass": "Zero regresji produktu po ETAP 42",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        },
+        {
+          "id": "43-map-toolbar",
+          "etap": "42 P0",
+          "area": "Mapa · toolbar / footer",
+          "devices": [
+            "iPhone SE",
+            "iPhone 15",
+            "Android"
+          ],
+          "steps": [
+            "Mapa: dolny toolbar nie zasłania popupów",
+            "Rozwinięty header nie psuje viewport mapy",
+            "Scroll listy producentów na mapie — bez horizontal overflow"
+          ],
+          "pass": "Mapa używalna na małym i dużym telefonie",
+          "status": "pending",
+          "testedAt": null,
+          "device": null,
+          "notes": null,
+          "tester": null
+        }
+      ]
+    },
+    "etap42Scope": [
+      "42A PWA version",
+      "42B Icons",
+      "42C Dev PIN",
+      "42D Orchestrator",
+      "42E Error Feed",
+      "42F Bootstrap",
+      "42G Test suite"
+    ],
+    "releaseDecision": "Nie release bez manual sign-off na telefonie/PWA."
+  },
+  "issues": [
+    {
+      "severity": "medium",
+      "source": "manual-device",
+      "problem": "Sign-off real device: 0/8 pass · 8 pending",
+      "files": [
+        "E:\\regionalergeschmack-modules\\docs\\certification\\manual-device-results.json",
+        "docs/certification/DEVICE-TEST-PLAN.md"
+      ],
+      "repairPlan": [
+        "Przejdź macierz DEVICE-TEST-PLAN (min. iPhone + Android PWA)",
+        "Wypełnij manual-device-results.json (8/8 pass + signedBy/signedAt)",
+        "npm run check:final-report → CERTIFIED / GOTOWA DO WYDANIA"
+      ]
+    },
+    {
+      "severity": "medium",
+      "source": "manual-sign-off",
+      "problem": "Brak signedBy / signedAt w manual-device-results.json",
+      "files": [
+        "E:\\regionalergeschmack-modules\\docs\\certification\\manual-device-results.json"
+      ],
+      "repairPlan": [
+        "Dodaj signedBy i signedAt po przejściu macierzy 8/8"
+      ]
+    },
+    {
+      "severity": "low",
+      "source": "browser-metrics",
+      "problem": "Render ms · FPS · PIN PWA · Virtual User — MANUAL REQUIRED w raportach Z5–Z7",
+      "files": [
+        "docs/certification/PERFORMANCE-VERIFICATION.md"
+      ],
+      "repairPlan": [
+        "rgPerfProbe() · __RG_VIRTUAL__.run() · macierz manual device"
+      ]
+    }
+  ]
+}

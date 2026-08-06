@@ -41,12 +41,16 @@ console.log('\n=== 1. NAGŁÓWEK ===');
 const index = read('index.html');
 const style = read('css/style.css');
 
-if (index.includes('header-brand-mark') && /header-brand-mark[^>]*logo-master\.svg/.test(index)) {
-    ok('Nagłówek: ikona aplikacji logo-master.svg');
-} else fail('Nagłówek: brak logo-master.svg w header-brand-mark');
+const hasExpandableHeaderBrand = index.includes('header-brand-icon') && index.includes('header-brand-layer');
+const hasLegacyHeaderBrand = index.includes('header-brand-mark') && /header-brand-mark[^>]*logo-master\.svg/.test(index);
+if (hasExpandableHeaderBrand || hasLegacyHeaderBrand) {
+    ok('Nagłówek: ikona marki (expandable SVG lub logo-master)');
+} else fail('Nagłówek: brak ikony marki');
 
-if ((index.match(/header-brand-mark/g) || []).length === 1) {
-    ok('Nagłówek: jedna ikona marki (bez duplikatu)');
+if (hasExpandableHeaderBrand) {
+    ok('Nagłówek: jedna ikona marki (expandable SVG)');
+} else if ((index.match(/header-brand-mark/g) || []).length === 1) {
+    ok('Nagłówek: jedna ikona marki (legacy img)');
 } else {
     fail('Nagłówek: zduplikowana lub brakująca ikona marki');
 }
@@ -68,7 +72,7 @@ if (settings.includes('initShellSettings') && settings.includes('applyDarkMode')
     ok('Nagłówek: settings.js – dark mode + język');
 } else fail('Nagłówek: settings.js niekompletny');
 
-if (style.includes('.header-brand-mark') && style.includes('.side-menu-brand-mark')) {
+if (style.includes('.header-brand-icon') || style.includes('.header-brand-mark')) {
     ok('Nagłówek/menu: style CSS dla logo marki');
 } else fail('Nagłówek/menu: brak stylów logo marki');
 
@@ -117,16 +121,26 @@ for (const file of requiredIconFiles) {
     else fail(`PWA: brak ${file}`);
 }
 
-const allIconsV28 = manifest.icons.every((i) => String(i.src).includes('?v=28'));
-if (allIconsV28) ok('PWA: ikony w manifest z ?v=28');
+const pwaMod = read('js/core/pwaVersion.js');
+const pwaVerMatch = pwaMod.match(/export const PWA_VERSION = '(\d+)'/);
+const pwaVer = pwaVerMatch?.[1] || '';
+if (!pwaVer) fail('PWA: brak PWA_VERSION w js/core/pwaVersion.js');
+else ok(`PWA: canonical PWA_VERSION v${pwaVer}`);
+
+const allIconsSynced = manifest.icons.every((i) => String(i.src).includes(`?v=${pwaVer}`));
+if (allIconsSynced) ok(`PWA: ikony w manifest z ?v=${pwaVer}`);
 else fail('PWA: niespójna wersja ikon w manifest');
 
-if (index.includes('manifest.json?v=28') && index.includes("serviceWorker.register('/sw.js?v=28')")) {
-    ok('PWA: index rejestruje SW v28 + manifest v28');
+if (index.includes(`manifest.json?v=${pwaVer}`) && index.includes(`serviceWorker.register('/sw.js?v=${pwaVer}')`)) {
+    ok(`PWA: index rejestruje SW v${pwaVer} + manifest v${pwaVer}`);
 } else fail('PWA: niespójna rejestracja SW/manifest w index');
 
-if (sw.includes("PWA_VERSION = '28'") && sw.includes('icon-192.png?v=${ICON_VERSION}')) {
-    ok('PWA: sw.js PWA_VERSION v28 + DEFAULT_ICON via ICON_VERSION');
+if (sw.includes('importScripts') && sw.includes('pwaVersion.global.js')) {
+    ok('PWA: sw.js importScripts pwaVersion.global.js');
+} else fail('PWA: sw.js bez importScripts pwaVersion.global.js');
+
+if (sw.includes('icon-192.png?v=${ICON_VERSION}')) {
+    ok(`PWA: sw.js DEFAULT_ICON via ICON_VERSION`);
 } else fail('PWA: sw.js wersje nieaktualne');
 
 if (index.includes('favicon.ico') && index.includes('apple-touch-icon') && index.includes('icon-192.png')) {
@@ -164,8 +178,8 @@ if (appMapVer && appMapVer === navMapVer) {
     ok(`Mapa: spójny import map.js?v=${appMapVer} (app + navigation)`);
 } else fail('Mapa: rozjazd wersji map.js między app a navigation');
 
-if (mapView.includes("osmService.js?v=9")) {
-    ok('Mapa: osmService?v=9 (zgodne z dataService)');
+if (mapView.includes("osmService.js?v=10")) {
+    ok('Mapa: osmService?v=10 (zgodne z dataService)');
 } else fail('Mapa: osmService wersja niezgodna');
 
 // ─── 5. LOGIKA DANYCH (szybki import) ─────────────────────────
@@ -271,9 +285,11 @@ try {
 
     const htmlRes = await fetch(`${base}/`);
     const htmlBody = await htmlRes.text();
-    if (htmlBody.includes('header-brand-mark') && htmlBody.includes('logo-master.svg')) {
-        ok('HTTP HTML: nagłówek z logo-master.svg');
-    } else fail('HTTP HTML: brak logo-master.svg w odpowiedzi');
+    const httpHasBrand = (htmlBody.includes('header-brand-icon') && htmlBody.includes('header-brand-layer'))
+        || (htmlBody.includes('header-brand-mark') && htmlBody.includes('logo-master.svg'));
+    if (httpHasBrand) {
+        ok('HTTP HTML: nagłówek z ikoną marki');
+    } else fail('HTTP HTML: brak ikony marki w odpowiedzi');
 } finally {
     server.close();
 }

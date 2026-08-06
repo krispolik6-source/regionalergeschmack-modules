@@ -5,6 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -37,7 +38,7 @@ assert(!/fetch\(|sendBeacon|XMLHttpRequest/.test(ug), 'no network');
 assert(ug.includes('home-region-story-label'), 'scans region story label');
 assert(ug.includes('THEME_CHANGED'), 'theme rescan');
 
-assert(app.includes('initUiGuardian'), 'app init');
+assertLazyDiagnosticsInit(assert, ROOT, 'uiGuardian.initUiGuardian', 'orchestrator lazy uiGuardian');
 assert(region.includes('home-region-story-sub') && region.includes('dark-mode'), 'region-story dark sub');
 assert(polish.includes('home-region-story-label'), 'ux-polish covers region story');
 

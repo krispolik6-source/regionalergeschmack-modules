@@ -78,7 +78,7 @@ assert(
 
 const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
 assert(/installProductionConsole/.test(app), 'app.js installs logger');
-assert(app.indexOf('installProductionConsole') < app.indexOf('initHealthMonitor'), 'logger before health');
+assert(app.indexOf('installProductionConsole') < app.indexOf('initDiagnosticsOrchestrator'), 'logger before diagnostics orchestrator');
 
 const core = readFileSync(join(ROOT, 'js/core/logger.js'), 'utf8');
 assert(!/eventBus|leaflet|Store/.test(core) || /Nie zmienia/.test(core), 'logger isolated');

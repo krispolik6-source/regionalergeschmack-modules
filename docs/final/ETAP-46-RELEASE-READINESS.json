@@ -1,0 +1,549 @@
+{
+  "generatedAt": "2026-08-06T21:30:35.199Z",
+  "etap": "46",
+  "mode": "live-pipeline",
+  "fixes": [
+    {
+      "problem": "master-icon-audit FAIL — push-icon (49/50)",
+      "cause": "pwaAssetUrl() z wbudowanym ?v=30 → podwójny query string",
+      "fix": "pushNotifications.js: pwaAssetUrl('/assets/icons/icon-192.png') — bez ?v= w argumencie",
+      "file": "js/core/pushNotifications.js",
+      "line": 388
+    }
+  ],
+  "modifiedFiles": [
+    "js/core/pushNotifications.js"
+  ],
+  "pipeline": [
+    {
+      "id": "pwa-version",
+      "cmd": "check:pwa-version",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 267,
+      "tail": "✅ no hardcoded rg-pwa-v* / rg-runtime-images-v* outside pwaVersion.js\n\nPWA version sync OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "pwa",
+      "cmd": "check:pwa",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 217,
+      "tail": "\n--- PWA test ---\nOK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "pwa-icons",
+      "cmd": "check:pwa-icons",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 966,
+      "tail": "\n[PWA Icons] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/ICONS-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "pwa-lifecycle",
+      "cmd": "check:pwa-lifecycle",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 923,
+      "tail": "\n[PWA Lifecycle] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/PWA-LIFECYCLE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "service-worker",
+      "cmd": "check:service-worker",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 702,
+      "tail": "\n[Service Worker] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/SERVICE-WORKER-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "memory-cleaner",
+      "cmd": "check:memory-cleaner",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 247,
+      "tail": "✅ report\n\nMemory Cleaner smoke OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "performance",
+      "cmd": "check:performance",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 1271,
+      "tail": "[Performance] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nBootstrap: 48.58 ms · listeners 31 · timers 0 · observers 0\nWrote: docs/certification/PERFORMANCE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "resilience",
+      "cmd": "check:resilience",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 2181,
+      "tail": "\n[Resilience] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/RESILIENCE-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "user-journey",
+      "cmd": "check:user-journey",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 570,
+      "tail": "\n[User Journey] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/USER-JOURNEY-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "dev-panel",
+      "cmd": "check:dev-panel",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 1928,
+      "tail": "\n[Dev Panel] STATIC VERIFIED · NOT VERIFIED · gate CONDITIONAL\nWrote: docs/certification/DEV-PANEL-VERIFICATION.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "runtime-truth",
+      "cmd": "check:runtime-truth",
+      "exit": 0,
+      "pass": true,
+      "durationMs": 220,
+      "tail": "Końcowy status: CONDITIONAL\n\nWrote: docs/final/ETAP-45-RUNTIME-TRUTH.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.",
+      "status": "PASS"
+    },
+    {
+      "id": "final-report",
+      "cmd": "check:final-report",
+      "exit": 0,
+      "pass": true,
+      "durationMs": null,
+      "status": "PASS",
+      "note": "cached from last live run"
+    },
+    {
+      "id": "etap-43",
+      "cmd": "check:etap-43",
+      "exit": 0,
+      "pass": true,
+      "durationMs": null,
+      "status": "PASS",
+      "note": "cached from last live run"
+    }
+  ],
+  "legacyGuard": {
+    "ok": true,
+    "issues": []
+  },
+  "manualRequired": {
+    "total": 8,
+    "passed": 0,
+    "signed": false,
+    "runtimeNotVerified": 23,
+    "items": [
+      {
+        "id": "F19-pin-runtime",
+        "label": "Runtime: PIN 1973 na urządzeniu/PWA",
+        "gate": "Panel deweloperski",
+        "file": "docs/certification/DEV-PANEL-VERIFICATION.json",
+        "path": "features[18]",
+        "detail": "Node mock nie zastępuje telefonu · macierz manual E03",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "J11-virtual-user-scenario",
+        "label": "Virtual User: home-map-producer + favorites + language + restart",
+        "gate": "User Journey",
+        "file": "docs/certification/USER-JOURNEY-VERIFICATION.json",
+        "path": "steps[10]",
+        "detail": "__RG_VIRTUAL__.run() w przeglądarce — wiring w kodzie ≠ wykonanie",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "J12-rus-steps",
+        "label": "Real User Simulation: open-app → map → producer → favorites → language",
+        "gate": "User Journey",
+        "file": "docs/certification/USER-JOURNEY-VERIFICATION.json",
+        "path": "steps[11]",
+        "detail": "__RG_REAL_USERS__.run() · ?realusers=1 — wymaga przeglądarki",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "J13-persist-runtime",
+        "label": "Runtime: ulubione + język po reopen (przeglądarka)",
+        "gate": "User Journey",
+        "file": "docs/certification/USER-JOURNEY-VERIFICATION.json",
+        "path": "steps[12]",
+        "detail": "Persist Safari/PWA/private mode — poza Node localStorage mock",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P01-bootstrap",
+        "label": "Bootstrap (shell PWA)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[0]",
+        "detail": "ETAP 42F orchestrator · Node import + shell init",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": 48.58
+      },
+      {
+        "id": "P02-listeners",
+        "label": "Listenery at boot",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[1]",
+        "detail": "shell scan: 69 · audit: 31",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": 31
+      },
+      {
+        "id": "P03-timers",
+        "label": "Timery at boot",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[2]",
+        "detail": "deferred 39 vs Before",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": 0
+      },
+      {
+        "id": "P04-observers",
+        "label": "Obserwery at boot",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[3]",
+        "detail": "deferred 3 vs Before",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": 0
+      },
+      {
+        "id": "P06-render-home",
+        "label": "Render Home (wiring)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[5]",
+        "detail": "1826 LOC · target <150ms · rgPerfProbe()",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P07-render-map",
+        "label": "Render Map (wiring)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[6]",
+        "detail": "3569 LOC · Leaflet · target <800ms · rgPerfProbe()",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P08-render-producer",
+        "label": "Render Producer (wiring)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[7]",
+        "detail": "1594 LOC · target <300ms · rgPerfProbe()",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P09-render-profiler",
+        "label": "Health Monitor render sample",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[8]",
+        "detail": "measureRenderSample w przeglądarce · health monitor",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P10-fps-scroll",
+        "label": "FPS podczas przewijania (Virtual User)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[9]",
+        "detail": "Próg ≥30 FPS · __RG_VIRTUAL__.run() lub rgPerfProbe()",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "P11-memory-leak",
+        "label": "Pamięć — leak detection (Virtual User)",
+        "gate": "Wydajność",
+        "file": "docs/certification/PERFORMANCE-VERIFICATION.json",
+        "path": "metrics[10]",
+        "detail": "Alert przy +≥25 MB w sesji · performance.memory w przeglądarce",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "R02-slow-rus",
+        "label": "Symulacja RUS/VU: offline + online",
+        "gate": "Odporność",
+        "file": "docs/certification/RESILIENCE-VERIFICATION.json",
+        "path": "scenarios.wolny-internet[2]",
+        "detail": "Wykonanie __RG_VIRTUAL__ / __RG_REAL_USERS__ w przeglądarce — wiring ≠ chaos test",
+        "requires": [
+          "browser",
+          "PWA",
+          "phone",
+          "Service Worker",
+          "localStorage",
+          "sessionStorage",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42A-pwa-version",
+        "label": "PWA / SW / wersja",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42A-pwa-version",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "PWA",
+          "Service Worker",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42B-icons",
+        "label": "Ikony launcher / splash",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42B-icons",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "PWA",
+          "phone",
+          "Cache Storage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42C-dev-panel-phone",
+        "label": "Panel deweloperski · PIN",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42C-dev-panel-phone",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "phone",
+          "PWA",
+          "sessionStorage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42D-prod-boot",
+        "label": "Diagnostyka lazy · produkcja",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42D-prod-boot",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "PWA",
+          "phone"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42E-error-feed-mobile",
+        "label": "Runtime Error Feed mobile",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42E-error-feed-mobile",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "phone",
+          "PWA"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "42F-cold-start-feel",
+        "label": "Bootstrap · cold start",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.42F-cold-start-feel",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "PWA",
+          "phone"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "43-user-journey",
+        "label": "Ścieżka użytkownika",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.43-user-journey",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "browser",
+          "PWA",
+          "localStorage"
+        ],
+        "nodeMeasured": null
+      },
+      {
+        "id": "43-map-toolbar",
+        "label": "Mapa · toolbar",
+        "gate": "Real Device Matrix",
+        "file": "docs/certification/manual-device-results.json",
+        "path": "results.43-map-toolbar",
+        "detail": "Macierz ETAP 43 — sign-off właściciela",
+        "requires": [
+          "phone",
+          "browser"
+        ],
+        "nodeMeasured": null
+      }
+    ]
+  },
+  "blockers": [
+    "Brak manual-device-results.json signedBy/signedAt (8/8)",
+    "23 testów RUNTIME NOT VERIFIED"
+  ],
+  "recommendation": "CONDITIONAL",
+  "recommendationReason": "STATIC/subprocess PASS · brak pełnego RUNTIME VERIFIED (8/8 manual sign-off).",
+  "readiness": {
+    "allGatesPass": true,
+    "gatesTotal": 13,
+    "gatesPassed": 13,
+    "staticVerified": 115,
+    "runtimeVerified": 0,
+    "falsePositivesFixed": 13
+  },
+  "finalReport": {
+    "certification": "CONDITIONAL",
+    "recommendation": "GOTOWA WARUNKOWO",
+    "autoGates": {
+      "passed": 10,
+      "total": 10,
+      "failed": 0
+    }
+  }
+}

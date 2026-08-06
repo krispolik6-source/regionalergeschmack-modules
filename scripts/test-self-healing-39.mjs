@@ -6,6 +6,8 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
 
@@ -31,7 +33,7 @@ assert(sh.includes('repairsStateOnly'), 'policy repairsStateOnly');
 assert(sh.includes('doesNotRewriteSource'), 'policy doesNotRewriteSource');
 assert(map.includes('export function healMapRuntimeState'), 'map healMapRuntimeState export');
 assert(nav.includes('export function ensureNavigationHealed'), 'nav ensureNavigationHealed');
-assert(app.includes('initSelfHealing'), 'app initSelfHealing');
+assertLazyDiagnosticsInit(assert, ROOT, 'selfHealing.initSelfHealing', 'orchestrator lazy selfHealing');
 assert(sh.includes('map.js?v=48'), 'selfHeal imports map v48');
 assert(nav.includes('map.js?v=48'), 'nav map v48');
 assert(existsSync(join(ROOT, 'docs/self-heal/ETAP-39-SELF-HEALING.md')), 'report md');

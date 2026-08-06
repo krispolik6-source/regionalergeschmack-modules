@@ -8,17 +8,17 @@
 @import url('/css/polish.css?v=6');
 @import url('/css/legacy-ios9.css?v=11');
 @import url('/css/warm-summer.css?v=6');
-@import url('/css/production-polish.css?v=4');
+@import url('/css/production-polish.css?v=5');
 @import url('/css/experience-stack.css?v=9');
-@import url('/css/brand-stack.css?v=4');
+@import url('/css/brand-stack.css?v=5');
 @import url('/css/prepublish.css?v=12');
 @import url('/css/theme-toggle-premium.css?v=9');
 @import url('/css/ux-polish-1.css?v=6');
 @import url('/css/dark-mode-contrast.css?v=3');
 @import url('/css/home-v1.css?v=37');
 @import url('/css/producer-modal-premium.css?v=1');
-@import url('/css/map-premium.css?v=2');
-@import url('/css/release-cleanup.css?v=1');
+@import url('/css/map-premium.css?v=3');
+@import url('/css/release-cleanup.css?v=3');
 
 :root {
     /* Tokeny zdjęć (kart / modal) – jedna skala */
@@ -71,7 +71,7 @@
     --space-2xl: 24px;
     --header-height: var(--ph-header-h, 49px);
     --nav-height: 68px;
-    --legal-footer-height: 28px;
+    --legal-footer-height: 44px;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --font-sans: 'Source Sans 3', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -435,8 +435,7 @@ body.dark-mode {
 }
 
 body.dark-mode .bottom-nav {
-    background: var(--dm-bg, #141810);
-    border-top-color: var(--dm-border, rgba(201, 162, 39, 0.18));
+    /* home-v1.css — premium bottom nav (tło, ikony, aktywny stan) */
 }
 
 body.dark-mode .language-dropdown {
@@ -7612,8 +7611,8 @@ body {
         --glass-radius: 14px;
         --icon-badge-size: 36px;
         --icon-badge-font: 20px;
-        --map-viewport-height: calc(100dvh - var(--header-height) - var(--nav-height) - var(--safe-top) - var(--safe-bottom));
-        --map-viewport-height-fallback: calc(100vh - var(--header-height) - var(--nav-height) - var(--safe-top) - var(--safe-bottom));
+        --map-viewport-height: calc(100dvh - var(--header-height) - var(--nav-height) - var(--legal-footer-height) - var(--safe-top) - var(--safe-bottom));
+        --map-viewport-height-fallback: calc(100vh - var(--header-height) - var(--nav-height) - var(--legal-footer-height) - var(--safe-top) - var(--safe-bottom));
     }
 
     #app {

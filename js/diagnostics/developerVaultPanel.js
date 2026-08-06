@@ -10,8 +10,10 @@ import { showToast } from '../core/toast.js';
 import {
     isDevVaultUnlocked,
     unlockDevVault,
-    lockDevVault
+    lockDevVault,
+    isDeveloperAccessGranted
 } from './devVault.js';
+import { ensureDiagnosticsLoaded } from './diagnosticsOrchestrator.js';
 import {
     copyStreamEntry,
     deleteStreamEntry,
@@ -67,7 +69,8 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-metric--warn{border-color:rgba(201,162,39,.5);background:rgba(201,162,39,.14)}
 #${ROOT_ID} .rg-dv-metric--warn .rg-dv-metric-v{color:#7a5a08}
 #${ROOT_ID} .rg-dv-metric--fail{border-color:rgba(180,60,60,.4);background:rgba(180,60,60,.1)}
-#${ROOT_ID} .rg-dv-metric--fail .rg-dv-metric-v{color:#8a2b2b}
+#${ROOT_ID} .rg-dv-metric[data-dv-error-feed]{cursor:pointer}
+#${ROOT_ID} .rg-dv-metric[data-dv-error-feed]:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-metrics-divider{height:0;border:0;border-top:1px solid rgba(42,63,40,.14);margin:18px 0 14px}
 #${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
@@ -176,8 +179,9 @@ function computeOverallScore(rows) {
 function systemHealthTileHtml(row) {
     const label = METRIC_LABELS[row.key] || String(row.key || '').toUpperCase();
     const tone = metricToneClass(row);
+    const clickable = row.key === 'Console' ? ' data-dv-error-feed role="button" tabindex="0" title="Otwórz Runtime Error Feed"' : '';
     return `
-      <div class="rg-dv-metric ${tone}">
+      <div class="rg-dv-metric ${tone}"${clickable}>
         <span class="rg-dv-metric-k">${escapeHtml(label)}</span>
         <span class="rg-dv-metric-v">${escapeHtml(formatMetricCell(row))}</span>
       </div>`;
@@ -201,6 +205,7 @@ function renderSystemHealthTilesHtml(board, streamCount) {
         <p class="lead">${label('devVault.statusHint', 'Kluczowe metryki aplikacji — tylko odczyt, bez auto-napraw.')}</p>
         <div class="rg-dv-metrics-grid">${tiles}</div>
         <div class="rg-dcc-btn-row" style="margin-top:12px">
+          <button type="button" class="rg-dv-primary" data-dv-error-feed>Runtime Error Feed</button>
           <button type="button" class="rg-dv-secondary" data-dv-health-run>${label('devVault.healthRefresh', 'Odśwież Health')}</button>
           <button type="button" class="rg-dv-secondary" data-dv-dashboard-refresh>Odśwież pulpit</button>
         </div>
@@ -478,6 +483,23 @@ async function renderDeveloperDashboard(body) {
 
     const refresh = () => { void renderDeveloperDashboard(body); };
     body.querySelector('[data-dv-dashboard-refresh]')?.addEventListener('click', refresh);
+    const openErrorFeed = async () => {
+        try {
+            const mod = await import('./runtimeErrorFeed.js');
+            await mod.openRuntimeErrorFeedPanel();
+        } catch {
+            showToast('Nie udało się otworzyć Error Feed');
+        }
+    };
+    body.querySelectorAll('[data-dv-error-feed]').forEach((el) => {
+        el.addEventListener('click', () => { void openErrorFeed(); });
+        el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                void openErrorFeed();
+            }
+        });
+    });
     body.querySelector('[data-dv-health-run]')?.addEventListener('click', async () => {
         try {
             await runHealthCheck({ reason: 'dev-vault' });
@@ -607,7 +629,12 @@ function showPasswordGate() {
             return;
         }
         showToast(label('devVault.unlockedToast', 'Panel odblokowany'));
-        void showHub();
+        try {
+            document.dispatchEvent(new CustomEvent('rg:dev-vault-unlocked'));
+        } catch {
+            /* ignore */
+        }
+        void ensureDiagnosticsLoaded('vault-unlock').then(() => showHub());
     };
     root.querySelector('[data-dv-submit]')?.addEventListener('click', submit);
     root.querySelector('[data-dv-cancel]')?.addEventListener('click', closeVaultUi);
@@ -621,7 +648,7 @@ function showPasswordGate() {
 /** Wejście z menu ☰ */
 export function openDeveloperVault() {
     if (isDevVaultUnlocked()) {
-        void showHub();
+        void ensureDiagnosticsLoaded('vault-open').then(() => showHub());
         return;
     }
     showPasswordGate();
@@ -635,6 +662,7 @@ export function initDeveloperVault() {
         open: openDeveloperVault,
         unlock: unlockDevVault,
         lock: lockDevVault,
-        unlocked: isDevVaultUnlocked
+        unlocked: isDevVaultUnlocked,
+        accessGranted: isDeveloperAccessGranted
     };
 }

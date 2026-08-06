@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 import { evaluateEmotion, EMOTION_DIMENSIONS, POLICY } from '../js/diagnostics/emotionAiCore.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,8 +72,7 @@ const src = readFileSync(runtime, 'utf8');
 assert(src.includes('__RG_EMOTION__'), '__RG_EMOTION__');
 assert(src.includes('autoFix') || src.includes('POLICY'), 'policy ref');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initEmotionAi'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'emotionAi.initEmotionAi', 'orchestrator lazy emotionAi');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('Emotion') || panel.includes('emotion'), 'dev panel');

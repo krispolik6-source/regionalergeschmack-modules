@@ -1,7 +1,7 @@
 # ETAP 43 — Memory Cleaner
 
 **Werdykt:** PASS  
-**Data:** 2026-08-04
+**Data:** 2026-08-06
 
 ## Cel
 
@@ -23,7 +23,7 @@ Pokazuje **Storage Health** i jednym kliknięciem czyści **wyłącznie bezpiecz
 - Self-Heal log
 - learning events LS + nadmiar sygnałów IDB
 - historie improvement / dashboard / virtual user
-- **stare** cache PWA (nie `rg-pwa-v28` / `rg-runtime-images-v28`)
+- **stare** cache PWA (nie `rg-pwa-v30` / `rg-runtime-images-v30`)
 
 ## Chronione (nigdy)
 

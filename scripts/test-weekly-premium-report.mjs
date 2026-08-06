@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -40,8 +41,7 @@ for (const q of questions) {
 assert(src.includes('autoFix: false'), 'autoFix false');
 assert(src.includes('top20') || src.includes('Top 20'), 'top20');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initWeeklyPremiumReport'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'weeklyPremiumReport.initWeeklyPremiumReport', 'orchestrator lazy weeklyPremiumReport');
 
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
 assert(pkg.scripts?.['weekly-premium'], 'npm script');

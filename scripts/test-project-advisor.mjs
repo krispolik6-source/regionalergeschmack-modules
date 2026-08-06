@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -38,8 +39,7 @@ assert(src.includes('advisoryOnly: true'), 'polityka advisory');
 assert(src.includes('buildAdvisorBriefing'), 'buildAdvisorBriefing');
 assert(!/writeFileSync/.test(src), 'runtime nie zapisuje plików projektu');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initProjectAdvisor'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'projectAdvisor.initProjectAdvisor', 'orchestrator lazy projectAdvisor');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('advisor') && panel.includes('Doradca'), 'dev panel Doradca');

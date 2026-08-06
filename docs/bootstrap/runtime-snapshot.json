@@ -1,0 +1,178 @@
+{
+  "capturedAt": "2026-08-06T21:30:34.377Z",
+  "method": "node-import + browser-init-estimate",
+  "note": "import: Node DOM stub · init: szacunek PWA (inits/listeners/timers/observers/KB)",
+  "baseline": {
+    "bootstrapMs": 428.6,
+    "prebootMs": 5.72,
+    "diagnosticEagerMs": 379,
+    "diagnosticImportMs": 54.88
+  },
+  "timings": {
+    "prebootMs": 5.72,
+    "bootstrapMs": 49.6,
+    "diagnosticShellMs": 43.88,
+    "diagnosticImportMs": 54.88,
+    "diagnosticInitEstimateMs": 379,
+    "totalToInteractiveMs": 49.6,
+    "lazyDiagnosticsMs": null
+  },
+  "counts": {
+    "before": {
+      "diagnosticInits": 18,
+      "shellMsModules": 6
+    },
+    "after": {
+      "diagnosticInitsEager": 1,
+      "diagnosticInitsLazy": 19,
+      "shellMsModules": 6
+    }
+  },
+  "benchmark": {
+    "beforeDiagImport": {
+      "label": "before-diag-import",
+      "totalMs": 54.92,
+      "okMs": 54.88,
+      "modules": 18,
+      "ok": 18,
+      "rows": [
+        {
+          "file": "js/diagnostics/healthMonitor.js",
+          "ok": true,
+          "ms": 0.07
+        },
+        {
+          "file": "js/core/selfHealingLogger.js",
+          "ok": true,
+          "ms": 46.17
+        },
+        {
+          "file": "js/diagnostics/selfHealing.js",
+          "ok": true,
+          "ms": 0.73
+        },
+        {
+          "file": "js/diagnostics/uiGuardian.js",
+          "ok": true,
+          "ms": 0.08
+        },
+        {
+          "file": "js/diagnostics/mapGuardian.js",
+          "ok": true,
+          "ms": 0.45
+        },
+        {
+          "file": "js/diagnostics/memoryCleaner.js",
+          "ok": true,
+          "ms": 0.05
+        },
+        {
+          "file": "js/diagnostics/healthDevPanel.js",
+          "ok": true,
+          "ms": 6.32
+        },
+        {
+          "file": "js/presentation/learningEngine.js",
+          "ok": true,
+          "ms": 0.07
+        },
+        {
+          "file": "js/diagnostics/improvementEngine.js",
+          "ok": true,
+          "ms": 0.04
+        },
+        {
+          "file": "js/diagnostics/virtualUser.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/realUserSimulation.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/emotionAi.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/livingBrand.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/productDirector.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/projectAdvisor.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/dailyDeveloperReport.js",
+          "ok": true,
+          "ms": 0.03
+        },
+        {
+          "file": "js/diagnostics/developerDashboard.js",
+          "ok": true,
+          "ms": 0.65
+        },
+        {
+          "file": "js/diagnostics/weeklyPremiumReport.js",
+          "ok": true,
+          "ms": 0.04
+        }
+      ]
+    },
+    "afterShell": {
+      "label": "after-shell",
+      "totalMs": 43.89,
+      "okMs": 43.88,
+      "modules": 6,
+      "ok": 6,
+      "rows": [
+        {
+          "file": "js/diagnostics/runtimeErrorStore.js",
+          "ok": true,
+          "ms": 0.12
+        },
+        {
+          "file": "js/diagnostics/runtimeErrorCollector.js",
+          "ok": true,
+          "ms": 0.1
+        },
+        {
+          "file": "js/diagnostics/devVault.js",
+          "ok": true,
+          "ms": 0.29
+        },
+        {
+          "file": "js/diagnostics/developerVaultPanel.js",
+          "ok": true,
+          "ms": 43.14
+        },
+        {
+          "file": "js/diagnostics/diagnosticsOrchestrator.js",
+          "ok": true,
+          "ms": 0.2
+        },
+        {
+          "file": "js/core/bootstrapProfiler.js",
+          "ok": true,
+          "ms": 0.03
+        }
+      ]
+    },
+    "beforeStatic": {
+      "inits": 18,
+      "listeners": 52,
+      "timers": 39,
+      "observers": 3,
+      "kilobytes": 343
+    }
+  }
+}

@@ -481,10 +481,12 @@ export function initImprovementEngine() {
     if (initialized) return;
     initialized = true;
 
-    // Dzienny raport po starcie (po Health / Learning)
-    window.setTimeout(() => {
-        maybeGenerateDailyImprovementReport().catch(() => {});
-    }, 3200);
+    // Dzienny raport po starcie (po Health / Learning) — tylko dev/LAN
+    if (isDevMode()) {
+        window.setTimeout(() => {
+            maybeGenerateDailyImprovementReport().catch(() => {});
+        }, 3200);
+    }
 
     window.__RG_IMPROVE__ = {
         run: () => generateImprovementReport({ reason: 'manual' }),
@@ -496,7 +498,9 @@ export function initImprovementEngine() {
         }
     };
 
-    console.info('[Improvement Engine] propozycje only · autoApply=false. Konsola: __RG_IMPROVE__.run()');
+    if (isDevMode()) {
+        console.info('[Improvement Engine] propozycje only · autoApply=false. Konsola: __RG_IMPROVE__.run()');
+    }
 }
 
 export default {

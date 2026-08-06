@@ -11,6 +11,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { readPwaVersionFromModule, readPwaVersionFromSw } from './lib/read-pwa-version.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'docs', 'final');
@@ -102,7 +103,10 @@ step('gps', 'GPS / lokalizacja', () => {
 
 // ——— 4. Wyszukiwanie ———
 step('search', 'Wyszukiwanie', () => {
-    assert(home.includes('homeSearchInput') || home.includes('type="search"'), 'home search input');
+    assert(
+        html.includes('headerSearchInput') || home.includes('homeSearchInput') || home.includes('type="search"'),
+        'home search input'
+    );
     assert(home.includes('SEARCH_PRODUCTS') || rus.includes('SEARCH_PRODUCTS'), 'search event');
     assert(map.includes('setSearchQuery') || home.includes('setSearchQuery'), 'map search bridge');
     return 'home search + map query';
@@ -177,13 +181,15 @@ step('offline', 'Offline', () => {
 
 // ——— 12. Aktualizacja ———
 step('update', 'Aktualizacja (PWA version)', () => {
-    const m = sw.match(/PWA_VERSION\s*=\s*['"](\d+)['"]/);
-    assert(m, 'PWA_VERSION w sw.js');
+    const ver = readPwaVersionFromModule(ROOT);
+    assert(readPwaVersionFromSw(ROOT) === ver, 'sw.js bridge synced');
+    assert(sw.includes('importScripts'), 'sw importScripts pwaVersion.global.js');
     assert(sw.includes('skipWaiting'), 'skipWaiting');
     assert(sw.includes('clients.claim') || sw.includes('activate'), 'activate/claim');
-    assert(html.includes(`sw.js?v=${m[1]}`), `HTML sw.js?v=${m[1]} zsynchronizowane`);
-    assert(html.includes(`?v=${m[1]}`) || html.includes(`v=${m[1]}`), 'ikony/cache-bust v sync');
-    return `PWA_VERSION=${m[1]} synced + skipWaiting`;
+    assert(html.includes(`sw.js?v=${ver}`), `HTML sw.js?v=${ver} zsynchronizowane`);
+    assert(html.includes(`app.bundle.js?v=${ver}`), `HTML legacy bundle v${ver}`);
+    assert(html.includes(`?v=${ver}`) || html.includes(`v=${ver}`), 'ikony/cache-bust v sync');
+    return `PWA_VERSION=${ver} synced + skipWaiting`;
 });
 
 // ——— 13. Uninstall ———
@@ -220,7 +226,12 @@ step('push-utf8', 'Push offer regex (DE)', () => {
 
 step('live-journey-wiring', 'Live user simulation wiring', () => {
     assert(rus.includes('open-app') && rus.includes('offline') && rus.includes('premium'), 'RUS steps');
-    assert(read('js/app.js').includes('initRealUserSimulation') || read('js/app.js').includes('realUser'), 'app init RUS');
+    const app = read('js/app.js');
+    const orch = read('js/diagnostics/diagnosticsOrchestrator.js');
+    assert(
+        app.includes('initDiagnosticsOrchestrator') && orch.includes('realUserSimulation.initRealUserSimulation'),
+        'app init RUS via orchestrator'
+    );
     return '?realusers=1 / __RG_REAL_USERS__.run()';
 });
 

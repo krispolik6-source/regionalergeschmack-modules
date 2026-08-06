@@ -1,42 +1,42 @@
 # Regionaler Geschmack Premium Audit
 
-Wygenerowano: 2026-08-03T18:59:45.553Z
+Wygenerowano: 2026-08-06T21:19:14.442Z
 
-## Ocena końcowa: **89 / 100** (B+)
+## Ocena końcowa: **88 / 100** (B+)
 
 ## Oceny cząstkowe
 
 | Obszar | Wynik | Grade |
 |--------|------:|:-----:|
-| UX | 89 | B+ |
+| UX | 90 | A |
 | UI | 90 | A |
 | Brand | 90 | A |
 | Mobile | 94 | A |
-| Performance | 83 | B |
+| Performance | 78 | C |
 | PWA | 99 | A+ |
 | Accessibility | 98 | A+ |
-| Code Quality | 67 | D |
-| Launch Readiness | 90 | A |
+| Code Quality | 62 | D |
+| Launch Readiness | 88 | B+ |
 
 ## Źródła diagnostyczne
 
-- **health:** 94
-- **guardianQuality:** 2.4
+- **health:** 91
+- **guardianQuality:** 1
 - **emotionReturn:** 89
 - **livingBrand:** 93
-- **productDirector:** 92
-- **dailyAppScore:** 92
-- **qualityLoopHealth:** 98
+- **productDirector:** 93
+- **dailyAppScore:** 88
+- **qualityLoopHealth:** 94
 - **logoAudit:** false
 - **headerAudit:** false
 - **mobilePremium:** true
-- **virtualUser:** awaiting-browser-run
+- **virtualUser:** 80
 
 ## Podsumowanie issues
 
 - Krytyczne: **0**
-- Wysokie: **4**
-- Średnie: **5**
+- Wysokie: **8**
+- Średnie: **4**
 - Kosmetyczne / naprawione: **9**
 
 ## CRITICAL
@@ -47,14 +47,17 @@ _Brak._
 
 - **[PWA]** Brak CACHE_VERSION w sw.js — sw.js
 - **[Brand]** Logo audit nie OK — docs/brand/LOGO-AUDIT.md
-- **[Guardian]** check-translations zakończony błędem — js/translations.js
-- **[Guardian]** Duży łączny JS: 1863 KB — js/translations.js
+- **[Guardian]** setInterval bez clearInterval: js/diagnostics/mapGuardian.js — js/diagnostics/mapGuardian.js
+- **[Guardian]** setInterval bez clearInterval: js/diagnostics/selfHealing.js — js/diagnostics/selfHealing.js
+- **[Guardian]** setInterval bez clearInterval: js/diagnostics/uiGuardian.js — js/diagnostics/uiGuardian.js
+- **[Guardian]** setInterval bez clearInterval: js/presentation/learningEngine.js — js/presentation/learningEngine.js
+- **[Guardian]** Duży łączny JS: 4050 KB — js/translations-home-remaining-locales.js
+- **[Health]** Brakujące zdjęcia produktów: 6 — strawberries, pear, carrots, honey, juice, dessert
 
 ## MEDIUM
 
 - **[UI]** Brak premium-final.css — css/style.css
-- **[Health]** Potencjalne konflikty CSS: 40 — body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]
-- **[Virtual User]** Brak świeżego przebiegu w przeglądarce — docs/virtual-user/
+- **[Health]** Potencjalne konflikty CSS: 40 — body.dark-mode .producer-product-image [background]; .producer-product-image [background]; body.dark-mode .bottom-nav [background]; body [color]
 - **[Emotion]** Zmęczenie CTA (fatigue 50) — Home — premium-final łagodzi
 - **[CSS]** Konflikty CSS ~40 — warstwy importów — niskie ryzyko runtime
 

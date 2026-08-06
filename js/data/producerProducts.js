@@ -338,8 +338,6 @@ export function getCatalogProductCount(category) {
  * @param {object} producer
  * @returns {object}
  */
-const EXTERNAL_CATALOG_SOURCES = new Set(['osm', 'govdata', 'map-fallback']);
-
 export function enrichProducerWithProducts(producer) {
     if (!producer || typeof producer !== 'object') return producer;
 
@@ -352,19 +350,6 @@ export function enrichProducerWithProducts(producer) {
             products: existing.map((product, index) =>
                 normalizeProductImage(product, String(producer.id), index, categoryKey)
             )
-        };
-    }
-
-    // OSM / govdata / map-fallback: tylko rzeczywiste produkty – bez syntetycznego katalogu
-    // (pełny katalog w modalu blokował wątek główny na mobile przy innerHTML).
-    if (EXTERNAL_CATALOG_SOURCES.has(producer.source)) {
-        return {
-            ...producer,
-            products: existing.map((product, index) =>
-                normalizeProductImage(product, String(producer.id), index, categoryKey)
-            ),
-            promo: producer.promo || '',
-            promotions: Array.isArray(producer.promotions) ? producer.promotions : []
         };
     }
 

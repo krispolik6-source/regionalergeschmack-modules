@@ -60,6 +60,21 @@ const sideMenu = readFileSync(join(ROOT, 'js/core/sideMenu.js'), 'utf8');
 assert(sideMenu.includes("case 'dev-vault':"), 'sideMenu handles dev-vault');
 assert(sideMenu.includes('openDeveloperVault'), 'sideMenu opens vault');
 assert(sideMenu.includes("'dev-vault': 'devVault'"), 'ACTION_MENU_KEYS has devVault');
+assert(sideMenu.includes('data-menu-dev-panel'), 'dev panel always visible in menu');
+assert(sideMenu.includes('applyDeveloperPanelMenuVisibility'), 'dev panel visibility helper');
+assert(!/INTERNAL_MENU_ACTIONS[^\n]*dev-vault/.test(sideMenu), 'dev-vault not in INTERNAL_MENU_ACTIONS');
+
+const devVaultMod = readFileSync(join(ROOT, 'js/diagnostics/devVault.js'), 'utf8');
+assert(devVaultMod.includes('isDeveloperAccessGranted'), 'canonical access API');
+
+const rm = readFileSync(join(ROOT, 'js/diagnostics/reportManagerClient.js'), 'utf8');
+assert(rm.includes('isDeveloperAccessGranted'), 'docs fetch gated by PIN only');
+assert(!/isDevMode\(\)\s*&&\s*isDevVaultUnlocked/.test(rm), 'docs fetch not tied to isDevMode');
+assert(rm.includes('normalizeStreamStatus'), 'stream status normalization');
+assert(rm.includes('enrichStreamStatuses'), 'stream status enrichment');
+assert(rm.includes('STREAM_STATUS_META'), 'stream status meta map');
+assert(rm.includes('canFetchDocsRuntime'), 'docs fetch gated');
+assert(!/replace\(\/\\\.md\$\/i, '\\.json'\)/.test(rm), 'no md→json status fetch spam');
 
 const health = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(health.includes('isDevVaultUnlocked'), 'health gated by vault');
@@ -99,21 +114,22 @@ assert(vault.includes('Usuń raport'), '34C delete report');
 assert(vault.includes('reportManagerClient'), '34C client import');
 assert(vault.includes('purgeExpiredReports') || vault.includes('loadUnifiedReportStream'), '30-day retention via stream load');
 
-const rm = readFileSync(join(ROOT, 'js/diagnostics/reportManagerClient.js'), 'utf8');
-assert(rm.includes('normalizeStreamStatus'), 'stream status normalization');
-assert(rm.includes('enrichStreamStatuses'), 'stream status enrichment');
-assert(rm.includes('STREAM_STATUS_META'), 'stream status meta map');
-assert(rm.includes('loadStreamEntryPreview'), 'stream entry preview loader');
-
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');
 assert(i18n.includes('tabReports'), 'reports i18n');
 
+const improve = readFileSync(join(ROOT, 'js/diagnostics/improvementEngine.js'), 'utf8');
+assert(improve.includes('if (isDevMode())') && improve.includes('maybeGenerateDailyImprovementReport'), 'improvement daily gated');
+
+const advisor = readFileSync(join(ROOT, 'js/diagnostics/projectAdvisor.js'), 'utf8');
+assert(advisor.includes('if (isDevMode())') && advisor.includes('maybeGenerateDailyAdvisorBriefing'), 'advisor daily gated');
+
 const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initDeveloperVault'), 'app inits vault');
+assert(app.includes('initDiagnosticsOrchestrator'), 'app uses diagnostics orchestrator');
+assert(!app.includes('initHealthMonitor()'), 'health monitor not eager in app.js');
 assert(
-    app.indexOf('initDeveloperVault()') < app.indexOf('initHealthDevPanel()'),
-    'vault before Health init'
+    app.indexOf('initDiagnosticsOrchestrator()') < app.indexOf('window.navigateTo'),
+    'orchestrator before test exports'
 );
 
 if (failed) {

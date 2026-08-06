@@ -1,5 +1,6 @@
 /**
  * Ukryty panel deweloperski – dostęp po haśle (sessionStorage).
+ * Jedyny mechanizm dostępu: PIN → sesja. Bez localhost / LAN / desktop / viewport.
  * Nie zmienia architektury Store/EventBus. AutoFix=false.
  */
 
@@ -13,6 +14,11 @@ export function isDevVaultUnlocked() {
     } catch {
         return false;
     }
+}
+
+/** Kanoniczna bramka: panel deweloperski + raporty /docs/ po PIN w tej sesji. */
+export function isDeveloperAccessGranted() {
+    return isDevVaultUnlocked();
 }
 
 export function unlockDevVault(password) {

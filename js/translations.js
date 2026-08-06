@@ -1600,11 +1600,16 @@ for (const code of Object.keys(built)) {
     if (pack) built[code] = deepMerge(built[code], pack);
 }
 
-// Regulamin / prywatność / pomoc – DE/EN/PL/MK + 32 locales (fr…hi)
+// Regulamin / prywatność / pomoc – DE/EN/PL/MK + 32 locales (fr…hi); EN fallback dla brakujących kluczy (np. Impressum)
 const legalHelpEn = LEGAL_HELP_I18N.en;
 for (const code of Object.keys(built)) {
-    const pack = LEGAL_HELP_I18N[code] || LEGAL_HELP_LOCALES[code] || legalHelpEn;
-    if (pack) built[code] = deepMerge(built[code], pack);
+    const canonical = LEGAL_HELP_I18N[code];
+    const localeOverlay = LEGAL_HELP_LOCALES[code];
+    let pack = canonical || legalHelpEn;
+    if (localeOverlay) {
+        pack = deepMerge(deepMerge({}, pack), localeOverlay);
+    }
+    built[code] = deepMerge(built[code], pack);
 }
 
 // ETAP 13A – Dzisiaj w regionie (DE/EN/PL/MK + EN fallback)

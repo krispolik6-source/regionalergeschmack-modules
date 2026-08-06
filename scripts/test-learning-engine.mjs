@@ -6,10 +6,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pathToFileURL } from 'node:url';
 
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
-
-function assert(cond, msg) {
     if (!cond) {
         failed += 1;
         console.error(`❌ ${msg}`);
@@ -35,8 +35,7 @@ assert(src.includes('aggregateSignals'), 'agregacja sygnałów');
 assert(!/fetch\s*\(\s*['"`]https?:/.test(src), 'brak fetch HTTP w module');
 assert(src.includes('anonymous') || src.includes('Anonim'), 'polityka anonimowa');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initLearningEngine'), 'app.js initLearningEngine');
+assertLazyDiagnosticsInit(assert, ROOT, 'learningEngine.initLearningEngine', 'orchestrator lazy learningEngine');
 
 const smart = readFileSync(join(ROOT, 'js/presentation/smartRecommend.js'), 'utf8');
 assert(smart.includes('getLearningBoostForProducer'), 'smartRecommend używa learning boost');

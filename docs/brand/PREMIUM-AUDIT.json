@@ -1,44 +1,44 @@
 {
   "id": "premium-audit-28e",
   "title": "Regionaler Geschmack Premium Audit",
-  "generatedAt": "2026-08-03T18:59:45.553Z",
-  "day": "2026-08-03",
+  "generatedAt": "2026-08-06T21:19:14.442Z",
+  "day": "2026-08-06",
   "policy": {
     "architectureUnchanged": true,
     "storeEventBusUntouched": true,
     "autofixScope": "presentation / a11y / brand / leak cleanup"
   },
-  "overall": 89,
+  "overall": 88,
   "scores": {
-    "UX": 89,
+    "UX": 90,
     "UI": 90,
     "Brand": 90,
     "Mobile": 94,
-    "Performance": 83,
+    "Performance": 78,
     "PWA": 99,
     "Accessibility": 98,
-    "Code Quality": 67,
-    "Launch Readiness": 90
+    "Code Quality": 62,
+    "Launch Readiness": 88
   },
   "sources": {
-    "health": 94,
-    "guardianQuality": 2.4,
+    "health": 91,
+    "guardianQuality": 1,
     "emotionReturn": 89,
     "livingBrand": 93,
-    "productDirector": 92,
-    "dailyAppScore": 92,
-    "qualityLoopHealth": 98,
+    "productDirector": 93,
+    "dailyAppScore": 88,
+    "qualityLoopHealth": 94,
     "logoAudit": false,
     "headerAudit": false,
     "mobilePremium": true,
-    "virtualUser": "awaiting-browser-run"
+    "virtualUser": 80
   },
   "counts": {
     "critical": 0,
-    "high": 4,
-    "medium": 5,
+    "high": 8,
+    "medium": 4,
     "cosmeticOrFixed": 9,
-    "totalFindings": 19
+    "totalFindings": 22
   },
   "findings": [
     {
@@ -128,36 +128,57 @@
     {
       "severity": "high",
       "area": "Guardian",
-      "title": "check-translations zakończony błędem",
-      "detail": "js/translations.js",
+      "title": "setInterval bez clearInterval: js/diagnostics/mapGuardian.js",
+      "detail": "js/diagnostics/mapGuardian.js",
       "fixed": false
     },
     {
       "severity": "high",
       "area": "Guardian",
-      "title": "Duży łączny JS: 1863 KB",
-      "detail": "js/translations.js",
+      "title": "setInterval bez clearInterval: js/diagnostics/selfHealing.js",
+      "detail": "js/diagnostics/selfHealing.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Guardian",
+      "title": "setInterval bez clearInterval: js/diagnostics/uiGuardian.js",
+      "detail": "js/diagnostics/uiGuardian.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Guardian",
+      "title": "setInterval bez clearInterval: js/presentation/learningEngine.js",
+      "detail": "js/presentation/learningEngine.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Guardian",
+      "title": "Duży łączny JS: 4050 KB",
+      "detail": "js/translations-home-remaining-locales.js",
+      "fixed": false
+    },
+    {
+      "severity": "high",
+      "area": "Health",
+      "title": "Brakujące zdjęcia produktów: 6",
+      "detail": "strawberries, pear, carrots, honey, juice, dessert",
       "fixed": false
     },
     {
       "severity": "low",
       "area": "Health",
-      "title": "Podejrzenie nieużywanego kodu: 16 plików",
-      "detail": "js/core/dynamicTranslateEngine.js, js/intelligence/livingRegionAi.js, js/intelligence/producerTrustAudit.js, js/intelligence/productDirectorAi.js, js/intelligence/productIntelligenceDaily.js, js/intelligence/regionalBrain.js",
+      "title": "Podejrzenie nieużywanego kodu: 19 plików",
+      "detail": "js/core/dynamicTranslateEngine.js, js/core/pwaVersion.global.js, js/core/selfHealingFixer.js, js/intelligence/livingRegionAi.js, js/intelligence/producerTrustAudit.js, js/intelligence/productDirectorAi.js",
       "fixed": false
     },
     {
       "severity": "medium",
       "area": "Health",
       "title": "Potencjalne konflikty CSS: 40",
-      "detail": "body [color]; .lp-header [background]; .lp-brand [color]; body:not(.view-map-active)::after [background]",
-      "fixed": false
-    },
-    {
-      "severity": "medium",
-      "area": "Virtual User",
-      "title": "Brak świeżego przebiegu w przeglądarce",
-      "detail": "docs/virtual-user/",
+      "detail": "body.dark-mode .producer-product-image [background]; .producer-product-image [background]; body.dark-mode .bottom-nav [background]; body [color]",
       "fixed": false
     },
     {

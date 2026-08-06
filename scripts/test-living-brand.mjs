@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 import { BRAND_PALETTE, FORBIDDEN_COLD_BLUE, LOGO, FONTS, POLICY, isForbiddenBlue } from '../js/diagnostics/livingBrandBook.js';
 import { buildLivingBrandReport } from '../js/diagnostics/livingBrandCore.js';
 
@@ -49,8 +50,7 @@ const runtime = join(ROOT, 'js/diagnostics/livingBrand.js');
 assert(existsSync(runtime), 'livingBrand.js');
 assert(readFileSync(runtime, 'utf8').includes('__RG_LIVING_BRAND__'), 'console API');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initLivingBrand'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'livingBrand.initLivingBrand', 'orchestrator lazy livingBrand');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('Living Brand') || panel.includes('living-brand'), 'dev panel');

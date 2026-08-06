@@ -1,0 +1,353 @@
+{
+  "etap": "45-D-T8",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 23,
+    "total": 23,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 8,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 8,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 8,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 3,
+    "total": 3,
+    "runs": [
+      {
+        "label": "pwa-lifecycle",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "service-worker",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "runtime-error-feed",
+        "ok": true,
+        "exit": 0
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:31.943Z",
+  "scenarios": {
+    "brak-internetu": [
+      {
+        "id": "R01-offline-sw",
+        "scenario": "brak-internetu",
+        "label": "SW offline shell (precache + navigate fallback)",
+        "status": "pass",
+        "detail": "precache index.html · navigate → cache fallback",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R01-offline-ui",
+        "scenario": "brak-internetu",
+        "label": "Banner offline na mapie + online sync",
+        "status": "pass",
+        "detail": "updateOfflineBanner · eventy online/offline",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R01-offline-queue",
+        "scenario": "brak-internetu",
+        "label": "Kolejka offline + flush po online",
+        "status": "pass",
+        "detail": "rg_offline_sync_queue_v1 · SW sync tag",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R01-offline-events",
+        "scenario": "brak-internetu",
+        "label": "Rejestracja offline w Error Collector",
+        "status": "pass",
+        "detail": "runtimeErrorCollector · kategoria network",
+        "recovery": "",
+        "layer": "static"
+      }
+    ],
+    "wolny-internet": [
+      {
+        "id": "R02-slow-map",
+        "scenario": "wolny-internet",
+        "label": "Mapa: fetch w tle bez blokowania UI",
+        "status": "pass",
+        "detail": "generacja fetch · catch · finally — UI nie zawiesza się",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R02-slow-sw",
+        "scenario": "wolny-internet",
+        "label": "SW: network-first z fallback cache",
+        "status": "pass",
+        "detail": "stale-while-revalidate / cache fallback",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R02-slow-rus",
+        "scenario": "wolny-internet",
+        "label": "Symulacja RUS/VU: offline + online",
+        "status": "not_verified",
+        "detail": "Wykonanie __RG_VIRTUAL__ / __RG_REAL_USERS__ w przeglądarce — wiring ≠ chaos test",
+        "recovery": "",
+        "layer": "runtime"
+      }
+    ],
+    "timeout": [
+      {
+        "id": "R03-timeout-map",
+        "scenario": "timeout",
+        "label": "Mapa: timeout GPS / OSM + AbortController",
+        "status": "pass",
+        "detail": "timeout 12–20s · abort poprzedniego fetchu",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R03-timeout-gov",
+        "scenario": "timeout",
+        "label": "GovData: AbortController + timeout error",
+        "status": "pass",
+        "detail": "govDataService FETCH_TIMEOUT_MS",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R03-timeout-fetch-catch",
+        "scenario": "timeout",
+        "label": "Fetch errors nie crashują app",
+        "status": "pass",
+        "detail": "runtimeErrorCollector log · map catch",
+        "recovery": "",
+        "layer": "static"
+      }
+    ],
+    "uszkodzony-cache": [
+      {
+        "id": "R04-cache-purge",
+        "scenario": "uszkodzony-cache",
+        "label": "SW activate: purge starych cache",
+        "status": "pass",
+        "detail": "activate → delete stale rg-* caches",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R04-cache-safe-put",
+        "scenario": "uszkodzony-cache",
+        "label": "safeCachePut — tylko 200 basic (bez corrupt partial)",
+        "status": "pass",
+        "detail": "ignoruje 206 / opaque responses",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R04-cache-cleaner",
+        "scenario": "uszkodzony-cache",
+        "label": "Memory Cleaner: deleteStaleCaches",
+        "status": "pass",
+        "detail": "Dev Vault → safe clean stale PWA cache",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R04-cache-probe",
+        "scenario": "uszkodzony-cache",
+        "label": "Runtime Error Feed: probe cache",
+        "status": "pass",
+        "detail": "probeRuntimeSignals · warn gdy brak cache",
+        "recovery": "",
+        "layer": "static"
+      }
+    ],
+    "brak-manifestu": [
+      {
+        "id": "R05-manifest-link",
+        "scenario": "brak-manifestu",
+        "label": "index.html link manifest (normal path)",
+        "status": "pass",
+        "detail": "standardowy link manifest",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R05-manifest-probe",
+        "scenario": "brak-manifestu",
+        "label": "Wykrycie braku manifestu (feed)",
+        "status": "pass",
+        "detail": "probeRuntimeSignals · nie crash",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R05-manifest-degrade",
+        "scenario": "brak-manifestu",
+        "label": "App boot bez twardego wymagania manifest",
+        "status": "pass",
+        "detail": "PWA install może zawieść · shell działa",
+        "recovery": "",
+        "layer": "static"
+      }
+    ],
+    "brak-ikon": [
+      {
+        "id": "R06-icons-sw-fallback",
+        "scenario": "brak-ikon",
+        "label": "SW: ikony offline fallback wersjonowany",
+        "status": "pass",
+        "detail": "network-first · offline ?v= · push DEFAULT_ICON",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R06-icons-heal",
+        "scenario": "brak-ikon",
+        "label": "Self-Heal: broken images / icons",
+        "status": "pass",
+        "detail": "logo-master placeholder · nav text fallback",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R06-icons-collector",
+        "scenario": "brak-ikon",
+        "label": "Image error collector",
+        "status": "pass",
+        "detail": "IMG error → runtimeErrorStore",
+        "recovery": "",
+        "layer": "static"
+      }
+    ],
+    "restart-sw": [
+      {
+        "id": "R07-sw-restart",
+        "scenario": "restart-sw",
+        "label": "SW skipWaiting + clients.claim",
+        "status": "pass",
+        "detail": "nowy SW przejmuje kontrolę po activate",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R07-sw-heal",
+        "scenario": "restart-sw",
+        "label": "Self-Heal: healServiceWorker + prompt",
+        "status": "pass",
+        "detail": "ETAP 39: prompt odświeżenia · nie skipWaiting z klienta",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R07-sw-controller",
+        "scenario": "restart-sw",
+        "label": "controllerchange logging",
+        "status": "pass",
+        "detail": "runtimeErrorCollector · SW lifecycle events",
+        "recovery": "",
+        "layer": "static"
+      },
+      {
+        "id": "R07-sw-register",
+        "scenario": "restart-sw",
+        "label": "Re-register on load",
+        "status": "pass",
+        "detail": "index.html register · install precache",
+        "recovery": "",
+        "layer": "static"
+      }
+    ]
+  },
+  "manualMatrix": [
+    {
+      "scenario": "brak-internetu",
+      "steps": [
+        "DevTools → Offline / tryb samolotowy",
+        "Otwórz PWA (po wcześniejszej wizycie)",
+        "Home/Map z cache · banner offline"
+      ],
+      "pass": "Brak białego ekranu · nawigacja działa · powrót online OK"
+    },
+    {
+      "scenario": "wolny-internet",
+      "steps": [
+        "DevTools → Network → Slow 3G",
+        "Przejdź Home → Map → producent"
+      ],
+      "pass": "UI responsywne · skeleton/map · brak freeze"
+    },
+    {
+      "scenario": "timeout",
+      "steps": [
+        "Network → Offline podczas ładowania OSM",
+        "Czekaj >15s",
+        "Włącz online"
+      ],
+      "pass": "console.warn OSM · mapa odświeża markery · brak crash"
+    },
+    {
+      "scenario": "uszkodzony-cache",
+      "steps": [
+        "Application → Cache Storage → usuń rg-pwa-v30",
+        "Lub Memory Cleaner → safe clean",
+        "Reload"
+      ],
+      "pass": "SW re-precache · app boot OK"
+    },
+    {
+      "scenario": "brak-manifestu",
+      "steps": [
+        "Application → Manifest → simulate missing / block manifest.json",
+        "Reload"
+      ],
+      "pass": "App działa · brak crash · ewentualny warn w Error Feed"
+    },
+    {
+      "scenario": "brak-ikon",
+      "steps": [
+        "Block /assets/icons/* w Network",
+        "Reload / otwórz PWA"
+      ],
+      "pass": "Placeholder / cache fallback · Self-Heal opcjonalnie · brak crash"
+    },
+    {
+      "scenario": "restart-sw",
+      "steps": [
+        "Application → Service Workers → Update / Unregister + Reload",
+        "Lub deploy nowej wersji SW"
+      ],
+      "pass": "skipWaiting · clients.claim · prompt refresh · shell działa"
+    }
+  ],
+  "browserSim": "// Symulacje w konsoli (localhost / ?dev=1):\n// 1. Offline\nwindow.dispatchEvent(new Event('offline'));\n// 2. Online\nwindow.dispatchEvent(new Event('online'));\n// 3. SW update check\nnavigator.serviceWorker?.getRegistration()?.then(r => r?.update());\n// 4. Cache keys\ncaches.keys().then(console.log);\n// 5. Pełna symulacja sieci\nawait __RG_REAL_USERS__.runOne(1); // zawiera offline step\nawait __RG_VIRTUAL__.run({ scenarios: ['offline','online'] });",
+  "expectedBehavior": {
+    "noWhiteScreen": true,
+    "offlineShell": true,
+    "gracefulDegradation": true,
+    "noAutoFix": true,
+    "errorsLoggedLocally": true
+  },
+  "autoApply": false
+}

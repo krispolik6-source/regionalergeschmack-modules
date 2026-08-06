@@ -1,8 +1,8 @@
 # MASTER ICON AUDIT — ETAP 28F
 
-Wygenerowano: 2026-08-04T17:43:20.439Z
+Wygenerowano: 2026-08-06T21:30:26.349Z
 
-**Werdykt:** ✅ PASS · 49/49
+**Werdykt:** ✅ PASS · 50/50
 
 ## Master
 
@@ -58,11 +58,12 @@ Wygenerowano: 2026-08-04T17:43:20.439Z
 - ✓ **landing-logo** — landing.html · /logo-master\.svg\?v=30/
 - ✓ **landing-icon-192** — landing.html · /icon-192\.png\?v=30/
 - ✓ **home-brand** — js/views/home.js · /logo-master\.svg\?v=30/
-- ✓ **push-icon** — js/core/pushNotifications.js · /icon-192\.png\?v=30/
+- ✓ **push-icon** — js/core/pushNotifications.js · /pwaAssetUrl\(['"]\/assets\/icons\/icon-192\.png['"]\)/
 - ✓ **brand-css** — css/brand-identity-final.css · /logo-master\.svg\?v=30/
-- ✓ **sw-cache** — sw.js · /CACHE_VERSION\s*=\s*`rg-pwa-v\$\{PWA_VERSION\}`|rg-pwa-v\$\{PWA_VERSION\}/
-- ✓ **sw-image-cache** — sw.js · /IMAGE_CACHE\s*=\s*`rg-runtime-images-v\$\{PWA_VERSION\}`|rg-runtime-images-v\$\{PWA_VERSION\}/
-- ✓ **sw-network-first-icons** — sw.js · /isAppIconPath|network-first/
+- ✓ **sw-bridge** — sw.js · /importScripts\(['"]\/js\/core\/pwaVersion\.global\.js['"]\)/
+- ✓ **sw-cache** — sw.js · /CACHE_VERSION\s*=\s*PWA_CACHE_NAME/
+- ✓ **sw-image-cache** — sw.js · /IMAGE_CACHE\s*=\s*PWA_IMAGE_CACHE_NAME/
+- ✓ **sw-network-first-icons** — sw.js · /fetchPwaIconAsset|cache:\s*'no-store'/
 - ✓ **sw-default-icon** — sw.js · /icon-192\.png\?v=\$\{ICON_VERSION\}|ICON_VERSION\s*=\s*PWA_VERSION/
 - ✓ **header-no-tile** — css/premium-header.css · /\.header-brand-mark[\s\S]{0,400}background:\s*transparent\s*!important/
 - ✓ **og-asset** — assets/brand/og-share.png
@@ -94,18 +95,18 @@ Wygenerowano: 2026-08-04T17:43:20.439Z
 - `/assets/icons/icon-180.png?v=30`
 
 ### `js/core/pushNotifications.js`
-- `/assets/icons/icon-192.png?v=30`
+- `/assets/icons/icon-192.png`
 
 ### `js/diagnostics/livingBrandBook.js`
 - `/assets/icons/logo-master.svg`
 
 ### `js/diagnostics/selfHealing.js`
-- `/assets/icons/logo-master.svg?v=30`
+- `/assets/icons/logo-master.svg`
 
 ### `js/legacy/app.bundle.js`
 - `/assets/icons/logo-master.svg`
 - `/assets/icons/logo-master.svg?v=30`
-- `/assets/icons/icon-192.png?v=30`
+- `/assets/icons/icon-192.png`
 
 ### `js/views/home.js`
 - `/assets/icons/logo-master.svg?v=30`
@@ -204,11 +205,12 @@ Wygenerowano: 2026-08-04T17:43:20.439Z
 - ✓ landing-logo — landing.html · /logo-master\.svg\?v=30/
 - ✓ landing-icon-192 — landing.html · /icon-192\.png\?v=30/
 - ✓ home-brand — js/views/home.js · /logo-master\.svg\?v=30/
-- ✓ push-icon — js/core/pushNotifications.js · /icon-192\.png\?v=30/
+- ✓ push-icon — js/core/pushNotifications.js · /pwaAssetUrl\(['"]\/assets\/icons\/icon-192\.png['"]\)/
 - ✓ brand-css — css/brand-identity-final.css · /logo-master\.svg\?v=30/
-- ✓ sw-cache — sw.js · /CACHE_VERSION\s*=\s*`rg-pwa-v\$\{PWA_VERSION\}`|rg-pwa-v\$\{PWA_VERSION\}/
-- ✓ sw-image-cache — sw.js · /IMAGE_CACHE\s*=\s*`rg-runtime-images-v\$\{PWA_VERSION\}`|rg-runtime-images-v\$\{PWA_VERSION\}/
-- ✓ sw-network-first-icons — sw.js · /isAppIconPath|network-first/
+- ✓ sw-bridge — sw.js · /importScripts\(['"]\/js\/core\/pwaVersion\.global\.js['"]\)/
+- ✓ sw-cache — sw.js · /CACHE_VERSION\s*=\s*PWA_CACHE_NAME/
+- ✓ sw-image-cache — sw.js · /IMAGE_CACHE\s*=\s*PWA_IMAGE_CACHE_NAME/
+- ✓ sw-network-first-icons — sw.js · /fetchPwaIconAsset|cache:\s*'no-store'/
 - ✓ sw-default-icon — sw.js · /icon-192\.png\?v=\$\{ICON_VERSION\}|ICON_VERSION\s*=\s*PWA_VERSION/
 - ✓ header-no-tile — css/premium-header.css · /\.header-brand-mark[\s\S]{0,400}background:\s*transparent\s*!important/
 - ✓ og-asset — assets/brand/og-share.png

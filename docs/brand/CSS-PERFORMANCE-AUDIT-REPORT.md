@@ -1,6 +1,6 @@
 # CSS Performance Audit Report
 
-Wygenerowano: 2026-08-05T17:26:45.682Z
+Wygenerowano: 2026-08-06T21:30:29.740Z
 
 **Werdykt:** ✅ PASS · checks 14/14
 
@@ -13,7 +13,7 @@ Wygenerowano: 2026-08-05T17:26:45.682Z
 
 | Problem | Status |
 |---------|--------|
-| backdrop-filter | ✓ 140 wystąpień w źródłach → none !important w audit layer |
+| backdrop-filter | ✓ 142 wystąpień w źródłach → none !important w audit layer |
 | blur | ✓ --glass-blur/--ls-* = 0 · badge solid · kategorie bez backdrop |
 | duplikaty | ✓ aliasy tokenów motion/touch w :root audit |
 | martwe selektory | ✓ .glass-panel/.glass-card neutralizowane (legacy) |
@@ -23,7 +23,7 @@ Wygenerowano: 2026-08-05T17:26:45.682Z
 
 ## Metryki
 
-- backdrop-filter w źródłach (przed audit): **140**
+- backdrop-filter w źródłach (przed audit): **142**
 - typy MQ powtarzane >3×: **12**
 - podejrzane martwe klasy (heurystyka): **40**
 
@@ -32,9 +32,9 @@ Wygenerowano: 2026-08-05T17:26:45.682Z
 - `(prefers-reduced-motion: reduce)` × 29
 - `screen and (max-width: 430px)` × 16
 - `screen and (min-width: 768px)` × 6
+- `screen and (max-width: 359px)` × 6
 - `screen and (max-width: 360px)` × 5
 - `screen and (max-width: 320px)` × 5
-- `screen and (max-width: 359px)` × 5
 - `screen and (min-width: 1024px)` × 5
 - `(prefers-reduced-motion: no-preference)` × 4
 

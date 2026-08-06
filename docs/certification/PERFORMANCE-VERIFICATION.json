@@ -1,0 +1,401 @@
+{
+  "etap": "45-D-T7",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 1,
+    "total": 1,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 10,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 10,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 10,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 3,
+    "total": 3,
+    "runs": [
+      {
+        "label": "bootstrap-report",
+        "ok": true,
+        "exit": 0,
+        "ms": 377.6
+      },
+      {
+        "label": "bootstrap",
+        "ok": true,
+        "exit": 0,
+        "ms": 401.71
+      },
+      {
+        "label": "css-performance",
+        "ok": true,
+        "exit": 0,
+        "ms": 271.55
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:29.762Z",
+  "thresholds": {
+    "bootstrapMs": 120,
+    "listenersAtBoot": 45,
+    "timersAtBoot": 8,
+    "observersAtBoot": 3,
+    "bundleMB": 5.5,
+    "renderHomeMs": 150,
+    "renderMapMs": 800,
+    "renderProducerMs": 300,
+    "fpsScrollMin": 30,
+    "memoryLeakMB": 25
+  },
+  "metrics": [
+    {
+      "id": "P01-bootstrap",
+      "metric": "Bootstrap (shell PWA)",
+      "value": 48.58,
+      "threshold": 120,
+      "op": "<=",
+      "unit": "ms",
+      "status": "not_verified",
+      "nodeMeasured": 48.58,
+      "detail": "ETAP 42F orchestrator · Node import + shell init",
+      "note": "ETAP 42F orchestrator · Node import + shell init · Node benchmark ≠ RUNTIME VERIFIED",
+      "layer": "runtime"
+    },
+    {
+      "id": "P02-listeners",
+      "metric": "Listenery at boot",
+      "value": 31,
+      "threshold": 45,
+      "op": "<=",
+      "unit": "",
+      "status": "not_verified",
+      "nodeMeasured": 31,
+      "detail": "shell scan: 69 · audit: 31",
+      "note": "shell scan: 69 · audit: 31 · Node benchmark ≠ RUNTIME VERIFIED",
+      "layer": "runtime"
+    },
+    {
+      "id": "P03-timers",
+      "metric": "Timery at boot",
+      "value": 0,
+      "threshold": 8,
+      "op": "<=",
+      "unit": "",
+      "status": "not_verified",
+      "nodeMeasured": 0,
+      "detail": "deferred 39 vs Before",
+      "note": "deferred 39 vs Before · Node benchmark ≠ RUNTIME VERIFIED",
+      "layer": "runtime"
+    },
+    {
+      "id": "P04-observers",
+      "metric": "Obserwery at boot",
+      "value": 0,
+      "threshold": 3,
+      "op": "<=",
+      "unit": "",
+      "status": "not_verified",
+      "nodeMeasured": 0,
+      "detail": "deferred 3 vs Before",
+      "note": "deferred 3 vs Before · Node benchmark ≠ RUNTIME VERIFIED",
+      "layer": "runtime"
+    },
+    {
+      "id": "P05-memory-bundle",
+      "metric": "Pamięć — legacy bundle",
+      "value": 4.48,
+      "threshold": 5.5,
+      "op": "<=",
+      "unit": "MB",
+      "layer": "static",
+      "status": "pass",
+      "note": "js/legacy/app.bundle.js"
+    },
+    {
+      "id": "P06-render-home",
+      "metric": "Render Home (wiring)",
+      "value": null,
+      "threshold": 150,
+      "op": "<=",
+      "unit": "ms",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "1826 LOC · target <150ms · rgPerfProbe()"
+    },
+    {
+      "id": "P07-render-map",
+      "metric": "Render Map (wiring)",
+      "value": null,
+      "threshold": 800,
+      "op": "<=",
+      "unit": "ms",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "3569 LOC · Leaflet · target <800ms · rgPerfProbe()"
+    },
+    {
+      "id": "P08-render-producer",
+      "metric": "Render Producer (wiring)",
+      "value": null,
+      "threshold": 300,
+      "op": "<=",
+      "unit": "ms",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "1594 LOC · target <300ms · rgPerfProbe()"
+    },
+    {
+      "id": "P09-render-profiler",
+      "metric": "Health Monitor render sample",
+      "value": null,
+      "threshold": 150,
+      "op": "<=",
+      "unit": "ms",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "measureRenderSample w przeglądarce · health monitor"
+    },
+    {
+      "id": "P10-fps-scroll",
+      "metric": "FPS podczas przewijania (Virtual User)",
+      "value": null,
+      "threshold": 30,
+      "op": ">=",
+      "unit": "FPS",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "Próg ≥30 FPS · __RG_VIRTUAL__.run() lub rgPerfProbe()"
+    },
+    {
+      "id": "P11-memory-leak",
+      "metric": "Pamięć — leak detection (Virtual User)",
+      "value": null,
+      "threshold": 25,
+      "op": "<=",
+      "unit": "MB",
+      "layer": "runtime",
+      "status": "not_verified",
+      "note": "Alert przy +≥25 MB w sesji · performance.memory w przeglądarce"
+    }
+  ],
+  "bootstrap": {
+    "beforeMs": 427.58,
+    "afterMs": 48.58,
+    "savedMs": 379,
+    "savedPct": -88.6,
+    "prebootMs": 5.58,
+    "listeners": {
+      "before": 52,
+      "after": 31
+    },
+    "timers": {
+      "before": 39,
+      "after": 0
+    },
+    "observers": {
+      "before": 3,
+      "after": 0
+    },
+    "bootShellScan": {
+      "bytes": 153467,
+      "listeners": 69,
+      "timers": 2,
+      "observers": 0,
+      "lines": 4379,
+      "rows": [
+        {
+          "file": "js/app.js",
+          "bytes": 11326,
+          "lines": 286,
+          "listeners": 10,
+          "timers": 1,
+          "observers": 0
+        },
+        {
+          "file": "js/core/logger.js",
+          "bytes": 8857,
+          "lines": 295,
+          "listeners": 0,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/consoleGuardian.js",
+          "bytes": 13563,
+          "lines": 410,
+          "listeners": 8,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/runtimeErrorCollector.js",
+          "bytes": 6478,
+          "lines": 203,
+          "listeners": 7,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/runtimeErrorStore.js",
+          "bytes": 5984,
+          "lines": 206,
+          "listeners": 0,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/diagnosticsOrchestrator.js",
+          "bytes": 6230,
+          "lines": 178,
+          "listeners": 1,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/developerVaultPanel.js",
+          "bytes": 30365,
+          "lines": 669,
+          "listeners": 15,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/diagnostics/devVault.js",
+          "bytes": 1201,
+          "lines": 43,
+          "listeners": 0,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/core/bootstrapProfiler.js",
+          "bytes": 9371,
+          "lines": 287,
+          "listeners": 0,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/controllers/navigation.js",
+          "bytes": 9249,
+          "lines": 296,
+          "listeners": 2,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/core/sideMenu.js",
+          "bytes": 28125,
+          "lines": 823,
+          "listeners": 10,
+          "timers": 1,
+          "observers": 0
+        },
+        {
+          "file": "js/core/settings.js",
+          "bytes": 12295,
+          "lines": 348,
+          "listeners": 8,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/core/pwaInstall.js",
+          "bytes": 7558,
+          "lines": 235,
+          "listeners": 6,
+          "timers": 0,
+          "observers": 0
+        },
+        {
+          "file": "js/core/offlineSync.js",
+          "bytes": 2865,
+          "lines": 100,
+          "listeners": 2,
+          "timers": 0,
+          "observers": 0
+        }
+      ]
+    }
+  },
+  "views": {
+    "home": {
+      "file": "js/views/home.js",
+      "bytes": 82366,
+      "lines": 1826,
+      "listeners": 11,
+      "timers": 1,
+      "observers": 0
+    },
+    "map": {
+      "file": "js/views/map.js",
+      "bytes": 129984,
+      "lines": 3569,
+      "listeners": 26,
+      "timers": 11,
+      "observers": 1
+    },
+    "producer": {
+      "file": "js/views/producerModal.js",
+      "bytes": 65582,
+      "lines": 1594,
+      "listeners": 14,
+      "timers": 3,
+      "observers": 0
+    }
+  },
+  "bundle": {
+    "bytes": 4699405,
+    "mb": 4.48
+  },
+  "browserProbe": "// W przeglądarce (localhost / ?dev=1) — pomiar render + FPS scroll:\nasync function rgPerfProbe() {\n  const m = (label, fn) => {\n    const t0 = performance.now();\n    return Promise.resolve(fn()).then(() => ({\n      label,\n      ms: Math.round(performance.now() - t0)\n    }));\n  };\n  const out = {};\n  out.bootstrap = __RG_BOOTSTRAP__?.report?.()?.timings;\n  out.home = await m('render Home', () => navigateTo('home', { force: true }));\n  await new Promise(r => setTimeout(r, 400));\n  out.map = await m('render Map', () => navigateTo('map', { force: true }));\n  await new Promise(r => setTimeout(r, 800));\n  const p = window.__RG_PRODUCERS__?.[0] || document.querySelector('[data-producer-id]');\n  if (p?.id || p?.dataset?.producerId) {\n    const id = p.id || p.dataset.producerId;\n    out.producer = await m('open Producer', () => import('./views/producerModal.js').then(m => m.openProducerModal(id)));\n  }\n  out.memory = performance.memory ? {\n    usedMB: Math.round(performance.memory.usedJSHeapSize / 1048576),\n    totalMB: Math.round(performance.memory.totalJSHeapSize / 1048576)\n  } : null;\n  navigateTo('home', { force: true });\n  await new Promise(r => setTimeout(r, 300));\n  let frames = 0, t = performance.now();\n  const el = document.querySelector('.home-page') || document.getElementById('app');\n  for (let i = 0; i < 20; i++) { el?.scrollBy?.(0, 120); await new Promise(r => requestAnimationFrame(r)); frames++; }\n  out.fpsScroll = Math.round(frames / ((performance.now() - t) / 1000));\n  console.table(out);\n  return out;\n}",
+  "runtimeGuide": [
+    {
+      "metric": "Bootstrap",
+      "target": "≤120 ms",
+      "how": "__RG_BOOTSTRAP__.report()"
+    },
+    {
+      "metric": "Render Home",
+      "target": "<150 ms",
+      "how": "rgPerfProbe() · Performance tab"
+    },
+    {
+      "metric": "Render Map",
+      "target": "<800 ms",
+      "how": "navigateTo map · Leaflet tile load"
+    },
+    {
+      "metric": "Render Producer",
+      "target": "<300 ms",
+      "how": "openProducerModal · modal paint"
+    },
+    {
+      "metric": "FPS scroll",
+      "target": "≥30",
+      "how": "__RG_VIRTUAL__.run() lub rgPerfProbe()"
+    },
+    {
+      "metric": "Memory leak",
+      "target": "≤+25 MB",
+      "how": "performance.memory · sesja Virtual User"
+    }
+  ],
+  "autoApply": false
+}

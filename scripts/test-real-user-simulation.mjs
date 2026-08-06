@@ -46,7 +46,9 @@ assert(src.includes('__RG_REAL_USERS__'), '__RG_REAL_USERS__');
 assert(src.includes('realusers'), 'URL flag');
 
 const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initRealUserSimulation'), 'app.js init');
+const orch = readFileSync(join(ROOT, 'js/diagnostics/diagnosticsOrchestrator.js'), 'utf8');
+assert(app.includes('initDiagnosticsOrchestrator'), 'app.js orchestrator');
+assert(orch.includes('realUserSimulation.initRealUserSimulation'), 'orchestrator lazy RUS');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('Real Users') || panel.includes('real-users'), 'dev panel');

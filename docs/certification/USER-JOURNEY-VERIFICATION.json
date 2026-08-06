@@ -1,0 +1,222 @@
+{
+  "etap": "45-D-T6",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 10,
+    "total": 10,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 13,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 13,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 13,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 2,
+    "total": 2,
+    "runs": [
+      {
+        "label": "favorites-store",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "real-users",
+        "ok": true,
+        "exit": 0
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:32.515Z",
+  "scenario": [
+    "Otwórz aplikację (URL / PWA)",
+    "Klik 🏠 Home (dolny nav)",
+    "Klik 🗺️ Mapa",
+    "Klik marker / producent → modal",
+    "Dodaj do ulubionych (❤️ w modalu)",
+    "Zmień język (nagłówek DE/EN/PL…)",
+    "Wróć (zamknij modal · nav Home)",
+    "Zamknij app (force-quit PWA / zamknij kartę)",
+    "Otwórz ponownie",
+    "☰ Ulubione — producent nadal na liście"
+  ],
+  "steps": [
+    {
+      "id": "J01-open-app",
+      "step": 1,
+      "label": "Otwórz aplikację",
+      "status": "pass",
+      "detail": "bootstrap · #app · splash screen",
+      "layer": "static"
+    },
+    {
+      "id": "J02-home",
+      "step": 2,
+      "label": "Przejdź Home",
+      "status": "pass",
+      "detail": "bottom-nav home · navigateTo · renderHome",
+      "layer": "static"
+    },
+    {
+      "id": "J03-map",
+      "step": 3,
+      "label": "Otwórz mapę",
+      "status": "pass",
+      "detail": "navigateTo(map) · renderMap",
+      "layer": "static"
+    },
+    {
+      "id": "J04-producer",
+      "step": 4,
+      "label": "Otwórz producenta",
+      "status": "pass",
+      "detail": "openProducerModal · modal fullscreen",
+      "layer": "static"
+    },
+    {
+      "id": "J05-favorites",
+      "step": 5,
+      "label": "Dodaj do ulubionych",
+      "status": "pass",
+      "detail": "addFavorite → favoritesStore · localStorage",
+      "layer": "static"
+    },
+    {
+      "id": "J06-language",
+      "step": 6,
+      "label": "Zmień język",
+      "status": "pass",
+      "detail": "setAppLanguage → saveSettings · i18n sync",
+      "layer": "static"
+    },
+    {
+      "id": "J07-back",
+      "step": 7,
+      "label": "Wróć",
+      "status": "pass",
+      "detail": "close modal · nav home · VIEW_CHANGED",
+      "layer": "static"
+    },
+    {
+      "id": "J08-close-app",
+      "step": 8,
+      "label": "Zamknij aplikację",
+      "status": "pass",
+      "detail": "stan w localStorage (nie session) · brak clear przy unmount",
+      "layer": "static"
+    },
+    {
+      "id": "J09-reopen",
+      "step": 9,
+      "label": "Otwórz ponownie",
+      "status": "pass",
+      "detail": "bootstrap: syncFavorites · settings · navigation",
+      "layer": "static"
+    },
+    {
+      "id": "J10-persist",
+      "step": 10,
+      "label": "Stan zachowany po reopen",
+      "status": "pass",
+      "detail": "favorites + settings persist keys · sync at boot",
+      "layer": "static"
+    },
+    {
+      "id": "J11-virtual-user-scenario",
+      "step": "cross",
+      "label": "Virtual User: home-map-producer + favorites + language + restart",
+      "status": "not_verified",
+      "detail": "__RG_VIRTUAL__.run() w przeglądarce — wiring w kodzie ≠ wykonanie",
+      "layer": "runtime"
+    },
+    {
+      "id": "J12-rus-steps",
+      "step": "cross",
+      "label": "Real User Simulation: open-app → map → producer → favorites → language",
+      "status": "not_verified",
+      "detail": "__RG_REAL_USERS__.run() · ?realusers=1 — wymaga przeglądarki",
+      "layer": "runtime"
+    },
+    {
+      "id": "J13-persist-runtime",
+      "step": 10,
+      "label": "Runtime: ulubione + język po reopen (przeglądarka)",
+      "status": "not_verified",
+      "detail": "Persist Safari/PWA/private mode — poza Node localStorage mock",
+      "layer": "runtime"
+    }
+  ],
+  "manual": [
+    {
+      "n": 1,
+      "action": "Otwórz aplikację (URL / PWA)",
+      "expect": "Splash → Home, bez białego ekranu"
+    },
+    {
+      "n": 2,
+      "action": "Klik 🏠 Home (dolny nav)",
+      "expect": "Widok Home aktywny"
+    },
+    {
+      "n": 3,
+      "action": "Klik 🗺️ Mapa",
+      "expect": "Mapa Leaflet · markery"
+    },
+    {
+      "n": 4,
+      "action": "Klik marker / producent → modal",
+      "expect": "Pełnoekranowy modal producenta"
+    },
+    {
+      "n": 5,
+      "action": "Dodaj do ulubionych (❤️ w modalu)",
+      "expect": "Toast · badge ulubionych"
+    },
+    {
+      "n": 6,
+      "action": "Zmień język (nagłówek DE/EN/PL…)",
+      "expect": "UI przetłumaczone · LS settings"
+    },
+    {
+      "n": 7,
+      "action": "Wróć (zamknij modal · nav Home)",
+      "expect": "Home bez zawieszenia"
+    },
+    {
+      "n": 8,
+      "action": "Zamknij app (force-quit PWA / zamknij kartę)",
+      "expect": "—"
+    },
+    {
+      "n": 9,
+      "action": "Otwórz ponownie",
+      "expect": "Bootstrap · ten sam język"
+    },
+    {
+      "n": 10,
+      "action": "☰ Ulubione — producent nadal na liście",
+      "expect": "Persist favorites + language"
+    }
+  ],
+  "browserAutomation": "// W konsoli (localhost / ?dev=1 / po PIN):\nawait __RG_VIRTUAL__.run({ scenarios: ['home-map-producer-back','favorites','language'] });\n// lub pełna symulacja:\nawait __RG_REAL_USERS__.runOne(1);\n\n// Hard reload persist (po ręcznym dodaniu ulubionych + zmianie języka):\nlocation.reload();\n// Po reload: localStorage.regionalny_smak_favorites · regionalny_smak_settings",
+  "storageKeys": {
+    "favorites": "regionalny_smak_favorites",
+    "settings": "regionalny_smak_settings"
+  },
+  "autoApply": false
+}

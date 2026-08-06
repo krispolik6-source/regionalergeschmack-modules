@@ -6,8 +6,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { readPwaVersionFromModule } from './lib/read-pwa-version.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+const pwaV = readPwaVersionFromModule(root);
 let failures = 0;
 
 function ok(msg) { console.log(`✅ ${msg}`); }
@@ -26,7 +28,7 @@ if (index.includes('id="rgSplashScreen"') && index.includes('class="rg-splash"')
     ok('index.html: element #rgSplashScreen');
 } else fail('index.html: brak #rgSplashScreen');
 
-if (/logo-master\.svg\?v=30/.test(index) && index.includes('rg-splash__logo')) {
+if (new RegExp(`logo-master\\.svg\\?v=${pwaV}`).test(index) && index.includes('rg-splash__logo')) {
     ok('index.html: logo-master.svg na splash');
 } else fail('index.html: brak logo-master na splash');
 

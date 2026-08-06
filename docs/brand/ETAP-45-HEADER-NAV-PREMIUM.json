@@ -2,7 +2,7 @@
   "id": "final-premium-ui-polish-header-nav",
   "etap": 45,
   "title": "ETAP – Final Premium UI Polish (Header + Bottom Navigation)",
-  "generatedAt": "2026-08-04T18:19:43.506Z",
+  "generatedAt": "2026-08-05T19:31:23.285Z",
   "policy": {
     "cssOnly": true,
     "htmlMinimal": true,
@@ -31,9 +31,9 @@
     ]
   },
   "summary": {
-    "checksPassed": 64,
+    "checksPassed": 62,
     "checksTotal": 64,
-    "ok": true
+    "ok": false
   },
   "scope": [
     "Header Premium (logo, tytuł, odstępy, oś, przyciski 44px)",
@@ -137,7 +137,7 @@
     },
     {
       "id": "html-header-brand",
-      "ok": true,
+      "ok": false,
       "detail": "HTML: .header-brand grupuje logo + tytuł"
     },
     {
@@ -157,7 +157,7 @@
     },
     {
       "id": "theme-toggle-no-header-icon",
-      "ok": true,
+      "ok": false,
       "detail": "HTML: toggle bez klasy header-icon (minimalny HTML)"
     },
     {

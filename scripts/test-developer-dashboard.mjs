@@ -4,6 +4,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -39,8 +40,7 @@ for (const f of features) {
     assert(src.includes(f), `feature ${f}`);
 }
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initDeveloperDashboard'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'developerDashboard.initDeveloperDashboard', 'orchestrator lazy developerDashboard');
 
 // Pure builder (bez DOM / premium imports – osobny plik nie wyciągnięty; testujemy przez dynamic import z stubami)
 globalThis.localStorage = {

@@ -8,9 +8,10 @@
 import { APP_NAME, APP_VERSION } from '../config.js';
 import { getLastHealthReport } from './healthMonitor.js';
 import { getGuardianReports } from './consoleGuardian.js';
+import { countRuntimeErrors } from './runtimeErrorStore.js';
 import { getUiGuardianFindings } from './uiGuardian.js';
 import { getStorageHealth } from './memoryCleaner.js';
-import { loadDocsStats } from './reportManagerClient.js';
+import { loadDocsStats, canFetchDocsRuntime } from './reportManagerClient.js';
 
 function clamp(n) {
     if (n == null || Number.isNaN(Number(n))) return null;
@@ -26,6 +27,7 @@ function num(...vals) {
 }
 
 async function fetchJson(url) {
+    if (!canFetchDocsRuntime()) return null;
     try {
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) return null;
@@ -83,7 +85,14 @@ export function buildDevStatusBoard(sources = {}) {
     const runtime = health?.runtime || {};
 
     const consoleReports = Array.isArray(sources.consoleReports) ? sources.consoleReports : [];
+    let feedCount = 0;
+    try {
+        feedCount = countRuntimeErrors();
+    } catch {
+        feedCount = 0;
+    }
     const consoleErrors = Math.max(
+        feedCount,
         consoleReports.length,
         num(runtime.jsErrors, health?.runtime?.jsErrors, 0) || 0
     );
@@ -369,6 +378,8 @@ export async function loadDevStatusBoardSources() {
         mapSnapshot = null;
     }
 
+    const docsFetchAllowed = canFetchDocsRuntime();
+
     const [
         healthDoc,
         brand,
@@ -382,20 +393,22 @@ export async function loadDevStatusBoardSources() {
         uiGuardian,
         polish,
         selfReflection
-    ] = await Promise.all([
-        fetchJson('/docs/health/latest.json'),
-        fetchJson('/docs/brand-protection/latest.json'),
-        fetchJson('/docs/living-brand/latest.json'),
-        fetchJson('/docs/intelligence/latest.json'),
-        fetchJson('/docs/living-region/latest.json'),
-        fetchJson('/docs/trust/latest.json'),
-        fetchJson('/docs/user-taste/latest.json'),
-        fetchJson('/docs/final/release-validator-latest.json'),
-        fetchJson('/docs/map-guardian/latest.json'),
-        fetchJson('/docs/ui-guardian/latest.json'),
-        fetchJson('/docs/premium/PRODUCTION-POLISH.json'),
-        fetchJson('/docs/self-reflection/latest.json')
-    ]);
+    ] = docsFetchAllowed
+        ? await Promise.all([
+            fetchJson('/docs/health/latest.json'),
+            fetchJson('/docs/brand-protection/latest.json'),
+            fetchJson('/docs/living-brand/latest.json'),
+            fetchJson('/docs/intelligence/latest.json'),
+            fetchJson('/docs/living-region/latest.json'),
+            fetchJson('/docs/trust/latest.json'),
+            fetchJson('/docs/user-taste/latest.json'),
+            fetchJson('/docs/final/release-validator-latest.json'),
+            fetchJson('/docs/map-guardian/latest.json'),
+            fetchJson('/docs/ui-guardian/latest.json'),
+            fetchJson('/docs/premium/PRODUCTION-POLISH.json'),
+            fetchJson('/docs/self-reflection/latest.json')
+        ])
+        : [null, null, null, null, null, null, null, null, null, null, null, null];
 
     let storage = null;
     try {
@@ -405,10 +418,12 @@ export async function loadDevStatusBoardSources() {
     }
 
     let docsStats = null;
-    try {
-        docsStats = await loadDocsStats();
-    } catch {
-        docsStats = null;
+    if (docsFetchAllowed) {
+        try {
+            docsStats = await loadDocsStats();
+        } catch {
+            docsStats = null;
+        }
     }
 
     let consoleReports = [];

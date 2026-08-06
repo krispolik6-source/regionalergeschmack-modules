@@ -101,10 +101,12 @@ if (serverUp) {
         fail('HTTP: producerModal – problem z mapą');
     }
 
-    if (html.includes('header-brand-mark') && html.includes('logo-master.svg')) {
-        ok('HTML: nagłówek z logo-master.svg (ikona aplikacji)');
+    const hasExpandableBrand = html.includes('header-brand-icon') && html.includes('header-brand-layer');
+    const hasLegacyBrand = html.includes('header-brand-mark') && html.includes('logo-master.svg');
+    if (hasExpandableBrand || hasLegacyBrand) {
+        ok('HTML: nagłówek z ikoną marki (SVG expandable lub logo-master)');
     } else {
-        fail('HTML: brak logo-master.svg w nagłówku');
+        fail('HTML: brak ikony marki w nagłówku');
     }
 }
 

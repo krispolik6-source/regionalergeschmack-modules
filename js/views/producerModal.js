@@ -688,7 +688,7 @@ function buildProductCard(producerId, product, index, category, producer = null)
     const availability = buildAvailabilityBadgeHtml(product, t);
 
     return `
-        <article class="producer-product-card" style="content-visibility:auto;contain-intrinsic-size:120px">
+        <article class="producer-product-card">
             <div class="producer-product-image">
                 ${imageHtml}
             </div>
@@ -1428,14 +1428,10 @@ export function openProducerModal(producerId, hint = null) {
             try {
                 let producer;
                 try {
-                    producer = upsertProducer(
-                        Array.isArray(found.products) && found.products.length
-                            ? found
-                            : enrichProducerWithProducts(found)
-                    );
+                    producer = upsertProducer(found);
                 } catch (error) {
                     console.error('[Modal] enrich/upsert:', error);
-                    producer = found;
+                    producer = enrichProducerWithProducts(found);
                 }
 
                 try {

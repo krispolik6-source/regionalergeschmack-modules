@@ -859,7 +859,11 @@ html.dark-mode .header-left h1 {
     position: sticky;
     top: 0;
     z-index: 1000;
-    transition: transform 0.3s ease;
+    margin-bottom: 0;
+    will-change: transform;
+    transition:
+        transform 0.3s ease,
+        margin-bottom 0.3s ease;
 }
 
 .main-header.header-premium.header-premium--hidden {
@@ -940,8 +944,20 @@ body:has(.main-header.header-premium) {
     box-shadow:
         0 4px 16px rgba(42, 63, 40, 0.08),
         0 1px 0 rgba(201, 162, 39, 0.14) !important;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 0;
+    will-change: transform;
+    transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        margin-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+}
+
+/* Map viewport / #app — --header-height musi dziedziczyć z body (nie tylko z .main-header) */
+body:has(.main-header.header-expandable) {
+    --ph-brand-layer-h: 52px;
+    --ph-action-bar-h: 56px;
+    --ph-header-h: calc(var(--ph-brand-layer-h) + var(--ph-action-bar-h));
+    --header-height: var(--ph-header-h);
 }
 
 .main-header.header-expandable.header-expandable--hidden,
@@ -949,6 +965,65 @@ body:has(.main-header.header-premium) {
     transform: translateY(-100%);
     margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top, 0px)));
     pointer-events: none;
+}
+
+/* Expandable action bar — język + motyw obok profilu, bez nakładania */
+.main-header.header-expandable .header-lang-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    min-width: 0;
+    max-width: min(6.5rem, 28vw);
+    margin: 0;
+    overflow: visible;
+    z-index: 2;
+}
+
+.main-header.header-expandable #languageSwitcherBtn {
+    width: auto !important;
+    min-width: 36px !important;
+    max-width: 100% !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 0 6px !important;
+    font-size: 0.75rem !important;
+    border-radius: 10px !important;
+    background: rgba(42, 63, 40, 0.06) !important;
+    color: #2a3f28 !important;
+}
+
+.main-header.header-expandable #languageSwitcherLabel {
+    color: #2a3f28 !important;
+    -webkit-text-fill-color: #2a3f28 !important;
+}
+
+.main-header.header-expandable #darkModeToggleBtn.theme-toggle-premium,
+.main-header.header-expandable #darkModeToggleBtn {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    margin-inline-start: 2px !important;
+    font-size: 1.2rem !important;
+    filter: none;
+}
+
+body.dark-mode .main-header.header-expandable #languageSwitcherBtn,
+html.dark-mode .main-header.header-expandable #languageSwitcherBtn {
+    background: rgba(255, 254, 248, 0.1) !important;
+    color: #fffef8 !important;
+}
+
+body.dark-mode .main-header.header-expandable #languageSwitcherLabel,
+html.dark-mode .main-header.header-expandable #languageSwitcherLabel {
+    color: #fffef8 !important;
+    -webkit-text-fill-color: #fffef8 !important;
 }
 
 .main-header.header-expandable .header-content {
@@ -1064,7 +1139,8 @@ body:has(.main-header.header-premium) {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    gap: 2px;
+    min-width: 0;
+    gap: 4px;
 }
 
 .main-header.header-expandable .header-action-btn {
@@ -1205,6 +1281,13 @@ html.dark-mode .main-header.header-expandable .header-notifications-dot {
 
 /* ——— Mobile ——— */
 @media screen and (max-width: 429px) {
+    body:has(.main-header.header-expandable) {
+        --ph-brand-layer-h: 48px;
+        --ph-action-bar-h: 52px;
+        --ph-header-h: calc(var(--ph-brand-layer-h) + var(--ph-action-bar-h));
+        --header-height: var(--ph-header-h);
+    }
+
     .main-header.header-expandable {
         --ph-brand-layer-h: 48px;
         --ph-action-bar-h: 52px;

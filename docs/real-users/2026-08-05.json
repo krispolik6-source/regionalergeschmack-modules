@@ -1,0 +1,7662 @@
+{
+  "id": "real-users-cli-2026-08-05",
+  "title": "Real User Simulation – 50 person",
+  "generatedAt": "2026-08-05T19:57:15.662Z",
+  "reason": "cli-heuristic",
+  "policy": {
+    "architectureUnchanged": true,
+    "autoFix": false,
+    "optIn": true,
+    "requiresHumanAcceptance": true,
+    "note": "Pełny live run: ?realusers=1 lub __RG_REAL_USERS__.run(), potem --import="
+  },
+  "summary": {
+    "personas": 50,
+    "journeySteps": 14,
+    "avgScore": 91,
+    "pass": 40,
+    "warn": 4,
+    "fail": 6,
+    "issueCount": 71,
+    "mode": "heuristic"
+  },
+  "signals": {
+    "healthMobile": 100,
+    "healthUx": 85,
+    "healthPerformance": 85,
+    "healthAccessibility": 100,
+    "healthPwa": 100,
+    "healthTranslation": 40,
+    "virtualScore": 80,
+    "touchIssues": 1,
+    "i18nEn": true,
+    "i18nPl": true,
+    "offlineSupport": true,
+    "darkMode": true,
+    "seasonThemeOptional": true
+  },
+  "worst": [
+    {
+      "code": "P01",
+      "name": "Elżbieta",
+      "tagline": "75 lat · nigdy nie używała smartfona",
+      "score": 45,
+      "status": "fail",
+      "high": 4
+    },
+    {
+      "code": "P23",
+      "name": "Ralf",
+      "tagline": "Drżenie rąk · motoryka",
+      "score": 45,
+      "status": "fail",
+      "high": 4
+    },
+    {
+      "code": "P42",
+      "name": "Otto",
+      "tagline": "68 lat · czyta wolno",
+      "score": 45,
+      "status": "fail",
+      "high": 4
+    },
+    {
+      "code": "P18",
+      "name": "Franz",
+      "tagline": "Na słońcu · outdoor",
+      "score": 60,
+      "status": "fail",
+      "high": 4
+    },
+    {
+      "code": "P22",
+      "name": "Helga",
+      "tagline": "Słaby wzrok · duży tekst",
+      "score": 60,
+      "status": "fail",
+      "high": 4
+    },
+    {
+      "code": "P03",
+      "name": "Emily",
+      "tagline": "Turystka z Anglii",
+      "score": 68,
+      "status": "fail",
+      "high": 3
+    },
+    {
+      "code": "P24",
+      "name": "Sam",
+      "tagline": "Czytnik ekranu (struktura a11y)",
+      "score": 70,
+      "status": "warn",
+      "high": 3
+    },
+    {
+      "code": "P43",
+      "name": "Zoe",
+      "tagline": "Fotografka · dużo zdjęć",
+      "score": 70,
+      "status": "warn",
+      "high": 3
+    },
+    {
+      "code": "P08",
+      "name": "Hans",
+      "tagline": "Starszy Samsung",
+      "score": 80,
+      "status": "warn",
+      "high": 2
+    },
+    {
+      "code": "P47",
+      "name": "Android Go",
+      "tagline": "Niski RAM · Go edition",
+      "score": 80,
+      "status": "warn",
+      "high": 2
+    }
+  ],
+  "best": [
+    {
+      "code": "P02",
+      "name": "Jonas",
+      "tagline": "25 lat · jedzie rowerem",
+      "score": 100,
+      "status": "pass",
+      "high": 0
+    },
+    {
+      "code": "P04",
+      "name": "Marta",
+      "tagline": "Mama z dzieckiem",
+      "score": 100,
+      "status": "pass",
+      "high": 0
+    },
+    {
+      "code": "P06",
+      "name": "Klara",
+      "tagline": "Kolorowe motywy wyłączone",
+      "score": 100,
+      "status": "pass",
+      "high": 0
+    },
+    {
+      "code": "P09",
+      "name": "Sophie",
+      "tagline": "iPhone SE",
+      "score": 100,
+      "status": "pass",
+      "high": 0
+    },
+    {
+      "code": "P11",
+      "name": "Mia",
+      "tagline": "Nastolatka · trendy farmy",
+      "score": 100,
+      "status": "pass",
+      "high": 0
+    }
+  ],
+  "personas": [
+    {
+      "persona": {
+        "id": 1,
+        "code": "P01",
+        "name": "Elżbieta",
+        "tagline": "75 lat · nigdy nie używała smartfona",
+        "age": 75,
+        "role": "senior-novice",
+        "device": {
+          "family": "android",
+          "model": "Budget phone",
+          "width": 360,
+          "height": 640,
+          "dpr": 2
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "novice",
+          "slow",
+          "large-touch",
+          "fear-mistakes",
+          "simple-nav"
+        ]
+      },
+      "score": 45,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            },
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "cart",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 1,
+          "persona": "P01",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 4,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 2,
+        "code": "P02",
+        "name": "Jonas",
+        "tagline": "25 lat · jedzie rowerem",
+        "age": 25,
+        "role": "cyclist",
+        "device": {
+          "family": "android",
+          "model": "Midrange phone",
+          "width": 390,
+          "height": 844,
+          "dpr": 2.5
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "one-hand",
+          "outdoor",
+          "gps-heavy",
+          "fast",
+          "glare"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 3,
+        "code": "P03",
+        "name": "Emily",
+        "tagline": "Turystka z Anglii",
+        "age": 29,
+        "role": "tourist-en",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 13",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "en",
+        "traits": [
+          "tourist",
+          "i18n-en",
+          "search-first",
+          "photos"
+        ]
+      },
+      "score": 68,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 3,
+          "persona": "P03",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 3,
+          "persona": "P03",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        },
+        {
+          "personaId": 3,
+          "persona": "P03",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 3,
+          "persona": "P03",
+          "step": "language",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        }
+      ],
+      "summary": {
+        "high": 3,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 4,
+        "code": "P04",
+        "name": "Marta",
+        "tagline": "Mama z dzieckiem",
+        "age": 34,
+        "role": "parent",
+        "device": {
+          "family": "android",
+          "model": "Galaxy A",
+          "width": 384,
+          "height": 854,
+          "dpr": 2.75
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "interrupted",
+          "one-hand",
+          "fast-exit",
+          "cart",
+          "favorites"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 5,
+        "code": "P05",
+        "name": "Tomasz",
+        "tagline": "Bardzo słaby internet",
+        "age": 41,
+        "role": "slow-network",
+        "device": {
+          "family": "android",
+          "model": "Older phone",
+          "width": 360,
+          "height": 720,
+          "dpr": 2
+        },
+        "network": "2g",
+        "language": "de",
+        "traits": [
+          "slow-net",
+          "offline-prone",
+          "patience-low",
+          "data-saver"
+        ]
+      },
+      "score": 95,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Mapa przy słabej sieci",
+              "detail": "Ryzyko długiego ładowania kafelków / markerów"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 5,
+          "persona": "P05",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Mapa przy słabej sieci",
+          "detail": "Ryzyko długiego ładowania kafelków / markerów"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 1,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 6,
+        "code": "P06",
+        "name": "Klara",
+        "tagline": "Kolorowe motywy wyłączone",
+        "age": 38,
+        "role": "plain-theme",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 12",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "no-season-theme",
+          "reduced-decoration",
+          "focus-content"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 7,
+        "code": "P07",
+        "name": "Peter",
+        "tagline": "Daltonista (deuteranopia)",
+        "age": 45,
+        "role": "colorblind",
+        "device": {
+          "family": "android",
+          "model": "Pixel",
+          "width": 412,
+          "height": 915,
+          "dpr": 2.6
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "colorblind",
+          "map-colors",
+          "status-icons"
+        ]
+      },
+      "score": 85,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zależność od koloru",
+              "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zależność od koloru",
+              "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+            }
+          ]
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zależność od koloru",
+              "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+            }
+          ]
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 7,
+          "persona": "P07",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zależność od koloru",
+          "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+        },
+        {
+          "personaId": 7,
+          "persona": "P07",
+          "step": "filters",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zależność od koloru",
+          "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+        },
+        {
+          "personaId": 7,
+          "persona": "P07",
+          "step": "theme",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zależność od koloru",
+          "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 8,
+        "code": "P08",
+        "name": "Hans",
+        "tagline": "Starszy Samsung",
+        "age": 52,
+        "role": "legacy-android",
+        "device": {
+          "family": "android",
+          "model": "Galaxy S8",
+          "width": 360,
+          "height": 740,
+          "dpr": 4
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "low-ram",
+          "old-webview",
+          "performance"
+        ]
+      },
+      "score": 80,
+      "status": "warn",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Wydajność na starym urządzeniu",
+              "detail": "perf 85 · VU 80"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Wydajność na starym urządzeniu",
+              "detail": "perf 85 · VU 80"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 8,
+          "persona": "P08",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Wydajność na starym urządzeniu",
+          "detail": "perf 85 · VU 80"
+        },
+        {
+          "personaId": 8,
+          "persona": "P08",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Wydajność na starym urządzeniu",
+          "detail": "perf 85 · VU 80"
+        }
+      ],
+      "summary": {
+        "high": 2,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 9,
+        "code": "P09",
+        "name": "Sophie",
+        "tagline": "iPhone SE",
+        "age": 27,
+        "role": "small-phone",
+        "device": {
+          "family": "ios",
+          "model": "iPhone SE",
+          "width": 375,
+          "height": 667,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "small-screen",
+          "thumb-reach",
+          "compact-ui"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 10,
+        "code": "P10",
+        "name": "Lukas",
+        "tagline": "Tablet",
+        "age": 36,
+        "role": "tablet",
+        "device": {
+          "family": "android",
+          "model": "Galaxy Tab",
+          "width": 800,
+          "height": 1280,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "tablet",
+          "landscape-ok",
+          "large-canvas"
+        ]
+      },
+      "score": 96,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 10,
+          "persona": "P10",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        },
+        {
+          "personaId": 10,
+          "persona": "P10",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 2,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 11,
+        "code": "P11",
+        "name": "Mia",
+        "tagline": "Nastolatka · trendy farmy",
+        "age": 17,
+        "role": "teen",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 14",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "fast",
+          "visual",
+          "social-share"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 12,
+        "code": "P12",
+        "name": "Georg",
+        "tagline": "Rolnik · sprzedawca",
+        "age": 48,
+        "role": "producer",
+        "device": {
+          "family": "android",
+          "model": "Work phone",
+          "width": 360,
+          "height": 800,
+          "dpr": 2
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "producer-view",
+          "profile",
+          "offline-prone"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 13,
+        "code": "P13",
+        "name": "Anna",
+        "tagline": "Subskrybentka Premium",
+        "age": 33,
+        "role": "premium",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 15",
+          "width": 393,
+          "height": 852,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "premium",
+          "favorites",
+          "expect-polish"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 14,
+        "code": "P14",
+        "name": "Gość",
+        "tagline": "Bez konta · pierwszy raz",
+        "age": 30,
+        "role": "guest",
+        "device": {
+          "family": "android",
+          "model": "Generic",
+          "width": 390,
+          "height": 844,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "guest",
+          "novice",
+          "fear-mistakes"
+        ]
+      },
+      "score": 85,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 14,
+          "persona": "P14",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 14,
+          "persona": "P14",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 14,
+          "persona": "P14",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 15,
+        "code": "P15",
+        "name": "Lea",
+        "tagline": "Leworęczna · jeden kciuk",
+        "age": 26,
+        "role": "left-hand",
+        "device": {
+          "family": "android",
+          "model": "Pixel",
+          "width": 412,
+          "height": 915,
+          "dpr": 2.6
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "one-hand",
+          "left-hand",
+          "thumb-reach"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 16,
+        "code": "P16",
+        "name": "Omar",
+        "tagline": "Jedną ręką w autobusie",
+        "age": 31,
+        "role": "commuter",
+        "device": {
+          "family": "android",
+          "model": "Midrange",
+          "width": 384,
+          "height": 854,
+          "dpr": 2.5
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "one-hand",
+          "interrupted",
+          "slow-net"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 17,
+        "code": "P17",
+        "name": "Nina",
+        "tagline": "Praca nocna · tylko dark mode",
+        "age": 28,
+        "role": "night",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 11",
+          "width": 414,
+          "height": 896,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "dark-only",
+          "glare-sensitive"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 18,
+        "code": "P18",
+        "name": "Franz",
+        "tagline": "Na słońcu · outdoor",
+        "age": 55,
+        "role": "outdoor-sun",
+        "device": {
+          "family": "android",
+          "model": "Rugged",
+          "width": 360,
+          "height": 720,
+          "dpr": 2
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "glare",
+          "outdoor",
+          "high-contrast"
+        ]
+      },
+      "score": 60,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 18,
+          "persona": "P18",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 18,
+          "persona": "P18",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 18,
+          "persona": "P18",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 18,
+          "persona": "P18",
+          "step": "cart",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        }
+      ],
+      "summary": {
+        "high": 4,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 19,
+        "code": "P19",
+        "name": "Ingrid",
+        "tagline": "Lokalna z Regensburga",
+        "age": 62,
+        "role": "local",
+        "device": {
+          "family": "android",
+          "model": "Galaxy A",
+          "width": 384,
+          "height": 854,
+          "dpr": 2.5
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "local",
+          "favorites",
+          "map"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 20,
+        "code": "P20",
+        "name": "Kasia",
+        "tagline": "Turystka z Polski",
+        "age": 24,
+        "role": "tourist-pl",
+        "device": {
+          "family": "android",
+          "model": "Xiaomi",
+          "width": 393,
+          "height": 873,
+          "dpr": 2.75
+        },
+        "network": "4g",
+        "language": "pl",
+        "traits": [
+          "tourist",
+          "i18n-pl",
+          "search-first"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 20,
+          "persona": "P20",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 21,
+        "code": "P21",
+        "name": "Mark",
+        "tagline": "Głuchy · tylko wizualnie",
+        "age": 40,
+        "role": "deaf",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 12",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "visual-only",
+          "no-audio-cues"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 22,
+        "code": "P22",
+        "name": "Helga",
+        "tagline": "Słaby wzrok · duży tekst",
+        "age": 71,
+        "role": "low-vision",
+        "device": {
+          "family": "android",
+          "model": "Large font phone",
+          "width": 360,
+          "height": 740,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "large-text",
+          "high-contrast",
+          "slow"
+        ]
+      },
+      "score": 60,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 22,
+          "persona": "P22",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 22,
+          "persona": "P22",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 22,
+          "persona": "P22",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 22,
+          "persona": "P22",
+          "step": "cart",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        }
+      ],
+      "summary": {
+        "high": 4,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 23,
+        "code": "P23",
+        "name": "Ralf",
+        "tagline": "Drżenie rąk · motoryka",
+        "age": 67,
+        "role": "motor",
+        "device": {
+          "family": "android",
+          "model": "Senior phone",
+          "width": 360,
+          "height": 640,
+          "dpr": 2
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "motor",
+          "large-touch",
+          "slow",
+          "fear-mistakes"
+        ]
+      },
+      "score": 45,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥52px · mobile score 100"
+            },
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥52px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥52px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥52px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥52px · mobile score 100"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥52px · mobile score 100"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥52px · mobile score 100"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "cart",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥52px · mobile score 100"
+        },
+        {
+          "personaId": 23,
+          "persona": "P23",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 4,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 24,
+        "code": "P24",
+        "name": "Sam",
+        "tagline": "Czytnik ekranu (struktura a11y)",
+        "age": 35,
+        "role": "screen-reader",
+        "device": {
+          "family": "ios",
+          "model": "iPhone + VoiceOver",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "en",
+        "traits": [
+          "screen-reader",
+          "a11y-structure",
+          "i18n-en"
+        ]
+      },
+      "score": 70,
+      "status": "warn",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 24,
+          "persona": "P24",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 24,
+          "persona": "P24",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 24,
+          "persona": "P24",
+          "step": "language",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        }
+      ],
+      "summary": {
+        "high": 3,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 25,
+        "code": "P25",
+        "name": "Tim",
+        "tagline": "12 lat · pod opieką",
+        "age": 12,
+        "role": "child",
+        "device": {
+          "family": "android",
+          "model": "Family tablet phone",
+          "width": 360,
+          "height": 720,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "child",
+          "simple-nav",
+          "visual"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 26,
+        "code": "P26",
+        "name": "Julia",
+        "tagline": "Lunch biznesowy · 3 minuty",
+        "age": 39,
+        "role": "rush",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 14 Pro",
+          "width": 393,
+          "height": 852,
+          "dpr": 3
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "rush",
+          "search-first",
+          "fast"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 26,
+          "persona": "P26",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 27,
+        "code": "P27",
+        "name": "Familie Weber",
+        "tagline": "Weekendowy wypad rodzinny",
+        "age": 42,
+        "role": "family",
+        "device": {
+          "family": "android",
+          "model": "Shared phone",
+          "width": 384,
+          "height": 854,
+          "dpr": 2.5
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "family",
+          "favorites",
+          "cart",
+          "map"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 28,
+        "code": "P28",
+        "name": "Sepp",
+        "tagline": "Wieś · offline-first",
+        "age": 58,
+        "role": "rural-offline",
+        "device": {
+          "family": "android",
+          "model": "Outdoor phone",
+          "width": 360,
+          "height": 720,
+          "dpr": 2
+        },
+        "network": "offline-prone",
+        "language": "de",
+        "traits": [
+          "offline-prone",
+          "slow-net",
+          "map"
+        ]
+      },
+      "score": 95,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Mapa przy słabej sieci",
+              "detail": "Ryzyko długiego ładowania kafelków / markerów"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 28,
+          "persona": "P28",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Mapa przy słabej sieci",
+          "detail": "Ryzyko długiego ładowania kafelków / markerów"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 1,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 29,
+        "code": "P29",
+        "name": "Yara",
+        "tagline": "Tryb oszczędzania danych",
+        "age": 22,
+        "role": "data-saver",
+        "device": {
+          "family": "android",
+          "model": "Entry phone",
+          "width": 360,
+          "height": 780,
+          "dpr": 2
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "data-saver",
+          "slow-net",
+          "images"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 30,
+        "code": "P30",
+        "name": "Chris",
+        "tagline": "Telefon składany",
+        "age": 32,
+        "role": "foldable",
+        "device": {
+          "family": "android",
+          "model": "Fold cover",
+          "width": 320,
+          "height": 840,
+          "dpr": 2.5
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "narrow",
+          "responsive",
+          "compact-ui"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 31,
+        "code": "P31",
+        "name": "Elena",
+        "tagline": "Chromebook / desktop",
+        "age": 44,
+        "role": "desktop",
+        "device": {
+          "family": "desktop",
+          "model": "Chromebook",
+          "width": 1280,
+          "height": 800,
+          "dpr": 1
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "desktop",
+          "mouse",
+          "wide"
+        ]
+      },
+      "score": 96,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 31,
+          "persona": "P31",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        },
+        {
+          "personaId": 31,
+          "persona": "P31",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 2,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 32,
+        "code": "P32",
+        "name": "Ben",
+        "tagline": "Telefon w landscape",
+        "age": 29,
+        "role": "landscape",
+        "device": {
+          "family": "android",
+          "model": "Phone landscape",
+          "width": 740,
+          "height": 360,
+          "dpr": 2
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "landscape",
+          "map",
+          "responsive"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 33,
+        "code": "P33",
+        "name": "Ahmed",
+        "tagline": "Prosty niemiecki (ESL)",
+        "age": 37,
+        "role": "esl",
+        "device": {
+          "family": "android",
+          "model": "Midrange",
+          "width": 390,
+          "height": 844,
+          "dpr": 2.5
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "simple-language",
+          "novice",
+          "icons-help"
+        ]
+      },
+      "score": 85,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 33,
+          "persona": "P33",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 33,
+          "persona": "P33",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 33,
+          "persona": "P33",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 34,
+        "code": "P34",
+        "name": "Lisa",
+        "tagline": "Szuka bezglutenowego",
+        "age": 31,
+        "role": "gluten-free",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 13",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "filters",
+          "search-first",
+          "dietary"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 34,
+          "persona": "P34",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 35,
+        "code": "P35",
+        "name": "Nora",
+        "tagline": "Wegetarianka · filtry",
+        "age": 26,
+        "role": "vegetarian",
+        "device": {
+          "family": "android",
+          "model": "Pixel",
+          "width": 412,
+          "height": 915,
+          "dpr": 2.6
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "filters",
+          "search-first",
+          "dietary"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 35,
+          "persona": "P35",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 36,
+        "code": "P36",
+        "name": "Karl",
+        "tagline": "Dużo w koszyku",
+        "age": 50,
+        "role": "cart-heavy",
+        "device": {
+          "family": "android",
+          "model": "Galaxy",
+          "width": 384,
+          "height": 854,
+          "dpr": 2.5
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "cart",
+          "producer-modal",
+          "rush"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 37,
+        "code": "P37",
+        "name": "Eva",
+        "tagline": "Kolekcjonerka ulubionych",
+        "age": 43,
+        "role": "favorites-heavy",
+        "device": {
+          "family": "ios",
+          "model": "iPhone XR",
+          "width": 414,
+          "height": 896,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "favorites",
+          "map",
+          "return-user"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 38,
+        "code": "P38",
+        "name": "Max",
+        "tagline": "Tylko mapa · zero list",
+        "age": 35,
+        "role": "map-only",
+        "device": {
+          "family": "android",
+          "model": "GPS phone",
+          "width": 360,
+          "height": 800,
+          "dpr": 2
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "map",
+          "gps-heavy",
+          "filters"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 39,
+        "code": "P39",
+        "name": "Iris",
+        "tagline": "Zawsze zaczyna od szukajki",
+        "age": 28,
+        "role": "search-first",
+        "device": {
+          "family": "ios",
+          "model": "iPhone SE 3",
+          "width": 375,
+          "height": 667,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "search-first",
+          "fast",
+          "small-screen"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 39,
+          "persona": "P39",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 40,
+        "code": "P40",
+        "name": "Paul",
+        "tagline": "GPS wyłączony / odmowa",
+        "age": 46,
+        "role": "no-gps",
+        "device": {
+          "family": "android",
+          "model": "Privacy phone",
+          "width": 360,
+          "height": 780,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "no-gps",
+          "privacy",
+          "search-first"
+        ]
+      },
+      "score": 96,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Szukajka musi być natychmiast widoczna",
+              "detail": "Search-first persona"
+            }
+          ]
+        },
+        {
+          "step": "map",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Mapa bez GPS",
+              "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 40,
+          "persona": "P40",
+          "step": "search",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Szukajka musi być natychmiast widoczna",
+          "detail": "Search-first persona"
+        },
+        {
+          "personaId": 40,
+          "persona": "P40",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Mapa bez GPS",
+          "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 2,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 41,
+        "code": "P41",
+        "name": "Vera",
+        "tagline": "Privacy-first · minimum danych",
+        "age": 34,
+        "role": "privacy",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 13 mini",
+          "width": 375,
+          "height": 812,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "privacy",
+          "guest",
+          "no-gps"
+        ]
+      },
+      "score": 98,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Mapa bez GPS",
+              "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 41,
+          "persona": "P41",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Mapa bez GPS",
+          "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 1,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 42,
+        "code": "P42",
+        "name": "Otto",
+        "tagline": "68 lat · czyta wolno",
+        "age": 68,
+        "role": "slow-reader",
+        "device": {
+          "family": "android",
+          "model": "Senior",
+          "width": 360,
+          "height": 720,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "slow",
+          "large-text",
+          "simple-nav",
+          "novice"
+        ]
+      },
+      "score": 45,
+      "status": "fail",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            },
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Cele dotykowe za małe",
+              "detail": "Wymaga ≥48px · mobile score 100"
+            }
+          ]
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "cart",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Cele dotykowe za małe",
+          "detail": "Wymaga ≥48px · mobile score 100"
+        },
+        {
+          "personaId": 42,
+          "persona": "P42",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 4,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 43,
+        "code": "P43",
+        "name": "Zoe",
+        "tagline": "Fotografka · dużo zdjęć",
+        "age": 27,
+        "role": "photographer",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 15 Pro",
+          "width": 393,
+          "height": 852,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "en",
+        "traits": [
+          "photos",
+          "visual",
+          "premium"
+        ]
+      },
+      "score": 70,
+      "status": "warn",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Angielski niepełny",
+              "detail": "Turysta EN potrzebuje kompletnego i18n"
+            }
+          ]
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 43,
+          "persona": "P43",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 43,
+          "persona": "P43",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        },
+        {
+          "personaId": 43,
+          "persona": "P43",
+          "step": "language",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Angielski niepełny",
+          "detail": "Turysta EN potrzebuje kompletnego i18n"
+        }
+      ],
+      "summary": {
+        "high": 3,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 44,
+        "code": "P44",
+        "name": "OS High Contrast",
+        "tagline": "Systemowy wysoki kontrast",
+        "age": 50,
+        "role": "os-contrast",
+        "device": {
+          "family": "android",
+          "model": "A11y profile",
+          "width": 390,
+          "height": 844,
+          "dpr": 2.5
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "high-contrast",
+          "os-a11y"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 45,
+        "code": "P45",
+        "name": "OS Reduce Motion",
+        "tagline": "System: reduced motion",
+        "age": 33,
+        "role": "reduce-motion",
+        "device": {
+          "family": "ios",
+          "model": "iPhone + Reduce Motion",
+          "width": 390,
+          "height": 844,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "reduced-motion",
+          "vestibular"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 46,
+        "code": "P46",
+        "name": "iPad mini",
+        "tagline": "Mały tablet",
+        "age": 40,
+        "role": "ipad-mini",
+        "device": {
+          "family": "ios",
+          "model": "iPad mini",
+          "width": 768,
+          "height": 1024,
+          "dpr": 2
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "tablet",
+          "touch",
+          "map"
+        ]
+      },
+      "score": 96,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-low",
+          "frictions": [
+            {
+              "severity": "low",
+              "title": "Layout large-screen",
+              "detail": "Sprawdź gęstość treści na tablecie/desktop"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 46,
+          "persona": "P46",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        },
+        {
+          "personaId": 46,
+          "persona": "P46",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "low",
+          "title": "Layout large-screen",
+          "detail": "Sprawdź gęstość treści na tablecie/desktop"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 2,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 47,
+        "code": "P47",
+        "name": "Android Go",
+        "tagline": "Niski RAM · Go edition",
+        "age": 23,
+        "role": "android-go",
+        "device": {
+          "family": "android",
+          "model": "Android Go",
+          "width": 360,
+          "height": 640,
+          "dpr": 1.5
+        },
+        "network": "3g",
+        "language": "de",
+        "traits": [
+          "low-ram",
+          "performance",
+          "slow-net"
+        ]
+      },
+      "score": 80,
+      "status": "warn",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Wydajność na starym urządzeniu",
+              "detail": "perf 85 · VU 80"
+            }
+          ]
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "friction-high",
+          "frictions": [
+            {
+              "severity": "high",
+              "title": "Wydajność na starym urządzeniu",
+              "detail": "perf 85 · VU 80"
+            }
+          ]
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 47,
+          "persona": "P47",
+          "step": "map",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Wydajność na starym urządzeniu",
+          "detail": "perf 85 · VU 80"
+        },
+        {
+          "personaId": 47,
+          "persona": "P47",
+          "step": "producer-modal",
+          "type": "persona-friction",
+          "severity": "high",
+          "title": "Wydajność na starym urządzeniu",
+          "detail": "perf 85 · VU 80"
+        }
+      ],
+      "summary": {
+        "high": 2,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 48,
+        "code": "P48",
+        "name": "Huawei",
+        "tagline": "Bez GMS · ograniczenia sklepu",
+        "age": 36,
+        "role": "no-gms",
+        "device": {
+          "family": "android",
+          "model": "Huawei",
+          "width": 360,
+          "height": 780,
+          "dpr": 3
+        },
+        "network": "4g",
+        "language": "de",
+        "traits": [
+          "no-gms",
+          "pwa",
+          "install"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 49,
+        "code": "P49",
+        "name": "First install",
+        "tagline": "Pierwsza instalacja PWA",
+        "age": 29,
+        "role": "first-pwa",
+        "device": {
+          "family": "android",
+          "model": "Chrome Android",
+          "width": 390,
+          "height": 844,
+          "dpr": 2.75
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "first-run",
+          "pwa",
+          "novice",
+          "onboarding"
+        ]
+      },
+      "score": 85,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "home",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "friction-medium",
+          "frictions": [
+            {
+              "severity": "medium",
+              "title": "Zbyt dużo opcji na starcie",
+              "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+            }
+          ]
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [
+        {
+          "personaId": 49,
+          "persona": "P49",
+          "step": "open-app",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 49,
+          "persona": "P49",
+          "step": "home",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        },
+        {
+          "personaId": 49,
+          "persona": "P49",
+          "step": "premium",
+          "type": "persona-friction",
+          "severity": "medium",
+          "title": "Zbyt dużo opcji na starcie",
+          "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+        }
+      ],
+      "summary": {
+        "high": 0,
+        "medium": 3,
+        "low": 0,
+        "stepCount": 14
+      }
+    },
+    {
+      "persona": {
+        "id": 50,
+        "code": "P50",
+        "name": "Power user",
+        "tagline": "Wracający power user",
+        "age": 38,
+        "role": "power",
+        "device": {
+          "family": "ios",
+          "model": "iPhone 15",
+          "width": 393,
+          "height": 852,
+          "dpr": 3
+        },
+        "network": "wifi",
+        "language": "de",
+        "traits": [
+          "return-user",
+          "fast",
+          "favorites",
+          "filters",
+          "premium"
+        ]
+      },
+      "score": 100,
+      "status": "pass",
+      "steps": [
+        {
+          "step": "open-app",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "home",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "search",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "map",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "filters",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "producer-modal",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "favorites",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "cart",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "profile",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "premium",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "language",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "theme",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "offline",
+          "status": "ok",
+          "frictions": []
+        },
+        {
+          "step": "back-home",
+          "status": "ok",
+          "frictions": []
+        }
+      ],
+      "issues": [],
+      "summary": {
+        "high": 0,
+        "medium": 0,
+        "low": 0,
+        "stepCount": 14
+      }
+    }
+  ],
+  "issues": [
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "cart",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 1,
+      "persona": "P01",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 3,
+      "persona": "P03",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 3,
+      "persona": "P03",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 3,
+      "persona": "P03",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 3,
+      "persona": "P03",
+      "step": "language",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 5,
+      "persona": "P05",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Mapa przy słabej sieci",
+      "detail": "Ryzyko długiego ładowania kafelków / markerów"
+    },
+    {
+      "personaId": 7,
+      "persona": "P07",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zależność od koloru",
+      "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+    },
+    {
+      "personaId": 7,
+      "persona": "P07",
+      "step": "filters",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zależność od koloru",
+      "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+    },
+    {
+      "personaId": 7,
+      "persona": "P07",
+      "step": "theme",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zależność od koloru",
+      "detail": "Statusy / kategorie mapy powinny mieć kształt lub etykietę"
+    },
+    {
+      "personaId": 8,
+      "persona": "P08",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Wydajność na starym urządzeniu",
+      "detail": "perf 85 · VU 80"
+    },
+    {
+      "personaId": 8,
+      "persona": "P08",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Wydajność na starym urządzeniu",
+      "detail": "perf 85 · VU 80"
+    },
+    {
+      "personaId": 10,
+      "persona": "P10",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 10,
+      "persona": "P10",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 14,
+      "persona": "P14",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 14,
+      "persona": "P14",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 14,
+      "persona": "P14",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 18,
+      "persona": "P18",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 18,
+      "persona": "P18",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 18,
+      "persona": "P18",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 18,
+      "persona": "P18",
+      "step": "cart",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 20,
+      "persona": "P20",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 22,
+      "persona": "P22",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 22,
+      "persona": "P22",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 22,
+      "persona": "P22",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 22,
+      "persona": "P22",
+      "step": "cart",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥52px · mobile score 100"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥52px · mobile score 100"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥52px · mobile score 100"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "cart",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥52px · mobile score 100"
+    },
+    {
+      "personaId": 23,
+      "persona": "P23",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 24,
+      "persona": "P24",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 24,
+      "persona": "P24",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 24,
+      "persona": "P24",
+      "step": "language",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 26,
+      "persona": "P26",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 28,
+      "persona": "P28",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Mapa przy słabej sieci",
+      "detail": "Ryzyko długiego ładowania kafelków / markerów"
+    },
+    {
+      "personaId": 31,
+      "persona": "P31",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 31,
+      "persona": "P31",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 33,
+      "persona": "P33",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 33,
+      "persona": "P33",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 33,
+      "persona": "P33",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 34,
+      "persona": "P34",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 35,
+      "persona": "P35",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 39,
+      "persona": "P39",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 40,
+      "persona": "P40",
+      "step": "search",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Szukajka musi być natychmiast widoczna",
+      "detail": "Search-first persona"
+    },
+    {
+      "personaId": 40,
+      "persona": "P40",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Mapa bez GPS",
+      "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+    },
+    {
+      "personaId": 41,
+      "persona": "P41",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Mapa bez GPS",
+      "detail": "Musi działać wyszukiwanie / lista bez lokalizacji"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "cart",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Cele dotykowe za małe",
+      "detail": "Wymaga ≥48px · mobile score 100"
+    },
+    {
+      "personaId": 42,
+      "persona": "P42",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 43,
+      "persona": "P43",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 43,
+      "persona": "P43",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 43,
+      "persona": "P43",
+      "step": "language",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Angielski niepełny",
+      "detail": "Turysta EN potrzebuje kompletnego i18n"
+    },
+    {
+      "personaId": 46,
+      "persona": "P46",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 46,
+      "persona": "P46",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "low",
+      "title": "Layout large-screen",
+      "detail": "Sprawdź gęstość treści na tablecie/desktop"
+    },
+    {
+      "personaId": 47,
+      "persona": "P47",
+      "step": "map",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Wydajność na starym urządzeniu",
+      "detail": "perf 85 · VU 80"
+    },
+    {
+      "personaId": 47,
+      "persona": "P47",
+      "step": "producer-modal",
+      "type": "persona-friction",
+      "severity": "high",
+      "title": "Wydajność na starym urządzeniu",
+      "detail": "perf 85 · VU 80"
+    },
+    {
+      "personaId": 49,
+      "persona": "P49",
+      "step": "open-app",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 49,
+      "persona": "P49",
+      "step": "home",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    },
+    {
+      "personaId": 49,
+      "persona": "P49",
+      "step": "premium",
+      "type": "persona-friction",
+      "severity": "medium",
+      "title": "Zbyt dużo opcji na starcie",
+      "detail": "Nowicjusz potrzebuje spokojnego pierwszego ekranu"
+    }
+  ],
+  "catalog": [
+    {
+      "id": 1,
+      "code": "P01",
+      "name": "Elżbieta",
+      "tagline": "75 lat · nigdy nie używała smartfona",
+      "role": "senior-novice",
+      "device": "Budget phone",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 2,
+      "code": "P02",
+      "name": "Jonas",
+      "tagline": "25 lat · jedzie rowerem",
+      "role": "cyclist",
+      "device": "Midrange phone",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 3,
+      "code": "P03",
+      "name": "Emily",
+      "tagline": "Turystka z Anglii",
+      "role": "tourist-en",
+      "device": "iPhone 13",
+      "network": "wifi",
+      "language": "en"
+    },
+    {
+      "id": 4,
+      "code": "P04",
+      "name": "Marta",
+      "tagline": "Mama z dzieckiem",
+      "role": "parent",
+      "device": "Galaxy A",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 5,
+      "code": "P05",
+      "name": "Tomasz",
+      "tagline": "Bardzo słaby internet",
+      "role": "slow-network",
+      "device": "Older phone",
+      "network": "2g",
+      "language": "de"
+    },
+    {
+      "id": 6,
+      "code": "P06",
+      "name": "Klara",
+      "tagline": "Kolorowe motywy wyłączone",
+      "role": "plain-theme",
+      "device": "iPhone 12",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 7,
+      "code": "P07",
+      "name": "Peter",
+      "tagline": "Daltonista (deuteranopia)",
+      "role": "colorblind",
+      "device": "Pixel",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 8,
+      "code": "P08",
+      "name": "Hans",
+      "tagline": "Starszy Samsung",
+      "role": "legacy-android",
+      "device": "Galaxy S8",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 9,
+      "code": "P09",
+      "name": "Sophie",
+      "tagline": "iPhone SE",
+      "role": "small-phone",
+      "device": "iPhone SE",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 10,
+      "code": "P10",
+      "name": "Lukas",
+      "tagline": "Tablet",
+      "role": "tablet",
+      "device": "Galaxy Tab",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 11,
+      "code": "P11",
+      "name": "Mia",
+      "tagline": "Nastolatka · trendy farmy",
+      "role": "teen",
+      "device": "iPhone 14",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 12,
+      "code": "P12",
+      "name": "Georg",
+      "tagline": "Rolnik · sprzedawca",
+      "role": "producer",
+      "device": "Work phone",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 13,
+      "code": "P13",
+      "name": "Anna",
+      "tagline": "Subskrybentka Premium",
+      "role": "premium",
+      "device": "iPhone 15",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 14,
+      "code": "P14",
+      "name": "Gość",
+      "tagline": "Bez konta · pierwszy raz",
+      "role": "guest",
+      "device": "Generic",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 15,
+      "code": "P15",
+      "name": "Lea",
+      "tagline": "Leworęczna · jeden kciuk",
+      "role": "left-hand",
+      "device": "Pixel",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 16,
+      "code": "P16",
+      "name": "Omar",
+      "tagline": "Jedną ręką w autobusie",
+      "role": "commuter",
+      "device": "Midrange",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 17,
+      "code": "P17",
+      "name": "Nina",
+      "tagline": "Praca nocna · tylko dark mode",
+      "role": "night",
+      "device": "iPhone 11",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 18,
+      "code": "P18",
+      "name": "Franz",
+      "tagline": "Na słońcu · outdoor",
+      "role": "outdoor-sun",
+      "device": "Rugged",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 19,
+      "code": "P19",
+      "name": "Ingrid",
+      "tagline": "Lokalna z Regensburga",
+      "role": "local",
+      "device": "Galaxy A",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 20,
+      "code": "P20",
+      "name": "Kasia",
+      "tagline": "Turystka z Polski",
+      "role": "tourist-pl",
+      "device": "Xiaomi",
+      "network": "4g",
+      "language": "pl"
+    },
+    {
+      "id": 21,
+      "code": "P21",
+      "name": "Mark",
+      "tagline": "Głuchy · tylko wizualnie",
+      "role": "deaf",
+      "device": "iPhone 12",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 22,
+      "code": "P22",
+      "name": "Helga",
+      "tagline": "Słaby wzrok · duży tekst",
+      "role": "low-vision",
+      "device": "Large font phone",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 23,
+      "code": "P23",
+      "name": "Ralf",
+      "tagline": "Drżenie rąk · motoryka",
+      "role": "motor",
+      "device": "Senior phone",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 24,
+      "code": "P24",
+      "name": "Sam",
+      "tagline": "Czytnik ekranu (struktura a11y)",
+      "role": "screen-reader",
+      "device": "iPhone + VoiceOver",
+      "network": "wifi",
+      "language": "en"
+    },
+    {
+      "id": 25,
+      "code": "P25",
+      "name": "Tim",
+      "tagline": "12 lat · pod opieką",
+      "role": "child",
+      "device": "Family tablet phone",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 26,
+      "code": "P26",
+      "name": "Julia",
+      "tagline": "Lunch biznesowy · 3 minuty",
+      "role": "rush",
+      "device": "iPhone 14 Pro",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 27,
+      "code": "P27",
+      "name": "Familie Weber",
+      "tagline": "Weekendowy wypad rodzinny",
+      "role": "family",
+      "device": "Shared phone",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 28,
+      "code": "P28",
+      "name": "Sepp",
+      "tagline": "Wieś · offline-first",
+      "role": "rural-offline",
+      "device": "Outdoor phone",
+      "network": "offline-prone",
+      "language": "de"
+    },
+    {
+      "id": 29,
+      "code": "P29",
+      "name": "Yara",
+      "tagline": "Tryb oszczędzania danych",
+      "role": "data-saver",
+      "device": "Entry phone",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 30,
+      "code": "P30",
+      "name": "Chris",
+      "tagline": "Telefon składany",
+      "role": "foldable",
+      "device": "Fold cover",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 31,
+      "code": "P31",
+      "name": "Elena",
+      "tagline": "Chromebook / desktop",
+      "role": "desktop",
+      "device": "Chromebook",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 32,
+      "code": "P32",
+      "name": "Ben",
+      "tagline": "Telefon w landscape",
+      "role": "landscape",
+      "device": "Phone landscape",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 33,
+      "code": "P33",
+      "name": "Ahmed",
+      "tagline": "Prosty niemiecki (ESL)",
+      "role": "esl",
+      "device": "Midrange",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 34,
+      "code": "P34",
+      "name": "Lisa",
+      "tagline": "Szuka bezglutenowego",
+      "role": "gluten-free",
+      "device": "iPhone 13",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 35,
+      "code": "P35",
+      "name": "Nora",
+      "tagline": "Wegetarianka · filtry",
+      "role": "vegetarian",
+      "device": "Pixel",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 36,
+      "code": "P36",
+      "name": "Karl",
+      "tagline": "Dużo w koszyku",
+      "role": "cart-heavy",
+      "device": "Galaxy",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 37,
+      "code": "P37",
+      "name": "Eva",
+      "tagline": "Kolekcjonerka ulubionych",
+      "role": "favorites-heavy",
+      "device": "iPhone XR",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 38,
+      "code": "P38",
+      "name": "Max",
+      "tagline": "Tylko mapa · zero list",
+      "role": "map-only",
+      "device": "GPS phone",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 39,
+      "code": "P39",
+      "name": "Iris",
+      "tagline": "Zawsze zaczyna od szukajki",
+      "role": "search-first",
+      "device": "iPhone SE 3",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 40,
+      "code": "P40",
+      "name": "Paul",
+      "tagline": "GPS wyłączony / odmowa",
+      "role": "no-gps",
+      "device": "Privacy phone",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 41,
+      "code": "P41",
+      "name": "Vera",
+      "tagline": "Privacy-first · minimum danych",
+      "role": "privacy",
+      "device": "iPhone 13 mini",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 42,
+      "code": "P42",
+      "name": "Otto",
+      "tagline": "68 lat · czyta wolno",
+      "role": "slow-reader",
+      "device": "Senior",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 43,
+      "code": "P43",
+      "name": "Zoe",
+      "tagline": "Fotografka · dużo zdjęć",
+      "role": "photographer",
+      "device": "iPhone 15 Pro",
+      "network": "wifi",
+      "language": "en"
+    },
+    {
+      "id": 44,
+      "code": "P44",
+      "name": "OS High Contrast",
+      "tagline": "Systemowy wysoki kontrast",
+      "role": "os-contrast",
+      "device": "A11y profile",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 45,
+      "code": "P45",
+      "name": "OS Reduce Motion",
+      "tagline": "System: reduced motion",
+      "role": "reduce-motion",
+      "device": "iPhone + Reduce Motion",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 46,
+      "code": "P46",
+      "name": "iPad mini",
+      "tagline": "Mały tablet",
+      "role": "ipad-mini",
+      "device": "iPad mini",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 47,
+      "code": "P47",
+      "name": "Android Go",
+      "tagline": "Niski RAM · Go edition",
+      "role": "android-go",
+      "device": "Android Go",
+      "network": "3g",
+      "language": "de"
+    },
+    {
+      "id": 48,
+      "code": "P48",
+      "name": "Huawei",
+      "tagline": "Bez GMS · ograniczenia sklepu",
+      "role": "no-gms",
+      "device": "Huawei",
+      "network": "4g",
+      "language": "de"
+    },
+    {
+      "id": 49,
+      "code": "P49",
+      "name": "First install",
+      "tagline": "Pierwsza instalacja PWA",
+      "role": "first-pwa",
+      "device": "Chrome Android",
+      "network": "wifi",
+      "language": "de"
+    },
+    {
+      "id": 50,
+      "code": "P50",
+      "name": "Power user",
+      "tagline": "Wracający power user",
+      "role": "power",
+      "device": "iPhone 15",
+      "network": "wifi",
+      "language": "de"
+    }
+  ],
+  "catalogSize": 50,
+  "howToRun": [
+    "1. localhost → __RG_REAL_USERS__.run() lub ?realusers=1",
+    "2. __RG_REAL_USERS__.runOne(7) — jedna persona (np. daltonista)",
+    "3. __RG_REAL_USERS__.export() → zapisz JSON",
+    "4. npm run real-users -- --import=dump.json"
+  ]
+}

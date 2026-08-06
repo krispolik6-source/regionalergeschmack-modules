@@ -370,11 +370,6 @@ export function initProjectAdvisor() {
     if (initialized) return;
     initialized = true;
 
-    // Po Health / Improve / Learning – dzienny briefing
-    window.setTimeout(() => {
-        maybeGenerateDailyAdvisorBriefing();
-    }, 4200);
-
     window.__RG_ADVISOR__ = {
         run: () => generateAdvisorBriefing({ reason: 'manual' }),
         daily: () => maybeGenerateDailyAdvisorBriefing(),
@@ -386,7 +381,13 @@ export function initProjectAdvisor() {
         }
     };
 
-    console.info('[Doradca Projektu] advisory-only · autoFix=false. Konsola: __RG_ADVISOR__.run()');
+    // Po Health / Improve / Learning – dzienny briefing (tylko dev/LAN)
+    if (isDevMode()) {
+        window.setTimeout(() => {
+            maybeGenerateDailyAdvisorBriefing();
+        }, 4200);
+        console.info('[Doradca Projektu] advisory-only · autoFix=false. Konsola: __RG_ADVISOR__.run()');
+    }
 }
 
 export { QUESTIONS, POLICY };

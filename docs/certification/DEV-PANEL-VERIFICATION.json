@@ -1,0 +1,313 @@
+{
+  "etap": "45-D-T5",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 24,
+    "total": 24,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 6,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 6,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 6,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 6,
+    "total": 6,
+    "runs": [
+      {
+        "label": "dev-access",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "dev-vault",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "runtime-error-feed",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "diagnostics-orchestrator",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "console-guardian",
+        "ok": true,
+        "exit": 0
+      },
+      {
+        "label": "bootstrap",
+        "ok": true,
+        "exit": 0
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:34.441Z",
+  "pwaVersion": "30",
+  "pin": "1973 (sessionStorage rg_dev_vault_ok)",
+  "environments": [
+    {
+      "id": "E01-phone",
+      "group": "env:telefon",
+      "label": "Telefon — PIN mobile-friendly + fullscreen vault",
+      "status": "pass",
+      "detail": "numeric PIN · overlay fullscreen · rg-dv-card",
+      "layer": "static"
+    },
+    {
+      "id": "E02-desktop",
+      "group": "env:desktop",
+      "label": "Desktop — ten sam panel (bez viewport gate)",
+      "status": "pass",
+      "detail": "brak gate viewport · menu → openDeveloperVault",
+      "layer": "static"
+    },
+    {
+      "id": "E03-pwa",
+      "group": "env:PWA",
+      "label": "PWA standalone — dev-vault poza INTERNAL_MENU_ACTIONS",
+      "status": "pass",
+      "detail": "dev-vault nie w INTERNAL_MENU_ACTIONS · PIN na PWA",
+      "layer": "static"
+    },
+    {
+      "id": "E04-lan",
+      "group": "env:LAN",
+      "label": "LAN — auto-load diagnostyki (192.168.x / 10.x / 172.16–31)",
+      "status": "pass",
+      "detail": "shouldAutoLoadDiagnostics: localhost OR private LAN",
+      "layer": "static"
+    },
+    {
+      "id": "E05-production",
+      "group": "env:produkcja",
+      "label": "Produkcja — shell only do PIN; pełna diag po unlock",
+      "status": "pass",
+      "detail": "prod: brak auto-load · PIN → ensureDiagnosticsLoaded",
+      "layer": "static"
+    },
+    {
+      "id": "E06-menu-always",
+      "group": "env:wszystkie",
+      "label": "Menu Deweloper widoczne wszędzie",
+      "status": "pass",
+      "detail": "sekcja 🔐 Deweloper bez data-menu-internal",
+      "layer": "static"
+    }
+  ],
+  "features": [
+    {
+      "id": "F01-pin-api",
+      "group": "feature:PIN",
+      "label": "Kanoniczna bramka isDeveloperAccessGranted",
+      "status": "pass",
+      "detail": "sessionStorage rg_dev_vault_ok · PIN 1973",
+      "layer": "static"
+    },
+    {
+      "id": "F02-pin-gate",
+      "group": "feature:PIN",
+      "label": "Bramka PIN w vault + dispatch unlock",
+      "status": "pass",
+      "detail": "showPasswordGate → unlock → rg:dev-vault-unlocked",
+      "layer": "static"
+    },
+    {
+      "id": "F03-pin-docs",
+      "group": "feature:PIN",
+      "label": "Raporty /docs/ tylko po PIN",
+      "status": "pass",
+      "detail": "reportManagerClient · canFetchDocsRuntime",
+      "layer": "static"
+    },
+    {
+      "id": "F04-error-feed",
+      "group": "feature:Runtime Error Feed",
+      "label": "Feed UI + max 100 + vault gate",
+      "status": "pass",
+      "detail": "runtimeErrorFeed.js · tylko po PIN",
+      "layer": "static"
+    },
+    {
+      "id": "F05-error-feed-vault",
+      "group": "feature:Runtime Error Feed",
+      "label": "Przycisk w Dev Vault + Console tile",
+      "status": "pass",
+      "detail": "hub button · Console metric clickable",
+      "layer": "static"
+    },
+    {
+      "id": "F06-error-feed-lazy",
+      "group": "feature:Runtime Error Feed",
+      "label": "Lazy init przez orchestrator",
+      "status": "pass",
+      "detail": "ensureDiagnosticsLoaded → initRuntimeErrorFeed",
+      "layer": "static"
+    },
+    {
+      "id": "F07-guardian-boot",
+      "group": "feature:Console Guardian",
+      "label": "Boot na starcie (wszystkie środowiska)",
+      "status": "pass",
+      "detail": "app.js top-level · przed bootstrap()",
+      "layer": "static"
+    },
+    {
+      "id": "F08-guardian-collector",
+      "group": "feature:Console Guardian",
+      "label": "Runtime Error Collector z Guardian",
+      "status": "pass",
+      "detail": "consoleGuardian → runtimeErrorCollector",
+      "layer": "static"
+    },
+    {
+      "id": "F09-guardian-status",
+      "group": "feature:Console Guardian",
+      "label": "Metryka Console w status board",
+      "status": "pass",
+      "detail": "devStatusBoard · Console errors count",
+      "layer": "static"
+    },
+    {
+      "id": "F10-guardian-prod-silent",
+      "group": "feature:Console Guardian",
+      "label": "Produkcja: cisza w konsoli + lokalny raport",
+      "status": "pass",
+      "detail": "__RG_CONSOLE_GUARDIAN__ · LS reports",
+      "layer": "static"
+    },
+    {
+      "id": "F11-bootstrap-profiler",
+      "group": "feature:Bootstrap Report",
+      "label": "Bootstrap Profiler w app.js",
+      "status": "pass",
+      "detail": "start/finish profile · init tracking",
+      "layer": "static"
+    },
+    {
+      "id": "F12-bootstrap-api",
+      "group": "feature:Bootstrap Report",
+      "label": "Global API __RG_BOOTSTRAP__.report()",
+      "status": "pass",
+      "detail": "localStorage + window API",
+      "layer": "static"
+    },
+    {
+      "id": "F13-bootstrap-orchestrator",
+      "group": "feature:Bootstrap Report",
+      "label": "Orchestrator mierzy lazy-load",
+      "status": "pass",
+      "detail": "lazy diagnostics timing w raporcie",
+      "layer": "static"
+    },
+    {
+      "id": "F14-bootstrap-docs",
+      "group": "feature:Bootstrap Report",
+      "label": "Raport CLI docs/bootstrap/latest",
+      "status": "pass",
+      "detail": "docs/bootstrap/latest.md · latest.json",
+      "layer": "static"
+    },
+    {
+      "id": "F15-orch-boot",
+      "group": "feature:Diagnostics Orchestrator",
+      "label": "Jeden eager init: initDeveloperVault",
+      "status": "pass",
+      "detail": "app.js · brak eager 19 modułów",
+      "layer": "static"
+    },
+    {
+      "id": "F16-orch-lazy",
+      "group": "feature:Diagnostics Orchestrator",
+      "label": "Lazy load 19 modułów",
+      "status": "pass",
+      "detail": "dynamic import · modules: 19",
+      "layer": "static"
+    },
+    {
+      "id": "F17-orch-api",
+      "group": "feature:Diagnostics Orchestrator",
+      "label": "Global API __RG_DIAGNOSTICS__",
+      "status": "pass",
+      "detail": "load() · loaded() · policy",
+      "layer": "static"
+    },
+    {
+      "id": "F18-orch-vault",
+      "group": "feature:Diagnostics Orchestrator",
+      "label": "Vault integracja po PIN",
+      "status": "pass",
+      "detail": "unlock → ensureDiagnosticsLoaded → showHub",
+      "layer": "static"
+    },
+    {
+      "id": "F19-pin-runtime",
+      "group": "feature:PIN",
+      "label": "Runtime: PIN 1973 na urządzeniu/PWA",
+      "status": "not_verified",
+      "detail": "Node mock nie zastępuje telefonu · macierz manual E03",
+      "layer": "runtime"
+    }
+  ],
+  "manualMatrix": [
+    {
+      "id": "M-dev-phone",
+      "env": "Telefon (Chrome/Safari)",
+      "steps": "☰ → Panel deweloperski → PIN 1973 → hub fullscreen",
+      "pass": "PIN klawiatura numeryczna · Error Feed scroll · bez DevTools"
+    },
+    {
+      "id": "M-dev-desktop",
+      "env": "Desktop (Chrome/Edge/Firefox)",
+      "steps": "To samo z menu · Console tile → Error Feed",
+      "pass": "Hub + metryki System Health"
+    },
+    {
+      "id": "M-dev-pwa",
+      "env": "PWA standalone",
+      "steps": "Zainstalowana PWA → menu → PIN → panel",
+      "pass": "Działa bez localhost · sessionStorage per sesja"
+    },
+    {
+      "id": "M-dev-lan",
+      "env": "LAN (192.168.x)",
+      "steps": "http://LAN:port → ?dev=1 opcjonalnie · PIN",
+      "pass": "Auto-load diag na LAN · vault po PIN"
+    },
+    {
+      "id": "M-dev-prod",
+      "env": "Produkcja (Netlify)",
+      "steps": "regionalergeschmack.* → PIN (bez ?dev=1)",
+      "pass": "Shell at boot · pełny panel dopiero po PIN · __RG_BOOTSTRAP__.report() w konsoli po unlock/?dev=1"
+    }
+  ],
+  "accessPolicy": {
+    "menu": "always visible (data-menu-dev-panel)",
+    "panel": "PIN only (isDeveloperAccessGranted)",
+    "prodAutoLoad": false,
+    "lanAutoLoad": true,
+    "localhostAutoLoad": true,
+    "devFlag": "?dev=1 or rg_dev_mode=1"
+  },
+  "autoApply": false
+}

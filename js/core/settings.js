@@ -40,7 +40,7 @@ export function applyDarkMode(enabled) {
     const btn = document.getElementById('darkModeToggleBtn');
     if (btn) {
         // ETAP 34B — ikona = aktywny motyw (🌞 dzienny · 🌙 nocny); logika przełączania bez zmian
-        btn.textContent = enabled ? '🌙' : '🌞';
+        btn.textContent = enabled ? '🌙' : '☀️';
         btn.setAttribute('aria-label', enabled ? t('a11y.lightMode') : t('a11y.darkMode'));
         btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
     }
@@ -75,7 +75,38 @@ export function updateLanguageButtonLabel() {
 }
 
 function getLanguageWrap() {
-    return document.querySelector('.header-lang-wrap');
+    return document.querySelector('.header-lang-wrap:not([hidden])')
+        || document.querySelector('.header-lang-wrap');
+}
+
+function mountLanguageSwitcherInHeader() {
+    const wrap = getLanguageWrap();
+    if (!wrap || wrap.dataset.mounted === 'true') return;
+
+    const toggle = document.getElementById('languageSwitcherBtn');
+    const label = document.getElementById('languageSwitcherLabel');
+    if (toggle && label && !toggle.contains?.(label)) {
+        if (typeof toggle.appendChild === 'function') {
+            toggle.appendChild(label);
+        }
+    }
+
+    const actionGroup = document.querySelector('.main-header .header-action-group');
+    const themeBtn = document.getElementById('darkModeToggleBtn');
+    if (!actionGroup || !toggle) return;
+
+    wrap.removeAttribute('hidden');
+    wrap.removeAttribute('aria-hidden');
+    wrap.classList.remove('header-lang-wrap--legacy');
+    toggle.removeAttribute('tabindex');
+
+    if (themeBtn && wrap.nextElementSibling !== themeBtn) {
+        actionGroup.insertBefore(wrap, themeBtn);
+    } else if (!wrap.parentElement?.classList.contains('header-action-group')) {
+        actionGroup.appendChild(wrap);
+    }
+
+    wrap.dataset.mounted = 'true';
 }
 
 function positionLanguageDropdown() {
@@ -292,6 +323,7 @@ export function initShellSettings() {
     }
 
     applyDarkMode(Boolean(settings.darkMode));
+    mountLanguageSwitcherInHeader();
     populateLanguageDropdown();
     updateLanguageButtonLabel();
     refreshShellAccessibility();

@@ -1,0 +1,310 @@
+{
+  "etap": "45-D-T3",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 22,
+    "total": 22,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 3,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 3,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 3,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 3,
+    "total": 3,
+    "runs": [
+      {
+        "label": "icon-refresh",
+        "ok": true,
+        "exit": 0,
+        "tail": "\nICON REFRESH TEST OK (PWA v30)\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      },
+      {
+        "label": "master-icon-audit",
+        "ok": true,
+        "exit": 0,
+        "tail": "Usages: 88 · stale: 0\nWrote: docs\\brand\\MASTER-ICON-AUDIT.md\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      },
+      {
+        "label": "pwa-version",
+        "ok": true,
+        "exit": 0,
+        "tail": "\nPWA version sync OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:26.621Z",
+  "pwaVersion": "30",
+  "master": "assets/icons/logo-master.svg",
+  "categories": {
+    "favicon": [
+      {
+        "id": "I01-favicon",
+        "category": "favicon",
+        "label": "Favicon (desktop)",
+        "status": "pass",
+        "detail": "index.html · favicon.ico/16/32 ?v=30 · pliki na dysku",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I01-favicon-svg",
+        "category": "favicon",
+        "label": "Favicon SVG (logo-master)",
+        "status": "pass",
+        "detail": "SVG favicon = master logo",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "launcher": [
+      {
+        "id": "I02-launcher",
+        "category": "launcher",
+        "label": "Launcher PWA (manifest 192/512)",
+        "status": "pass",
+        "detail": "manifest.json · wszystkie ikony ?v=30",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I02-launcher-sw",
+        "category": "launcher",
+        "label": "Launcher — SW precache + network-first",
+        "status": "pass",
+        "detail": "SW precache wersjonowany · fetch no-store dla ikon",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "splash": [
+      {
+        "id": "I03-splash-html",
+        "category": "splash",
+        "label": "Splash screen (HTML)",
+        "status": "pass",
+        "detail": "index.html splash img wersjonowany",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I03-splash-css",
+        "category": "splash",
+        "label": "Splash asset (CSS + brand)",
+        "status": "pass",
+        "detail": "brand-identity-final.css · assets/brand/splash-logo.png",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I03-splash-sw",
+        "category": "splash",
+        "label": "Splash — SW precache offline",
+        "status": "pass",
+        "detail": "SW PRECACHE splash-logo",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "apple-touch": [
+      {
+        "id": "I04-apple-touch",
+        "category": "apple-touch",
+        "label": "Apple Touch Icon",
+        "status": "pass",
+        "detail": "apple-touch-icon + 180 · meta iOS",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I04-apple-manifest",
+        "category": "apple-touch",
+        "label": "Apple Touch w manifest",
+        "status": "pass",
+        "detail": "manifest zawiera apple-touch-icon",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "maskable": [
+      {
+        "id": "I05-maskable",
+        "category": "maskable",
+        "label": "Maskable (192 + 512)",
+        "status": "pass",
+        "detail": "manifest purpose=maskable · pliki maskable-192/512",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "monochrome": [
+      {
+        "id": "I06-monochrome",
+        "category": "monochrome",
+        "label": "Monochrome (adaptive icon)",
+        "status": "pass",
+        "detail": "manifest purpose=monochrome · monochrome-512.png",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "notifications": [
+      {
+        "id": "I07-notifications-push",
+        "category": "notifications",
+        "label": "Push notifications (runtime)",
+        "status": "pass",
+        "detail": "pushNotifications.js · pwaAssetUrl dynamic version",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I07-notifications-sw",
+        "category": "notifications",
+        "label": "SW push DEFAULT_ICON",
+        "status": "pass",
+        "detail": "sw.js push handler · wersjonowany DEFAULT_ICON",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I07-notifications-asset",
+        "category": "notifications",
+        "label": "Notifications brand asset",
+        "status": "pass",
+        "detail": "assets/brand/notifications-icon.png · SW precache",
+        "note": "",
+        "layer": "static"
+      }
+    ],
+    "shortcuts": [
+      {
+        "id": "I08-shortcuts-manifest",
+        "category": "shortcuts",
+        "label": "Manifest shortcuts (PWA)",
+        "status": "pass",
+        "detail": "Brak manifest.shortcuts — produkt nie definiuje skrótów PWA (N/A)",
+        "note": "",
+        "layer": "static"
+      },
+      {
+        "id": "I08-shortcuts-launcher-fallback",
+        "category": "shortcuts",
+        "label": "Skrót na pulpicie (= launcher icon)",
+        "status": "pass",
+        "detail": "Instalacja PWA / skrót iOS używa icon-192 + maskable z manifest",
+        "note": "",
+        "layer": "static"
+      }
+    ]
+  },
+  "antiStale": [
+    {
+      "id": "S01-version-sync",
+      "category": "anti-stale",
+      "label": "Jedna wersja PWA (v30) wszędzie",
+      "status": "pass",
+      "detail": "PWA_VERSION=30 · brak ?v=29 w runtime",
+      "note": "",
+      "layer": "static"
+    },
+    {
+      "id": "S02-sw-purge",
+      "category": "anti-stale",
+      "label": "SW activate usuwa stare cache",
+      "status": "pass",
+      "detail": "purge rg-pwa-* + rg-runtime-images-* · clients.claim",
+      "note": "",
+      "layer": "static"
+    },
+    {
+      "id": "S03-sw-offline-fallback",
+      "category": "anti-stale",
+      "label": "Offline fallback tylko wersjonowany URL",
+      "status": "pass",
+      "detail": "bez caches.match(pathname) bez ?v=",
+      "note": "",
+      "layer": "static"
+    },
+    {
+      "id": "S04-memory-cleaner",
+      "category": "anti-stale",
+      "label": "Memory Cleaner chroni tylko bieżące cache",
+      "status": "pass",
+      "detail": "pwaVersion.js PWA_CACHE_PREFIX_KEEP synced z PWA_VERSION",
+      "note": "",
+      "layer": "static"
+    },
+    {
+      "id": "S05-netlify-headers",
+      "category": "anti-stale",
+      "label": "HTTP Cache-Control must-revalidate",
+      "status": "pass",
+      "detail": "netlify.toml · ikony + manifest",
+      "note": "",
+      "layer": "static"
+    },
+    {
+      "id": "S06-no-legacy-v1-runtime",
+      "category": "anti-stale",
+      "label": "Brak rg-runtime-images-v1 w runtime cache paths",
+      "status": "pass",
+      "detail": "sw + offlineSync + memoryCleaner + pwaVersion bez v1",
+      "note": "",
+      "layer": "static"
+    }
+  ],
+  "shortcutsNote": "manifest.shortcuts nie jest skonfigurowany — skrót na pulpicie używa ikon launcher (192/maskable).",
+  "manual": [
+    {
+      "id": "M-icons-update",
+      "title": "Po deploy nowej wersji — brak starych ikon",
+      "device": "Android PWA + Chrome desktop",
+      "steps": [
+        "Zainstalowana PWA z poprzednią wersją (lub symulacja bump PWA_VERSION)",
+        "Deploy v30+ · otwórz PWA",
+        "Sprawdź: launcher, splash, favicon w karcie, push icon preview",
+        "DevTools → Application → Cache Storage: tylko rg-pwa-v30 + rg-runtime-images-v30"
+      ],
+      "pass": "Wszystkie powierzchnie pokazują nową ikonę (dwa kłosy)"
+    },
+    {
+      "id": "M-android-launcher",
+      "title": "Android launcher (agresywny cache)",
+      "device": "Android Chrome",
+      "steps": [
+        "Po update: jeśli launcher nadal stary → odinstaluj PWA i zainstaluj ponownie",
+        "Alternatywnie: wyczyść cache Chrome (nie site data)"
+      ],
+      "pass": "Ikona na pulpicie = aktualna maskable/192"
+    },
+    {
+      "id": "M-ios-apple",
+      "title": "iOS Add to Home Screen",
+      "device": "Safari iPhone",
+      "steps": [
+        "Udostępnij → Dodaj do ekranu początkowego",
+        "Sprawdź apple-touch-icon na pulpicie"
+      ],
+      "pass": "Ikona 180×180 bez rozmycia"
+    }
+  ],
+  "autoApply": false
+}

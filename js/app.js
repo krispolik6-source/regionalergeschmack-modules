@@ -1,8 +1,19 @@
 // js/app.js – bootstrap aplikacji
+import {
+    startBootstrapProfile,
+    finishBootstrapProfile,
+    recordBootstrapInit
+} from './core/bootstrapProfiler.js';
 import { installProductionConsole } from './core/logger.js';
 import { initConsoleGuardian } from './diagnostics/consoleGuardian.js';
+
+const __bootPre0 = typeof performance !== 'undefined' ? performance.now() : 0;
+startBootstrapProfile();
+recordBootstrapInit('installProductionConsole');
 installProductionConsole();
+recordBootstrapInit('initConsoleGuardian');
 initConsoleGuardian();
+const __bootPreMs = typeof performance !== 'undefined' ? performance.now() - __bootPre0 : 0;
 
 import { APP_NAME } from './config.js';
 import { initAdSense, mountHomeAdSense } from './presentation/adsense.js';
@@ -46,25 +57,7 @@ import { initOfflineSync } from './core/offlineSync.js';
 import { initAnalytics } from './core/analytics.js';
 import { initSeasonTheme } from './presentation/seasonTheme.js';
 import { initClimateAtmosphere } from './presentation/climateAtmosphere.js';
-import { initHealthMonitor } from './diagnostics/healthMonitor.js';
-import { initHealthDevPanel } from './diagnostics/healthDevPanel.js';
-import { initDeveloperVault } from './diagnostics/developerVaultPanel.js';
-import { initSelfHealing } from './diagnostics/selfHealing.js';
-import { initSelfHealingLogger } from './core/selfHealingLogger.js';
-import { initUiGuardian } from './diagnostics/uiGuardian.js';
-import { initMapGuardian } from './diagnostics/mapGuardian.js';
-import { initMemoryCleaner } from './diagnostics/memoryCleaner.js';
-import { initLearningEngine } from './presentation/learningEngine.js';
-import { initImprovementEngine } from './diagnostics/improvementEngine.js';
-import { initVirtualUser } from './diagnostics/virtualUser.js';
-import { initRealUserSimulation } from './diagnostics/realUserSimulation.js';
-import { initEmotionAi } from './diagnostics/emotionAi.js';
-import { initLivingBrand } from './diagnostics/livingBrand.js';
-import { initProductDirector } from './diagnostics/productDirector.js';
-import { initProjectAdvisor } from './diagnostics/projectAdvisor.js';
-import { initDailyDeveloperReport } from './diagnostics/dailyDeveloperReport.js';
-import { initDeveloperDashboard } from './diagnostics/developerDashboard.js';
-import { initWeeklyPremiumReport } from './diagnostics/weeklyPremiumReport.js';
+import { initDiagnosticsOrchestrator } from './diagnostics/diagnosticsOrchestrator.js';
 import { dismissSplashScreen } from './core/splashScreen.js';
 
 const VIEW_KEYS = ['home', 'map', 'premium', 'favorites', 'cart', 'profile'];
@@ -230,23 +223,21 @@ async function bootstrap() {
     const app = document.getElementById('app');
     if (!app) throw new Error('Brak kontenera #app');
 
-    initShellSettings();
-    initHeaderShell();
-    // AI Translation Engine — tło, bez UI (LibreTranslate → MyMemory; cache)
-    initAiTranslationEngine();
-    // Living Region Engine — wyłącznie dane dnia (bez UI / bez Home)
-    initLivingRegion();
-    initSeasonTheme();
-    initClimateAtmosphere();
-    initSideMenu();
-    initToast();
-    initAuth();
+    recordBootstrapInit('initShellSettings'); initShellSettings();
+    recordBootstrapInit('initHeaderShell'); initHeaderShell();
+    recordBootstrapInit('initAiTranslationEngine'); initAiTranslationEngine();
+    recordBootstrapInit('initLivingRegion'); initLivingRegion();
+    recordBootstrapInit('initSeasonTheme'); initSeasonTheme();
+    recordBootstrapInit('initClimateAtmosphere'); initClimateAtmosphere();
+    recordBootstrapInit('initSideMenu'); initSideMenu();
+    recordBootstrapInit('initToast'); initToast();
+    recordBootstrapInit('initAuth'); initAuth();
     syncFavoritesOnStartup();
-    initLoginModal();
-    initRegisterModal();
-    initNavigation(app);
-    initLegalFooter();
-    initCookieBanner();
+    recordBootstrapInit('initLoginModal'); initLoginModal();
+    recordBootstrapInit('initRegisterModal'); initRegisterModal();
+    recordBootstrapInit('initNavigation'); initNavigation(app);
+    recordBootstrapInit('initLegalFooter'); initLegalFooter();
+    recordBootstrapInit('initCookieBanner'); initCookieBanner();
     bindNavButtons();
     bindCategoryFilter();
     bindSearch();
@@ -256,59 +247,23 @@ async function bootstrap() {
     openProducerDeepLinkIfPresent();
     refreshFavoritesBadge();
     refreshCartBadge();
-    initTrialSync();
+    recordBootstrapInit('initTrialSync'); initTrialSync();
     const trialSync = maybeAutoSyncTrial({ force: true });
     if (trialSync?.reminded) {
         showToast(t('premium.trialEndingSoon').replace('{days}', String(trialSync.daysLeft)));
     }
     document.body.classList.toggle('premium-active', isPremiumActive());
-    await initPushNotifications();
-    initOfflineSync();
-    initPwaInstall();
-    initAnalytics();
+    recordBootstrapInit('initPushNotifications'); await initPushNotifications();
+    recordBootstrapInit('initOfflineSync'); initOfflineSync();
+    recordBootstrapInit('initPwaInstall'); initPwaInstall();
+    recordBootstrapInit('initAnalytics'); initAnalytics();
     // Google AdSense – tylko po zgodzie cookie (RODO / AdSense)
     if (hasCookieConsentAccepted()) {
-        initAdSense();
+        recordBootstrapInit('initAdSense'); initAdSense();
     }
 
-    // ETAP 18A – Application Health Monitor (read-only, tło; UI tylko po haśle)
-    initHealthMonitor();
-    // Panel deweloperski (☰) – Dev/Health ukryte w głównym UI, dostęp po haśle
-    initDeveloperVault();
-    // Self-Healing Logger — krytyczne błędy · retention · propozycje AI (pending_acceptance)
-    initSelfHealingLogger();
-    // Self-Healing – drobne naprawy DOM (zdjęcia / ikony / układ modalu)
-    initSelfHealing();
-    // ETAP 41 – UI Guardian (kontrast / overflow / 44px / safe-area / popup)
-    initUiGuardian();
-    // ETAP 42 – Map Guardian (Leaflet/tiles/markery → restart tylko mapy)
-    initMapGuardian();
-    // ETAP 43 – Memory Cleaner (Storage Health · bezpieczne czyszczenie)
-    initMemoryCleaner();
-    // Health/Dev: stub API bez FAB (pełny UI tylko z panelu po haśle)
-    initHealthDevPanel();
-    // ETAP 18B – Learning Engine (lokalnie, anonimowo, bez sieci)
-    initLearningEngine();
-    // ETAP 18C – Improvement Engine (propozycje only, bez auto-zmian)
-    initImprovementEngine();
-    // ETAP 18D – Virtual User (opt-in: ?virtual=1 / __RG_VIRTUAL__.run())
-    initVirtualUser();
-    // ETAP 24 – Real User Simulation (50 person, opt-in: ?realusers=1)
-    initRealUserSimulation();
-    // ETAP 25 – Emotion AI (klimat / chęć powrotu, autoFix=false)
-    initEmotionAi();
-    // ETAP 26 – Living Brand (strażnik Brand Book, autoFix=false)
-    initLivingBrand();
-    // ETAP 27 – AI Product Director (mózg produktu, autoFix=false)
-    initProductDirector();
-    // ETAP 18E – Doradca Projektu (advisory-only, briefing dnia)
-    initProjectAdvisor();
-    // ETAP 19A – Daily Developer Report (dev-only, autoFix=false)
-    initDailyDeveloperReport();
-    // ETAP 19B – Developer Dashboard (bez FAB; otwierany z panelu)
-    initDeveloperDashboard();
-    // ETAP 19C – Weekly Premium Report (raz/tydzień, autoFix=false)
-    initWeeklyPremiumReport();
+    // ETAP 42D — diagnostyka lazy (Vault / ?dev=1 / localhost); produkcja: tylko powłoka PIN
+    recordBootstrapInit('initDiagnosticsOrchestrator'); initDiagnosticsOrchestrator();
 
     // Eksport do konsoli – do testów
     window.navigateTo = navigateTo;
@@ -318,6 +273,7 @@ async function bootstrap() {
 
     console.info(`[${APP_NAME}] nawigacja gotowa`);
     } finally {
+        finishBootstrapProfile({ prebootMs: __bootPreMs });
         dismissSplashScreen();
     }
 }

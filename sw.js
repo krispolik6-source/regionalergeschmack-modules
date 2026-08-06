@@ -2,10 +2,11 @@
 // sw.js – PWA: cache offline + web push
 // ETAP 28F – ikony: network-first + twardy bump cache (Android launcher)
 
-/** ETAP 35B — jedna kanoniczna wersja PWA (SW + manifest + ikony). */
-const PWA_VERSION = '30';
-const CACHE_VERSION = `rg-pwa-v${PWA_VERSION}`;
-const IMAGE_CACHE = `rg-runtime-images-v${PWA_VERSION}`;
+importScripts('/js/core/pwaVersion.global.js');
+
+/** ETAP 35B / ETAP 45 — nazwy cache wyłącznie z pwaVersion.global.js (źródło: js/core/pwaVersion.js). */
+const CACHE_VERSION = PWA_CACHE_NAME;
+const IMAGE_CACHE = PWA_IMAGE_CACHE_NAME;
 const ICON_VERSION = PWA_VERSION;
 const DEFAULT_ICON = `/assets/icons/icon-192.png?v=${ICON_VERSION}`;
 
@@ -41,12 +42,42 @@ const PRECACHE_URLS = [
     '/js/app.js?v=611'
 ];
 
-function isAppIconPath(pathname) {
+function isPwaIconAsset(pathname) {
     return pathname.startsWith('/assets/icons/')
         || pathname === '/assets/brand/og-share.png'
         || pathname === '/assets/brand/splash-logo.png'
         || pathname === '/assets/brand/notifications-icon.png'
         || pathname === '/manifest.json';
+}
+
+/** Wersjonowany URL — fallback offline zawsze z aktualnym ?v= (nie pathname bez query). */
+function versionedIconUrl(pathname) {
+    const base = String(pathname || '').split('?')[0];
+    if (base === '/manifest.json') return `/manifest.json?v=${ICON_VERSION}`;
+    return `${base}?v=${ICON_VERSION}`;
+}
+
+/**
+ * Ikony / manifest: network-first + bypass HTTP cache (telefon, desktop, PWA launcher).
+ * Offline: tylko wersjonowany cache bieżącej PWA_VERSION.
+ */
+async function fetchPwaIconAsset(request, url) {
+    const versioned = versionedIconUrl(url.pathname);
+    try {
+        const response = await fetch(request, { cache: 'no-store' });
+        if (response && response.ok) {
+            const cache = await caches.open(CACHE_VERSION);
+            await safeCachePut(cache, request, response.clone());
+            if (!url.searchParams.get('v')) {
+                await safeCachePut(cache, versioned, response.clone());
+            }
+        }
+        return response;
+    } catch {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        return caches.match(versioned);
+    }
 }
 
 /**
@@ -102,21 +133,9 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(request.url);
     if (url.origin !== self.location.origin) return;
 
-    // Ikony / manifest – ZAWSZE network-first (Android/iOS launcher + cache-bust ?v=)
-    if (isAppIconPath(url.pathname)) {
-        event.respondWith(
-            fetch(request)
-                .then((response) => {
-                    const clone = response.clone();
-                    caches.open(CACHE_VERSION).then((cache) => safeCachePut(cache, request, clone));
-                    return response;
-                })
-                .catch(() => caches.match(request).then((cached) => {
-                    if (cached) return cached;
-                    // fallback bez query
-                    return caches.match(url.pathname);
-                }))
-        );
+    // Ikony / manifest – network-first + no-store (świeże ikony po każdej aktualizacji PWA)
+    if (isPwaIconAsset(url.pathname)) {
+        event.respondWith(fetchPwaIconAsset(request, url));
         return;
     }
 

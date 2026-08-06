@@ -1,8 +1,8 @@
 {
   "id": "etap-38-release-candidate",
   "title": "ETAP 38 — Release Candidate",
-  "generatedAt": "2026-08-04T17:41:50.228Z",
-  "verdict": "FAIL",
+  "generatedAt": "2026-08-06T21:21:36.901Z",
+  "verdict": "PASS",
   "persona": "Pierwszy użytkownik · install → reinstall",
   "policy": {
     "notAuditOnly": true,
@@ -15,8 +15,8 @@
   },
   "summary": {
     "stepsTotal": 22,
-    "stepsPassed": 21,
-    "stepsFailed": 1,
+    "stepsPassed": 22,
+    "stepsFailed": 0,
     "personaSteps": 14,
     "personaPassed": 14
   },
@@ -56,7 +56,7 @@
       "label": "GPS / lokalizacja",
       "status": "pass",
       "detail": "watch + clearWatch + events",
-      "ms": 1
+      "ms": 0
     },
     {
       "id": "search",
@@ -77,7 +77,7 @@
       "label": "Producent (modal)",
       "status": "pass",
       "detail": "producer modal open/close",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "favorites",
@@ -140,7 +140,7 @@
       "label": "Chrome header (padding = header height)",
       "status": "pass",
       "detail": "header-height = ph-header-h",
-      "ms": 0
+      "ms": 1
     },
     {
       "id": "push-utf8",
@@ -166,8 +166,8 @@
     {
       "id": "child-i18n",
       "label": "Child: translations",
-      "status": "fail",
-      "detail": "   - legal.impressumS3Body |  | --- Wymagane klucze testowe ---",
+      "status": "pass",
+      "detail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.",
       "ms": 0
     },
     {
@@ -201,9 +201,9 @@
     },
     {
       "name": "check-translations",
-      "status": "fail",
-      "exit": 1,
-      "tail": "   - legal.impressumS3Body |  | --- Wymagane klucze testowe ---"
+      "status": "pass",
+      "exit": 0,
+      "tail": "--- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe."
     },
     {
       "name": "test-pwa",

@@ -1,0 +1,231 @@
+{
+  "etap": "45-D-T2",
+  "verdict": "CONDITIONAL",
+  "staticVerdict": "STATIC VERIFIED",
+  "runtimeVerdict": "NOT VERIFIED",
+  "static": {
+    "passed": 10,
+    "total": 10,
+    "failed": 0,
+    "verdict": "STATIC VERIFIED"
+  },
+  "runtime": {
+    "required": 10,
+    "verified": 0,
+    "failed": 0,
+    "notVerified": 10,
+    "verdict": "NOT VERIFIED"
+  },
+  "manualRequired": 10,
+  "runtimeRequires": [
+    "browser",
+    "PWA",
+    "phone",
+    "Service Worker",
+    "localStorage",
+    "sessionStorage",
+    "Cache Storage"
+  ],
+  "automated": {
+    "passed": 3,
+    "total": 3,
+    "runs": [
+      {
+        "label": "test-pwa",
+        "ok": true,
+        "exit": 0,
+        "tail": "\n--- PWA test ---\nOK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      },
+      {
+        "label": "pwa-version",
+        "ok": true,
+        "exit": 0,
+        "tail": "✅ no hardcoded rg-pwa-v* / rg-runtime-images-v* outside pwaVersion.js\n\nPWA version sync OK\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      },
+      {
+        "label": "icon-refresh",
+        "ok": true,
+        "exit": 0,
+        "tail": "✅ asset: assets/brand/notifications-icon.png\n\nICON REFRESH TEST OK (PWA v30)\nnpm warn Unknown env config \"devdir\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options."
+      }
+    ]
+  },
+  "generatedAt": "2026-08-06T21:30:30.910Z",
+  "pwaVersion": "30",
+  "scenarios": [
+    {
+      "id": "T01-first-launch",
+      "label": "Pierwsze uruchomienie",
+      "status": "pass",
+      "detail": "bootstrap → splash dismiss · settings toleruje pusty LS",
+      "layer": "static"
+    },
+    {
+      "id": "T02-relaunch",
+      "label": "Ponowne uruchomienie",
+      "status": "pass",
+      "detail": "idempotent bootstrap · persist settings/fav/cart",
+      "layer": "static"
+    },
+    {
+      "id": "T03-pwa-update",
+      "label": "Aktualizacja PWA",
+      "status": "pass",
+      "detail": "PWA v30 · skipWaiting · activate purge starych cache",
+      "layer": "static"
+    },
+    {
+      "id": "T04-pwa-install",
+      "label": "Instalacja PWA",
+      "status": "pass",
+      "detail": "beforeinstallprompt · appinstalled · manifest",
+      "layer": "static"
+    },
+    {
+      "id": "T05-uninstall",
+      "label": "Odinstalowanie",
+      "status": "pass",
+      "detail": "getSettings try/catch · stores try/catch · app bez bezpośredniego LS",
+      "layer": "static"
+    },
+    {
+      "id": "T06-reinstall",
+      "label": "Ponowna instalacja",
+      "status": "pass",
+      "detail": "SW re-register · install prompt · navigate",
+      "layer": "static"
+    },
+    {
+      "id": "T07-cache-clear",
+      "label": "Wyczyszczenie cache",
+      "status": "pass",
+      "detail": "SW activate purge · Memory Cleaner stale caches",
+      "layer": "static"
+    },
+    {
+      "id": "T08-site-data-clear",
+      "label": "Wyczyszczenie danych strony",
+      "status": "pass",
+      "detail": "Memory Cleaner: safe vs protected · settings/fav/cart chronione",
+      "layer": "static"
+    },
+    {
+      "id": "T09-offline",
+      "label": "Tryb offline",
+      "status": "pass",
+      "detail": "SW precache · map banner · offline queue",
+      "layer": "static"
+    },
+    {
+      "id": "T10-online-return",
+      "label": "Powrót online",
+      "status": "pass",
+      "detail": "online event → banner hide · flush queue · cache v=PWA_VERSION",
+      "layer": "static"
+    }
+  ],
+  "manual": [
+    {
+      "id": "T01-first-launch",
+      "device": "Telefon PWA lub przeglądarka",
+      "steps": [
+        "Wyczyść dane strony (1×) LUB pierwsza wizyta",
+        "Otwórz prod/LAN",
+        "Splash znika · Home widoczny · cookie banner"
+      ],
+      "pass": "Brak białego ekranu · nawigacja działa"
+    },
+    {
+      "id": "T02-relaunch",
+      "device": "PWA standalone",
+      "steps": [
+        "Force-quit aplikację",
+        "Uruchom z ikony",
+        "Home/ustawienia/język jak przed zamknięciem"
+      ],
+      "pass": "Persist bez pełnego onboarding"
+    },
+    {
+      "id": "T03-pwa-update",
+      "device": "PWA zainstalowana",
+      "steps": [
+        "Deploy nowej wersji (v30+)",
+        "Otwórz PWA",
+        "SW skipWaiting · nowe ikony · brak starych cache"
+      ],
+      "pass": "Update bez odinstalowania"
+    },
+    {
+      "id": "T04-pwa-install",
+      "device": "Chrome Android / Desktop",
+      "steps": [
+        "Otwórz w Chrome",
+        "Baner/menu → Zainstaluj",
+        "Ikona na pulpicie · standalone"
+      ],
+      "pass": "Instalacja native prompt"
+    },
+    {
+      "id": "T05-uninstall",
+      "device": "PWA",
+      "steps": [
+        "Usuń ikonę / odinstaluj z systemu",
+        "Otwórz URL w przeglądarce",
+        "App boot bez crash"
+      ],
+      "pass": "Czysty start jak nowy użytkownik (LS pusty)"
+    },
+    {
+      "id": "T06-reinstall",
+      "device": "PWA",
+      "steps": [
+        "Po uninstall → zainstaluj ponownie",
+        "SW register · prompt install",
+        "Nawigacja Home/Map"
+      ],
+      "pass": "Pełna ścieżka reinstall"
+    },
+    {
+      "id": "T07-cache-clear",
+      "device": "Chrome DevTools / Ustawienia",
+      "steps": [
+        "Application → Clear cache (NIE site data)",
+        "Reload",
+        "App działa · SW re-cache"
+      ],
+      "pass": "Cache wyczyszczony · dane użytkownika zostają"
+    },
+    {
+      "id": "T08-site-data-clear",
+      "device": "Chrome / Safari",
+      "steps": [
+        "Wyczyść dane strony / localStorage",
+        "Reload",
+        "App boot · ustawienia domyślne · brak crash"
+      ],
+      "pass": "Safe boot na pustym LS"
+    },
+    {
+      "id": "T09-offline",
+      "device": "Telefon PWA",
+      "steps": [
+        "Tryb samolotowy ON",
+        "Otwórz PWA (już odwiedzoną)",
+        "Home/Map cache · banner offline"
+      ],
+      "pass": "Aplikacja użyteczna offline (shell + mapa cache)"
+    },
+    {
+      "id": "T10-online-return",
+      "device": "Telefon PWA",
+      "steps": [
+        "Tryb samolotowy OFF",
+        "Banner znika",
+        "Mapa/GPS odświeża · sync queue flush"
+      ],
+      "pass": "Powrót online bez reload"
+    }
+  ],
+  "note": "STATIC = kod/konfiguracja. RUNTIME = potwierdzenie T01–T10 na urządzeniu (DEVICE-TEST-PLAN S04).",
+  "autoApply": false
+}

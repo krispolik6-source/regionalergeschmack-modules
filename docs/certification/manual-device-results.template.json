@@ -1,0 +1,62 @@
+{
+  "signedBy": null,
+  "signedAt": null,
+  "results": [
+    {
+      "id": "42A-pwa-version",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "42B-icons",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "42C-dev-panel-phone",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "42D-prod-boot",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "42E-error-feed-mobile",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "42F-cold-start-feel",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "43-user-journey",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    },
+    {
+      "id": "43-map-toolbar",
+      "status": "pending",
+      "device": null,
+      "testedAt": null,
+      "notes": null
+    }
+  ]
+}

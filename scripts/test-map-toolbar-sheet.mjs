@@ -10,6 +10,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 const mapJs = fs.readFileSync(path.join(root, 'js/views/map.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css/style.css'), 'utf8');
+const phCss = fs.readFileSync(path.join(root, 'css/premium-header.css'), 'utf8');
+const mapPremiumCss = fs.readFileSync(path.join(root, 'css/map-premium.css'), 'utf8');
 
 let ok = 0;
 let fail = 0;
@@ -46,6 +48,9 @@ assert('CSS: handle ukryty bez is-sheet-active na desktop', /\.map-bottom-panel:
 assert('popupopen: collapseMapToolbarForPopup', /collapseMapToolbarForPopup\(\)/.test(mapJs));
 assert('finishPopup: restoreMapToolbarAfterPopup', /restoreMapToolbarAfterPopup\(\)/.test(mapJs));
 assert('viewport timer cleanup w pause', /mapToolbarViewportTimer[\s\S]*pauseMapBackgroundWork|pauseMapBackgroundWork[\s\S]*mapToolbarViewportTimer/.test(mapJs));
+assert('CSS: expandable header height on body', /body:has\(\.main-header\.header-expandable\)[\s\S]*--header-height/.test(phCss));
+assert('CSS: map viewport uses legal-footer', /body\.view-map-active[\s\S]*--legal-footer-height/.test(mapPremiumCss));
+assert('CSS: mobile map viewport includes legal-footer', /@media screen and \(max-width: 430px\)[\s\S]*--map-viewport-height[\s\S]*--legal-footer-height/.test(css));
 
 console.log(`\nWynik: ${ok} OK, ${fail} FAIL\n`);
 process.exit(fail > 0 ? 1 : 0);

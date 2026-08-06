@@ -1,7 +1,7 @@
 {
   "id": "css-performance-audit",
   "title": "CSS Performance Audit Report",
-  "generatedAt": "2026-08-05T17:26:45.682Z",
+  "generatedAt": "2026-08-06T21:30:29.740Z",
   "policy": {
     "cssOnly": true,
     "appearanceUnchanged": true,
@@ -11,7 +11,7 @@
     "checksPassed": 14,
     "checksTotal": 14,
     "ok": true,
-    "backdropFilterOccurrencesBefore": 140,
+    "backdropFilterOccurrencesBefore": 142,
     "duplicateMediaQueryTypes": 12,
     "suspiciousDeadClassCount": 40
   },
@@ -19,7 +19,7 @@
     {
       "issue": "backdrop-filter",
       "status": "mitigated",
-      "detail": "140 wystąpień w źródłach → none !important w audit layer"
+      "detail": "142 wystąpień w źródłach → none !important w audit layer"
     },
     {
       "issue": "blur",
@@ -138,15 +138,15 @@
       "count": 6
     },
     {
+      "query": "screen and (max-width: 359px)",
+      "count": 6
+    },
+    {
       "query": "screen and (max-width: 360px)",
       "count": 5
     },
     {
       "query": "screen and (max-width: 320px)",
-      "count": 5
-    },
-    {
-      "query": "screen and (max-width: 359px)",
       "count": 5
     },
     {

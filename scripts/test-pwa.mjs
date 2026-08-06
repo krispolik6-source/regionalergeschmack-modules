@@ -3,6 +3,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+    readPwaVersionFromModule,
+    readPwaVersionFromGlobal,
+    readPwaVersionFromSw
+} from './lib/read-pwa-version.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 let failures = 0;
@@ -65,6 +70,54 @@ if (pwaInstall.includes('deferredPrompt.prompt()') || pwaInstall.includes('promp
 
 if (pwaInstall.includes('beforeinstallprompt')) ok('pwaInstall.js: beforeinstallprompt');
 else fail('pwaInstall.js: brak beforeinstallprompt');
+
+const pwaVer = readPwaVersionFromModule(root);
+ok(`pwaVersion.js: PWA_VERSION=${pwaVer}`);
+
+if (readPwaVersionFromGlobal(root) === pwaVer) ok('pwaVersion.global.js synced');
+else fail('pwaVersion.global.js niezgodny z pwaVersion.js');
+
+try {
+    if (readPwaVersionFromSw(root) === pwaVer) ok('sw.js importScripts bridge synced');
+    else fail('sw.js bridge niezgodny z pwaVersion.js');
+} catch (err) {
+    fail(String(err.message || err));
+}
+
+if (sw.includes('importScripts') && !/const PWA_VERSION\s*=/.test(sw)) {
+    ok('sw.js: brak lokalnej kopii PWA_VERSION');
+} else {
+    fail('sw.js: powinien używać importScripts zamiast lokalnego PWA_VERSION');
+}
+
+if (pwaVer && index.includes(`manifest.json?v=${pwaVer}`) && index.includes(`sw.js?v=${pwaVer}`)) {
+    ok(`index.html: manifest + SW cache-bust v${pwaVer}`);
+} else {
+    fail('index.html: manifest/SW cache-bust niezgodne z PWA_VERSION');
+}
+
+if (pwaVer && index.includes(`app.bundle.js?v=${pwaVer}`)) {
+    ok(`index.html: legacy bundle v${pwaVer}`);
+} else {
+    fail('index.html: app.bundle.js cache-bust niezgodny z PWA_VERSION');
+}
+
+if (pwaVer && manifest.icons?.every((icon) => String(icon.src).includes(`?v=${pwaVer}`))) {
+    ok(`manifest.json: ikony ?v=${pwaVer}`);
+} else {
+    fail('manifest.json: ikony niezgodne z PWA_VERSION');
+}
+
+const memoryCleaner = fs.readFileSync(path.join(root, 'js', 'diagnostics', 'memoryCleaner.js'), 'utf8');
+if (
+    pwaVer
+    && memoryCleaner.includes("from '../core/pwaVersion.js'")
+    && memoryCleaner.includes('PWA_CACHE_PREFIX_KEEP')
+) {
+    ok('memoryCleaner.js: import z pwaVersion.js (jedno źródło)');
+} else {
+    fail('memoryCleaner.js: musi importować PWA_CACHE_PREFIX_KEEP z pwaVersion.js');
+}
 
 console.log(`\n--- PWA test ---\n${failures ? 'FAILED' : 'OK'}`);
 process.exit(failures ? 1 : 0);

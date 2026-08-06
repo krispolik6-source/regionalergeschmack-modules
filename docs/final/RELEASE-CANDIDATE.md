@@ -1,7 +1,7 @@
 # ETAP 38 — Release Candidate
 
-**Data:** 2026-08-04  
-**Werdykt:** **FAIL**  
+**Data:** 2026-08-06  
+**Werdykt:** **PASS**  
 **Persona:** Pierwszy użytkownik · install → reinstall
 
 > To nie jest sam audyt — to ścieżka Release Candidate: od instalacji do reinstall.
@@ -10,8 +10,8 @@
 
 | Metryka | Wartość |
 |---------|---------|
-| Status | **FAIL** |
-| Kroki RC | 21/22 |
+| Status | **PASS** |
+| Kroki RC | 22/22 |
 | Ścieżka persony | 14/14 |
 
 ## Ścieżka użytkownika
@@ -41,7 +41,7 @@
 | Push offer regex (DE) | ✅ | DE product matchers OK |
 | Live user simulation wiring | ✅ | ?realusers=1 / __RG_REAL_USERS__.run() |
 | Child: functional-audit | ✅ |  | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0 |
-| Child: translations | ❌ |    - legal.impressumS3Body |  | --- Wymagane klucze testowe --- |
+| Child: translations | ✅ | --- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe. |
 | Child: PWA | ✅ |  | --- PWA test --- | OK |
 | Child: landing | ✅ |  | --- Landing test --- | OK |
 | Child: device-lab | ✅ | [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\audit\ETAP-37-DEVICE-LAB.md |
@@ -49,7 +49,7 @@
 ## Child audits
 
 - ✅ **functional-audit** (exit 0) —  | --- Podsumowanie funkcjonalne --- | OK: 54 | Błędy: 0
-- ❌ **check-translations** (exit 1) —    - legal.impressumS3Body |  | --- Wymagane klucze testowe ---
+- ✅ **check-translations** (exit 0) — --- Wymagane klucze testowe --- |  | ✅ Wszystkie języki mają wymagane klucze testowe.
 - ✅ **test-pwa** (exit 0) —  | --- PWA test --- | OK
 - ✅ **test-landing** (exit 0) —  | --- Landing test --- | OK
 - ✅ **device-lab** (exit 0) — [Device Lab] PASS · 62/62 checks · 63 cells | Wrote: docs\audit\ETAP-37-DEVICE-LAB.md
@@ -75,4 +75,4 @@
 
 ---
 
-*ETAP 38 · Release Candidate · FAIL*
+*ETAP 38 · Release Candidate · PASS*

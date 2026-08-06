@@ -1,0 +1,224 @@
+{
+  "id": "health-static-2026-08-06T20-02-09-595Z",
+  "generatedAt": "2026-08-06T20:02:09.596Z",
+  "reason": "static-scan",
+  "policy": {
+    "autoFix": false,
+    "autoCommit": false,
+    "readOnly": true
+  },
+  "scores": {
+    "performance": 73,
+    "ux": 85,
+    "accessibility": 100,
+    "memory": 81,
+    "dataQuality": 88,
+    "translation": 100,
+    "mobile": 100,
+    "pwa": 100
+  },
+  "overall": 91,
+  "findings": [
+    {
+      "severity": "high",
+      "area": "images",
+      "title": "Brakujące zdjęcia produktów: 6",
+      "detail": "strawberries, pear, carrots, honey, juice, dessert"
+    },
+    {
+      "severity": "low",
+      "area": "code",
+      "title": "Podejrzenie nieużywanego kodu: 19 plików",
+      "detail": "js/core/dynamicTranslateEngine.js, js/core/pwaVersion.global.js, js/core/selfHealingFixer.js, js/intelligence/livingRegionAi.js, js/intelligence/producerTrustAudit.js, js/intelligence/productDirectorAi.js"
+    },
+    {
+      "severity": "medium",
+      "area": "css",
+      "title": "Potencjalne konflikty CSS: 40",
+      "detail": "body.dark-mode .producer-product-image [background]; .producer-product-image [background]; body.dark-mode .bottom-nav [background]; body [color]"
+    }
+  ],
+  "static": {
+    "translation": {
+      "totalMissing": 0,
+      "missingByLang": {
+        "en": 0,
+        "pl": 0,
+        "ru": 0,
+        "tr": 0,
+        "fr": 0,
+        "es": 0,
+        "it": 0,
+        "nl": 0,
+        "cs": 0,
+        "sk": 0,
+        "hu": 0,
+        "ro": 0,
+        "bg": 0,
+        "el": 0,
+        "hr": 0,
+        "sr": 0,
+        "mk": 0,
+        "sl": 0,
+        "lt": 0,
+        "lv": 0,
+        "et": 0,
+        "fi": 0,
+        "sv": 0,
+        "no": 0,
+        "da": 0,
+        "is": 0,
+        "zh": 0,
+        "zh-tw": 0,
+        "ja": 0,
+        "ko": 0,
+        "vi": 0,
+        "ms": 0,
+        "id": 0,
+        "th": 0,
+        "hi": 0
+      }
+    },
+    "assets": {
+      "unusedCount": 0,
+      "missingProduct": [
+        "strawberries",
+        "pear",
+        "carrots",
+        "honey",
+        "juice",
+        "dessert"
+      ],
+      "unusedSample": []
+    },
+    "producers": {
+      "total": 0,
+      "issueCount": 0,
+      "issues": []
+    },
+    "unusedJs": {
+      "unusedCount": 19,
+      "unusedSample": [
+        "js/core/dynamicTranslateEngine.js",
+        "js/core/pwaVersion.global.js",
+        "js/core/selfHealingFixer.js",
+        "js/intelligence/livingRegionAi.js",
+        "js/intelligence/producerTrustAudit.js",
+        "js/intelligence/productDirectorAi.js",
+        "js/intelligence/productIntelligenceDaily.js",
+        "js/intelligence/regionalBrain.js",
+        "js/intelligence/userTasteProfile.js",
+        "js/livingRegion/cache.js",
+        "js/livingRegion/index.js",
+        "js/livingRegion/personalize.js",
+        "js/livingRegion/sources/newcomers.js",
+        "js/livingRegion/sources/openNow.js",
+        "js/livingRegion/sources/producerOfDay.js",
+        "js/livingRegion/sources/seasonal.js",
+        "js/livingRegion/sources/visitDelta.js",
+        "js/presentation/searchLexicon.js",
+        "js/presentation/systemHealthDevPanel.js"
+      ]
+    },
+    "css": {
+      "conflictCount": 40,
+      "sample": [
+        {
+          "selector": "body.dark-mode .producer-product-image",
+          "prop": "background",
+          "a": "css/dark-mode-contrast.css:var(--dm-surface-elevated) !important",
+          "b": "css/final-ux-premium.css:rgba(42, 34, 24, 0.85) !important"
+        },
+        {
+          "selector": ".producer-product-image",
+          "prop": "background",
+          "a": "css/brand-colors-cleanup.css:#f3f7f2 !important",
+          "b": "css/final-ux-premium.css:#fff4dc !important"
+        },
+        {
+          "selector": "body.dark-mode .bottom-nav",
+          "prop": "background",
+          "a": "css/dark-mode-contrast.css:var(--dm-bg) !important",
+          "b": "css/home-v1.css:#141810 !important"
+        },
+        {
+          "selector": "body",
+          "prop": "color",
+          "a": "css/brand-identity-final.css:var(--brand-ink)",
+          "b": "css/landing.css:var(--lp-text)"
+        },
+        {
+          "selector": ".lp-header",
+          "prop": "background",
+          "a": "css/brand-identity-final.css:rgba(245, 239, 227, 0.94)",
+          "b": "css/landing.css:rgba(255, 255, 255, 0.92)"
+        },
+        {
+          "selector": ".lp-brand",
+          "prop": "color",
+          "a": "css/brand-identity-final.css:var(--brand-green) !important",
+          "b": "css/landing.css:var(--lp-text)"
+        },
+        {
+          "selector": "body:not(.view-map-active)::after",
+          "prop": "background",
+          "a": "css/emotions-climate.css:url('/assets/images/motifs/leaf.svg') 9% 16% / 40px no-repeat,\r\n        url('/assets/images/motifs/wheat.svg') 91% 68% / 32px no-repeat,\r\n        url('/assets/images/motifs/leaf.svg') 76% 24% / 26px no-repeat,\r\n        url('/assets/images/motifs/wheat.svg') 14% 78% / 28px no-repeat,\r\n        radial-gradient(ellipse 90% 50% at 50% 0%, var(--climate-sunset-top) 0%, transparent 70%),\r\n        linear-gradient(180deg, transparent 45%, var(--climate-sunset-bottom) 100%),\r\n        var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),\r\n        var(--ls-bg-overlay)",
+          "b": "css/landscapes.css:var(--warm-glow-soft, radial-gradient(ellipse 75% 45% at 50% 18%, rgba(255, 240, 210, 0.09) 0%, transparent 68%)),\r\n        var(--ls-bg-overlay)"
+        },
+        {
+          "selector": "body.dark-mode #app",
+          "prop": "background",
+          "a": "css/dark-mode-contrast.css:rgba(20, 24, 16, 0.58) !important",
+          "b": "css/landscapes.css:rgba(42, 34, 24, 0.44)"
+        },
+        {
+          "selector": "body.dark-mode .placeholder",
+          "prop": "background",
+          "a": "css/dark-mode-contrast.css:var(--dm-surface) !important",
+          "b": "css/landscapes.css:rgba(42, 34, 24, 0.5)"
+        },
+        {
+          "selector": ".producer-modal-header",
+          "prop": "overflow",
+          "a": "css/final-ux-premium.css:hidden",
+          "b": "css/living-region-experience.css:visible"
+        },
+        {
+          "selector": ".leaflet-control-zoom a",
+          "prop": "background",
+          "a": "css/final-ux-premium.css:rgba(255, 252, 245, 0.95) !important",
+          "b": "css/living-region-experience.css:rgba(255, 248, 235, 0.94) !important"
+        },
+        {
+          "selector": ".leaflet-control-zoom a",
+          "prop": "color",
+          "a": "css/final-ux-premium.css:var(--color-text) !important",
+          "b": "css/living-region-experience.css:var(--lre-wood-deep) !important"
+        }
+      ]
+    },
+    "pwa": {
+      "score": 100,
+      "manifestOk": true,
+      "swOk": true,
+      "hasManifestLink": true,
+      "hasSwRegister": true,
+      "findings": []
+    },
+    "cache": {
+      "score": 100
+    },
+    "mobile": {
+      "score": 100,
+      "hasPhone": true,
+      "hasTouch": true,
+      "findings": []
+    },
+    "a11y": {
+      "score": 100
+    }
+  },
+  "runtime": {
+    "imported": false
+  }
+}

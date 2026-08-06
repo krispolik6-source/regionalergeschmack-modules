@@ -1,5 +1,7 @@
 // js/core/offlineSync.js – kolejka akcji offline + flush po powrocie sieci
 
+import { PWA_IMAGE_CACHE_NAME } from './pwaVersion.js';
+
 const QUEUE_KEY = 'rg_offline_sync_queue_v1';
 const MAX = 80;
 
@@ -67,7 +69,7 @@ export function initOfflineSync() {
     window.addEventListener('online', () => {
         flushOfflineQueue();
         try {
-            caches.open('rg-runtime-images-v1').catch(() => {});
+            caches.open(PWA_IMAGE_CACHE_NAME).catch(() => {});
         } catch (_) {
             /* ignore */
         }

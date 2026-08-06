@@ -1,7 +1,7 @@
 {
   "id": "master-icon-audit-28f",
   "title": "MASTER ICON AUDIT — ETAP 28F",
-  "generatedAt": "2026-08-04T17:43:20.439Z",
+  "generatedAt": "2026-08-06T21:30:26.349Z",
   "master": "assets/icons/logo-master.svg",
   "iconVersion": "30",
   "swCache": "rg-pwa-v30",
@@ -9,9 +9,9 @@
   "masterHash": "668be70eec6ce347",
   "summary": {
     "ok": true,
-    "checksPassed": 49,
-    "checksTotal": 49,
-    "usageCount": 90,
+    "checksPassed": 50,
+    "checksTotal": 50,
+    "usageCount": 88,
     "staleRefs": 0
   },
   "policy": {
@@ -58,6 +58,7 @@
     "home-brand",
     "push-icon",
     "brand-css",
+    "sw-bridge",
     "sw-cache",
     "sw-image-cache",
     "sw-network-first-icons",
@@ -113,14 +114,6 @@
     {
       "file": "index.html",
       "ref": "/assets/icons/icon-180.png?v=30"
-    },
-    {
-      "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=30"
-    },
-    {
-      "file": "index.html",
-      "ref": "/assets/icons/logo-master.svg?v=30"
     },
     {
       "file": "index.html",
@@ -368,7 +361,7 @@
     },
     {
       "file": "js/core/pushNotifications.js",
-      "ref": "/assets/icons/icon-192.png?v=30"
+      "ref": "/assets/icons/icon-192.png"
     },
     {
       "file": "js/diagnostics/livingBrandBook.js",
@@ -376,7 +369,11 @@
     },
     {
       "file": "js/diagnostics/selfHealing.js",
-      "ref": "/assets/icons/logo-master.svg?v=30"
+      "ref": "/assets/icons/logo-master.svg"
+    },
+    {
+      "file": "js/legacy/app.bundle.js",
+      "ref": "/assets/icons/logo-master.svg"
     },
     {
       "file": "js/legacy/app.bundle.js",
@@ -400,11 +397,7 @@
     },
     {
       "file": "js/legacy/app.bundle.js",
-      "ref": "/assets/icons/logo-master.svg?v=30"
-    },
-    {
-      "file": "js/legacy/app.bundle.js",
-      "ref": "/assets/icons/icon-192.png?v=30"
+      "ref": "/assets/icons/icon-192.png"
     },
     {
       "file": "js/views/home.js",
@@ -611,7 +604,7 @@
     {
       "id": "push-icon",
       "ok": true,
-      "detail": "js/core/pushNotifications.js · /icon-192\\.png\\?v=30/"
+      "detail": "js/core/pushNotifications.js · /pwaAssetUrl\\(['\"]\\/assets\\/icons\\/icon-192\\.png['\"]\\)/"
     },
     {
       "id": "brand-css",
@@ -619,19 +612,24 @@
       "detail": "css/brand-identity-final.css · /logo-master\\.svg\\?v=30/"
     },
     {
+      "id": "sw-bridge",
+      "ok": true,
+      "detail": "sw.js · /importScripts\\(['\"]\\/js\\/core\\/pwaVersion\\.global\\.js['\"]\\)/"
+    },
+    {
       "id": "sw-cache",
       "ok": true,
-      "detail": "sw.js · /CACHE_VERSION\\s*=\\s*`rg-pwa-v\\$\\{PWA_VERSION\\}`|rg-pwa-v\\$\\{PWA_VERSION\\}/"
+      "detail": "sw.js · /CACHE_VERSION\\s*=\\s*PWA_CACHE_NAME/"
     },
     {
       "id": "sw-image-cache",
       "ok": true,
-      "detail": "sw.js · /IMAGE_CACHE\\s*=\\s*`rg-runtime-images-v\\$\\{PWA_VERSION\\}`|rg-runtime-images-v\\$\\{PWA_VERSION\\}/"
+      "detail": "sw.js · /IMAGE_CACHE\\s*=\\s*PWA_IMAGE_CACHE_NAME/"
     },
     {
       "id": "sw-network-first-icons",
       "ok": true,
-      "detail": "sw.js · /isAppIconPath|network-first/"
+      "detail": "sw.js · /fetchPwaIconAsset|cache:\\s*'no-store'/"
     },
     {
       "id": "sw-default-icon",

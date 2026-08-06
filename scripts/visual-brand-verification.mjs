@@ -212,7 +212,7 @@ row(
     exists('assets/icons/icon-192.png')
         && exists('assets/icons/icon-512.png')
         && exists('assets/icons/maskable-512.png')
-        && /rg-pwa-v\$\{PWA_VERSION\}/.test(readText('sw.js'))
+        && /CACHE_VERSION\s*=\s*PWA_CACHE_NAME/.test(readText('sw.js'))
         && /isAppIconPath/.test(readText('sw.js')),
     'launcher assets + SW network-first',
     'assets/icons + sw.js'

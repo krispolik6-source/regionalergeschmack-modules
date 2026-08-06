@@ -55,7 +55,10 @@ for (const k of SCORE_KEYS) {
 assert(sample.qa.length === 10, 'qa 10');
 assert(Boolean(sample.dailyUse?.answer), 'daily use answer');
 assert(sample.policy.autoApply === false, 'report policy');
-assert(!/wdraż|deploy|commit/i.test(sample.dailyUse.answer) || true, 'answer is reflection');
+assert(
+    !/wdraż|deploy|commit/i.test(sample.dailyUse.answer),
+    'answer is reflection (no deploy wording)'
+);
 
 const withWeek = buildSelfReflectionReport(
     {

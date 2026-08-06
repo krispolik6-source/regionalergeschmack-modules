@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -48,8 +49,7 @@ for (const c of checks) {
     assert(src.includes(c), `checklist ${c}`);
 }
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initDailyDeveloperReport'), 'app.js init');
+assertLazyDiagnosticsInit(assert, ROOT, 'dailyDeveloperReport.initDailyDeveloperReport', 'orchestrator lazy dailyDeveloperReport');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('daily-run') || panel.includes('Daily Report'), 'dev panel');

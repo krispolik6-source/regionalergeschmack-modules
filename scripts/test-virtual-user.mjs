@@ -5,6 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { assertLazyDiagnosticsInit } from './lib/diagnosticsOrchestratorAssert.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 let failed = 0;
@@ -51,8 +52,7 @@ for (const t of issueTypes) {
 assert(src.includes('autoFix: false') || src.includes('autoFix:false'), 'autoFix false');
 assert(!/fetch\s*\(\s*['"`]https?:/.test(src), 'brak zewnętrznego fetch');
 
-const app = readFileSync(join(ROOT, 'js/app.js'), 'utf8');
-assert(app.includes('initVirtualUser'), 'app.js initVirtualUser');
+assertLazyDiagnosticsInit(assert, ROOT, 'virtualUser.initVirtualUser', 'orchestrator lazy virtualUser');
 
 const panel = readFileSync(join(ROOT, 'js/diagnostics/healthDevPanel.js'), 'utf8');
 assert(panel.includes('virtual-run') || panel.includes('Virtual User'), 'dev panel Virtual User');
