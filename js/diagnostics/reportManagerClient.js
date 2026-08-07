@@ -438,7 +438,7 @@ export const STREAM_STATUS_META = {
     FIXED: { label: 'FIXED', icon: '✅', badgeClass: 'rg-dv-status-badge--fixed' },
     SUGGESTION: { label: 'SUGGESTION', icon: '🟡', badgeClass: 'rg-dv-status-badge--suggestion' },
     FAILED: { label: 'FAILED', icon: '🔴', badgeClass: 'rg-dv-status-badge--failed' },
-    INFO: { label: 'INFO', icon: '📄', badgeClass: 'rg-dv-status-badge--info' }
+    INFO: { label: 'INFO', icon: '💡', badgeClass: 'rg-dv-status-badge--info' }
 };
 
 /** @returns {'FIXED'|'SUGGESTION'|'FAILED'|'INFO'} */
@@ -460,7 +460,9 @@ export function normalizeStreamStatus(raw) {
     if (s.includes('PASS') || s.includes('FIXED') || s.includes('READY') || s.includes('SUCCESS')) {
         return STREAM_STATUS.FIXED;
     }
-    if (s === 'INFO') return STREAM_STATUS.INFO;
+    if (s === 'INFO' || s.includes('UI/UX') || s.includes('UIUX') || s.includes('AESTHETIC')) {
+        return STREAM_STATUS.INFO;
+    }
     return STREAM_STATUS.INFO;
 }
 

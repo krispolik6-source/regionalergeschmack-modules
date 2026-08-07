@@ -30,8 +30,14 @@ const {
 const {
     resolveSafeMitigationId,
     listSafeMitigations,
-    generateFixSuggestion
+    generateFixSuggestion,
+    getUiSuggestions,
+    persistUiSuggestions
 } = await import('../js/core/selfHealingFixer.js');
+
+const {
+    logHealingInfo
+} = await import('../js/core/selfHealingLogger.js');
 
 let pass = 0;
 let fail = 0;
@@ -76,6 +82,11 @@ ok('fixSuggestion null when fixed', generateFixSuggestion({
     mitigation: { applied: true }
 }) === null);
 
+ok('fixSuggestion null for ui-ux audit', generateFixSuggestion({
+    type: 'ui-audit',
+    context: { area: 'ui-ux' }
+}) === null);
+
 localStorage.setItem(SELF_HEALING_LOG_KEY, JSON.stringify({
     version: 1,
     entries: [{
@@ -104,8 +115,28 @@ const report = getHealingReport();
 ok('healing report entry', report.entries.length >= 1);
 ok('healing report FIXED', report.entries.some((e) => e.status === 'FIXED'));
 
-const md = generateSessionSummaryMarkdown(report);
-ok('markdown summary', md.includes('System Health') && md.includes('FIXED'));
+logHealingInfo('css/premium-header.css', 'Czcionka w nagłówku może być bardziej czytelna.', {
+    area: 'ui-ux',
+    suggestionId: 'ui-header-readability'
+});
+ok('healing report INFO', getHealingReport().entries.some((e) => e.status === HEALING_STATUS.INFO));
+ok('INFO dedupe', logHealingInfo('css/premium-header.css', 'Czcionka w nagłówku może być bardziej czytelna.', {
+    suggestionId: 'ui-header-readability'
+}) === null);
+
+const uiSuggestions = getUiSuggestions();
+ok('getUiSuggestions array', Array.isArray(uiSuggestions));
+ok('UI catalog shape', uiSuggestions.every((s) => s.id && s.component && s.description));
+
+let persistedUi = 0;
+persistUiSuggestions((component, description, context) => {
+    persistedUi += logHealingInfo(component, description, context) ? 1 : 0;
+    return `hr-ui-${persistedUi}`;
+});
+ok('persistUiSuggestions noop in node', persistedUi === 0);
+
+const md = generateSessionSummaryMarkdown(getHealingReport());
+ok('markdown summary', md.includes('System Health') && md.includes('💡 INFO'));
 
 const key = persistSessionSummaryMarkdown();
 ok('markdown persisted', Boolean(key));

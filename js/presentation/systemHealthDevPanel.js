@@ -44,6 +44,7 @@ function formatDateTime(iso) {
 function statusLabel(status) {
     if (status === 'FIXED') return th('statusFixed', 'Fixed');
     if (status === 'SUGGESTION') return th('statusSuggestion', 'Suggestion');
+    if (status === 'INFO') return th('statusInfo', 'UI/UX');
     return th('statusFailed', 'Failed');
 }
 
@@ -75,6 +76,7 @@ function ensureStyles() {
 .rg-sh-row.healing-status--fixed td:first-child { border-left: 4px solid #2a3f28; }
 .rg-sh-row.healing-status--suggestion td:first-child { border-left: 4px solid #c9a227; }
 .rg-sh-row.healing-status--failed td:first-child { border-left: 4px solid #9e3b3b; }
+.rg-sh-row.healing-status--info td:first-child { border-left: 4px solid var(--info-blue, #3b82f6); }
 .rg-sh-status { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; white-space: nowrap; }
 .rg-sh-component { font-family: ui-monospace, 'Cascadia Code', monospace; font-size: .78rem; word-break: break-word; }
 .rg-sh-desc { max-width: 220px; word-break: break-word; color: #4a3f32; }
@@ -260,10 +262,11 @@ function bindRowToggles(root) {
 }
 
 function buildCountsLine(counts) {
-    return th('counts', '{fixed} fixed · {suggestion} hints · {failed} open')
-        .replace('{fixed}', String(counts.fixed))
-        .replace('{suggestion}', String(counts.suggestion))
-        .replace('{failed}', String(counts.failed));
+    return th('counts', '{fixed} fixed · {suggestion} hints · {info} UI/UX · {failed} open')
+        .replace('{fixed}', String(counts.fixed ?? 0))
+        .replace('{suggestion}', String(counts.suggestion ?? 0))
+        .replace('{info}', String(counts.info ?? 0))
+        .replace('{failed}', String(counts.failed ?? 0));
 }
 
 function buildSourcesLine(sources) {

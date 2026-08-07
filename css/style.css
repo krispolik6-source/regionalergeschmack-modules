@@ -146,6 +146,10 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
+:root {
+    --info-blue: #3b82f6;
+}
+
 body {
     font-family: var(--font-sans);
     font-size: var(--font-body);
@@ -8544,6 +8548,14 @@ body.cookie-consent-visible.view-map-active #app {
 
 .healing-report-item.healing-status--failed {
     border-left-color: #9e3b3b;
+}
+
+.healing-report-item.healing-status--info {
+    border-left-color: var(--info-blue, #3b82f6);
+}
+
+.healing-report-item.healing-status--info .healing-report-status {
+    color: #2563eb;
 }
 
 .healing-report-item-head {

@@ -72,7 +72,7 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-metric[data-dv-error-feed]{cursor:pointer}
 #${ROOT_ID} .rg-dv-metric[data-dv-error-feed]:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-metrics-divider{height:0;border:0;border-top:1px solid rgba(42,63,40,.14);margin:18px 0 14px}
-#${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
+#${ROOT_ID}{--info-blue:#3b82f6}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
 #${ROOT_ID} .rg-dv-report-list li:last-child{border-bottom:0}
 #${ROOT_ID} .rg-dv-report-tag{flex:0 0 auto;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(42,63,40,.1);color:#2a3f28;white-space:nowrap;margin-top:2px;line-height:1.3}
@@ -82,7 +82,7 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-status-badge--fixed{background:#2a7a38}
 #${ROOT_ID} .rg-dv-status-badge--suggestion{background:#c97a12}
 #${ROOT_ID} .rg-dv-status-badge--failed{background:#b83232}
-#${ROOT_ID} .rg-dv-status-badge--info{background:#6a6a6a}
+#${ROOT_ID} .rg-dv-status-badge--info{background:var(--info-blue,#3b82f6)}
 #${ROOT_ID} .rg-dv-report-empty{margin:16px 0;padding:20px 16px;text-align:center;background:rgba(255,255,255,.55);border:1px dashed rgba(42,63,40,.18);border-radius:12px;color:#4a3f32;font-size:.95rem}
 #${ROOT_ID} .rg-dcc-pre{white-space:pre-wrap;font-size:.85rem;line-height:1.45;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;border:1px solid rgba(42,63,40,.1);max-height:40vh;overflow:auto}
 #${ROOT_ID} .rg-dv-err{color:#8a2b2b;font-size:.9rem;margin:0 0 8px}

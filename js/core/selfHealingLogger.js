@@ -3,14 +3,19 @@
  *
  * localStorage:
  *  - selfHealingLog — surowe błędy (max ~1 MB)
- *  - healingReport — kolorowy raport sesji (FIXED / SUGGESTION / FAILED)
+ *  - healingReport — kolorowy raport sesji (FIXED / SUGGESTION / INFO / FAILED)
  *  - logs/system_health_[DATA].md — dzienne podsumowanie markdown
  *
  * Polityka: autoApply=false · bez eval · runtime tylko whitelist (selfHealingFixer.js)
  */
 
 import { byteLen, safeLocalStorageSetItem } from './safeStorage.js';
-import { applySafeMitigation, resolveSafeMitigationId, generateFixSuggestion } from './selfHealingFixer.js';
+import {
+    applySafeMitigation,
+    resolveSafeMitigationId,
+    generateFixSuggestion,
+    persistUiSuggestions
+} from './selfHealingFixer.js';
 import { INTELLIGENCE_POLICY } from '../intelligence/policy.js';
 
 /** Klucz localStorage (selfHealingLog) */
@@ -30,12 +35,13 @@ const RETENTION_DAYS = 30;
 const MAX_STACK_CHARS = 4000;
 const MAX_MESSAGE_CHARS = 1200;
 
-/** @typedef {'FIXED'|'SUGGESTION'|'FAILED'} HealingStatus */
+/** @typedef {'FIXED'|'SUGGESTION'|'INFO'|'FAILED'} HealingStatus */
 
 /** @readonly */
 export const HEALING_STATUS = Object.freeze({
     FIXED: 'FIXED',
     SUGGESTION: 'SUGGESTION',
+    INFO: 'INFO',
     FAILED: 'FAILED'
 });
 
@@ -43,8 +49,11 @@ export const HEALING_STATUS = Object.freeze({
 export const HEALING_STATUS_META = Object.freeze({
     FIXED: { emoji: '✅', cssClass: 'healing-status--fixed', markdown: '✅ FIXED' },
     SUGGESTION: { emoji: '🟡', cssClass: 'healing-status--suggestion', markdown: '🟡 SUGGESTION' },
+    INFO: { emoji: '💡', cssClass: 'healing-status--info', markdown: '💡 INFO' },
     FAILED: { emoji: '🔴', cssClass: 'healing-status--failed', markdown: '🔴 FAILED' }
 });
+
+const UI_UX_HINTS_DAY_KEY = 'rg_ui_ux_hints_day';
 
 /** @readonly */
 export const SELF_HEALING_LOGGER_POLICY = Object.freeze({
@@ -263,6 +272,62 @@ export function logHealingSuggestion(component, description, context = {}) {
     });
 }
 
+/**
+ * Propozycja UI/UX (nie błąd) — status INFO w healingReport.
+ * @param {string} component
+ * @param {string} description
+ * @param {object} [context]
+ */
+export function logHealingInfo(component, description, context = {}) {
+    const report = getHealingReport();
+    const desc = truncate(description || '', 500);
+    const comp = truncate(resolveHealingComponent(context, component), 120);
+    const suggestionId = context?.suggestionId ? String(context.suggestionId) : null;
+
+    const duplicate = (report.entries || []).some((entry) => {
+        if (entry.status !== HEALING_STATUS.INFO) return false;
+        if (suggestionId && entry.suggestionId === suggestionId) return true;
+        return entry.component === comp && entry.description === desc;
+    });
+    if (duplicate) return null;
+
+    const row = {
+        id: `hr-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        status: HEALING_STATUS.INFO,
+        component: comp,
+        description: desc,
+        timestamp: nowIso(),
+        relatedLogId: null
+    };
+    if (suggestionId) row.suggestionId = suggestionId;
+    if (context?.area) row.area = String(context.area);
+    report.entries.push(row);
+    persistHealingReportNow(report);
+    return row.id;
+}
+
+function scheduleUiUxImprovementHints() {
+    if (typeof document === 'undefined') return;
+
+    const run = () => {
+        try {
+            const today = dayStamp();
+            if (localStorage.getItem(UI_UX_HINTS_DAY_KEY) === today) return;
+            const added = persistUiSuggestions(logHealingInfo);
+            if (added <= 0) return;
+            localStorage.setItem(UI_UX_HINTS_DAY_KEY, today);
+        } catch {
+            /* ignore */
+        }
+    };
+
+    if (typeof globalThis.requestIdleCallback === 'function') {
+        globalThis.requestIdleCallback(run, { timeout: 9000 });
+    } else {
+        globalThis.setTimeout(run, 2500);
+    }
+}
+
 function recordHealingOutcome(logEntry, mitigationId, mitResult) {
     const component = resolveHealingComponent(
         { ...logEntry.context, stack: logEntry.stack, component: mitigationId ? `selfHealingFixer/${mitigationId}` : undefined },
@@ -328,6 +393,7 @@ export function generateSessionSummaryMarkdown(report = getHealingReport(), date
     const entries = Array.isArray(report.entries) ? report.entries : [];
     const fixed = entries.filter((e) => e.status === HEALING_STATUS.FIXED).length;
     const suggestion = entries.filter((e) => e.status === HEALING_STATUS.SUGGESTION).length;
+    const info = entries.filter((e) => e.status === HEALING_STATUS.INFO).length;
     const failed = entries.filter((e) => e.status === HEALING_STATUS.FAILED).length;
 
     const lines = [
@@ -335,7 +401,7 @@ export function generateSessionSummaryMarkdown(report = getHealingReport(), date
         '',
         `> Session: \`${report.sessionId}\` · started ${report.sessionStartedAt}`,
         '',
-        `**Summary:** ✅ ${fixed} fixed · 🟡 ${suggestion} suggestions · 🔴 ${failed} failed`,
+        `**Summary:** ✅ ${fixed} fixed · 🟡 ${suggestion} suggestions · 💡 ${info} UI/UX · 🔴 ${failed} failed`,
         '',
         '| Status | Component | Description | Time |',
         '| --- | --- | --- | --- |'
@@ -428,10 +494,11 @@ function parseMarkdownHealthRows(markdown, markdownKey) {
     const statusFromToken = {
         '✅ FIXED': HEALING_STATUS.FIXED,
         '🟡 SUGGESTION': HEALING_STATUS.SUGGESTION,
+        '💡 INFO': HEALING_STATUS.INFO,
         '🔴 FAILED': HEALING_STATUS.FAILED
     };
     const rows = [];
-    const lineRe = /^\|\s*(✅ FIXED|🟡 SUGGESTION|🔴 FAILED)\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|/;
+    const lineRe = /^\|\s*(✅ FIXED|🟡 SUGGESTION|💡 INFO|🔴 FAILED)\s*\|\s*`([^`]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|/;
 
     for (const line of String(markdown).split('\n')) {
         const match = line.match(lineRe);
@@ -583,6 +650,7 @@ export function buildUnifiedSystemHealth() {
         total: unified.length,
         fixed: unified.filter((e) => e.status === HEALING_STATUS.FIXED).length,
         suggestion: unified.filter((e) => e.status === HEALING_STATUS.SUGGESTION).length,
+        info: unified.filter((e) => e.status === HEALING_STATUS.INFO).length,
         failed: unified.filter((e) => e.status === HEALING_STATUS.FAILED).length
     };
 
@@ -1131,6 +1199,7 @@ export function initSelfHealingLogger() {
     wrapFetchForCriticalLogging();
     bindSessionEndHooks();
     scheduleSelfHealingMaintenance();
+    scheduleUiUxImprovementHints();
 
     window.__RG_SELF_HEALING_LOG__ = {
         policy: SELF_HEALING_LOGGER_POLICY,
@@ -1140,6 +1209,7 @@ export function initSelfHealingLogger() {
         logCriticalError,
         addHealingReportEntry,
         logHealingSuggestion,
+        logHealingInfo,
         cleanupOldReports,
         generateSessionSummaryMarkdown,
         persistSessionSummaryMarkdown,
@@ -1160,6 +1230,7 @@ export default {
     logCriticalError,
     addHealingReportEntry,
     logHealingSuggestion,
+    logHealingInfo,
     getHealingReport,
     cleanupOldReports,
     scheduleSelfHealingMaintenance,

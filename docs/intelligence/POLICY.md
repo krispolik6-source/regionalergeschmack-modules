@@ -59,9 +59,10 @@ Implementacja: `passesValueNotFeatureTest()` w `policy.js`.
 |---------|------|---------|
 | Logger krytycznych błędów | `selfHealingLogger.js` | Tylko UI freeze, QuotaExceeded, krytyczne API (Overpass itd.) — bez szumu assetów |
 | Retention 30 dni | `selfHealingLogger.js` | `cleanupOldReports()` — `selfHealingLog`, `healingReport`, markdown `logs/system_health_[DATA].md` |
-| Raport sesji | `healingReport` (localStorage) | Statusy: **FIXED** ✅ · **SUGGESTION** 🟡 · **FAILED** 🔴 |
+| Raport sesji | `healingReport` (localStorage) | Statusy: **FIXED** ✅ · **SUGGESTION** 🟡 · **INFO** 💡 · **FAILED** 🔴 |
 | Bezpieczne mitigacje | `selfHealingFixer.js` | Whitelist runtime (modal, quota-trim, retry fetch) — **bez eval**, bez zmian HTML |
 | AI asystent | `selfHealingLogger.js` | Propozycje ze statusem `pending_acceptance` — **nigdy auto-wdrażanie kodu z sieci** |
+| UI SUGGESTIONS (INFO) | `selfHealingFixer.js` → `getUiSuggestions()` | Propozycje wyglądu (kontrast, typografia, cienie, modal) — status **INFO** 💡, nie błąd; `autoApply=false` |
 | UI (dyskretny) | ☰ → Über die App → Systemstatus | Lista wpisów raportu — bez wrażenia chatbota AI |
 
 ### Polityka (zgodna z tym dokumentem)
@@ -78,6 +79,14 @@ Implementacja: `passesValueNotFeatureTest()` w `policy.js`.
 | `selfHealingLog` | Surowe błędy krytyczne | ~1 MB |
 | `healingReport` | Kolorowy raport sesji | 200 wpisów |
 | `logs/system_health_YYYY-MM-DD.md` | Dzienne podsumowanie markdown | retention 30 dni |
+
+### UI SUGGESTIONS (status INFO)
+
+- **Cel:** propozycje estetyczne / UX (np. kontrast przycisku, czytelność nagłówka, cień kart, zaokrąglenia modala).
+- **Nie są błędami** — nie podnoszą FAILED ani SUGGESTION z logów runtime.
+- **Zapis:** `healingReport` ze statusem `INFO` (ikona 💡, kolor niebieski `#3b82f6` / `--info-blue` w Developer Vault).
+- **Generowanie:** `getUiSuggestions()` w `selfHealingFixer.js` (heurystyki CSS/DOM); raz dziennie przez `scheduleUiUxImprovementHints()` w loggerze.
+- **Polityka:** wyłącznie `pending_acceptance` — bez auto-wdrażania CSS/HTML.
 
 ### Test
 

@@ -38,6 +38,7 @@ function formatTime(iso) {
 function statusLabel(status) {
     if (status === 'FIXED') return th('statusFixed');
     if (status === 'SUGGESTION') return th('statusSuggestion');
+    if (status === 'INFO') return th('statusInfo');
     return th('statusFailed');
 }
 
@@ -59,10 +60,12 @@ function buildEntryHtml(entry) {
 function buildCountsLine(entries) {
     const fixed = entries.filter((e) => e.status === 'FIXED').length;
     const suggestion = entries.filter((e) => e.status === 'SUGGESTION').length;
+    const info = entries.filter((e) => e.status === 'INFO').length;
     const failed = entries.filter((e) => e.status === 'FAILED').length;
     return th('counts')
         .replace('{fixed}', String(fixed))
         .replace('{suggestion}', String(suggestion))
+        .replace('{info}', String(info))
         .replace('{failed}', String(failed));
 }
 

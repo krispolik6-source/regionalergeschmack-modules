@@ -138,6 +138,150 @@ const FIX_SUGGESTION_RULES = [
     }
 ];
 
+/** @typedef {{ id: string, component: string, description: string }} UiUxSuggestion */
+
+function parseCssColor(value) {
+    const raw = String(value || '').trim();
+    if (!raw || raw === 'transparent') return null;
+    const m = raw.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/i);
+    if (!m) return null;
+    return {
+        r: Number(m[1]),
+        g: Number(m[2]),
+        b: Number(m[3]),
+        a: m[4] != null ? Number(m[4]) : 1
+    };
+}
+
+function relativeLuminance({ r, g, b }) {
+    const channel = (c) => {
+        const s = c / 255;
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+function contrastRatio(fg, bg) {
+    const l1 = relativeLuminance(fg);
+    const l2 = relativeLuminance(bg);
+    const lighter = Math.max(l1, l2);
+    const darker = Math.min(l1, l2);
+    return (lighter + 0.05) / (darker + 0.05);
+}
+
+function hasWeakButtonContrast() {
+    if (typeof document === 'undefined') return false;
+    const btn = document.querySelector('.btn-nearby, .btn-primary, .home-actions--primary-only .btn-nearby');
+    if (!btn) return false;
+    const style = getComputedStyle(btn);
+    const fg = parseCssColor(style.color);
+    const bg = parseCssColor(style.backgroundColor);
+    if (!fg || !bg || bg.a < 0.08) return false;
+    return contrastRatio(fg, bg) < 4.2;
+}
+
+function hasHeaderReadabilityGap() {
+    if (typeof document === 'undefined') return false;
+    const title = document.querySelector('.header-brand-layer h1, .main-header .header-brand h1, .header-left h1');
+    if (!title) return false;
+    const style = getComputedStyle(title);
+    const size = parseFloat(style.fontSize) || 0;
+    const lineHeight = parseFloat(style.lineHeight) || 0;
+    const width = window.innerWidth || 0;
+    if (width && width <= 429 && size > 0 && size < 16) return true;
+    if (lineHeight > 0 && size > 0 && lineHeight / size < 1.12) return true;
+    return false;
+}
+
+function hasFlatCards() {
+    if (typeof document === 'undefined') return false;
+    const card = document.querySelector('.category-card, .home-product-card, .premium-feature-card');
+    if (!card) return false;
+    const shadow = getComputedStyle(card).boxShadow;
+    return !shadow || shadow === 'none' || /rgba?\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\)/.test(shadow);
+}
+
+function hasSharpModalCorners() {
+    if (typeof document === 'undefined') return false;
+    const modal = document.querySelector('.producer-modal-dialog, .producer-modal-content, .producer-modal');
+    if (!modal) return false;
+    const radius = parseFloat(getComputedStyle(modal).borderRadius) || 0;
+    return radius > 0 && radius < 12;
+}
+
+/** Heurystyki UI/UX — advisory only (status INFO w healingReport), bez autoApply. */
+const UI_UX_SUGGESTION_RULES = [
+    {
+        id: 'ui-btn-contrast',
+        component: 'css/style.css',
+        description: 'Rozważ zwiększenie kontrastu przycisku.',
+        test: hasWeakButtonContrast
+    },
+    {
+        id: 'ui-header-readability',
+        component: 'css/premium-header.css',
+        description: 'Czcionka w nagłówku może być bardziej czytelna.',
+        test: hasHeaderReadabilityGap
+    },
+    {
+        id: 'ui-card-shadow',
+        component: 'css/home-v1.css',
+        description: 'Dodaj delikatny cień pod kartami.',
+        test: hasFlatCards
+    },
+    {
+        id: 'ui-modal-radius',
+        component: 'css/style.css',
+        description: 'Zastosuj bardziej miękkie zaokrąglenia w modalu.',
+        test: hasSharpModalCorners
+    }
+];
+
+/**
+ * Analiza CSS/DOM — propozycje wyglądu (nie błędy). Status raportu: INFO 💡.
+ * @returns {UiUxSuggestion[]}
+ */
+export function getUiSuggestions() {
+    const out = [];
+    for (const rule of UI_UX_SUGGESTION_RULES) {
+        try {
+            if (typeof rule.test === 'function' && rule.test()) {
+                out.push({
+                    id: rule.id,
+                    component: rule.component,
+                    description: rule.description
+                });
+            }
+        } catch {
+            /* ignore rule errors */
+        }
+    }
+    return out;
+}
+
+/** @deprecated Użyj getUiSuggestions() */
+export function generateUiUxSuggestions() {
+    return getUiSuggestions();
+}
+
+/**
+ * Zapisuje sugestie UI/UX w healingReport (status INFO). Wywoływane z selfHealingLogger.
+ * @param {(component: string, description: string, context?: object) => string|null} logHealingInfo
+ * @returns {number} liczba nowych wpisów
+ */
+export function persistUiSuggestions(logHealingInfo) {
+    if (typeof logHealingInfo !== 'function') return 0;
+    let added = 0;
+    for (const item of getUiSuggestions()) {
+        const id = logHealingInfo(item.component, item.description, {
+            area: 'ui-ux',
+            suggestionId: item.id
+        });
+        if (id) added += 1;
+    }
+    return added;
+}
+
 /**
  * Wyciąga plik i linię ze stack trace lub kontekstu.
  * @param {object} errorLog
@@ -177,11 +321,17 @@ function parseStackLocation(errorLog) {
 
 /**
  * Generuje konkretną sugestię naprawy na podstawie logu błędu (heurystyka, bez eval).
+ * Sugestie wyglądu (UI/UX) — osobno: {@link getUiSuggestions} → status INFO w healingReport.
  * @param {object} errorLog — wpis selfHealingLog lub { message, stack, context, name }
  * @returns {FixSuggestion|null}
  */
 export function generateFixSuggestion(errorLog) {
     if (!errorLog || typeof errorLog !== 'object') return null;
+
+    /* --- Sekcja UI/UX (INFO) — nie zwraca FixSuggestion; patrz getUiSuggestions() --- */
+    if (errorLog.type === 'ui-audit' || errorLog.context?.area === 'ui-ux') {
+        return null;
+    }
 
     if (errorLog.mitigation?.applied || errorLog.type === 'error-fixed') {
         return null;
@@ -279,5 +429,8 @@ export default {
     applySafeMitigation,
     listSafeMitigations,
     generateFixSuggestion,
+    getUiSuggestions,
+    generateUiUxSuggestions,
+    persistUiSuggestions,
     parseStackLocation
 };
