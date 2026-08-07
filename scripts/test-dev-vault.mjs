@@ -167,7 +167,10 @@ assert(filterDeveloperVaultStream(sampleStream, { showAll: true }).length === 3,
 
 assert(vault.includes('filterDeveloperVaultStream'), 'report stream filter');
 assert(vault.includes('data-dv-report-show-all'), 'show-all toggle');
-assert(vault.includes('Pokaż wszystko'), 'show-all label');
+assert(vault.includes('devVaultSuggestions'), 'suggestion control module');
+assert(vault.includes('Wprowadź zmianę'), 'apply button label');
+assert(vault.includes('Odrzuć zmianę'), 'reject button label');
+assert(vault.includes('rg-dv-report-desc--fixed'), 'colored FIXED description');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');

@@ -602,7 +602,9 @@ function reportEntryToUnified(reportEntry, logById) {
         stack: related?.stack || '',
         context: related?.context || null,
         mitigation: related?.mitigation || null,
-        aiProposal
+        aiProposal: reportEntry.aiProposal || related?.aiProposal || null,
+        deployReady: Boolean(reportEntry.deployReady),
+        ownerStatus: reportEntry.ownerStatus || null
     };
 }
 
@@ -892,6 +894,56 @@ export function cleanupOldReports() {
         /* ignore */
     }
     return { removed, remaining: log.entries.length, markdownRemoved };
+}
+
+/**
+ * Aktualizuje wpis System Health (healingReport lub selfHealingLog).
+ * @param {object} entry — wpis z buildUnifiedSystemHealth()
+ * @param {object} patch
+ * @returns {boolean}
+ */
+export function updateUnifiedHealthEntry(entry, patch) {
+    if (!entry || !patch || typeof patch !== 'object') return false;
+    let updated = false;
+
+    if (entry.source === 'healingReport' || String(entry.id || '').startsWith('report-')) {
+        const report = getHealingReport();
+        const rawId = String(entry.id || '').replace(/^report-/, '');
+        const idx = (report.entries || []).findIndex((e) => String(e.id) === rawId);
+        if (idx >= 0) {
+            report.entries[idx] = { ...report.entries[idx], ...patch };
+            if (patch.status && HEALING_STATUS[patch.status]) {
+                report.entries[idx].status = patch.status;
+            }
+            persistHealingReportNow(report);
+            updated = true;
+        }
+    }
+
+    if (entry.source === 'selfHealingLog' || String(entry.id || '').startsWith('log-')) {
+        const log = readLogRaw();
+        const rawId = entry.relatedLogId || String(entry.id || '').replace(/^log-/, '');
+        const idx = (log.entries || []).findIndex((e) => String(e.id) === String(rawId));
+        if (idx >= 0) {
+            const row = log.entries[idx];
+            if (patch.status === HEALING_STATUS.FIXED) {
+                row.type = row.type === 'error' ? 'error-fixed' : row.type;
+                row.mitigation = row.mitigation || { applied: true, at: nowIso(), detail: patch.description || 'owner-accept' };
+            }
+            if (patch.description) row.message = patch.description;
+            if (patch.ownerStatus) row.ownerStatus = patch.ownerStatus;
+            if (patch.deployReady != null) row.deployReady = patch.deployReady;
+            if (patch.ownerAcceptedAt) row.ownerAcceptedAt = patch.ownerAcceptedAt;
+            try {
+                safeLocalStorageSetItem(SELF_HEALING_LOG_KEY, JSON.stringify(trimLogToMaxBytes(log)));
+            } catch {
+                /* ignore */
+            }
+            updated = true;
+        }
+    }
+
+    return updated;
 }
 
 /**
@@ -1269,6 +1321,8 @@ export default {
     getLatestSystemHealthMarkdown,
     getSystemHealthMarkdownIndex,
     buildUnifiedSystemHealth,
+    updateUnifiedHealthEntry,
+    removeUnifiedHealthEntry,
     getSelfHealingLog,
     isCriticalError,
     isCriticalNetworkUrl,

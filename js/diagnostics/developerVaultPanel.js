@@ -27,6 +27,14 @@ import {
     loadUnifiedReportStream
 } from './reportManagerClient.js';
 import {
+    applyStreamSuggestion,
+    rejectStreamSuggestion,
+    canApplyStreamEntry,
+    getStreamEntryDescription,
+    isStreamEntryDeployReady,
+    filterDismissedStreamEntries
+} from './devVaultSuggestions.js';
+import {
     buildDevStatusBoard,
     loadDevStatusBoardSources
 } from './devStatusBoard.js';
@@ -96,6 +104,21 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-status-badge--suggestion{background:#c97a12}
 #${ROOT_ID} .rg-dv-status-badge--failed{background:#b83232}
 #${ROOT_ID} .rg-dv-status-badge--info{background:var(--info-blue,#3b82f6)}
+#${ROOT_ID} .rg-dv-report-desc{margin:6px 0 0;padding:8px 10px;border-radius:10px;font-size:.84rem;line-height:1.45;border-left:3px solid rgba(42,63,40,.2);background:rgba(255,255,255,.5)}
+#${ROOT_ID} .rg-dv-report-desc-k{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+#${ROOT_ID} .rg-dv-report-desc-v{margin:0;color:#1c1812;word-break:break-word}
+#${ROOT_ID} .rg-dv-report-desc--fixed{border-left-color:#2a7a38;background:rgba(42,122,56,.08)}
+#${ROOT_ID} .rg-dv-report-desc--fixed .rg-dv-report-desc-k{color:#1e5a24}
+#${ROOT_ID} .rg-dv-report-desc--suggestion{border-left-color:#c97a12;background:rgba(201,122,18,.08)}
+#${ROOT_ID} .rg-dv-report-desc--suggestion .rg-dv-report-desc-k{color:#7a5a08}
+#${ROOT_ID} .rg-dv-report-desc--failed{border-left-color:#b83232;background:rgba(184,50,50,.08)}
+#${ROOT_ID} .rg-dv-report-desc--failed .rg-dv-report-desc-k{color:#6b1d1d}
+#${ROOT_ID} .rg-dv-report-desc--info{border-left-color:var(--info-blue,#3b82f6);background:rgba(59,130,246,.08)}
+#${ROOT_ID} .rg-dv-report-desc--info .rg-dv-report-desc-k{color:#1d4ed8}
+#${ROOT_ID} .rg-dv-deploy-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(42,63,40,.12);color:#2a3f28;margin-left:4px;vertical-align:middle}
+#${ROOT_ID} .rg-dv-apply{background:rgba(42,122,56,.12);color:#1e5a24;border:1px solid rgba(42,122,56,.35)!important}
+#${ROOT_ID} .rg-dv-apply:disabled{opacity:.45;cursor:not-allowed}
+#${ROOT_ID} .rg-dv-reject{background:rgba(180,60,60,.08);color:#6b1d1d;border:1px solid rgba(140,40,40,.28)!important}
 #${ROOT_ID} .rg-dv-report-empty{margin:16px 0;padding:20px 16px;text-align:center;background:rgba(255,255,255,.55);border:1px dashed rgba(42,63,40,.18);border-radius:12px;color:#4a3f32;font-size:.95rem}
 #${ROOT_ID} .rg-dcc-pre{white-space:pre-wrap;font-size:.85rem;line-height:1.45;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;border:1px solid rgba(42,63,40,.1);max-height:40vh;overflow:auto}
 #${ROOT_ID} .rg-dv-err{color:#8a2b2b;font-size:.9rem;margin:0 0 8px}
@@ -238,6 +261,12 @@ function unifiedReportRowHtml(entry) {
         : (entry.isLatest ? `${entry.name || 'latest'} · bieżący` : (entry.name || pathHint));
     const streamId = String(entry.streamId || pathHint);
     const statusMeta = getStreamStatusMeta(entry.streamStatus);
+    const desc = getStreamEntryDescription(entry);
+    const deployReady = isStreamEntryDeployReady(entry);
+    const applyEnabled = canApplyStreamEntry(entry);
+    const applyTitle = applyEnabled
+        ? 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)'
+        : (resolveEntryApplyDisabledReason(entry));
     return `
       <li>
         <span class="rg-dv-report-ico" aria-hidden="true">${statusMeta.icon}</span>
@@ -246,15 +275,31 @@ function unifiedReportRowHtml(entry) {
           <div class="rg-dv-report-title-row">
             <strong>${escapeHtml(title)}</strong>
             <span class="rg-dv-status-badge ${statusMeta.badgeClass}" aria-label="Status raportu">${escapeHtml(statusMeta.label)}</span>
+            ${deployReady ? '<span class="rg-dv-deploy-badge">Gotowe do wdrożenia</span>' : ''}
+          </div>
+          <div class="rg-dv-report-desc rg-dv-report-desc--${escapeHtml(desc.tone)}" role="note">
+            <span class="rg-dv-report-desc-k">${escapeHtml(desc.heading)}</span>
+            <p class="rg-dv-report-desc-v">${escapeHtml(desc.text)}</p>
           </div>
           <p style="margin:4px 0 0;color:#4a3f32;font-size:.82rem">${escapeHtml(when)} · ${escapeHtml(pathHint)}</p>
           <div class="rg-dcc-btn-row">
+            <button type="button" class="rg-dv-apply" data-dv-apply-id="${escapeHtml(streamId)}"${applyEnabled ? '' : ' disabled'} title="${escapeHtml(applyTitle)}">✅ Wprowadź zmianę</button>
+            <button type="button" class="rg-dv-reject" data-dv-reject-id="${escapeHtml(streamId)}">❌ Odrzuć zmianę</button>
             <button type="button" class="rg-dv-secondary" data-dv-open-id="${escapeHtml(streamId)}">${label('devVault.openReport', 'Otwórz')}</button>
             <button type="button" class="rg-dv-secondary" data-dv-copy-id="${escapeHtml(streamId)}">📋 Kopiuj raport</button>
             <button type="button" class="rg-dcc-danger" data-dv-del-id="${escapeHtml(streamId)}">🗑 Usuń raport</button>
           </div>
         </div>
       </li>`;
+}
+
+function resolveEntryApplyDisabledReason(entry) {
+    const status = entry?.streamStatus ?? entry?.systemEntry?.status;
+    if (String(status).toUpperCase() === 'FAILED') {
+        return 'Błąd krytyczny — wymaga ręcznej interwencji w kodzie';
+    }
+    if (isStreamEntryDeployReady(entry)) return 'Już oznaczone jako gotowe do wdrożenia';
+    return 'Zmiana już wprowadzona lub niedostępna';
 }
 
 function simpleMarkdownToHtml(source) {
@@ -467,6 +512,38 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
             }
         });
     });
+
+    body.querySelectorAll('[data-dv-apply-id]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const entry = byId.get(btn.getAttribute('data-dv-apply-id'));
+            if (!entry || btn.disabled) return;
+            btn.disabled = true;
+            const result = await applyStreamSuggestion(entry);
+            if (result.ok) {
+                showToast(result.message || (result.applied ? 'Zmiana wprowadzona' : 'Gotowe do wdrożenia'));
+                closeReportPreview(root);
+                onMutated?.();
+            } else {
+                showToast('Nie udało się zatwierdzić sugestii', 'error');
+                btn.disabled = false;
+            }
+        });
+    });
+
+    body.querySelectorAll('[data-dv-reject-id]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const entry = byId.get(btn.getAttribute('data-dv-reject-id'));
+            if (!entry) return;
+            const r = await rejectStreamSuggestion(entry);
+            if (r.ok) {
+                showToast('Sugestia odrzucona');
+                closeReportPreview(root);
+                onMutated?.();
+            } else {
+                showToast('Nie udało się odrzucić', 'error');
+            }
+        });
+    });
 }
 
 async function renderDeveloperDashboard(body) {
@@ -477,7 +554,9 @@ async function renderDeveloperDashboard(body) {
         loadUnifiedReportStream()
     ]);
     const board = buildDevStatusBoard(sources);
-    const visibleStream = filterDeveloperVaultStream(stream, { showAll: showAllReports });
+    const visibleStream = filterDismissedStreamEntries(
+        filterDeveloperVaultStream(stream, { showAll: showAllReports })
+    );
     const hiddenCount = stream.length - visibleStream.length;
     const rows = visibleStream.map((entry) => unifiedReportRowHtml(entry)).join('');
     const filterNote = showAllReports
