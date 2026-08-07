@@ -28,7 +28,6 @@ import { RETURN_MAGIC_I18N } from './translations-return-magic.js';
 import { REGION_SOUL_I18N } from './translations-region-soul.js';
 import { REGIONAL_INTEL_I18N } from './translations-regional-intelligence.js';
 import { TASTE_DIARY_I18N } from './translations-taste-diary.js';
-import { DEV_VAULT_I18N } from './translations-dev-vault.js';
 import { HOME_FILL_I18N } from './translations-home-fill.js';
 import { RECOMMENDATIONS_LOCALES } from './translations-recommendations-locales.js';
 import { HOME_SECTIONS_LOCALES } from './translations-home-sections-locales.js';
@@ -1716,12 +1715,7 @@ for (const code of Object.keys(built)) {
     built[code] = deepMerge(built[code], { menu: { tasteDiary: menuTitle } });
 }
 
-// Dev vault (DE/EN/PL + EN fallback)
-const devVaultEn = DEV_VAULT_I18N.en;
-for (const code of Object.keys(built)) {
-    const pack = DEV_VAULT_I18N[code] || devVaultEn;
-    if (pack) built[code] = deepMerge(built[code], pack);
-}
+// Developer Vault — tylko PL w module translations-dev-vault.js (bez merge do innych języków)
 
 // Home fill — ambient / regional intel / living region titles (wszystkie języki)
 const homeFillEn = HOME_FILL_I18N.en;
@@ -1754,7 +1748,7 @@ for (const code of Object.keys(built)) {
     if (pack) built[code] = deepMerge(built[code], pack);
 }
 
-// Domknij etykiety menu (nie nadpisuj EN z DEV_VAULT_I18N fallback)
+// Domknij etykiety menu (devVault z MENU_I18N per język)
 for (const [code, menu] of Object.entries(MENU_I18N)) {
     if (!built[code] || !menu) continue;
     built[code] = deepMerge(built[code], {

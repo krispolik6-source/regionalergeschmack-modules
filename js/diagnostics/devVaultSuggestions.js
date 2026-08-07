@@ -17,17 +17,18 @@ import {
     applySafeMitigation,
     resolveSafeMitigationId
 } from '../core/selfHealingFixer.js';
-
-export const DEV_VAULT_DISMISSED_KEY = 'devVault_dismissedStreamIds';
-export const DEV_VAULT_ACCEPTED_KEY = 'devVault_acceptedStreamIds';
+import { devVaultPl } from '../translations-dev-vault.js';
 
 /** Nagłówki opisów wg statusu (kolor w CSS panelu). */
 export const STREAM_STATUS_HEADING = Object.freeze({
-    FIXED: { label: 'Co zostało naprawione', tone: 'fixed' },
-    SUGGESTION: { label: 'Co sugeruję do poprawy', tone: 'suggestion' },
-    FAILED: { label: 'Co jest problemem', tone: 'failed' },
-    INFO: { label: 'Co proponuję zmienić', tone: 'info' }
+    FIXED: { label: devVaultPl('suggestions.fixedHeading', 'Co zostało naprawione'), tone: 'fixed' },
+    SUGGESTION: { label: devVaultPl('suggestions.suggestionHeading', 'Co sugeruję do poprawy'), tone: 'suggestion' },
+    FAILED: { label: devVaultPl('suggestions.failedHeading', 'Co jest problemem'), tone: 'failed' },
+    INFO: { label: devVaultPl('suggestions.infoHeading', 'Co proponuję zmienić'), tone: 'info' }
 });
+
+export const DEV_VAULT_DISMISSED_KEY = 'devVault_dismissedStreamIds';
+export const DEV_VAULT_ACCEPTED_KEY = 'devVault_acceptedStreamIds';
 
 function readDismissedSet() {
     try {
@@ -95,9 +96,9 @@ export function resolveEntryStreamStatus(entry) {
 }
 
 /** Domyślny opis gdy brak treści raportu. */
-export const STREAM_ENTRY_NO_DETAILS = 'Brak szczegółów dla tej sugestii.';
-export const FAILED_MANUAL_ANALYSIS_HINT = 'Wymaga ręcznej analizy kodu';
-export const OWNER_APPROVED_FIX_NOTE = 'Naprawa zatwierdzona przez użytkownika';
+export const STREAM_ENTRY_NO_DETAILS = devVaultPl('suggestions.noDetails', 'Brak szczegółów dla tej sugestii.');
+export const FAILED_MANUAL_ANALYSIS_HINT = devVaultPl('suggestions.manualAnalysis', 'Wymaga ręcznej analizy kodu');
+export const OWNER_APPROVED_FIX_NOTE = devVaultPl('suggestions.ownerApproved', 'Naprawa zatwierdzona przez użytkownika');
 
 const EXCERPT_MAX_LEN = 110;
 
@@ -337,6 +338,14 @@ export function hasStreamEntryFixProposal(entry) {
 
 /**
  * @param {object} entry
+ * @returns {boolean}
+ */
+export function isAuditStreamEntry(entry) {
+    return entry?.systemEntry?.reportTag === 'AUDIT' || entry?.reportTag === 'AUDIT';
+}
+
+/**
+ * @param {object} entry
  * @param {number} [maxLen]
  * @returns {string}
  */
@@ -354,16 +363,25 @@ export function getStreamEntryFixProposalSummary(entry, maxLen = EXCERPT_MAX_LEN
  * @returns {{ enabled: boolean, hint: string, title: string, hintTone: 'ok'|'warn'|'' }}
  */
 export function getStreamEntryApplyMeta(entry) {
+    if (isAuditStreamEntry(entry)) {
+        return {
+            enabled: false,
+            hint: '',
+            title: devVaultPl('suggestions.auditReadOnly', 'Raport audytu — podgląd tylko do odczytu'),
+            hintTone: ''
+        };
+    }
     const enabled = canApplyStreamEntry(entry);
     const status = resolveEntryStreamStatus(entry);
 
     if (status === STREAM_STATUS.FAILED) {
         if (enabled && hasStreamEntryFixProposal(entry)) {
             const summary = getStreamEntryFixProposalSummary(entry);
+            const prefix = devVaultPl('suggestions.proposedFixPrefix', 'Proponowana naprawa');
             return {
                 enabled: true,
-                hint: `Proponowana naprawa: ${summary || '—'}`,
-                title: 'Zatwierdź proponowaną naprawę',
+                hint: `${prefix}: ${summary || '—'}`,
+                title: devVaultPl('suggestions.approveFixTitle', 'Zatwierdź proponowaną naprawę'),
                 hintTone: 'ok'
             };
         }
@@ -379,10 +397,10 @@ export function getStreamEntryApplyMeta(entry) {
         enabled,
         hint: '',
         title: enabled
-            ? 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)'
+            ? devVaultPl('suggestions.applyReadyTitle', 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)')
             : (isStreamEntryDeployReady(entry)
-                ? 'Już oznaczone jako gotowe do wdrożenia'
-                : 'Zmiana już wprowadzona lub niedostępna'),
+                ? devVaultPl('suggestions.applyAlreadyReady', 'Już oznaczone jako gotowe do wdrożenia')
+                : devVaultPl('suggestions.applyDisabled', 'Zmiana już wprowadzona lub niedostępna')),
         hintTone: ''
     };
 }
@@ -392,6 +410,7 @@ export function getStreamEntryApplyMeta(entry) {
  * @returns {boolean}
  */
 export function canApplyStreamEntry(entry) {
+    if (isAuditStreamEntry(entry)) return false;
     const status = resolveEntryStreamStatus(entry);
     if (status === STREAM_STATUS.FIXED) return false;
     if (isStreamEntryDeployReady(entry)) return false;
@@ -440,7 +459,7 @@ export async function applyStreamSuggestion(entry) {
             ok: true,
             applied: false,
             readyToDeploy: true,
-            message: 'Oznaczono jako gotowe do wdrożenia (raport docs).'
+            message: devVaultPl('suggestions.docsReady', 'Oznaczono jako gotowe do wdrożenia (raport docs).')
         };
     }
 
@@ -457,8 +476,8 @@ export async function applyStreamSuggestion(entry) {
             updateUnifiedHealthEntry(systemEntry, {
                 status: HEALING_STATUS.FIXED,
                 description: approvedNote
-                    ? `${approvedNote}. ${mitResult.detail || `Zastosowano mitigację: ${mitigationId}`}`
-                    : (mitResult.detail || `Zastosowano mitigację: ${mitigationId}`),
+                    ? `${approvedNote}. ${mitResult.detail || `${devVaultPl('suggestions.mitigationUsed', 'Zastosowano mitigację')}: ${mitigationId}`}`
+                    : (mitResult.detail || `${devVaultPl('suggestions.mitigationUsed', 'Zastosowano mitigację')}: ${mitigationId}`),
                 ownerStatus: 'applied',
                 ownerNote: approvedNote || undefined,
                 deployReady: false,
@@ -468,7 +487,7 @@ export async function applyStreamSuggestion(entry) {
                 ok: true,
                 applied: true,
                 mitigationId,
-                message: approvedNote || mitResult.detail || 'Mitigacja runtime zastosowana.'
+                message: approvedNote || mitResult.detail || devVaultPl('suggestions.mitigationApplied', 'Mitigacja runtime zastosowana.')
             };
         }
     }
@@ -495,14 +514,14 @@ export async function applyStreamSuggestion(entry) {
         ownerStatus: 'ready_to_deploy',
         deployReady: true,
         ownerAcceptedAt: new Date().toISOString(),
-        description: `[Gotowe do wdrożenia] ${systemEntry.description || systemEntry.message || 'Sugestia zaakceptowana'}`
+        description: `[Gotowe do wdrożenia] ${systemEntry.description || systemEntry.message || devVaultPl('suggestions.markedReady', 'Sugestia zaakceptowana')}`
     });
 
     return {
         ok: true,
         applied: false,
         readyToDeploy: true,
-        message: 'Oznaczono jako gotowe do wdrożenia.'
+        message: devVaultPl('suggestions.markedReady', 'Oznaczono jako gotowe do wdrożenia.')
     };
 }
 

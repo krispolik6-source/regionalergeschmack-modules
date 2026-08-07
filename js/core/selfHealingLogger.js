@@ -273,6 +273,11 @@ export function addHealingReportEntry(entry) {
     if (entry.aiProposal && status !== HEALING_STATUS.FIXED) {
         row.aiProposal = entry.aiProposal;
     }
+    if (entry.reportTag) row.reportTag = String(entry.reportTag);
+    if (Array.isArray(entry.auditChecks) && entry.auditChecks.length) {
+        row.auditChecks = entry.auditChecks;
+    }
+    if (entry.auditHeadline) row.auditHeadline = truncate(entry.auditHeadline, 200);
     report.entries.push(row);
     persistHealingReportNow(report);
     return row.id;
@@ -604,7 +609,11 @@ function reportEntryToUnified(reportEntry, logById) {
         mitigation: related?.mitigation || null,
         aiProposal: reportEntry.aiProposal || related?.aiProposal || null,
         deployReady: Boolean(reportEntry.deployReady),
-        ownerStatus: reportEntry.ownerStatus || null
+        ownerStatus: reportEntry.ownerStatus || null,
+        ownerNote: reportEntry.ownerNote || null,
+        reportTag: reportEntry.reportTag || null,
+        auditChecks: reportEntry.auditChecks || null,
+        auditHeadline: reportEntry.auditHeadline || null
     };
 }
 

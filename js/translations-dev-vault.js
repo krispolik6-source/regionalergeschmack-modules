@@ -1,83 +1,12 @@
 /**
- * Ukryty panel deweloperski – i18n
+ * Developer Vault – tylko język polski
+ * Panel deweloperski nie korzysta z globalnego i18n aplikacji.
  */
+
+export const DEV_VAULT_PANEL_LANG = 'pl';
 
 /** @type {Record<string, object>} */
 export const DEV_VAULT_I18N = Object.freeze({
-    de: {
-        menu: { devVault: 'Entwicklerpanel' },
-        devVault: {
-            title: 'Entwicklerpanel',
-            passwordPrompt: 'Passwort eingeben, um Dev / Health freizuschalten.',
-            password: 'Passwort',
-            unlock: 'Entsperren',
-            cancel: 'Abbrechen',
-            close: 'Schließen',
-            lock: 'Sperren',
-            badPassword: 'Falsches Passwort',
-            unlocked: 'Für diese Sitzung freigeschaltet.',
-            unlockedToast: 'Panel freigeschaltet',
-            locked: 'Panel gesperrt',
-            loading: 'Laden…',
-            healthEmpty: 'Kein Health-Bericht. „Health aktualisieren” tippen.',
-            healthTitle: 'Anwendungsgesundheit',
-            healthRefresh: 'Health aktualisieren',
-            healthOpen: 'Vollständiges Health-Panel',
-            reportMissing: 'Kein lokaler Bericht. CLI ausführen (npm run future / dream / brain), dann aktualisieren.',
-            devHint: 'Entwicklerwerkzeuge (Dashboard).',
-            openDev: 'Dev öffnen',
-            tabDev: 'Dev',
-            tabHealth: 'Health',
-            tabReports: 'Berichte',
-            reportsHint: 'Liste der Fehler- und Reparaturberichte.',
-            reportGuardian: 'Fehler und Code-Alerts',
-            reportDream: 'Produktreflexion / Snapshots',
-            reportBrain: 'Vorschläge für Fixes und Verbesserungen',
-            openReport: 'Öffnen',
-            clearReports: '🧹 Alte Berichte löschen',
-            clearReportsConfirm: 'Alle Berichte wirklich löschen?',
-            clearReportsDone: '🧹 Alle Berichte wurden gelöscht.',
-            clearReportsFail: 'Berichte konnten nicht gelöscht werden.',
-            prodOnly: 'Nur lokal oder mit ?dev=1 verfügbar.'
-        }
-    },
-    en: {
-        menu: { devVault: 'Developer panel' },
-        devVault: {
-            title: 'Developer panel',
-            passwordPrompt: 'Enter the password to unlock Dev / Health tools.',
-            password: 'Password',
-            unlock: 'Unlock',
-            cancel: 'Cancel',
-            close: 'Close',
-            lock: 'Lock',
-            badPassword: 'Incorrect password',
-            unlocked: 'Unlocked for this browser session.',
-            unlockedToast: 'Panel unlocked',
-            locked: 'Panel locked',
-            loading: 'Loading…',
-            healthEmpty: 'No Health report. Tap “Refresh Health”.',
-            healthTitle: 'Application health',
-            healthRefresh: 'Refresh Health',
-            healthOpen: 'Full Health panel',
-            reportMissing: 'No local report. Run CLI (npm run future / dream / brain), then refresh.',
-            devHint: 'Developer tools (dashboard).',
-            openDev: 'Open Dev',
-            tabDev: 'Dev',
-            tabHealth: 'Health',
-            tabReports: 'Reports',
-            reportsHint: 'List of error and fix reports.',
-            reportGuardian: 'Errors and code alerts',
-            reportDream: 'Product reflection / snapshots',
-            reportBrain: 'Fix and improvement proposals',
-            openReport: 'Open',
-            clearReports: '🧹 Clear old reports',
-            clearReportsConfirm: 'Delete all reports?',
-            clearReportsDone: '🧹 All reports cleared.',
-            clearReportsFail: 'Could not clear reports.',
-            prodOnly: 'Available locally or with ?dev=1 only.'
-        }
-    },
     pl: {
         menu: { devVault: 'Panel deweloperski' },
         devVault: {
@@ -112,7 +41,119 @@ export const DEV_VAULT_I18N = Object.freeze({
             clearReportsConfirm: 'Czy na pewno chcesz usunąć wszystkie raporty?',
             clearReportsDone: '🧹 Wszystkie raporty zostały wyczyszczone.',
             clearReportsFail: 'Nie udało się wyczyścić raportów.',
-            prodOnly: 'Dostępne tylko lokalnie lub z ?dev=1.'
+            runSweep: '🧠 Inteligentna Diagnoza',
+            sweepRunning: 'Uruchamianie inteligentnej diagnozy...',
+            sweepDone: 'Diagnoza zakończona.',
+            sweepFail: 'Nie udało się uruchomić diagnozy.',
+            prodOnly: 'Dostępne tylko lokalnie lub z ?dev=1.',
+            panelTitle: 'Panel deweloperski',
+            panelAria: 'Panel deweloperski',
+            panelSubtitle: 'Wersja {version} · Panel deweloperski · Status i raporty',
+            statusHint: 'Kluczowe metryki aplikacji — tylko odczyt, bez auto-napraw.',
+            previewTitle: 'Podgląd raportu',
+            systemHealth: 'Zdrowie systemu',
+            errorFeed: 'Strumień błędów runtime',
+            refreshDashboard: 'Odśwież pulpit',
+            copyReport: 'Kopiuj raport',
+            deleteReport: 'Usuń raport',
+            applyChange: 'Wprowadź zmianę',
+            rejectChange: 'Odrzuć zmianę',
+            deployReady: 'Gotowe do wdrożenia',
+            reportCategory: 'Kategoria',
+            reportStatus: 'Status raportu',
+            showRelevantOnly: 'Pokaż tylko istotne',
+            showAll: 'Pokaż wszystko',
+            noReports: 'Brak raportów do wyświetlenia.',
+            noRelevantReports: 'Brak istotnych raportów — włącz „Pokaż wszystko”, aby zobaczyć wpisy techniczne.',
+            filterAll: 'Pełna lista ({count} wpisów).',
+            filterVisible: 'Widoczne: {visible} wpisów (FIXED · SUGGESTION · INFO · FAILED).',
+            filterHidden: 'Widoczne: {visible} z {total} (ukryto {hidden} wpisów technicznych).',
+            reportsHintLong: 'Tylko istotne statusy: naprawione, sugestie, info UI/UX i błędy. Auto-czyszczenie wpisów starszych niż 30 dni.',
+            sweepDoneCount: 'Diagnoza zakończona ({ok}/{total} OK).',
+            sweepSaveFail: 'Nie udało się zapisać raportu audytu.',
+            lockReset: 'Blokada dostępu zresetowana',
+            reportNotFound: 'Nie znaleziono wpisu raportu',
+            reportDeleted: 'Raport usunięty',
+            reportDeleteFail: 'Nie usunięto',
+            changeApplied: 'Zmiana wprowadzona',
+            readyToDeploy: 'Gotowe do wdrożenia',
+            applyFail: 'Nie udało się zatwierdzić sugestii',
+            rejectDone: 'Sugestia odrzucona',
+            rejectFail: 'Nie udało się odrzucić',
+            errorFeedFail: 'Nie udało się otworzyć strumienia błędów',
+            deleteConfirm: 'Usunąć raport?',
+            openErrorFeedTitle: 'Otwórz strumień błędów runtime'
+        },
+        suggestions: {
+            fixedHeading: 'Co zostało naprawione',
+            suggestionHeading: 'Co sugeruję do poprawy',
+            failedHeading: 'Co jest problemem',
+            infoHeading: 'Co proponuję zmienić',
+            noDetails: 'Brak szczegółów dla tej sugestii.',
+            manualAnalysis: 'Wymaga ręcznej analizy kodu',
+            ownerApproved: 'Naprawa zatwierdzona przez użytkownika',
+            proposedFixPrefix: 'Proponowana naprawa',
+            approveFixTitle: 'Zatwierdź proponowaną naprawę',
+            auditReadOnly: 'Raport audytu — podgląd tylko do odczytu',
+            applyReadyTitle: 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)',
+            applyAlreadyReady: 'Już oznaczone jako gotowe do wdrożenia',
+            applyDisabled: 'Zmiana już wprowadzona lub niedostępna',
+            docsReady: 'Oznaczono jako gotowe do wdrożenia (raport docs).',
+            markedReady: 'Oznaczono jako gotowe do wdrożenia.',
+            mitigationApplied: 'Mitigacja runtime zastosowana.',
+            mitigationUsed: 'Zastosowano mitigację'
+        },
+        statusLabels: {
+            FIXED: 'Naprawione',
+            SUGGESTION: 'Sugestia',
+            FAILED: 'Błąd',
+            INFO: 'Info'
+        },
+        metrics: {
+            Overall: 'Ogółem',
+            Health: 'Zdrowie',
+            Performance: 'Wydajność',
+            Brand: 'Marka',
+            PWA: 'PWA',
+            Offline: 'Offline',
+            GPS: 'GPS',
+            Mapa: 'Mapa',
+            UI: 'UI',
+            Accessibility: 'Dostępność',
+            Security: 'Bezpieczeństwo',
+            Console: 'Konsola',
+            Warnings: 'Ostrzeżenia',
+            Reports: 'Raporty',
+            Storage: 'Pamięć',
+            Release: 'Wydanie',
+            releaseReady: 'GOTOWE',
+            releaseNotReady: 'NIE GOTOWE',
+            consoleError: '1 błąd',
+            consoleErrors: '{n} błędów'
         }
     }
 });
+
+/**
+ * @param {string} path — np. devVault.title lub suggestions.noDetails
+ * @param {string} [fallback]
+ * @returns {string}
+ */
+export function devVaultPl(path, fallback = '') {
+    const parts = String(path || '').split('.').filter(Boolean);
+    let node = DEV_VAULT_I18N[DEV_VAULT_PANEL_LANG];
+    for (const part of parts) {
+        node = node?.[part];
+    }
+    if (node === undefined || node === null || typeof node === 'object') {
+        return fallback;
+    }
+    const text = String(node).trim();
+    return text || fallback;
+}
+
+/** @type {Record<string, string>} */
+export const DEV_VAULT_STATUS_LABELS = Object.freeze({ ...DEV_VAULT_I18N.pl.statusLabels });
+
+/** @type {Record<string, string>} */
+export const DEV_VAULT_METRIC_LABELS = Object.freeze({ ...DEV_VAULT_I18N.pl.metrics });

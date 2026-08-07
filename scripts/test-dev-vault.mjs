@@ -117,7 +117,8 @@ assert(dash.includes('showFab = false'), 'dev defaults without FAB');
 
 const vault = readFileSync(join(ROOT, 'js/diagnostics/developerVaultPanel.js'), 'utf8');
 assert(vault.includes('showPasswordGate'), 'password gate');
-assert(vault.includes('Developer Control Center'), 'Control Center title');
+assert(vault.includes('panelTitle'), 'polish panel title key');
+assert(vault.includes('Panel deweloperski'), 'polish panel title text');
 assert(vault.includes('loadUnifiedReportStream'), 'unified report stream');
 assert(vault.includes('renderDeveloperDashboard'), 'developer dashboard view');
 assert(vault.includes('System Health'), 'system health section');
@@ -171,18 +172,26 @@ assert(vault.includes('devVaultSuggestions'), 'suggestion control module');
 assert(vault.includes('Wprowadź zmianę'), 'apply button label');
 assert(vault.includes('Odrzuć zmianę'), 'reject button label');
 assert(vault.includes('data-dv-clear-reports'), 'clear old reports button');
+assert(vault.includes('data-dv-run-sweep'), 'intelligent diagnosis button');
+assert(vault.includes('handleDiagnosticSweep'), 'diagnostic sweep handler');
+assert(vault.includes('diagnosticSweep.js'), 'diagnostic sweep module import');
+assert(readFileSync(join(ROOT, 'js/diagnostics/reportManagerClient.js'), 'utf8').includes('[AUDIT]'), 'AUDIT stream label');
 assert(vault.includes('clearLocalDeveloperReports'), 'local report cleanup');
 assert(vault.includes('rg_app_health_report_v1'), 'health report storage key');
 assert(vault.includes('selfHealingLog'), 'self healing log key');
 assert(vault.includes('enrichStreamEntriesWithDescriptions'), 'md excerpt enrichment');
 const suggMod = readFileSync(join(ROOT, 'js/diagnostics/devVaultSuggestions.js'), 'utf8');
 assert(vault.includes('getStreamEntryApplyMeta'), 'FAILED apply meta helper');
-assert(suggMod.includes('Proponowana naprawa'), 'proposed fix hint');
+assert(vault.includes('devVaultPl'), 'polish-only dev vault i18n');
+assert(!vault.includes("from '../core/i18n.js'"), 'no global i18n in dev vault panel');
+assert(suggMod.includes('devVaultPl'), 'polish-only suggestions i18n');
 assert(suggMod.includes('Wymaga ręcznej analizy kodu'), 'manual analysis hint');
 assert(suggMod.includes('Naprawa zatwierdzona przez użytkownika'), 'owner approved note');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
-assert(i18n.includes('Panel deweloperski'), 'PL title');
+assert(!i18n.includes('Entwicklerpanel'), 'no german dev vault pack');
+assert(!i18n.includes('Developer panel'), 'no english dev vault pack');
+assert(i18n.includes('Developer Vault – tylko język polski'), 'polish-only dev vault comment');
 assert(i18n.includes('tabReports'), 'reports i18n');
 
 const improve = readFileSync(join(ROOT, 'js/diagnostics/improvementEngine.js'), 'utf8');

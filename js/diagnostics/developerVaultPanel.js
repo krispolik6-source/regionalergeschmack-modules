@@ -5,7 +5,11 @@
  * Bez nowych silników · bez autoApply/autoFix · bez zmian Home/Map/app.js.
  */
 
-import { t } from '../core/i18n.js';
+import {
+    devVaultPl,
+    DEV_VAULT_STATUS_LABELS,
+    DEV_VAULT_METRIC_LABELS
+} from '../translations-dev-vault.js';
 import { showToast } from '../core/toast.js';
 import {
     isDevVaultUnlocked,
@@ -23,6 +27,7 @@ import {
     deleteStreamEntry,
     filterDeveloperVaultStream,
     getStreamStatusMeta,
+    normalizeStreamStatus,
     loadStreamEntryPreview,
     loadUnifiedReportStream
 } from './reportManagerClient.js';
@@ -98,10 +103,13 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-report-filter-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
 #${ROOT_ID} .rg-dv-report-filter-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 #${ROOT_ID} .rg-dv-report-filter-note{margin:0;font-size:.82rem;color:#5c5348;line-height:1.35}
-#${ROOT_ID} .rg-dv-report-show-all,#${ROOT_ID} .rg-dv-clear-reports{font-size:.82rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(42,63,40,.22);background:#fffef8;color:#2a3f28;cursor:pointer;font-weight:600;font-family:inherit}
+#${ROOT_ID} .rg-dv-report-show-all,#${ROOT_ID} .rg-dv-clear-reports,#${ROOT_ID} .rg-dv-run-sweep{font-size:.82rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(42,63,40,.22);background:#fffef8;color:#2a3f28;cursor:pointer;font-weight:600;font-family:inherit}
+#${ROOT_ID} .rg-dv-run-sweep{border-color:rgba(42,63,40,.35);background:rgba(42,63,40,.08)}
+#${ROOT_ID} .rg-dv-run-sweep:disabled{opacity:.55;cursor:wait}
+#${ROOT_ID} .rg-dv-sweep-status{margin:0;font-size:.82rem;color:#2a3f28;font-weight:600;line-height:1.35}
 #${ROOT_ID} .rg-dv-report-show-all[aria-pressed="true"]{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.45);color:#1d4ed8}
 #${ROOT_ID} .rg-dv-clear-reports{border-color:rgba(201,162,39,.45);background:rgba(201,162,39,.1)}
-#${ROOT_ID} .rg-dv-report-show-all:focus-visible,#${ROOT_ID} .rg-dv-clear-reports:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
+#${ROOT_ID} .rg-dv-report-show-all:focus-visible,#${ROOT_ID} .rg-dv-clear-reports:focus-visible,#${ROOT_ID} .rg-dv-run-sweep:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
 #${ROOT_ID} .rg-dv-report-list li:last-child{border-bottom:0}
@@ -162,33 +170,46 @@ function ensureStyles() {
     document.head.appendChild(style);
 }
 
-const METRIC_LABELS = {
-    Overall: 'OVERALL',
-    Health: 'HEALTH',
-    Performance: 'PERFORMANCE',
-    Brand: 'BRAND',
-    PWA: 'PWA',
-    Offline: 'OFFLINE',
-    GPS: 'GPS',
-    Mapa: 'MAPA',
-    UI: 'UI',
-    Accessibility: 'ACCESSIBILITY',
-    Security: 'SECURITY',
-    Console: 'CONSOLE',
-    Warnings: 'WARNINGS',
-    Reports: 'REPORTS',
-    Storage: 'STORAGE',
-    Release: 'RELEASE'
-};
+const METRIC_LABELS = DEV_VAULT_METRIC_LABELS;
+
+function dv(path, fallback = '') {
+    return devVaultPl(path, fallback);
+}
+
+/**
+ * @param {string} path
+ * @param {Record<string, string|number>} vars
+ * @param {string} [fallback]
+ */
+function dvFmt(path, vars, fallback = '') {
+    let text = devVaultPl(path, fallback);
+    for (const [key, value] of Object.entries(vars || {})) {
+        text = text.replace(new RegExp(`\\{${key}\\}`, 'g'), String(value));
+    }
+    return text;
+}
+
+function polishStatusMeta(status) {
+    const meta = getStreamStatusMeta(status);
+    const key = normalizeStreamStatus(status);
+    return {
+        ...meta,
+        label: DEV_VAULT_STATUS_LABELS[key] || meta.label
+    };
+}
 
 function formatMetricCell(row) {
     if (row.value == null || row.value === '') return '—';
-    if (row.kind === 'text' || row.kind === 'release') return String(row.value);
+    if (row.kind === 'text' || row.kind === 'release') {
+        if (row.value === 'READY') return dv('metrics.releaseReady', 'GOTOWE');
+        if (row.value === 'NOT READY') return dv('metrics.releaseNotReady', 'NIE GOTOWE');
+        return String(row.value);
+    }
     if (row.kind === 'count') {
         if (row.key === 'Console') {
             const n = Number(row.value);
-            if (n === 1) return '1 błąd';
-            if (n > 1) return `${n} błędów`;
+            if (n === 1) return dv('metrics.consoleError', '1 błąd');
+            if (n > 1) return dvFmt('metrics.consoleErrors', { n }, `${n} błędów`);
             return '0';
         }
         return String(row.value);
@@ -229,7 +250,9 @@ function computeOverallScore(rows) {
 function systemHealthTileHtml(row) {
     const label = METRIC_LABELS[row.key] || String(row.key || '').toUpperCase();
     const tone = metricToneClass(row);
-    const clickable = row.key === 'Console' ? ' data-dv-error-feed role="button" tabindex="0" title="Otwórz Runtime Error Feed"' : '';
+    const clickable = row.key === 'Console'
+        ? ` data-dv-error-feed role="button" tabindex="0" title="${escapeHtml(dv('devVault.openErrorFeedTitle', 'Otwórz strumień błędów runtime'))}"`
+        : '';
     return `
       <div class="rg-dv-metric ${tone}"${clickable}>
         <span class="rg-dv-metric-k">${escapeHtml(label)}</span>
@@ -250,14 +273,14 @@ function renderSystemHealthTilesHtml(board, streamCount) {
     };
     const tiles = [overallRow, ...rows].map((row) => systemHealthTileHtml(row)).join('');
     return `
-      <section class="rg-dcc-section" aria-label="System Health">
-        <h3>System Health</h3>
-        <p class="lead">${label('devVault.statusHint', 'Kluczowe metryki aplikacji — tylko odczyt, bez auto-napraw.')}</p>
+      <section class="rg-dcc-section" aria-label="${escapeHtml(dv('devVault.systemHealth', 'Zdrowie systemu'))}">
+        <h3>${escapeHtml(dv('devVault.systemHealth', 'Zdrowie systemu'))}</h3>
+        <p class="lead">${dv('devVault.statusHint', 'Kluczowe metryki aplikacji — tylko odczyt, bez auto-napraw.')}</p>
         <div class="rg-dv-metrics-grid">${tiles}</div>
         <div class="rg-dcc-btn-row" style="margin-top:12px">
-          <button type="button" class="rg-dv-primary" data-dv-error-feed>Runtime Error Feed</button>
-          <button type="button" class="rg-dv-secondary" data-dv-health-run>${label('devVault.healthRefresh', 'Odśwież Health')}</button>
-          <button type="button" class="rg-dv-secondary" data-dv-dashboard-refresh>Odśwież pulpit</button>
+          <button type="button" class="rg-dv-primary" data-dv-error-feed>${escapeHtml(dv('devVault.errorFeed', 'Strumień błędów runtime'))}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-health-run>${dv('devVault.healthRefresh', 'Odśwież Health')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-dashboard-refresh>${dv('devVault.refreshDashboard', 'Odśwież pulpit')}</button>
         </div>
       </section>`;
 }
@@ -269,10 +292,10 @@ function unifiedReportRowHtml(entry) {
         : String(entry.rel || '').replace(/^\//, '');
     const when = formatDate(entry.mtime || (entry.sortTs ? new Date(entry.sortTs).toISOString() : null));
     const title = isSystem
-        ? (entry.title || entry.name || 'System Health')
+        ? (entry.title || entry.name || dv('devVault.systemHealth', 'Zdrowie systemu'))
         : (entry.isLatest ? `${entry.name || 'latest'} · bieżący` : (entry.name || pathHint));
     const streamId = String(entry.streamId || pathHint);
-    const statusMeta = getStreamStatusMeta(entry.streamStatus);
+    const statusMeta = polishStatusMeta(entry.streamStatus);
     const desc = getStreamEntryDescription(entry);
     const deployReady = isStreamEntryDeployReady(entry);
     const applyMeta = getStreamEntryApplyMeta(entry);
@@ -280,12 +303,12 @@ function unifiedReportRowHtml(entry) {
     return `
       <li>
         <span class="rg-dv-report-ico" aria-hidden="true">${statusMeta.icon}</span>
-        <span class="rg-dv-report-tag" aria-label="Kategoria">${escapeHtml(entry.categoryLabel || '[Report]')}</span>
+        <span class="rg-dv-report-tag" aria-label="${escapeHtml(dv('devVault.reportCategory', 'Kategoria'))}">${escapeHtml(entry.categoryLabel || '[Raport]')}</span>
         <div style="flex:1;min-width:0">
           <div class="rg-dv-report-title-row">
             <strong>${escapeHtml(title)}</strong>
-            <span class="rg-dv-status-badge ${statusMeta.badgeClass}" aria-label="Status raportu">${escapeHtml(statusMeta.label)}</span>
-            ${deployReady ? '<span class="rg-dv-deploy-badge">Gotowe do wdrożenia</span>' : ''}
+            <span class="rg-dv-status-badge ${statusMeta.badgeClass}" aria-label="${escapeHtml(dv('devVault.reportStatus', 'Status raportu'))}">${escapeHtml(statusMeta.label)}</span>
+            ${deployReady ? `<span class="rg-dv-deploy-badge">${escapeHtml(dv('devVault.deployReady', 'Gotowe do wdrożenia'))}</span>` : ''}
           </div>
           <div class="rg-dv-report-desc rg-dv-report-desc--${escapeHtml(desc.tone)}" role="note">
             <span class="rg-dv-report-desc-k">${escapeHtml(desc.heading)}</span>
@@ -294,13 +317,13 @@ function unifiedReportRowHtml(entry) {
           <p style="margin:4px 0 0;color:#4a3f32;font-size:.82rem">${escapeHtml(when)} · ${escapeHtml(pathHint)}</p>
           <div class="rg-dcc-btn-row">
             <div class="rg-dv-apply-row">
-              <button type="button" class="rg-dv-apply" data-dv-apply-id="${escapeHtml(streamId)}"${applyMeta.enabled ? '' : ' disabled'} title="${escapeHtml(applyMeta.title)}">✅ Wprowadź zmianę</button>
+              <button type="button" class="rg-dv-apply" data-dv-apply-id="${escapeHtml(streamId)}"${applyMeta.enabled ? '' : ' disabled'} title="${escapeHtml(applyMeta.title)}">✅ ${escapeHtml(dv('devVault.applyChange', 'Wprowadź zmianę'))}</button>
               ${applyMeta.hint ? `<span class="rg-dv-apply-hint${applyHintClass}">${escapeHtml(applyMeta.hint)}</span>` : ''}
             </div>
-            <button type="button" class="rg-dv-reject" data-dv-reject-id="${escapeHtml(streamId)}">❌ Odrzuć zmianę</button>
-            <button type="button" class="rg-dv-secondary" data-dv-open-id="${escapeHtml(streamId)}">${label('devVault.openReport', 'Otwórz')}</button>
-            <button type="button" class="rg-dv-secondary" data-dv-copy-id="${escapeHtml(streamId)}">📋 Kopiuj raport</button>
-            <button type="button" class="rg-dcc-danger" data-dv-del-id="${escapeHtml(streamId)}">🗑 Usuń raport</button>
+            <button type="button" class="rg-dv-reject" data-dv-reject-id="${escapeHtml(streamId)}">❌ ${escapeHtml(dv('devVault.rejectChange', 'Odrzuć zmianę'))}</button>
+            <button type="button" class="rg-dv-secondary" data-dv-open-id="${escapeHtml(streamId)}">${dv('devVault.openReport', 'Otwórz')}</button>
+            <button type="button" class="rg-dv-secondary" data-dv-copy-id="${escapeHtml(streamId)}">📋 ${escapeHtml(dv('devVault.copyReport', 'Kopiuj raport'))}</button>
+            <button type="button" class="rg-dcc-danger" data-dv-del-id="${escapeHtml(streamId)}">🗑 ${escapeHtml(dv('devVault.deleteReport', 'Usuń raport'))}</button>
           </div>
         </div>
       </li>`;
@@ -406,10 +429,10 @@ function ensureReportPreview(root) {
       <div class="rg-dv-preview-panel" role="dialog" aria-modal="true" aria-labelledby="rg-dv-preview-title">
         <header class="rg-dv-preview-head">
           <div style="min-width:0">
-            <h3 id="rg-dv-preview-title">${escapeHtml(label('devVault.previewTitle', 'Podgląd raportu'))}</h3>
+            <h3 id="rg-dv-preview-title">${escapeHtml(dv('devVault.previewTitle', 'Podgląd raportu'))}</h3>
             <p class="rg-dv-preview-meta" data-dv-preview-meta></p>
           </div>
-          <button type="button" class="rg-dv-secondary" data-dv-preview-close>${label('devVault.close', 'Zamknij')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-preview-close>${dv('devVault.close', 'Zamknij')}</button>
         </header>
         <div class="rg-dv-preview-body" data-dv-preview-body></div>
       </div>
@@ -452,7 +475,7 @@ async function openReportPreview(root, entry) {
     const metaEl = preview.querySelector('[data-dv-preview-meta]');
     const bodyEl = preview.querySelector('[data-dv-preview-body]');
 
-    const displayTitle = entry.title || entry.name || entry.rel || label('devVault.previewTitle', 'Podgląd raportu');
+    const displayTitle = entry.title || entry.name || entry.rel || dv('devVault.previewTitle', 'Podgląd raportu');
     if (titleEl) titleEl.textContent = displayTitle;
     if (metaEl) {
         metaEl.textContent = entry.kind === 'system'
@@ -460,7 +483,7 @@ async function openReportPreview(root, entry) {
             : String(entry.rel || '').replace(/^\//, '');
     }
     if (bodyEl) {
-        bodyEl.innerHTML = `<p class="rg-dv-preview-loading">${escapeHtml(label('devVault.loading', 'Ładowanie…'))}</p>`;
+        bodyEl.innerHTML = `<p class="rg-dv-preview-loading">${escapeHtml(dv('devVault.loading', 'Ładowanie…'))}</p>`;
     }
 
     preview.hidden = false;
@@ -470,7 +493,7 @@ async function openReportPreview(root, entry) {
     if (!bodyEl) return;
 
     if (!result.ok || !result.text) {
-        bodyEl.innerHTML = `<p class="rg-dv-preview-err">${escapeHtml(label('devVault.reportMissing', 'Brak lokalnego raportu. Uruchom CLI, potem odśwież.'))}</p>`;
+        bodyEl.innerHTML = `<p class="rg-dv-preview-err">${escapeHtml(dv('devVault.reportMissing', 'Brak lokalnego raportu. Uruchom CLI, potem odśwież.'))}</p>`;
         return;
     }
 
@@ -484,7 +507,7 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
         btn.addEventListener('click', () => {
             const entry = byId.get(btn.getAttribute('data-dv-open-id'));
             if (!entry) {
-                showToast('Nie znaleziono wpisu raportu', 'error');
+                showToast(dv('devVault.reportNotFound', 'Nie znaleziono wpisu raportu'), 'error');
                 return;
             }
             void openReportPreview(root, entry);
@@ -503,16 +526,16 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
             const entry = byId.get(btn.getAttribute('data-dv-del-id'));
             if (!entry) return;
             const labelPath = entry.rel || entry.title || entry.name || 'wpis';
-            const ok = window.confirm(`Usunąć raport?\n${labelPath}`);
+            const ok = window.confirm(`${dv('devVault.deleteConfirm', 'Usunąć raport?')}\n${labelPath}`);
             if (!ok) return;
             const r = await deleteStreamEntry(entry);
             if (r.offline) return;
             if (r.ok) {
-                showToast('Raport usunięty');
+                showToast(dv('devVault.reportDeleted', 'Raport usunięty'));
                 closeReportPreview(root);
                 onMutated?.();
             } else {
-                showToast(r.data?.reason || 'Nie usunięto', 'error');
+                showToast(r.data?.reason || dv('devVault.reportDeleteFail', 'Nie usunięto'), 'error');
             }
         });
     });
@@ -524,11 +547,13 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
             btn.disabled = true;
             const result = await applyStreamSuggestion(entry);
             if (result.ok) {
-                showToast(result.message || (result.applied ? 'Zmiana wprowadzona' : 'Gotowe do wdrożenia'));
+                showToast(result.message || (result.applied
+                    ? dv('devVault.changeApplied', 'Zmiana wprowadzona')
+                    : dv('devVault.readyToDeploy', 'Gotowe do wdrożenia')));
                 closeReportPreview(root);
                 onMutated?.();
             } else {
-                showToast('Nie udało się zatwierdzić sugestii', 'error');
+                showToast(dv('devVault.applyFail', 'Nie udało się zatwierdzić sugestii'), 'error');
                 btn.disabled = false;
             }
         });
@@ -540,11 +565,11 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
             if (!entry) return;
             const r = await rejectStreamSuggestion(entry);
             if (r.ok) {
-                showToast('Sugestia odrzucona');
+                showToast(dv('devVault.rejectDone', 'Sugestia odrzucona'));
                 closeReportPreview(root);
                 onMutated?.();
             } else {
-                showToast('Nie udało się odrzucić', 'error');
+                showToast(dv('devVault.rejectFail', 'Nie udało się odrzucić'), 'error');
             }
         });
     });
@@ -561,25 +586,54 @@ function clearLocalDeveloperReports() {
     }
 }
 
+async function handleDiagnosticSweep(body) {
+    const btn = body.querySelector('[data-dv-run-sweep]');
+    const statusEl = body.querySelector('[data-dv-sweep-status]');
+    if (btn) btn.disabled = true;
+    if (statusEl) {
+        statusEl.hidden = false;
+        statusEl.textContent = dv('devVault.sweepRunning', 'Uruchamianie inteligentnej diagnozy...');
+    }
+
+    try {
+        const { runDiagnosticSweep, persistDiagnosticSweepReport } = await import('./diagnosticSweep.js');
+        const result = await runDiagnosticSweep({ reason: 'dev-vault' });
+        const id = persistDiagnosticSweepReport(result);
+        if (!id) {
+            showToast(dv('devVault.sweepSaveFail', 'Nie udało się zapisać raportu audytu.'), 'error');
+            return;
+        }
+        const okCount = result.checks.filter((c) => c.level === 'ok').length;
+        showToast(dvFmt('devVault.sweepDoneCount', {
+            ok: okCount,
+            total: result.checks.length
+        }, `Diagnoza zakończona (${okCount}/${result.checks.length} OK).`));
+    } catch {
+        showToast(dv('devVault.sweepFail', 'Nie udało się uruchomić diagnozy.'), 'error');
+    } finally {
+        await renderDeveloperDashboard(body);
+    }
+}
+
 async function handleClearOldReports(body) {
     const confirmed = window.confirm(
-        label('devVault.clearReportsConfirm', 'Czy na pewno chcesz usunąć wszystkie raporty?')
+        dv('devVault.clearReportsConfirm', 'Czy na pewno chcesz usunąć wszystkie raporty?')
     );
     if (!confirmed) return;
 
     if (!clearLocalDeveloperReports()) {
-        showToast(label('devVault.clearReportsFail', 'Nie udało się wyczyścić raportów.'), 'error');
+        showToast(dv('devVault.clearReportsFail', 'Nie udało się wyczyścić raportów.'), 'error');
         return;
     }
 
     const root = document.getElementById(ROOT_ID);
     closeReportPreview(root);
-    showToast(label('devVault.clearReportsDone', '🧹 Wszystkie raporty zostały wyczyszczone.'));
+    showToast(dv('devVault.clearReportsDone', '🧹 Wszystkie raporty zostały wyczyszczone.'));
     await renderDeveloperDashboard(body);
 }
 
 async function renderDeveloperDashboard(body) {
-    body.innerHTML = `<p class="lead">${label('devVault.loading', 'Ładowanie…')}</p>`;
+    body.innerHTML = `<p class="lead">${dv('devVault.loading', 'Ładowanie…')}</p>`;
 
     const [sources, stream] = await Promise.all([
         loadDevStatusBoardSources(),
@@ -593,33 +647,41 @@ async function renderDeveloperDashboard(body) {
     const hiddenCount = stream.length - visibleStream.length;
     const rows = visibleStream.map((entry) => unifiedReportRowHtml(entry)).join('');
     const filterNote = showAllReports
-        ? `Pełna lista (${stream.length} wpisów).`
+        ? dvFmt('devVault.filterAll', { count: stream.length }, `Pełna lista (${stream.length} wpisów).`)
         : hiddenCount > 0
-            ? `Widoczne: ${visibleStream.length} z ${stream.length} (ukryto ${hiddenCount} wpisów technicznych).`
-            : `Widoczne: ${visibleStream.length} wpisów (FIXED · SUGGESTION · INFO · FAILED).`;
+            ? dvFmt('devVault.filterHidden', {
+                visible: visibleStream.length,
+                total: stream.length,
+                hidden: hiddenCount
+            }, `Widoczne: ${visibleStream.length} z ${stream.length} (ukryto ${hiddenCount} wpisów technicznych).`)
+            : dvFmt('devVault.filterVisible', { visible: visibleStream.length }, `Widoczne: ${visibleStream.length} wpisów (FIXED · SUGGESTION · INFO · FAILED).`);
 
     body.innerHTML = `
       ${renderSystemHealthTilesHtml(board, stream.length)}
       <div class="rg-dv-metrics-divider" aria-hidden="true"></div>
       <div class="rg-dcc-section">
-        <h3>Raporty</h3>
-        <p class="lead">${label('devVault.reportsHint', 'Tylko istotne statusy: naprawione, sugestie, info UI/UX i błędy. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
+        <h3>${escapeHtml(dv('devVault.tabReports', 'Raporty'))}</h3>
+        <p class="lead">${dv('devVault.reportsHintLong', 'Tylko istotne statusy: naprawione, sugestie, info UI/UX i błędy. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
         <div class="rg-dv-report-filter-row">
           <p class="rg-dv-report-filter-note" role="status">${escapeHtml(filterNote)}</p>
           <div class="rg-dv-report-filter-actions">
+            <button type="button" class="rg-dv-run-sweep" data-dv-run-sweep>
+              ${dv('devVault.runSweep', '🧠 Inteligentna Diagnoza')}
+            </button>
             <button type="button" class="rg-dv-report-show-all" data-dv-report-show-all aria-pressed="${showAllReports ? 'true' : 'false'}">
-              ${showAllReports ? 'Pokaż tylko istotne' : 'Pokaż wszystko'}
+              ${showAllReports ? dv('devVault.showRelevantOnly', 'Pokaż tylko istotne') : dv('devVault.showAll', 'Pokaż wszystko')}
             </button>
             <button type="button" class="rg-dv-clear-reports" data-dv-clear-reports>
-              ${label('devVault.clearReports', '🧹 Wyczyść stare raporty')}
+              ${dv('devVault.clearReports', '🧹 Wyczyść stare raporty')}
             </button>
           </div>
+          <p class="rg-dv-sweep-status" data-dv-sweep-status hidden role="status"></p>
         </div>
         ${rows
             ? `<ul class="rg-dv-report-list">${rows}</ul>`
             : `<p class="rg-dv-report-empty" role="status">${showAllReports || !hiddenCount
-                ? 'Brak raportów do wyświetlenia.'
-                : 'Brak istotnych raportów — włącz „Pokaż wszystko”, aby zobaczyć wpisy techniczne.'}</p>`}
+                ? dv('devVault.noReports', 'Brak raportów do wyświetlenia.')
+                : dv('devVault.noRelevantReports', 'Brak istotnych raportów — włącz „Pokaż wszystko”, aby zobaczyć wpisy techniczne.')}</p>`}
       </div>
     `;
 
@@ -637,6 +699,10 @@ async function renderDeveloperDashboard(body) {
         void handleClearOldReports(body);
     });
 
+    body.querySelector('[data-dv-run-sweep]')?.addEventListener('click', () => {
+        void handleDiagnosticSweep(body);
+    });
+
     const refresh = () => { void renderDeveloperDashboard(body); };
     body.querySelector('[data-dv-dashboard-refresh]')?.addEventListener('click', refresh);
     const openErrorFeed = async () => {
@@ -644,7 +710,7 @@ async function renderDeveloperDashboard(body) {
             const mod = await import('./runtimeErrorFeed.js');
             await mod.openRuntimeErrorFeedPanel();
         } catch {
-            showToast('Nie udało się otworzyć Error Feed');
+            showToast(dv('devVault.errorFeedFail', 'Nie udało się otworzyć strumienia błędów'));
         }
     };
     body.querySelectorAll('[data-dv-error-feed]').forEach((el) => {
@@ -659,15 +725,14 @@ async function renderDeveloperDashboard(body) {
     body.querySelector('[data-dv-health-run]')?.addEventListener('click', async () => {
         try {
             await runHealthCheck({ reason: 'dev-vault' });
-            showToast(label('devVault.healthRefresh', 'Odśwież Health'));
+            showToast(dv('devVault.healthRefresh', 'Odśwież Health'));
         } catch { /* ignore */ }
         refresh();
     });
 }
 
 function label(key, fallback) {
-    const v = t(key);
-    return v === key ? fallback : v;
+    return devVaultPl(key, fallback);
 }
 
 function escapeHtml(text) {
@@ -705,7 +770,7 @@ function ensureRoot() {
     root.id = ROOT_ID;
     root.setAttribute('role', 'dialog');
     root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-label', 'Developer Control Center');
+    root.setAttribute('aria-label', dv('devVault.panelAria', 'Panel deweloperski'));
     root.hidden = true;
     document.body.appendChild(root);
     return root;
@@ -731,12 +796,12 @@ async function showHub() {
       <div class="rg-dcc-shell" role="document">
         <header class="rg-dcc-top">
           <h2>${escapeHtml(APP_NAME)}</h2>
-          <p class="rg-dcc-sub">Version ${escapeHtml(verShort)} · Panel deweloperski · Status &amp; Raporty</p>
+          <p class="rg-dcc-sub">${escapeHtml(dvFmt('devVault.panelSubtitle', { version: verShort }, `Wersja ${verShort} · Panel deweloperski · Status i raporty`))}</p>
         </header>
         <div class="rg-dcc-body" data-dv-body></div>
         <footer class="rg-dcc-foot">
-          <button type="button" class="rg-dv-secondary" data-dv-lock>${label('devVault.lock', 'Zablokuj')}</button>
-          <button type="button" class="rg-dv-secondary" data-dv-close>${label('devVault.close', 'Zamknij')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-lock>${dv('devVault.lock', 'Zablokuj')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-close>${dv('devVault.close', 'Zamknij')}</button>
         </footer>
       </div>
     `;
@@ -747,7 +812,7 @@ async function showHub() {
         lockDevVault();
         stripMainUiDevTools();
         closeVaultUi();
-        showToast(label('devVault.locked', 'Panel zablokowany'));
+        showToast(dv('devVault.locked', 'Panel zablokowany'));
     });
 
     await renderDeveloperDashboard(body);
@@ -773,7 +838,7 @@ function bindOwnerLockReset(button) {
             holdTimer = null;
             resetTriggered = true;
             resetDevVaultLock();
-            showToast('Blokada dostępu zresetowana');
+            showToast(dv('devVault.lockReset', 'Blokada dostępu zresetowana'));
             showPasswordGate();
         }, HOLD_MS);
     });
@@ -796,10 +861,10 @@ function showPasswordGate() {
     if (isDevVaultAccessLocked()) {
         root.innerHTML = `
       <div class="rg-dv-card">
-        <h2>Developer Control Center</h2>
+        <h2>${escapeHtml(dv('devVault.panelTitle', 'Panel deweloperski'))}</h2>
         <p class="rg-dv-lock-msg" role="alert">${escapeHtml(getDevVaultLockMessage())}</p>
         <div class="rg-dv-actions">
-          <button type="button" class="rg-dv-secondary" data-dv-cancel>${label('devVault.cancel', 'Anuluj')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-cancel>${dv('devVault.cancel', 'Anuluj')}</button>
         </div>
       </div>
     `;
@@ -812,16 +877,16 @@ function showPasswordGate() {
     const pinMask = escapeHtml(DEV_VAULT_PIN_MASK);
     root.innerHTML = `
       <div class="rg-dv-card">
-        <h2>Developer Control Center</h2>
-        <p>${label('devVault.passwordPrompt', 'Wpisz hasło, aby odblokować narzędzia Dev / Health.')}</p>
+        <h2>${escapeHtml(dv('devVault.panelTitle', 'Panel deweloperski'))}</h2>
+        <p>${dv('devVault.passwordPrompt', 'Wpisz hasło, aby odblokować narzędzia Dev / Health.')}</p>
         <span class="rg-dv-pin-visual" aria-hidden="true">${pinMask}</span>
         <p class="rg-dv-err" data-dv-err hidden></p>
         <input type="password" inputmode="numeric" autocomplete="off" data-dv-pass
-          aria-label="${label('devVault.password', 'Hasło')}"
+          aria-label="${dv('devVault.password', 'Hasło')}"
           placeholder="${pinMask}" maxlength="24">
         <div class="rg-dv-actions">
-          <button type="button" class="rg-dv-primary" data-dv-submit>${label('devVault.unlock', 'Odblokuj')}</button>
-          <button type="button" class="rg-dv-secondary" data-dv-cancel>${label('devVault.cancel', 'Anuluj')}</button>
+          <button type="button" class="rg-dv-primary" data-dv-submit>${dv('devVault.unlock', 'Odblokuj')}</button>
+          <button type="button" class="rg-dv-secondary" data-dv-cancel>${dv('devVault.cancel', 'Anuluj')}</button>
         </div>
       </div>
     `;
@@ -837,13 +902,13 @@ function showPasswordGate() {
             }
             if (err) {
                 err.hidden = false;
-                err.textContent = label('devVault.badPassword', 'Nieprawidłowe hasło');
+                err.textContent = dv('devVault.badPassword', 'Nieprawidłowe hasło');
             }
             input?.focus();
             input?.select?.();
             return;
         }
-        showToast(label('devVault.unlockedToast', 'Panel odblokowany'));
+        showToast(dv('devVault.unlockedToast', 'Panel odblokowany'));
         try {
             document.dispatchEvent(new CustomEvent('rg:dev-vault-unlocked'));
         } catch {

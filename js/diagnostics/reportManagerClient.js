@@ -641,6 +641,13 @@ export function formatSystemStreamEntry(entry) {
         const fix = entry.aiProposal.fixSuggestion;
         lines.push('', `**Sugestia:** ${fix.description || '—'}`, `\`${fix.file || ''}\``);
     }
+    if (Array.isArray(entry.auditChecks) && entry.auditChecks.length) {
+        lines.push('', '## Kontrole audytu', '');
+        for (const check of entry.auditChecks) {
+            const icon = check.level === 'fail' ? '🔴' : (check.level === 'warn' ? '🟡' : '✅');
+            lines.push(`- ${icon} **${check.area || check.id}:** ${check.message || '—'}`);
+        }
+    }
     return lines.join('\n');
 }
 
@@ -757,9 +764,13 @@ export async function loadUnifiedReportStream() {
             .map((entry) => ({
                 kind: 'system',
                 streamId: String(entry.id || `system-${entry.timestamp}-${entry.component}`),
-                categoryLabel: '[System]',
-                name: `${entry.component || 'runtime'} · ${entry.status || '—'}`,
-                title: `${entry.component || 'runtime'} · ${entry.status || '—'}`,
+                categoryLabel: entry.reportTag === 'AUDIT' ? '[AUDIT]' : '[System]',
+                name: entry.reportTag === 'AUDIT'
+                    ? (entry.auditHeadline || `${entry.component || 'Audyt'} · ${entry.status || '—'}`)
+                    : `${entry.component || 'runtime'} · ${entry.status || '—'}`,
+                title: entry.reportTag === 'AUDIT'
+                    ? (entry.auditHeadline || entry.component || 'Inteligentna Diagnoza')
+                    : `${entry.component || 'runtime'} · ${entry.status || '—'}`,
                 rel: null,
                 systemEntry: entry,
                 mtime: entry.timestamp,
