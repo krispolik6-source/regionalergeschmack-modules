@@ -24,23 +24,49 @@ globalThis.sessionStorage = {
     removeItem: (k) => session.delete(k)
 };
 
+const local = new Map();
+globalThis.localStorage = {
+    getItem: (k) => (local.has(k) ? local.get(k) : null),
+    setItem: (k, v) => local.set(k, String(v)),
+    removeItem: (k) => local.delete(k)
+};
+
 const {
     DEV_VAULT_PASSWORD,
     DEV_VAULT_SESSION_KEY,
+    DEV_VAULT_FAILED_ATTEMPTS_KEY,
+    DEV_VAULT_LOCK_UNTIL_KEY,
+    DEV_VAULT_PIN_MASK,
     isDevVaultUnlocked,
     unlockDevVault,
-    lockDevVault
+    lockDevVault,
+    isDevVaultAccessLocked,
+    getDevVaultFailedAttempts,
+    resetDevVaultLock,
+    getDevVaultLockMessage
 } = await import(pathToFileURL(join(ROOT, 'js/diagnostics/devVault.js')).href);
 
 assert(DEV_VAULT_PASSWORD === '1973', 'password is 1973');
+assert(DEV_VAULT_PIN_MASK.length === 20, 'PIN mask is 20 dots');
 assert(DEV_VAULT_SESSION_KEY === 'rg_dev_vault_ok', 'session key');
 assert(!isDevVaultUnlocked(), 'locked by default');
 assert(!unlockDevVault('0000').ok, 'rejects wrong password');
+assert(getDevVaultFailedAttempts() === 1, 'first failed attempt counted');
+assert(!isDevVaultAccessLocked(), 'not locked after one failure');
+assert(!unlockDevVault('0000').ok, 'rejects second wrong password');
+assert(isDevVaultAccessLocked(), 'locked after two failures');
+assert(local.get(DEV_VAULT_LOCK_UNTIL_KEY), 'lockUntil stored');
+assert(!unlockDevVault('1973').ok, 'correct PIN rejected while locked');
+assert(unlockDevVault('1973').reason === 'locked', 'locked reason while blocked');
+resetDevVaultLock();
+assert(!isDevVaultAccessLocked(), 'reset clears lock');
+assert(getDevVaultFailedAttempts() === 0, 'reset clears attempts');
 assert(!isDevVaultUnlocked(), 'still locked after bad password');
-assert(unlockDevVault('1973').ok, 'accepts 1973');
+assert(unlockDevVault('1973').ok, 'accepts 1973 after reset');
 assert(isDevVaultUnlocked(), 'unlocked after 1973');
 lockDevVault();
 assert(!isDevVaultUnlocked(), 'locked again');
+assert(getDevVaultLockMessage().includes('30 dni'), 'lock message mentions 30 days');
 
 const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
 assert(html.includes('data-side-menu-action="dev-vault"'), 'menu has dev-vault action');
@@ -66,6 +92,9 @@ assert(!/INTERNAL_MENU_ACTIONS[^\n]*dev-vault/.test(sideMenu), 'dev-vault not in
 
 const devVaultMod = readFileSync(join(ROOT, 'js/diagnostics/devVault.js'), 'utf8');
 assert(devVaultMod.includes('isDeveloperAccessGranted'), 'canonical access API');
+assert(devVaultMod.includes('devVault_failedAttempts'), 'failed attempts key');
+assert(devVaultMod.includes('devVault_lockUntil'), 'lock until key');
+assert(devVaultMod.includes('resetDevVaultLock'), 'owner reset API');
 
 const rm = readFileSync(join(ROOT, 'js/diagnostics/reportManagerClient.js'), 'utf8');
 assert(rm.includes('isDeveloperAccessGranted'), 'docs fetch gated by PIN only');
@@ -105,14 +134,40 @@ assert(vault.includes('stripMainUiDevTools'), 'strips FAB from main UI');
 assert(!vault.includes('mountUnlockedTools'), 'does not remount FABs on unlock');
 assert(!vault.includes('autoApply: true'), 'no autoApply true');
 assert(!/AI Chat|openAiChat|chatbotUi/i.test(vault), 'no AI chat feature');
-assert(vault.includes('unlockDevVault'), 'keeps PIN unlock');
+assert(vault.includes('DEV_VAULT_PIN_MASK'), 'PIN visual mask');
+assert(vault.includes('isDevVaultAccessLocked'), 'lock check in panel');
+assert(vault.includes('getDevVaultLockMessage'), 'lock message in panel');
+assert(vault.includes('bindOwnerLockReset'), 'owner long-press reset');
+assert(vault.includes('resetLock: resetDevVaultLock'), 'console reset export');
+assert(vault.includes('rg-dv-pin-visual'), '20-dot visual hint');
+assert(vault.includes('rg-dv-lock-msg'), 'lock message styling');
 assert(vault.includes('Kopiuj raport'), '34C copy report');
 assert(vault.includes('loadStreamEntryPreview'), 'report preview loader');
 assert(vault.includes('data-dv-preview'), 'report preview modal');
 assert(vault.includes('simpleMarkdownToHtml'), 'markdown preview formatting');
 assert(vault.includes('Usuń raport'), '34C delete report');
 assert(vault.includes('reportManagerClient'), '34C client import');
-assert(vault.includes('purgeExpiredReports') || vault.includes('loadUnifiedReportStream'), '30-day retention via stream load');
+assert(rm.includes('filterDeveloperVaultStream'), 'stream filter helper');
+assert(rm.includes('NON_CORE_STREAM_STATUSES'), 'non-core status blocklist');
+
+const {
+    filterDeveloperVaultStream,
+    STREAM_STATUS
+} = await import(pathToFileURL(join(ROOT, 'js/diagnostics/reportManagerClient.js')).href);
+
+const sampleStream = [
+    { streamId: '1', streamStatus: STREAM_STATUS.FIXED, rawStreamStatus: 'FIXED' },
+    { streamId: '2', streamStatus: STREAM_STATUS.INFO, rawStreamStatus: 'DEBUG' },
+    { streamId: '3', streamStatus: STREAM_STATUS.INFO, rawStreamStatus: 'INFO' }
+];
+const filtered = filterDeveloperVaultStream(sampleStream);
+assert(filtered.length === 2, 'filter hides DEBUG/CACHE-style raw statuses');
+assert(filtered.every((e) => e.streamId !== '2'), 'DEBUG entry hidden');
+assert(filterDeveloperVaultStream(sampleStream, { showAll: true }).length === 3, 'showAll bypasses filter');
+
+assert(vault.includes('filterDeveloperVaultStream'), 'report stream filter');
+assert(vault.includes('data-dv-report-show-all'), 'show-all toggle');
+assert(vault.includes('Pokaż wszystko'), 'show-all label');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');

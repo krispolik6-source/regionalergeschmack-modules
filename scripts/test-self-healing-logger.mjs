@@ -115,6 +115,14 @@ const report = getHealingReport();
 ok('healing report entry', report.entries.length >= 1);
 ok('healing report FIXED', report.entries.some((e) => e.status === 'FIXED'));
 
+const debugRejected = addHealingReportEntry({
+    status: 'DEBUG',
+    component: 'test.js',
+    description: 'Should not appear in healingReport'
+});
+ok('healing report rejects DEBUG', debugRejected === null);
+ok('healing report no DEBUG', !getHealingReport().entries.some((e) => e.status === 'DEBUG'));
+
 logHealingInfo('css/premium-header.css', 'Czcionka w nagłówku może być bardziej czytelna.', {
     area: 'ui-ux',
     suggestionId: 'ui-header-readability'

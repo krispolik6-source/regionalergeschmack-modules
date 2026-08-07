@@ -11,12 +11,17 @@ import {
     isDevVaultUnlocked,
     unlockDevVault,
     lockDevVault,
-    isDeveloperAccessGranted
+    isDeveloperAccessGranted,
+    isDevVaultAccessLocked,
+    getDevVaultLockMessage,
+    resetDevVaultLock,
+    DEV_VAULT_PIN_MASK
 } from './devVault.js';
 import { ensureDiagnosticsLoaded } from './diagnosticsOrchestrator.js';
 import {
     copyStreamEntry,
     deleteStreamEntry,
+    filterDeveloperVaultStream,
     getStreamStatusMeta,
     loadStreamEntryPreview,
     loadUnifiedReportStream
@@ -32,12 +37,15 @@ const ROOT_ID = 'rg-dev-vault-root';
 const STYLE_ID = 'rg-dev-vault-style';
 
 let bound = false;
+/** Domyślnie tylko FIXED · SUGGESTION · INFO · FAILED */
+let showAllReports = false;
 
 function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
+#${ROOT_ID}{--info-blue:#3b82f6}
 #${ROOT_ID}{position:fixed;inset:0;z-index:100050;display:none;align-items:stretch;justify-content:center;padding:0;background:rgba(20,28,22,.62);backdrop-filter:blur(4px);font-family:'Source Sans 3',system-ui,sans-serif;color:#1c1812}
 #${ROOT_ID}.open{display:flex}
 #${ROOT_ID} *{box-sizing:border-box}
@@ -72,7 +80,12 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-metric[data-dv-error-feed]{cursor:pointer}
 #${ROOT_ID} .rg-dv-metric[data-dv-error-feed]:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-metrics-divider{height:0;border:0;border-top:1px solid rgba(42,63,40,.14);margin:18px 0 14px}
-#${ROOT_ID}{--info-blue:#3b82f6}
+#${ROOT_ID} .rg-dv-report-filter-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+#${ROOT_ID} .rg-dv-report-filter-note{margin:0;font-size:.82rem;color:#5c5348;line-height:1.35}
+#${ROOT_ID} .rg-dv-report-show-all{font-size:.82rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(42,63,40,.22);background:#fffef8;color:#2a3f28;cursor:pointer;font-weight:600;font-family:inherit}
+#${ROOT_ID} .rg-dv-report-show-all[aria-pressed="true"]{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.45);color:#1d4ed8}
+#${ROOT_ID} .rg-dv-report-show-all:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
+#${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
 #${ROOT_ID} .rg-dv-report-list li:last-child{border-bottom:0}
 #${ROOT_ID} .rg-dv-report-tag{flex:0 0 auto;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(42,63,40,.1);color:#2a3f28;white-space:nowrap;margin-top:2px;line-height:1.3}
@@ -86,6 +99,8 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-report-empty{margin:16px 0;padding:20px 16px;text-align:center;background:rgba(255,255,255,.55);border:1px dashed rgba(42,63,40,.18);border-radius:12px;color:#4a3f32;font-size:.95rem}
 #${ROOT_ID} .rg-dcc-pre{white-space:pre-wrap;font-size:.85rem;line-height:1.45;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;border:1px solid rgba(42,63,40,.1);max-height:40vh;overflow:auto}
 #${ROOT_ID} .rg-dv-err{color:#8a2b2b;font-size:.9rem;margin:0 0 8px}
+#${ROOT_ID} .rg-dv-pin-visual{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1.05rem;letter-spacing:.12em;color:#4a3f32;margin:0 0 10px;user-select:none}
+#${ROOT_ID} .rg-dv-lock-msg{margin:0 0 12px;padding:12px 14px;border-radius:10px;background:rgba(180,60,60,.1);border:1px solid rgba(180,60,60,.28);color:#6b1d1d;font-size:.92rem;line-height:1.45}
 #${ROOT_ID} .rg-dcc-btn-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 #${ROOT_ID} .rg-dcc-btn-row button{font-size:.82rem;padding:7px 10px}
 #${ROOT_ID} .rg-dcc-danger{background:transparent;color:#6b1d1d;border:1px solid rgba(140,40,40,.35)!important}
@@ -462,23 +477,43 @@ async function renderDeveloperDashboard(body) {
         loadUnifiedReportStream()
     ]);
     const board = buildDevStatusBoard(sources);
-    const rows = stream.map((entry) => unifiedReportRowHtml(entry)).join('');
+    const visibleStream = filterDeveloperVaultStream(stream, { showAll: showAllReports });
+    const hiddenCount = stream.length - visibleStream.length;
+    const rows = visibleStream.map((entry) => unifiedReportRowHtml(entry)).join('');
+    const filterNote = showAllReports
+        ? `Pełna lista (${stream.length} wpisów).`
+        : hiddenCount > 0
+            ? `Widoczne: ${visibleStream.length} z ${stream.length} (ukryto ${hiddenCount} wpisów technicznych).`
+            : `Widoczne: ${visibleStream.length} wpisów (FIXED · SUGGESTION · INFO · FAILED).`;
 
     body.innerHTML = `
       ${renderSystemHealthTilesHtml(board, stream.length)}
       <div class="rg-dv-metrics-divider" aria-hidden="true"></div>
       <div class="rg-dcc-section">
         <h3>Raporty</h3>
-        <p class="lead">${label('devVault.reportsHint', 'Wszystkie kategorie w jednym strumieniu. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
+        <p class="lead">${label('devVault.reportsHint', 'Tylko istotne statusy: naprawione, sugestie, info UI/UX i błędy. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
+        <div class="rg-dv-report-filter-row">
+          <p class="rg-dv-report-filter-note" role="status">${escapeHtml(filterNote)}</p>
+          <button type="button" class="rg-dv-report-show-all" data-dv-report-show-all aria-pressed="${showAllReports ? 'true' : 'false'}">
+            ${showAllReports ? 'Pokaż tylko istotne' : 'Pokaż wszystko'}
+          </button>
+        </div>
         ${rows
             ? `<ul class="rg-dv-report-list">${rows}</ul>`
-            : `<p class="rg-dv-report-empty" role="status">Brak raportów do wyświetlenia.</p>`}
+            : `<p class="rg-dv-report-empty" role="status">${showAllReports || !hiddenCount
+                ? 'Brak raportów do wyświetlenia.'
+                : 'Brak istotnych raportów — włącz „Pokaż wszystko”, aby zobaczyć wpisy techniczne.'}</p>`}
       </div>
     `;
 
     const root = document.getElementById(ROOT_ID);
-    bindUnifiedReportListActions(root, body, stream, {
+    bindUnifiedReportListActions(root, body, visibleStream, {
         onMutated: () => { void renderDeveloperDashboard(body); }
+    });
+
+    body.querySelector('[data-dv-report-show-all]')?.addEventListener('click', () => {
+        showAllReports = !showAllReports;
+        void renderDeveloperDashboard(body);
     });
 
     const refresh = () => { void renderDeveloperDashboard(body); };
@@ -597,18 +632,72 @@ async function showHub() {
     await renderDeveloperDashboard(body);
 }
 
+function bindOwnerLockReset(button) {
+    if (!button) return;
+    const HOLD_MS = 3000;
+    let holdTimer = null;
+    let resetTriggered = false;
+
+    const clearHold = () => {
+        if (holdTimer) {
+            clearTimeout(holdTimer);
+            holdTimer = null;
+        }
+    };
+
+    button.addEventListener('pointerdown', () => {
+        resetTriggered = false;
+        clearHold();
+        holdTimer = setTimeout(() => {
+            holdTimer = null;
+            resetTriggered = true;
+            resetDevVaultLock();
+            showToast('Blokada dostępu zresetowana');
+            showPasswordGate();
+        }, HOLD_MS);
+    });
+    button.addEventListener('pointerup', clearHold);
+    button.addEventListener('pointerleave', clearHold);
+    button.addEventListener('pointercancel', clearHold);
+    button.addEventListener('click', (e) => {
+        if (!resetTriggered) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        resetTriggered = false;
+    }, true);
+}
+
 function showPasswordGate() {
     const root = ensureRoot();
     root.hidden = false;
     root.classList.add('open');
+
+    if (isDevVaultAccessLocked()) {
+        root.innerHTML = `
+      <div class="rg-dv-card">
+        <h2>Developer Control Center</h2>
+        <p class="rg-dv-lock-msg" role="alert">${escapeHtml(getDevVaultLockMessage())}</p>
+        <div class="rg-dv-actions">
+          <button type="button" class="rg-dv-secondary" data-dv-cancel>${label('devVault.cancel', 'Anuluj')}</button>
+        </div>
+      </div>
+    `;
+        const cancelBtn = root.querySelector('[data-dv-cancel]');
+        cancelBtn?.addEventListener('click', closeVaultUi);
+        bindOwnerLockReset(cancelBtn);
+        return;
+    }
+
+    const pinMask = escapeHtml(DEV_VAULT_PIN_MASK);
     root.innerHTML = `
       <div class="rg-dv-card">
         <h2>Developer Control Center</h2>
         <p>${label('devVault.passwordPrompt', 'Wpisz hasło, aby odblokować narzędzia Dev / Health.')}</p>
+        <span class="rg-dv-pin-visual" aria-hidden="true">${pinMask}</span>
         <p class="rg-dv-err" data-dv-err hidden></p>
         <input type="password" inputmode="numeric" autocomplete="off" data-dv-pass
           aria-label="${label('devVault.password', 'Hasło')}"
-          placeholder="••••" maxlength="16">
+          placeholder="${pinMask}" maxlength="24">
         <div class="rg-dv-actions">
           <button type="button" class="rg-dv-primary" data-dv-submit>${label('devVault.unlock', 'Odblokuj')}</button>
           <button type="button" class="rg-dv-secondary" data-dv-cancel>${label('devVault.cancel', 'Anuluj')}</button>
@@ -621,11 +710,16 @@ function showPasswordGate() {
     const submit = () => {
         const result = unlockDevVault(input?.value);
         if (!result.ok) {
+            if (result.reason === 'locked') {
+                showPasswordGate();
+                return;
+            }
             if (err) {
                 err.hidden = false;
                 err.textContent = label('devVault.badPassword', 'Nieprawidłowe hasło');
             }
             input?.focus();
+            input?.select?.();
             return;
         }
         showToast(label('devVault.unlockedToast', 'Panel odblokowany'));
@@ -636,8 +730,10 @@ function showPasswordGate() {
         }
         void ensureDiagnosticsLoaded('vault-unlock').then(() => showHub());
     };
+    const cancelBtn = root.querySelector('[data-dv-cancel]');
     root.querySelector('[data-dv-submit]')?.addEventListener('click', submit);
-    root.querySelector('[data-dv-cancel]')?.addEventListener('click', closeVaultUi);
+    cancelBtn?.addEventListener('click', closeVaultUi);
+    bindOwnerLockReset(cancelBtn);
     input?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') submit();
         if (e.key === 'Escape') closeVaultUi();
@@ -663,6 +759,8 @@ export function initDeveloperVault() {
         unlock: unlockDevVault,
         lock: lockDevVault,
         unlocked: isDevVaultUnlocked,
-        accessGranted: isDeveloperAccessGranted
+        accessGranted: isDeveloperAccessGranted,
+        resetLock: resetDevVaultLock,
+        isAccessLocked: isDevVaultAccessLocked
     };
 }

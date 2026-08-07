@@ -470,6 +470,61 @@ export function getStreamStatusMeta(status) {
     return STREAM_STATUS_META[normalizeStreamStatus(status)] || STREAM_STATUS_META.INFO;
 }
 
+/** Statusy techniczne — ukryte domyślnie w Developer Vault */
+export const NON_CORE_STREAM_STATUSES = Object.freeze([
+    'DEBUG',
+    'LOG',
+    'CACHE_HIT',
+    'TRACE',
+    'VERBOSE',
+    'DIAGNOSTIC',
+    'AUDIT',
+    'NOTE'
+]);
+
+/**
+ * @param {string} raw
+ * @returns {boolean}
+ */
+export function isExplicitNonCoreStreamStatus(raw) {
+    if (raw == null || raw === '') return false;
+    return NON_CORE_STREAM_STATUSES.includes(String(raw).trim().toUpperCase());
+}
+
+/** Statusy widoczne domyślnie w Developer Vault */
+export const CORE_STREAM_STATUSES = Object.freeze([
+    STREAM_STATUS.FIXED,
+    STREAM_STATUS.SUGGESTION,
+    STREAM_STATUS.INFO,
+    STREAM_STATUS.FAILED
+]);
+
+/**
+ * @param {string} status
+ * @returns {boolean}
+ */
+export function isCoreStreamStatus(status) {
+    if (isExplicitNonCoreStreamStatus(status)) return false;
+    return CORE_STREAM_STATUSES.includes(normalizeStreamStatus(status));
+}
+
+/**
+ * Filtr strumienia raportów dla Developer Vault.
+ * @param {object[]} entries
+ * @param {{ showAll?: boolean }} [options]
+ */
+export function filterDeveloperVaultStream(entries, { showAll = false } = {}) {
+    if (showAll) return entries || [];
+    return (entries || []).filter((entry) => {
+        const raw = entry?.rawStreamStatus
+            ?? entry?.systemEntry?.status
+            ?? entry?.status;
+        if (isExplicitNonCoreStreamStatus(raw)) return false;
+        const status = entry?.streamStatus ?? normalizeStreamStatus(raw);
+        return CORE_STREAM_STATUSES.includes(status);
+    });
+}
+
 function jsonRelForEntry(entry) {
     const rel = String(entry?.rel || '').replace(/^\//, '');
     if (/\.json$/i.test(rel)) return rel;
@@ -545,20 +600,26 @@ async function enrichStreamStatuses(entries) {
             const raw = entry.systemEntry?.status ?? entry.status;
             return {
                 ...entry,
+                rawStreamStatus: raw,
                 streamStatus: normalizeStreamStatus(raw)
             };
         }
         if (!canFetchDocsRuntime()) {
             const fromName = inferStreamStatusFromName(entry.name || entry.rel);
             const fromMeta = entry.streamStatus || entry.status;
+            const raw = fromMeta || fromName || STREAM_STATUS.INFO;
             return {
                 ...entry,
-                streamStatus: normalizeStreamStatus(fromMeta || fromName || STREAM_STATUS.INFO)
+                rawStreamStatus: raw,
+                streamStatus: normalizeStreamStatus(raw)
             };
         }
+        const raw = entry.streamStatus ?? entry.status ?? null;
+        const resolved = await resolveDocStreamStatus(entry);
         return {
             ...entry,
-            streamStatus: await resolveDocStreamStatus(entry)
+            rawStreamStatus: raw ?? resolved,
+            streamStatus: resolved
         };
     }));
 }

@@ -234,12 +234,33 @@ export function resolveHealingComponent(context = {}, fallback = 'runtime') {
     return fallback;
 }
 
+/** @readonly — jedyne statusy zapisywane w healingReport */
+export const HEALING_REPORT_ALLOWED_STATUSES = Object.freeze([
+    HEALING_STATUS.FIXED,
+    HEALING_STATUS.SUGGESTION,
+    HEALING_STATUS.INFO,
+    HEALING_STATUS.FAILED
+]);
+
 /**
- * Dodaje wpis do healingReport.
+ * @param {string} status
+ * @returns {boolean}
+ */
+export function isAllowedHealingReportStatus(status) {
+    return HEALING_REPORT_ALLOWED_STATUSES.includes(status);
+}
+
+/**
+ * Dodaje wpis do healingReport (tylko FIXED · SUGGESTION · INFO · FAILED).
  * @param {{ status: HealingStatus, component: string, description: string, timestamp?: string, relatedLogId?: string, aiProposal?: object|null }} entry
+ * @returns {string|null}
  */
 export function addHealingReportEntry(entry) {
-    const status = HEALING_STATUS[entry?.status] ? entry.status : HEALING_STATUS.FAILED;
+    const rawStatus = entry?.status;
+    if (!rawStatus || !isAllowedHealingReportStatus(rawStatus)) {
+        return null;
+    }
+    const status = rawStatus;
     const report = getHealingReport();
     const row = {
         id: `hr-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -279,6 +300,9 @@ export function logHealingSuggestion(component, description, context = {}) {
  * @param {object} [context]
  */
 export function logHealingInfo(component, description, context = {}) {
+    if (!isAllowedHealingReportStatus(HEALING_STATUS.INFO)) {
+        return null;
+    }
     const report = getHealingReport();
     const desc = truncate(description || '', 500);
     const comp = truncate(resolveHealingComponent(context, component), 120);
@@ -567,7 +591,9 @@ function reportEntryToUnified(reportEntry, logById) {
     return {
         id: `report-${reportEntry.id}`,
         source: 'healingReport',
-        status: HEALING_STATUS[reportEntry.status] ? reportEntry.status : HEALING_STATUS.FAILED,
+        status: HEALING_STATUS[reportEntry.status] && isAllowedHealingReportStatus(reportEntry.status)
+            ? reportEntry.status
+            : null,
         component: reportEntry.component || 'runtime',
         description: reportEntry.description || '',
         timestamp: reportEntry.timestamp || nowIso(),
@@ -608,6 +634,7 @@ export function buildUnifiedSystemHealth() {
 
     for (const entry of report.entries || []) {
         const row = reportEntryToUnified(entry, logById);
+        if (!row.status || !isAllowedHealingReportStatus(row.status)) continue;
         const key = dedupeKey(row);
         if (seen.has(key)) continue;
         seen.add(key);
@@ -1215,6 +1242,7 @@ export function initSelfHealingLogger() {
         persistSessionSummaryMarkdown,
         isCriticalError,
         isCriticalNetworkUrl,
+        isAllowedHealingReportStatus,
         HEALING_STATUS,
         HEALING_STATUS_META
     };
@@ -1231,6 +1259,8 @@ export default {
     addHealingReportEntry,
     logHealingSuggestion,
     logHealingInfo,
+    isAllowedHealingReportStatus,
+    HEALING_REPORT_ALLOWED_STATUSES,
     getHealingReport,
     cleanupOldReports,
     scheduleSelfHealingMaintenance,
