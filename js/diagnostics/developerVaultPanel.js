@@ -40,6 +40,12 @@ import {
 } from './devStatusBoard.js';
 import { runHealthCheck } from './healthMonitor.js';
 import { APP_NAME, APP_VERSION } from '../config.js';
+import {
+    HEALING_REPORT_KEY,
+    SELF_HEALING_LOG_KEY
+} from '../core/selfHealingLogger.js';
+
+const HEALTH_REPORT_STORAGE_KEY = 'rg_app_health_report_v1';
 
 const ROOT_ID = 'rg-dev-vault-root';
 const STYLE_ID = 'rg-dev-vault-style';
@@ -89,10 +95,12 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-metric[data-dv-error-feed]:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-metrics-divider{height:0;border:0;border-top:1px solid rgba(42,63,40,.14);margin:18px 0 14px}
 #${ROOT_ID} .rg-dv-report-filter-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+#${ROOT_ID} .rg-dv-report-filter-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 #${ROOT_ID} .rg-dv-report-filter-note{margin:0;font-size:.82rem;color:#5c5348;line-height:1.35}
-#${ROOT_ID} .rg-dv-report-show-all{font-size:.82rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(42,63,40,.22);background:#fffef8;color:#2a3f28;cursor:pointer;font-weight:600;font-family:inherit}
+#${ROOT_ID} .rg-dv-report-show-all,#${ROOT_ID} .rg-dv-clear-reports{font-size:.82rem;padding:6px 12px;border-radius:999px;border:1px solid rgba(42,63,40,.22);background:#fffef8;color:#2a3f28;cursor:pointer;font-weight:600;font-family:inherit}
 #${ROOT_ID} .rg-dv-report-show-all[aria-pressed="true"]{background:rgba(59,130,246,.12);border-color:rgba(59,130,246,.45);color:#1d4ed8}
-#${ROOT_ID} .rg-dv-report-show-all:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
+#${ROOT_ID} .rg-dv-clear-reports{border-color:rgba(201,162,39,.45);background:rgba(201,162,39,.1)}
+#${ROOT_ID} .rg-dv-report-show-all:focus-visible,#${ROOT_ID} .rg-dv-clear-reports:focus-visible{outline:2px solid #c9a227;outline-offset:2px}
 #${ROOT_ID} .rg-dv-report-list{list-style:none;padding:0;margin:0}
 #${ROOT_ID} .rg-dv-report-list li{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid rgba(42,63,40,.12)}
 #${ROOT_ID} .rg-dv-report-list li:last-child{border-bottom:0}
@@ -546,6 +554,34 @@ function bindUnifiedReportListActions(root, body, stream, { onMutated } = {}) {
     });
 }
 
+function clearLocalDeveloperReports() {
+    try {
+        localStorage.removeItem(SELF_HEALING_LOG_KEY);
+        localStorage.removeItem(HEALING_REPORT_KEY);
+        localStorage.removeItem(HEALTH_REPORT_STORAGE_KEY);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+async function handleClearOldReports(body) {
+    const confirmed = window.confirm(
+        label('devVault.clearReportsConfirm', 'Czy na pewno chcesz usunąć wszystkie raporty?')
+    );
+    if (!confirmed) return;
+
+    if (!clearLocalDeveloperReports()) {
+        showToast(label('devVault.clearReportsFail', 'Nie udało się wyczyścić raportów.'), 'error');
+        return;
+    }
+
+    const root = document.getElementById(ROOT_ID);
+    closeReportPreview(root);
+    showToast(label('devVault.clearReportsDone', '🧹 Wszystkie raporty zostały wyczyszczone.'));
+    await renderDeveloperDashboard(body);
+}
+
 async function renderDeveloperDashboard(body) {
     body.innerHTML = `<p class="lead">${label('devVault.loading', 'Ładowanie…')}</p>`;
 
@@ -573,9 +609,14 @@ async function renderDeveloperDashboard(body) {
         <p class="lead">${label('devVault.reportsHint', 'Tylko istotne statusy: naprawione, sugestie, info UI/UX i błędy. Auto-czyszczenie wpisów starszych niż 30 dni.')}</p>
         <div class="rg-dv-report-filter-row">
           <p class="rg-dv-report-filter-note" role="status">${escapeHtml(filterNote)}</p>
-          <button type="button" class="rg-dv-report-show-all" data-dv-report-show-all aria-pressed="${showAllReports ? 'true' : 'false'}">
-            ${showAllReports ? 'Pokaż tylko istotne' : 'Pokaż wszystko'}
-          </button>
+          <div class="rg-dv-report-filter-actions">
+            <button type="button" class="rg-dv-report-show-all" data-dv-report-show-all aria-pressed="${showAllReports ? 'true' : 'false'}">
+              ${showAllReports ? 'Pokaż tylko istotne' : 'Pokaż wszystko'}
+            </button>
+            <button type="button" class="rg-dv-clear-reports" data-dv-clear-reports>
+              ${label('devVault.clearReports', '🧹 Wyczyść stare raporty')}
+            </button>
+          </div>
         </div>
         ${rows
             ? `<ul class="rg-dv-report-list">${rows}</ul>`
@@ -593,6 +634,10 @@ async function renderDeveloperDashboard(body) {
     body.querySelector('[data-dv-report-show-all]')?.addEventListener('click', () => {
         showAllReports = !showAllReports;
         void renderDeveloperDashboard(body);
+    });
+
+    body.querySelector('[data-dv-clear-reports]')?.addEventListener('click', () => {
+        void handleClearOldReports(body);
     });
 
     const refresh = () => { void renderDeveloperDashboard(body); };

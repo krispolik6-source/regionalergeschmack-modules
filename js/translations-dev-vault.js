@@ -34,6 +34,10 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportDream: 'Produktreflexion / Snapshots',
             reportBrain: 'Vorschläge für Fixes und Verbesserungen',
             openReport: 'Öffnen',
+            clearReports: '🧹 Alte Berichte löschen',
+            clearReportsConfirm: 'Alle Berichte wirklich löschen?',
+            clearReportsDone: '🧹 Alle Berichte wurden gelöscht.',
+            clearReportsFail: 'Berichte konnten nicht gelöscht werden.',
             prodOnly: 'Nur lokal oder mit ?dev=1 verfügbar.'
         }
     },
@@ -67,6 +71,10 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportDream: 'Product reflection / snapshots',
             reportBrain: 'Fix and improvement proposals',
             openReport: 'Open',
+            clearReports: '🧹 Clear old reports',
+            clearReportsConfirm: 'Delete all reports?',
+            clearReportsDone: '🧹 All reports cleared.',
+            clearReportsFail: 'Could not clear reports.',
             prodOnly: 'Available locally or with ?dev=1 only.'
         }
     },
@@ -100,6 +108,10 @@ export const DEV_VAULT_I18N = Object.freeze({
             reportDream: 'Refleksja / snapy produktu',
             reportBrain: 'Propozycje napraw i usprawnień',
             openReport: 'Otwórz',
+            clearReports: '🧹 Wyczyść stare raporty',
+            clearReportsConfirm: 'Czy na pewno chcesz usunąć wszystkie raporty?',
+            clearReportsDone: '🧹 Wszystkie raporty zostały wyczyszczone.',
+            clearReportsFail: 'Nie udało się wyczyścić raportów.',
             prodOnly: 'Dostępne tylko lokalnie lub z ?dev=1.'
         }
     }

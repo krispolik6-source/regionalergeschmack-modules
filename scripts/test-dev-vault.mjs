@@ -170,7 +170,11 @@ assert(vault.includes('data-dv-report-show-all'), 'show-all toggle');
 assert(vault.includes('devVaultSuggestions'), 'suggestion control module');
 assert(vault.includes('Wprowadź zmianę'), 'apply button label');
 assert(vault.includes('Odrzuć zmianę'), 'reject button label');
-assert(vault.includes('rg-dv-report-desc--fixed'), 'colored FIXED description');
+assert(vault.includes('data-dv-clear-reports'), 'clear old reports button');
+assert(vault.includes('clearLocalDeveloperReports'), 'local report cleanup');
+assert(vault.includes('rg_app_health_report_v1'), 'health report storage key');
+assert(vault.includes('selfHealingLog'), 'self healing log key');
+assert(vault.includes('clearReportsConfirm'), 'clear reports confirm i18n');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');
