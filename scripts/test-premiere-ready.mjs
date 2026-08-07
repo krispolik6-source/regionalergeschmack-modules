@@ -31,9 +31,13 @@ assert(/data-view="home"/.test(html), 'bottom nav Home');
 console.log('=== 2. MAPA ===');
 assert(existsSync(join(ROOT, 'js/views/map.js')), 'Map view file');
 assert(existsSync(join(ROOT, 'js/map/map.js')), 'Map core file');
-assert(nav.includes('map: renderMap'), 'nav → Map');
+assert(nav.includes('map: renderMapLazy') || nav.includes('renderMapLazy'), 'nav → Map (lazy)');
 assert(/data-view="map"/.test(html), 'bottom nav Map');
-assert(html.includes('leaflet'), 'Leaflet in index');
+assert(
+    existsSync(join(ROOT, 'js/core/mapLoader.js'))
+    && readFileSync(join(ROOT, 'js/core/mapLoader.js'), 'utf8').includes('ensureLeafletLoaded'),
+    'Leaflet lazy via mapLoader'
+);
 
 console.log('=== 3. TASTE DIARY ===');
 assert(existsSync(join(ROOT, 'js/core/tasteDiary.js')), 'Taste Diary module');

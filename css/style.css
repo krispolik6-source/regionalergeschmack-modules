@@ -8608,6 +8608,49 @@ body.dark-mode .healing-report-item {
     background: rgba(255, 255, 255, 0.05);
 }
 
+/* Lazy map — krótki spinner przy pierwszym wejściu na mapę */
+.map-view-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: min(70vh, calc(100dvh - 8rem));
+    padding: 1.5rem;
+    color: var(--text-primary, #2a3f28);
+    text-align: center;
+}
+
+.map-view-loading__spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid rgba(42, 63, 40, 0.14);
+    border-top-color: var(--brand-gold, #c9a227);
+    border-radius: 50%;
+    animation: rg-map-spin 0.7s linear infinite;
+}
+
+.map-view-loading__text {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--text-muted, #5c5348);
+}
+
+.map-view-loading--error .map-view-loading__spinner {
+    display: none;
+}
+
+@keyframes rg-map-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .map-view-loading__spinner {
+        animation: none;
+        border-top-color: rgba(42, 63, 40, 0.35);
+    }
+}
+
 body.dark-mode .healing-report-markdown {
     background: rgba(0, 0, 0, 0.25);
 }

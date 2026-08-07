@@ -26,7 +26,7 @@ import {
     hideCookieBanner,
     syncCookieBannerVisibility
 } from './core/cookieConsent.js';
-import { setSearchQuery } from './views/map.js?v=48';
+import { queueSearchQuery } from './core/mapLoader.js';
 import { refreshCartBadge, adoptGuestCartForCurrentUser } from './views/cart.js';
 import { syncFavoritesOnStartup } from './core/favoritesStore.js';
 import { invalidateTasteAdvisorDayCache } from './presentation/tasteAdvisor.js';
@@ -74,7 +74,7 @@ function bindSearch() {
     // Nie resetuj kategorii: wyszukiwanie / wyczyszczenie query zawęża lub odblokowuje
     // wyniki w obrębie aktywnego filtra. Nawigacja na mapę opcjonalna (np. clear na home).
     eventBus.on(EVENTS.SEARCH_PRODUCTS, ({ query, navigate = true } = {}) => {
-        setSearchQuery(query || '');
+        queueSearchQuery(query || '');
         if (navigate !== false) {
             navigateTo('map', { force: true });
         }

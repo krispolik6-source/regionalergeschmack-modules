@@ -35,10 +35,10 @@ assert(map.includes('export function healMapRuntimeState'), 'map healMapRuntimeS
 assert(nav.includes('export function ensureNavigationHealed'), 'nav ensureNavigationHealed');
 assertLazyDiagnosticsInit(assert, ROOT, 'selfHealing.initSelfHealing', 'orchestrator lazy selfHealing');
 assert(sh.includes('map.js?v=48'), 'selfHeal imports map v48');
-assert(nav.includes('map.js?v=48'), 'nav map v48');
+assert(nav.includes('mapLoader') && nav.includes('renderMapLazy'), 'nav lazy mapLoader');
 assert(existsSync(join(ROOT, 'docs/self-heal/ETAP-39-SELF-HEALING.md')), 'report md');
 
-for (const f of ['js/diagnostics/selfHealing.js', 'js/views/map.js', 'js/controllers/navigation.js']) {
+for (const f of ['js/diagnostics/selfHealing.js', 'js/views/map.js', 'js/controllers/navigation.js', 'js/core/mapLoader.js']) {
     const r = spawnSync(process.execPath, ['--check', f], { cwd: ROOT, encoding: 'utf8' });
     assert(r.status === 0, `syntax ${f}`);
 }

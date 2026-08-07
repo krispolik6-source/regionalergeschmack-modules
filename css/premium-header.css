@@ -861,14 +861,15 @@ html.dark-mode .header-left h1 {
     z-index: 1000;
     margin-bottom: 0;
     will-change: transform;
-    transition:
-        transform 0.3s ease,
-        margin-bottom 0.3s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .main-header.header-premium.header-premium--hidden {
-    transform: translateY(-100%);
-    margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top)));
+    transform: translate3d(0, -100%, 0);
+    margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top, 0px)));
     pointer-events: none;
 }
 
@@ -932,6 +933,7 @@ body:has(.main-header.header-premium) {
     --ph-header-h: calc(var(--ph-brand-layer-h) + var(--ph-action-bar-h));
     --header-height: var(--ph-header-h);
 
+    /* sticky — nadpisuje position: fixed z style.css (nigdy oba naraz) */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -946,9 +948,10 @@ body:has(.main-header.header-premium) {
         0 1px 0 rgba(201, 162, 39, 0.14) !important;
     margin-bottom: 0;
     will-change: transform;
-    transition:
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        margin-bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
 }
 
@@ -962,7 +965,7 @@ body:has(.main-header.header-expandable) {
 
 .main-header.header-expandable.header-expandable--hidden,
 .main-header.header-expandable.header-premium--hidden {
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
     margin-bottom: calc(-1 * (var(--header-height) + var(--safe-top, 0px)));
     pointer-events: none;
 }
@@ -1031,10 +1034,12 @@ html.dark-mode .main-header.header-expandable #languageSwitcherLabel {
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: flex-start !important;
-    height: auto !important;
+    height: var(--ph-header-h) !important;
     min-height: var(--ph-header-h) !important;
+    max-height: var(--ph-header-h) !important;
     padding: 0 !important;
     gap: 0 !important;
+    box-sizing: border-box;
 }
 
 /* ——— Warstwa A: logo + nazwa (poziomo, wyśrodkowane) ——— */
@@ -1329,4 +1334,41 @@ html.dark-mode .main-header.header-expandable .header-notifications-dot {
     .main-header.header-expandable .header-action-group {
         gap: 0;
     }
+}
+
+/* ============================================================
+   Anty-drganie — treść pod nagłówkiem (scroll + stałe wysokości)
+   ============================================================ */
+
+body:has(.main-header.header-expandable) #app,
+body:has(.main-header.header-expandable) #view-home {
+    scroll-margin-top: 0;
+}
+
+.home-hero,
+.home-page--v1 > .home-greeting,
+.home-page--v1 > .home-hub,
+.main-header.header-expandable .header-search-field {
+    scroll-margin-top: 0;
+}
+
+.home-page--v1 > .home-greeting {
+    min-height: 52px;
+}
+
+.home-page--v1 > .home-hub {
+    min-height: 62px;
+}
+
+.home-page--v1 .home-hub .home-search--lg .home-search-field {
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
+    box-sizing: border-box;
+}
+
+.main-header.header-expandable .header-search-field {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
 }

@@ -172,11 +172,12 @@ if (modal.includes('MODAL_CLOSE_GUARD_MS') && modal.includes('[Modal] Otwieranie
     ok('Modal: guard ghost-click + logi');
 } else fail('Modal: brak guarda / logów');
 
-const appMapVer = app.match(/map\.js\?v=(\d+)/)?.[1];
-const navMapVer = nav.match(/map\.js\?v=(\d+)/)?.[1];
-if (appMapVer && appMapVer === navMapVer) {
-    ok(`Mapa: spójny import map.js?v=${appMapVer} (app + navigation)`);
-} else fail('Mapa: rozjazd wersji map.js między app a navigation');
+const mapLoader = read('js/core/mapLoader.js');
+const appMapVer = mapLoader.match(/MAP_MODULE_VERSION\s*=\s*(\d+)/)?.[1];
+const navMapLazy = nav.includes('mapLoader') && nav.includes('renderMapLazy');
+if (appMapVer && navMapLazy) {
+    ok(`Mapa: lazy load map.js?v=${appMapVer} (mapLoader + navigation)`);
+} else fail('Mapa: brak spójnego lazy load mapLoader');
 
 if (mapView.includes("osmService.js?v=10")) {
     ok('Mapa: osmService?v=10 (zgodne z dataService)');

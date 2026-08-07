@@ -93,16 +93,16 @@ ok(
 
 const app = fs.readFileSync(new URL('../js/app.js', import.meta.url), 'utf8');
 ok(!/SEARCH_PRODUCTS[\s\S]{0,220}setCategoryFilter\('all'\)/.test(app), 'search does not clear category');
-ok(app.includes('navigateToCategory') && /map\.js\?v=\d+/.test(app), 'app uses navigateToCategory + versioned map');
+ok(app.includes('mapLoader') && app.includes('queueSearchQuery'), 'app uses lazy mapLoader');
 
 const nav = fs.readFileSync(new URL('../js/controllers/navigation.js', import.meta.url), 'utf8');
 ok(
     nav.includes('navigateToCategory')
     && nav.includes('[Navigation] Kategoria:')
     && nav.includes('options.filter')
-    && /map\.js\?v=\d+/.test(nav)
-    && app.includes('map.js?v=') && nav.match(/map\.js\?v=\d+/)?.[0] === app.match(/map\.js\?v=\d+/)?.[0],
-    'navigation passes filter to map (same map version as app)'
+    && nav.includes('mapLoader')
+    && nav.includes('renderMapLazy'),
+    'navigation passes filter to lazy map'
 );
 
 const home = fs.readFileSync(new URL('../js/views/home.js', import.meta.url), 'utf8');

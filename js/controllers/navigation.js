@@ -4,7 +4,7 @@ import { eventBus } from '../core/eventBus.js';
 import { EVENTS } from '../core/events.js';
 import { renderHome, destroyHome } from '../views/home.js?v=44';
 import { focusHeaderSearch } from '../core/headerShell.js';
-import { renderMap } from '../views/map.js?v=48';
+import { renderMapLazy } from '../core/mapLoader.js';
 import { renderPremium } from '../views/premium.js';
 import { renderFavorites, refreshFavoritesBadge } from '../views/favorites.js';
 import { renderCart, refreshCartBadge } from '../views/cart.js';
@@ -15,7 +15,7 @@ const VIEW_IDS = ['home', 'map', 'premium', 'favorites', 'cart', 'profile', 'imp
 
 const viewRenderers = {
     home: renderHome,
-    map: renderMap,
+    map: renderMapLazy,
     premium: renderPremium,
     favorites: renderFavorites,
     cart: renderCart,
@@ -120,7 +120,7 @@ function renderView(view, panel, options = {}) {
 
 /**
  * Przejście na mapę z filtrem kategorii (Home → Mapa).
- * Filtr jest przekazywany do renderMap przez options.filter.
+ * Filtr jest przekazywany do renderMapLazy przez options.filter.
  */
 export function navigateToCategory(category) {
     const filter = category || 'all';

@@ -44,7 +44,7 @@ assert(map.includes('tilesEverLoaded'), 'tile load tracking');
 assert(mapCore.includes('getRegisteredMarkerCount'), 'marker count export');
 assert(mapCore.includes('hasMarkerClusterGroup'), 'cluster export');
 assertLazyDiagnosticsInit(assert, ROOT, 'mapGuardian.initMapGuardian', 'orchestrator lazy mapGuardian');
-assert(app.includes('map.js?v=48'), 'app map v48');
+assert(app.includes('mapLoader') && app.includes('queueSearchQuery'), 'app lazy mapLoader');
 
 for (const f of [
     'js/diagnostics/mapGuardian.js',

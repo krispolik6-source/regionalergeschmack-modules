@@ -8,6 +8,7 @@ import {
     findProducerNear,
     upsertProducer
 } from '../data/dataService.js';
+import { ensureLeafletLoaded } from '../core/mapLoader.js';
 import { t, tProductField, formatNavLabel, getCurrentLanguage } from '../core/i18n.js';
 import { CATALOG_TRANSLATIONS } from '../translations.js';
 import {
@@ -381,12 +382,14 @@ function destroyLocationMiniMap() {
     locationMiniMap = null;
 }
 
-function initLocationMiniMap(root) {
+async function initLocationMiniMap(root) {
     try {
         destroyLocationMiniMap();
 
         const el = root?.querySelector('[data-producer-mini-map]');
-        if (!el || typeof window.L === 'undefined') return;
+        if (!el) return;
+
+        await ensureLeafletLoaded();
 
         const lat = Number(el.dataset.lat);
         const lng = Number(el.dataset.lng);

@@ -46,6 +46,7 @@ import {
     refreshSmartTodayWeather
 } from '../presentation/smartToday.js';
 import { getTasteAdvisorBriefing } from '../presentation/tasteAdvisor.js';
+import { queueSearchQuery } from '../core/mapLoader.js';
 import { getLivingRegionPulse, livingPulseCategory } from '../presentation/livingRegion.js';
 import {
     isLivingRegionEnabled,
@@ -1698,10 +1699,8 @@ function setupEvents(container) {
         if (seasonal) {
             const query = seasonal.dataset.seasonalQuery || '';
             trackSearchQuery(query);
+            queueSearchQuery(query);
             eventBus.emit(EVENTS.NAVIGATE, { view: 'map' });
-            import('./map.js?v=48').then((mod) => {
-                mod.setSearchQuery?.(query);
-            }).catch(() => {});
             return;
         }
 
