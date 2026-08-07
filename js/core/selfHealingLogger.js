@@ -932,6 +932,7 @@ export function updateUnifiedHealthEntry(entry, patch) {
             }
             if (patch.description) row.message = patch.description;
             if (patch.ownerStatus) row.ownerStatus = patch.ownerStatus;
+            if (patch.ownerNote) row.ownerNote = patch.ownerNote;
             if (patch.deployReady != null) row.deployReady = patch.deployReady;
             if (patch.ownerAcceptedAt) row.ownerAcceptedAt = patch.ownerAcceptedAt;
             try {

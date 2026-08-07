@@ -174,7 +174,12 @@ assert(vault.includes('data-dv-clear-reports'), 'clear old reports button');
 assert(vault.includes('clearLocalDeveloperReports'), 'local report cleanup');
 assert(vault.includes('rg_app_health_report_v1'), 'health report storage key');
 assert(vault.includes('selfHealingLog'), 'self healing log key');
-assert(vault.includes('clearReportsConfirm'), 'clear reports confirm i18n');
+assert(vault.includes('enrichStreamEntriesWithDescriptions'), 'md excerpt enrichment');
+const suggMod = readFileSync(join(ROOT, 'js/diagnostics/devVaultSuggestions.js'), 'utf8');
+assert(vault.includes('getStreamEntryApplyMeta'), 'FAILED apply meta helper');
+assert(suggMod.includes('Proponowana naprawa'), 'proposed fix hint');
+assert(suggMod.includes('Wymaga ręcznej analizy kodu'), 'manual analysis hint');
+assert(suggMod.includes('Naprawa zatwierdzona przez użytkownika'), 'owner approved note');
 
 const i18n = readFileSync(join(ROOT, 'js/translations-dev-vault.js'), 'utf8');
 assert(i18n.includes('Panel deweloperski'), 'PL title');

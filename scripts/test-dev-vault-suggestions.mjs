@@ -25,7 +25,17 @@ const {
     rejectStreamSuggestion,
     filterDismissedStreamEntries,
     isStreamEntryDeployReady,
-    STREAM_STATUS_HEADING
+    STREAM_STATUS_HEADING,
+    extractMarkdownExcerpt,
+    looksLikeFileName,
+    STREAM_ENTRY_NO_DETAILS,
+    enrichStreamEntriesWithDescriptions,
+    getStreamEntryFixProposal,
+    hasStreamEntryFixProposal,
+    getStreamEntryApplyMeta,
+    getStreamEntryFixProposalSummary,
+    OWNER_APPROVED_FIX_NOTE,
+    FAILED_MANUAL_ANALYSIS_HINT
 } = await import('../js/diagnostics/devVaultSuggestions.js');
 
 const { STREAM_STATUS } = await import('../js/diagnostics/reportManagerClient.js');
@@ -47,6 +57,45 @@ ok('FIXED heading', STREAM_STATUS_HEADING.FIXED.label === 'Co zostało naprawion
 ok('SUGGESTION heading', STREAM_STATUS_HEADING.SUGGESTION.label === 'Co sugeruję do poprawy');
 ok('FAILED heading', STREAM_STATUS_HEADING.FAILED.label === 'Co jest problemem');
 ok('INFO heading', STREAM_STATUS_HEADING.INFO.label === 'Co proponuję zmienić');
+
+ok('looksLikeFileName latest.md', looksLikeFileName('latest.md'));
+ok('looksLikeFileName rejects sentence', !looksLikeFileName('Rozważ zwiększenie kontrastu przycisku.'));
+
+const mdSample = `# Living Region — 2026-08-03
+
+> Status: INFO
+
+Rozważ zwiększenie kontrastu przycisku primary w stopce.
+Druga linia nie powinna dominować.`;
+ok('markdown excerpt', extractMarkdownExcerpt(mdSample).includes('kontrastu'));
+ok('markdown excerpt length', extractMarkdownExcerpt(mdSample).length <= 112);
+
+const docEntry = {
+    kind: 'doc',
+    streamId: 'doc-test',
+    streamStatus: STREAM_STATUS.INFO,
+    rel: 'docs/intelligence/latest.md',
+    name: 'latest.md',
+    title: 'latest.md · bieżący'
+};
+await enrichStreamEntriesWithDescriptions([{
+    ...docEntry,
+    mdExcerpt: 'Rozważ zwiększenie kontrastu przycisków w menu bocznym.'
+}]);
+const docDesc = getStreamEntryDescription({
+    ...docEntry,
+    mdExcerpt: 'Rozważ zwiększenie kontrastu przycisków w menu bocznym.'
+});
+ok('doc description not filename', !docDesc.text.includes('latest.md'));
+ok('doc description has content', docDesc.text.includes('kontrastu'));
+
+const emptyDocDesc = getStreamEntryDescription({
+    kind: 'doc',
+    streamStatus: STREAM_STATUS.INFO,
+    name: 'latest.md',
+    mdExcerpt: ''
+});
+ok('empty doc default message', emptyDocDesc.text === STREAM_ENTRY_NO_DETAILS);
 
 localStorage.removeItem(HEALING_REPORT_KEY);
 addHealingReportEntry({
@@ -82,22 +131,83 @@ const failedEntry = {
         description: 'Błąd połączenia z Overpass API'
     }
 };
-ok('cannot apply FAILED', !canApplyStreamEntry(failedEntry));
+ok('cannot apply FAILED without fix', !canApplyStreamEntry(failedEntry));
 ok('failed desc tone', getStreamEntryDescription(failedEntry).tone === 'failed');
+ok('failed manual hint', getStreamEntryApplyMeta(failedEntry).hint === FAILED_MANUAL_ANALYSIS_HINT);
 
-const applyResult = await applyStreamSuggestion(streamEntry);
+const failedWithFix = {
+    kind: 'system',
+    streamId: 'test-failed-fix',
+    streamStatus: STREAM_STATUS.FAILED,
+    systemEntry: {
+        id: 'report-hr-failed-fix',
+        source: 'healingReport',
+        status: HEALING_STATUS.FAILED,
+        description: 'Błąd połączenia z Overpass API',
+        aiProposal: {
+            fixSuggestion: {
+                file: 'js/data/osmService.js',
+                description: 'Błąd API mapy — dodaj retry lub fallback na cache.',
+                suggestedCode: 'const res = await fetch(url, { cache: "no-store" });'
+            }
+        }
+    }
+};
+ok('FAILED with fixSuggestion detected', hasStreamEntryFixProposal(failedWithFix));
+ok('can apply FAILED with fix', canApplyStreamEntry(failedWithFix));
+ok('apply meta shows proposal', getStreamEntryApplyMeta(failedWithFix).hint.includes('Proponowana naprawa'));
+ok('apply meta enabled', getStreamEntryApplyMeta(failedWithFix).enabled === true);
+
+localStorage.removeItem(HEALING_REPORT_KEY);
+addHealingReportEntry({
+    status: HEALING_STATUS.FAILED,
+    component: 'osmService.js',
+    description: 'Błąd połączenia z Overpass API',
+    aiProposal: {
+        fixSuggestion: failedWithFix.systemEntry.aiProposal.fixSuggestion
+    }
+});
+const failedUnified = buildUnifiedSystemHealth().entries.find((e) => e.status === HEALING_STATUS.FAILED);
+const failedStreamEntry = {
+    kind: 'system',
+    streamId: 'test-failed-apply',
+    streamStatus: STREAM_STATUS.FAILED,
+    systemEntry: failedUnified
+};
+const approveResult = await applyStreamSuggestion(failedStreamEntry);
+ok('owner approve FAILED fix', approveResult.ok === true);
+ok('owner approve note', approveResult.message === OWNER_APPROVED_FIX_NOTE);
+const reportAfter = getHealingReport();
+ok('healingReport owner note', reportAfter.entries.some((e) => e.ownerNote === OWNER_APPROVED_FIX_NOTE));
+
+addHealingReportEntry({
+    status: HEALING_STATUS.SUGGESTION,
+    component: 'searchFilter.js',
+    description: 'Dodaj limit 20 w searchFilter.js'
+});
+const suggestionUnified = buildUnifiedSystemHealth().entries.find(
+    (e) => e.source === 'healingReport' && e.status === HEALING_STATUS.SUGGESTION
+);
+const suggestionStreamEntry = {
+    kind: 'system',
+    streamId: 'test-suggestion-1',
+    streamStatus: STREAM_STATUS.SUGGESTION,
+    systemEntry: suggestionUnified
+};
+
+const applyResult = await applyStreamSuggestion(suggestionStreamEntry);
 ok('apply suggestion ok', applyResult.ok === true);
 ok('apply marks ready or applied', applyResult.applied === true || applyResult.readyToDeploy === true);
 
-const refreshed = buildUnifiedSystemHealth().entries.find((e) => e.id === sysEntry.id);
+const refreshed = buildUnifiedSystemHealth().entries.find((e) => e.id === suggestionUnified.id);
 ok('persist owner action', refreshed?.deployReady === true || refreshed?.status === HEALING_STATUS.FIXED);
 
 const rejectTarget = {
     kind: 'system',
     streamId: 'test-reject-1',
     systemEntry: {
-        id: sysEntry.id,
-        source: sysEntry.source,
+        id: suggestionUnified.id,
+        source: suggestionUnified.source,
         status: HEALING_STATUS.SUGGESTION,
         description: 'temp'
     }

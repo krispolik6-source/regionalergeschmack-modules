@@ -29,10 +29,11 @@ import {
 import {
     applyStreamSuggestion,
     rejectStreamSuggestion,
-    canApplyStreamEntry,
     getStreamEntryDescription,
     isStreamEntryDeployReady,
-    filterDismissedStreamEntries
+    filterDismissedStreamEntries,
+    enrichStreamEntriesWithDescriptions,
+    getStreamEntryApplyMeta
 } from './devVaultSuggestions.js';
 import {
     buildDevStatusBoard,
@@ -126,6 +127,9 @@ function ensureStyles() {
 #${ROOT_ID} .rg-dv-deploy-badge{display:inline-block;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(42,63,40,.12);color:#2a3f28;margin-left:4px;vertical-align:middle}
 #${ROOT_ID} .rg-dv-apply{background:rgba(42,122,56,.12);color:#1e5a24;border:1px solid rgba(42,122,56,.35)!important}
 #${ROOT_ID} .rg-dv-apply:disabled{opacity:.45;cursor:not-allowed}
+#${ROOT_ID} .rg-dv-apply-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;margin-bottom:4px}
+#${ROOT_ID} .rg-dv-apply-hint{font-size:.78rem;color:#4a3f32;line-height:1.35;flex:1;min-width:min(100%,200px)}
+#${ROOT_ID} .rg-dv-apply-hint--warn{color:#6b1d1d}
 #${ROOT_ID} .rg-dv-reject{background:rgba(180,60,60,.08);color:#6b1d1d;border:1px solid rgba(140,40,40,.28)!important}
 #${ROOT_ID} .rg-dv-report-empty{margin:16px 0;padding:20px 16px;text-align:center;background:rgba(255,255,255,.55);border:1px dashed rgba(42,63,40,.18);border-radius:12px;color:#4a3f32;font-size:.95rem}
 #${ROOT_ID} .rg-dcc-pre{white-space:pre-wrap;font-size:.85rem;line-height:1.45;background:rgba(255,255,255,.7);border-radius:10px;padding:10px;border:1px solid rgba(42,63,40,.1);max-height:40vh;overflow:auto}
@@ -271,10 +275,8 @@ function unifiedReportRowHtml(entry) {
     const statusMeta = getStreamStatusMeta(entry.streamStatus);
     const desc = getStreamEntryDescription(entry);
     const deployReady = isStreamEntryDeployReady(entry);
-    const applyEnabled = canApplyStreamEntry(entry);
-    const applyTitle = applyEnabled
-        ? 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)'
-        : (resolveEntryApplyDisabledReason(entry));
+    const applyMeta = getStreamEntryApplyMeta(entry);
+    const applyHintClass = applyMeta.hintTone === 'warn' ? ' rg-dv-apply-hint--warn' : '';
     return `
       <li>
         <span class="rg-dv-report-ico" aria-hidden="true">${statusMeta.icon}</span>
@@ -291,7 +293,10 @@ function unifiedReportRowHtml(entry) {
           </div>
           <p style="margin:4px 0 0;color:#4a3f32;font-size:.82rem">${escapeHtml(when)} · ${escapeHtml(pathHint)}</p>
           <div class="rg-dcc-btn-row">
-            <button type="button" class="rg-dv-apply" data-dv-apply-id="${escapeHtml(streamId)}"${applyEnabled ? '' : ' disabled'} title="${escapeHtml(applyTitle)}">✅ Wprowadź zmianę</button>
+            <div class="rg-dv-apply-row">
+              <button type="button" class="rg-dv-apply" data-dv-apply-id="${escapeHtml(streamId)}"${applyMeta.enabled ? '' : ' disabled'} title="${escapeHtml(applyMeta.title)}">✅ Wprowadź zmianę</button>
+              ${applyMeta.hint ? `<span class="rg-dv-apply-hint${applyHintClass}">${escapeHtml(applyMeta.hint)}</span>` : ''}
+            </div>
             <button type="button" class="rg-dv-reject" data-dv-reject-id="${escapeHtml(streamId)}">❌ Odrzuć zmianę</button>
             <button type="button" class="rg-dv-secondary" data-dv-open-id="${escapeHtml(streamId)}">${label('devVault.openReport', 'Otwórz')}</button>
             <button type="button" class="rg-dv-secondary" data-dv-copy-id="${escapeHtml(streamId)}">📋 Kopiuj raport</button>
@@ -299,15 +304,6 @@ function unifiedReportRowHtml(entry) {
           </div>
         </div>
       </li>`;
-}
-
-function resolveEntryApplyDisabledReason(entry) {
-    const status = entry?.streamStatus ?? entry?.systemEntry?.status;
-    if (String(status).toUpperCase() === 'FAILED') {
-        return 'Błąd krytyczny — wymaga ręcznej interwencji w kodzie';
-    }
-    if (isStreamEntryDeployReady(entry)) return 'Już oznaczone jako gotowe do wdrożenia';
-    return 'Zmiana już wprowadzona lub niedostępna';
 }
 
 function simpleMarkdownToHtml(source) {
@@ -593,6 +589,7 @@ async function renderDeveloperDashboard(body) {
     const visibleStream = filterDismissedStreamEntries(
         filterDeveloperVaultStream(stream, { showAll: showAllReports })
     );
+    await enrichStreamEntriesWithDescriptions(visibleStream);
     const hiddenCount = stream.length - visibleStream.length;
     const rows = visibleStream.map((entry) => unifiedReportRowHtml(entry)).join('');
     const filterNote = showAllReports

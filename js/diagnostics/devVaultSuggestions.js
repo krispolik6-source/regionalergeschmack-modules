@@ -5,7 +5,8 @@
 
 import {
     normalizeStreamStatus,
-    STREAM_STATUS
+    STREAM_STATUS,
+    loadStreamEntryPreview
 } from './reportManagerClient.js';
 import {
     removeUnifiedHealthEntry,
@@ -93,6 +94,171 @@ export function resolveEntryStreamStatus(entry) {
     return normalizeStreamStatus(raw);
 }
 
+/** Domyślny opis gdy brak treści raportu. */
+export const STREAM_ENTRY_NO_DETAILS = 'Brak szczegółów dla tej sugestii.';
+export const FAILED_MANUAL_ANALYSIS_HINT = 'Wymaga ręcznej analizy kodu';
+export const OWNER_APPROVED_FIX_NOTE = 'Naprawa zatwierdzona przez użytkownika';
+
+const EXCERPT_MAX_LEN = 110;
+
+/**
+ * @param {string} text
+ * @returns {boolean}
+ */
+export function looksLikeFileName(text) {
+    const s = String(text || '').trim();
+    if (!s) return true;
+    if (/^latest(\s·\s*bieżący)?$/i.test(s)) return true;
+    if (/^latest\.(md|json)$/i.test(s)) return true;
+    if (/\.(md|json)$/i.test(s) && !/\s/.test(s)) return true;
+    if (/^docs\//i.test(s)) return true;
+    return false;
+}
+
+/**
+ * @param {string} raw
+ * @param {number} [maxLen]
+ * @returns {string}
+ */
+export function trimExcerpt(raw, maxLen = EXCERPT_MAX_LEN) {
+    let s = String(raw || '').replace(/\s+/g, ' ').trim();
+    if (!s || looksLikeFileName(s)) return '';
+    if (s.length <= maxLen) return s;
+    const cut = s.slice(0, maxLen);
+    const lastSpace = cut.lastIndexOf(' ');
+    return `${(lastSpace > 40 ? cut.slice(0, lastSpace) : cut).trim()}…`;
+}
+
+/**
+ * Wyciąga pierwsze zdanie / akapit z markdown (bez nagłówków i metadanych).
+ * @param {string} md
+ * @param {number} [maxLen]
+ */
+export function extractMarkdownExcerpt(md, maxLen = EXCERPT_MAX_LEN) {
+    const parts = [];
+    for (const line of String(md || '').split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (/^#{1,6}\s/.test(trimmed)) continue;
+        if (/^>\s/.test(trimmed)) continue;
+        if (/^[-|]{3,}$/.test(trimmed.replace(/\s/g, ''))) continue;
+        if (/^\|/.test(trimmed)) {
+            const cells = trimmed.split('|').map((c) => c.trim()).filter(Boolean);
+            const cellText = cells.find((c) => !/^[-:]+$/.test(c) && !looksLikeFileName(c));
+            if (cellText) parts.push(cellText);
+            continue;
+        }
+        let plain = trimmed
+            .replace(/^[-*+]\s+/, '')
+            .replace(/^\d+\.\s+/, '')
+            .replace(/\*\*(.+?)\*\*/g, '$1')
+            .replace(/__(.+?)__/g, '$1')
+            .replace(/`([^`]+)`/g, '$1')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+            .trim();
+        if (!plain || looksLikeFileName(plain)) continue;
+        parts.push(plain);
+        if (parts.join(' ').length >= maxLen) break;
+    }
+
+    const joined = parts.join(' ').replace(/\s+/g, ' ').trim();
+    if (!joined) return '';
+
+    const sentenceMatch = joined.match(/^(.+?[.!?])(?:\s|$)/);
+    const first = (sentenceMatch ? sentenceMatch[1] : joined).trim();
+    return trimExcerpt(first, maxLen);
+}
+
+/**
+ * @param {string} text
+ * @param {'markdown'|'json'|'text'} [format]
+ * @param {number} [maxLen]
+ */
+export function extractReportContentExcerpt(text, format = 'markdown', maxLen = EXCERPT_MAX_LEN) {
+    if (!text || !String(text).trim()) return '';
+
+    if (format === 'json') {
+        try {
+            const data = JSON.parse(text);
+            const candidates = [
+                data.summary?.description,
+                data.description,
+                data.proposal,
+                data.suggestion,
+                data.findings?.[0]?.message,
+                data.findings?.[0]?.detail,
+                data.findings?.[0]?.description,
+                data.suggestions?.[0]?.description,
+                data.suggestions?.[0]?.text,
+                data.proposals?.[0]?.description,
+                data.proposals?.[0]?.text,
+                data.entries?.[0]?.description
+            ];
+            for (const candidate of candidates) {
+                const excerpt = trimExcerpt(String(candidate || ''), maxLen);
+                if (excerpt) return excerpt;
+            }
+        } catch {
+            /* fall through to markdown */
+        }
+    }
+
+    return extractMarkdownExcerpt(text, maxLen);
+}
+
+/**
+ * Uzupełnia wpisy strumienia o krótki opis z treści .md / .json (zamiast nazwy pliku).
+ * @param {object[]} entries
+ */
+export async function enrichStreamEntriesWithDescriptions(entries) {
+    await Promise.all((entries || []).map(async (entry) => {
+        if (entry?.mdExcerpt) return;
+
+        const sys = entry?.systemEntry;
+        const sysText = sys?.description
+            || sys?.aiProposal?.fixSuggestion?.description
+            || sys?.aiProposal?.suggestion
+            || sys?.message
+            || '';
+
+        if (sysText && !looksLikeFileName(sysText)) {
+            entry.mdExcerpt = trimExcerpt(
+                String(sysText).replace(/^\[Gotowe do wdrożenia\]\s*/i, ''),
+                EXCERPT_MAX_LEN
+            );
+            return;
+        }
+
+        if (entry?.kind === 'system') {
+            entry.mdExcerpt = sysText && !looksLikeFileName(sysText)
+                ? trimExcerpt(sysText, EXCERPT_MAX_LEN)
+                : '';
+            return;
+        }
+
+        const rel = entry?.rel || entry?.md || '';
+        if (!rel || !/\.(md|json)$/i.test(String(rel))) {
+            entry.mdExcerpt = '';
+            return;
+        }
+
+        try {
+            const preview = await loadStreamEntryPreview(entry);
+            if (!preview.ok || !preview.text?.trim()) {
+                entry.mdExcerpt = '';
+                return;
+            }
+            entry.mdExcerpt = extractReportContentExcerpt(
+                preview.text,
+                preview.format === 'json' ? 'json' : 'markdown',
+                EXCERPT_MAX_LEN
+            );
+        } catch {
+            entry.mdExcerpt = '';
+        }
+    }));
+}
+
 /**
  * @param {object} entry
  * @returns {{ heading: string, tone: string, text: string }}
@@ -103,22 +269,27 @@ export function getStreamEntryDescription(entry) {
     const sys = entry?.systemEntry;
 
     let text = '';
-    if (sys) {
+    if (entry?.mdExcerpt) {
+        text = entry.mdExcerpt;
+    } else if (sys) {
         text = sys.description
             || sys.aiProposal?.fixSuggestion?.description
             || sys.aiProposal?.suggestion
             || sys.message
             || '';
     }
-    if (!text) {
-        text = entry?.title || entry?.name || entry?.rel || '';
+
+    if (!text || looksLikeFileName(text)) {
+        const fallback = entry?.title || entry?.name || entry?.rel || '';
+        text = looksLikeFileName(fallback) ? '' : fallback;
     }
+
     text = String(text).replace(/^\[Gotowe do wdrożenia\]\s*/i, '').trim();
 
     return {
         heading: meta.label,
         tone: meta.tone,
-        text: text || '—'
+        text: text || STREAM_ENTRY_NO_DETAILS
     };
 }
 
@@ -129,7 +300,91 @@ export function getStreamEntryDescription(entry) {
 export function isStreamEntryDeployReady(entry) {
     if (readAcceptedSet().has(String(entry?.streamId))) return true;
     return Boolean(entry?.systemEntry?.ownerStatus === 'ready_to_deploy'
-        || entry?.systemEntry?.deployReady);
+        || entry?.systemEntry?.deployReady
+        || entry?.systemEntry?.ownerStatus === 'owner_approved_fix');
+}
+
+/**
+ * @param {object} entry
+ * @returns {{ description?: string, suggestedCode?: string, file?: string }|null}
+ */
+export function getStreamEntryFixProposal(entry) {
+    const sys = entry?.systemEntry;
+    const candidates = [
+        entry?.fixSuggestion,
+        sys?.fixSuggestion,
+        sys?.aiProposal?.fixSuggestion,
+        entry?.aiProposal?.fixSuggestion
+    ];
+    for (const fix of candidates) {
+        if (!fix || typeof fix !== 'object') continue;
+        if (fix.description?.trim() || fix.suggestedCode?.trim()) return fix;
+    }
+    const directCode = sys?.aiProposal?.suggestedCode || entry?.aiProposal?.suggestedCode;
+    if (directCode) {
+        return { description: '', suggestedCode: String(directCode) };
+    }
+    return null;
+}
+
+/**
+ * @param {object} entry
+ * @returns {boolean}
+ */
+export function hasStreamEntryFixProposal(entry) {
+    return Boolean(getStreamEntryFixProposal(entry));
+}
+
+/**
+ * @param {object} entry
+ * @param {number} [maxLen]
+ * @returns {string}
+ */
+export function getStreamEntryFixProposalSummary(entry, maxLen = EXCERPT_MAX_LEN) {
+    const fix = getStreamEntryFixProposal(entry);
+    if (!fix) return '';
+    const text = fix.description?.trim()
+        || String(fix.suggestedCode || '').split('\n').map((l) => l.trim()).find(Boolean)
+        || '';
+    return trimExcerpt(text, maxLen);
+}
+
+/**
+ * @param {object} entry
+ * @returns {{ enabled: boolean, hint: string, title: string, hintTone: 'ok'|'warn'|'' }}
+ */
+export function getStreamEntryApplyMeta(entry) {
+    const enabled = canApplyStreamEntry(entry);
+    const status = resolveEntryStreamStatus(entry);
+
+    if (status === STREAM_STATUS.FAILED) {
+        if (enabled && hasStreamEntryFixProposal(entry)) {
+            const summary = getStreamEntryFixProposalSummary(entry);
+            return {
+                enabled: true,
+                hint: `Proponowana naprawa: ${summary || '—'}`,
+                title: 'Zatwierdź proponowaną naprawę',
+                hintTone: 'ok'
+            };
+        }
+        return {
+            enabled: false,
+            hint: FAILED_MANUAL_ANALYSIS_HINT,
+            title: FAILED_MANUAL_ANALYSIS_HINT,
+            hintTone: 'warn'
+        };
+    }
+
+    return {
+        enabled,
+        hint: '',
+        title: enabled
+            ? 'Zatwierdź sugestię (mitigacja runtime lub oznaczenie gotowe)'
+            : (isStreamEntryDeployReady(entry)
+                ? 'Już oznaczone jako gotowe do wdrożenia'
+                : 'Zmiana już wprowadzona lub niedostępna'),
+        hintTone: ''
+    };
 }
 
 /**
@@ -138,9 +393,11 @@ export function isStreamEntryDeployReady(entry) {
  */
 export function canApplyStreamEntry(entry) {
     const status = resolveEntryStreamStatus(entry);
-    if (status === STREAM_STATUS.FAILED) return false;
     if (status === STREAM_STATUS.FIXED) return false;
     if (isStreamEntryDeployReady(entry)) return false;
+    if (status === STREAM_STATUS.FAILED) {
+        return hasStreamEntryFixProposal(entry);
+    }
     return true;
 }
 
@@ -189,14 +446,21 @@ export async function applyStreamSuggestion(entry) {
 
     const systemEntry = entry.systemEntry;
     const mitigationId = resolveMitigationForEntry(systemEntry);
+    const isFailed = resolveEntryStreamStatus(entry) === STREAM_STATUS.FAILED;
 
     if (mitigationId) {
         const mitResult = await applySafeMitigation(mitigationId, buildMitigationContext(systemEntry));
         if (mitResult.ok) {
+            const approvedNote = isFailed && hasStreamEntryFixProposal(entry)
+                ? OWNER_APPROVED_FIX_NOTE
+                : null;
             updateUnifiedHealthEntry(systemEntry, {
                 status: HEALING_STATUS.FIXED,
-                description: mitResult.detail || `Zastosowano mitigację: ${mitigationId}`,
+                description: approvedNote
+                    ? `${approvedNote}. ${mitResult.detail || `Zastosowano mitigację: ${mitigationId}`}`
+                    : (mitResult.detail || `Zastosowano mitigację: ${mitigationId}`),
                 ownerStatus: 'applied',
+                ownerNote: approvedNote || undefined,
                 deployReady: false,
                 ownerAcceptedAt: new Date().toISOString()
             });
@@ -204,9 +468,27 @@ export async function applyStreamSuggestion(entry) {
                 ok: true,
                 applied: true,
                 mitigationId,
-                message: mitResult.detail || 'Mitigacja runtime zastosowana.'
+                message: approvedNote || mitResult.detail || 'Mitigacja runtime zastosowana.'
             };
         }
+    }
+
+    if (isFailed && hasStreamEntryFixProposal(entry)) {
+        const summary = getStreamEntryFixProposalSummary(entry);
+        updateUnifiedHealthEntry(systemEntry, {
+            ownerStatus: 'owner_approved_fix',
+            deployReady: true,
+            ownerAcceptedAt: new Date().toISOString(),
+            ownerNote: OWNER_APPROVED_FIX_NOTE,
+            description: `${OWNER_APPROVED_FIX_NOTE}${summary ? `. ${summary}` : ''}`
+        });
+        return {
+            ok: true,
+            applied: false,
+            readyToDeploy: true,
+            ownerApproved: true,
+            message: OWNER_APPROVED_FIX_NOTE
+        };
     }
 
     updateUnifiedHealthEntry(systemEntry, {
