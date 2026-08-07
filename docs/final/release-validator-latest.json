@@ -1,7 +1,0 @@
-{
-  "releaseScore": 70,
-  "readyForProduction": "NO",
-  "reason": "3 krytyczne błędy · Release Score 70/100 (< 90)",
-  "generatedAt": "2026-08-04T17:43:22.130Z",
-  "criticalFails": 3
-}
